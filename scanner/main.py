@@ -23,19 +23,21 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
 
-if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
-    raise RuntimeError("SUPABASE_URL and SUPABASE_SERVICE_KEY must be set")
-
-SUPABASE_REST = f"{SUPABASE_URL}/rest/v1"
+SUPABASE_REST = f"{SUPABASE_URL}/rest/v1" if SUPABASE_URL else ""
 HEADERS = {
     "apikey": SUPABASE_SERVICE_KEY,
     "Authorization": f"Bearer {SUPABASE_SERVICE_KEY}",
     "Content-Type": "application/json",
     "Prefer": "resolution=merge-duplicates",
-}
+} if SUPABASE_SERVICE_KEY else {}
+
+
+def _check_supabase():
+    if not SUPABASE_URL or not SUPABASE_SERVICE_KEY:
+        raise HTTPException(status_code=503, detail="SUPABASE_URL and SUPABASE_SERVICE_KEY not configured")
 
 # Known Shopify apps & pixel signatures
 KNOWN_APPS = {
@@ -404,6 +406,7 @@ async def health():
 @app.post("/scan")
 async def scan_single(req: ScanRequest):
     """Scan a single store, save to Supabase, return data."""
+    _check_supabase()
     data = await scan_store(req.domain)
     await _upsert_to_supabase(data)
     return {"success": True, "shop": data}
@@ -412,6 +415,7 @@ async def scan_single(req: ScanRequest):
 @app.post("/scan/batch")
 async def scan_batch(req: BatchScanRequest, background_tasks: BackgroundTasks):
     """Queue multiple stores for scanning in the background."""
+    _check_supabase()
     async def _run():
         for domain in req.domains:
             try:
@@ -432,6 +436,7 @@ async def scan_batch(req: BatchScanRequest, background_tasks: BackgroundTasks):
 @app.get("/shops")
 async def list_shops(niche: Optional[str] = None, min_score: int = 0):
     """Fetch shops from Supabase with optional filters."""
+    _check_supabase()
     url = f"{SUPABASE_REST}/shops?select=*&order=score.desc"
     if niche and niche != "All":
         url += f"&niche=eq.{niche}"
@@ -459,6 +464,7 @@ async def list_shops(niche: Optional[str] = None, min_score: int = 0):
 @app.post("/scan/seed")
 async def seed_demo(background_tasks: BackgroundTasks):
     """Seed the database with some well-known Shopify stores for demo."""
+    _check_supabase()
     demo_domains = [
         "gymshark.com",
         "allbirds.com",
