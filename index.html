@@ -8,7 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
@@ -25,11 +24,27 @@
     const { useState, useEffect } = React;
 
     // ═══════════════════════════════════════════════
-    // SUPABASE CONNECTION
+    // SUPABASE REST (direct fetch, no SDK needed)
     // ═══════════════════════════════════════════════
     const SUPABASE_URL = "https://vsyceexjsitliwaasdhd.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_zh2lFb4rbEA739EH5oe-fA_KqN7wVTl";
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    async function supabaseFetch(table, query = "") {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/${table}?${query}`,
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
+      );
+      return res.ok ? res.json() : [];
+    }
+
+    async function supabaseCount(table) {
+      const res = await fetch(
+        `${SUPABASE_URL}/rest/v1/${table}?select=id`,
+        { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, Prefer: "count=exact" } }
+      );
+      const count = res.headers.get("content-range");
+      return count ? parseInt(count.split("/")[1]) || 0 : 0;
+    }
 
     // Fallback mock data (shown while DB is empty or loading fails)
     const MOCK_SHOPS = [
@@ -326,8 +341,8 @@
       useEffect(()=>{
         async function loadShops(){
           try {
-            const {data,error}=await supabase.from("shops").select("*").order("score",{ascending:false});
-            if(!error && data && data.length>0){
+            const data=await supabaseFetch("shops","select=*&order=score.desc");
+            if(data && data.length>0){
               // Parse JSONB fields that might come as strings
               const parsed=data.map(s=>{
                 for(const f of ["pixels","apps","traffic","top_products","strategy"]){
@@ -405,7 +420,7 @@
       const [tab,setTab]=useState("feed"), [count,setCount]=useState(0);
       useEffect(()=>{
         async function getCount(){
-          const {count:c}=await supabase.from("shops").select("*",{count:"exact",head:true});
+          const c=await supabaseCount("shops");
           if(c) setCount(c);
         }
         getCount();
