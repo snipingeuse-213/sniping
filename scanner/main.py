@@ -371,7 +371,6 @@ async def _upsert_to_supabase(shop_data: dict):
         "ad_spend_est": shop_data["ad_spend_est"],
         "top_products": json.dumps(shop_data["top_products"]),
         "strategy": json.dumps(shop_data["strategy"]),
-        "scanned_at": shop_data["scanned_at"],
     }
 
     async with aiohttp.ClientSession() as session:
