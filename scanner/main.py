@@ -7,12 +7,10 @@ import os
 import re
 import json
 import asyncio
-import hashlib
 from datetime import datetime, timezone
 from typing import Optional
 
 import aiohttp
-from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
