@@ -9,6 +9,7 @@
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     body{background:#FFF6E1;font-family:'DM Sans',sans-serif}
@@ -23,15 +24,19 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    const SHOPS = [
-      { domain:"velvetbloom.myshopify.com", shop_name:"Velvet Bloom", niche:"beauty", score:92, score_tier:"🔴 HOT", is_pro:true, freshness_label:"4min ago", theme:"Prestige", currency:"USD", country:"🇺🇸 US", pixels:["Meta Pixel","TikTok Pixel","Google Ads"], apps:["Loox","Klaviyo","ReConvert","GemPages","AfterShip","FOMO"], product_count:34, has_aliexpress:false, traffic:[12,18,22,31,28,44,58,72,69,88,91,105], revenue_est:"$42K/mo", ad_spend_est:"$8K/mo", top_products:[{title:"Glow Serum Pro",price:"49.99",orders:312},{title:"Velvet Lip Oil",price:"24.99",orders:198}], strategy:["Meta Ads","TikTok Organic","Email Flows","Influencers"] },
-      { domain:"ironpulse.myshopify.com", shop_name:"Iron Pulse", niche:"fitness", score:78, score_tier:"🟠 RISING", is_pro:true, freshness_label:"38min ago", theme:"Motion", currency:"USD", country:"🇺🇸 US", pixels:["Meta Pixel","TikTok Pixel"], apps:["Judge.me","Klaviyo","ReConvert","Tidio","Hotjar"], product_count:18, has_aliexpress:true, traffic:[5,8,11,9,14,19,22,28,35,31,40,52], revenue_est:"$18K/mo", ad_spend_est:"$4K/mo", top_products:[{title:"Resistance Bands Pro",price:"34.99",orders:201}], strategy:["Meta Ads","TikTok Ads","SMS"] },
-      { domain:"lunajewels.shop", shop_name:"Luna Jewels", niche:"jewelry", score:65, score_tier:"🟠 RISING", is_pro:false, freshness_label:"2h ago", theme:"Dawn", currency:"EUR", country:"🇫🇷 FR", pixels:["Meta Pixel","Pinterest"], apps:["Loox","Klaviyo","Smile.io"], product_count:52, has_aliexpress:false, traffic:[8,9,10,12,11,14,16,18,22,21,27,33], revenue_est:"$11K/mo", ad_spend_est:"$2K/mo", top_products:[{title:"Moon Ring Gold",price:"79.00",orders:144}], strategy:["Pinterest Ads","Meta Ads","SEO"] },
-      { domain:"zenflow.store", shop_name:"ZenFlow", niche:"fitness", score:83, score_tier:"🔴 HOT", is_pro:true, freshness_label:"12min ago", theme:"Impulse", currency:"GBP", country:"🇬🇧 UK", pixels:["Meta Pixel","TikTok Pixel","Snapchat"], apps:["Yotpo","Klaviyo","CartHook","PageFly","Lucky Orange","FOMO"], product_count:27, has_aliexpress:false, traffic:[20,24,29,33,38,44,52,61,70,78,88,99], revenue_est:"$34K/mo", ad_spend_est:"$7K/mo", top_products:[{title:"Yoga Mat Pro 6mm",price:"89.00",orders:256}], strategy:["Meta Ads","TikTok Ads","Influencers"] },
-      { domain:"cozykitchen.myshopify.com", shop_name:"Cozy Kitchen", niche:"home", score:47, score_tier:"🟡 WATCH", is_pro:false, freshness_label:"8h ago", theme:"Debut", currency:"USD", country:"🇺🇸 US", pixels:["Google Ads"], apps:["Mailchimp","AfterShip"], product_count:9, has_aliexpress:true, traffic:[3,4,4,5,5,6,7,6,8,7,9,10], revenue_est:"$3K/mo", ad_spend_est:"$500/mo", top_products:[{title:"Bamboo Cutting Board",price:"39.99",orders:44}], strategy:["Google Ads"] },
-      { domain:"pawhaus.myshopify.com", shop_name:"Paw Haus", niche:"pets", score:31, score_tier:"⚪ COLD", is_pro:false, freshness_label:"47h ago", theme:"Unknown", currency:"USD", country:"🇨🇦 CA", pixels:[], apps:["AfterShip"], product_count:4, has_aliexpress:true, traffic:[1,1,2,1,2,2,2,3,2,3,3,4], revenue_est:"$800/mo", ad_spend_est:"$0/mo", top_products:[{title:"Dog Harness Soft",price:"29.99",orders:18}], strategy:["Organic only"] },
-      { domain:"glowtech.myshopify.com", shop_name:"GlowTech", niche:"beauty", score:71, score_tier:"🟠 RISING", is_pro:true, freshness_label:"1h ago", theme:"Turbo", currency:"EUR", country:"🇩🇪 DE", pixels:["Meta Pixel","Google Ads","Pinterest"], apps:["Loox","Klaviyo","Bold Upsell","Hotjar","FOMO"], product_count:21, has_aliexpress:false, traffic:[6,8,9,11,13,16,19,22,25,28,32,38], revenue_est:"$14K/mo", ad_spend_est:"$3K/mo", top_products:[{title:"LED Face Mask",price:"129.00",orders:88}], strategy:["Meta Ads","Google Shopping","Pinterest"] },
+    // ═══════════════════════════════════════════════
+    // SUPABASE CONNECTION
+    // ═══════════════════════════════════════════════
+    const SUPABASE_URL = "https://vsyceexjsitliwaasdhd.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_zh2lFb4rbEA739EH5oe-fA_KqN7wVTl";
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Fallback mock data (shown while DB is empty or loading fails)
+    const MOCK_SHOPS = [
+      { domain:"gymshark.com", shop_name:"Gymshark", niche:"fitness", score:92, score_tier:"\u{1F534} HOT", is_pro:true, freshness_label:"demo", theme:"Custom", currency:"GBP", country:"\u{1F1EC}\u{1F1E7} UK", pixels:["Meta Pixel","TikTok Pixel","Google Ads"], apps:["Klaviyo","Yotpo","FOMO"], product_count:120, has_aliexpress:false, traffic:[20,28,35,42,50,58,65,72,80,88,95,105], revenue_est:"$40K/mo", ad_spend_est:"$8K/mo", top_products:[{title:"Flex Shorts",price:"40.00",orders:500}], strategy:["Meta Ads","TikTok Ads","Influencers"] },
     ];
+
+    let SHOPS = [...MOCK_SHOPS];
 
     const ADS = [
       { id:1, brand:"Velvet Bloom", niche:"beauty", format:"Vidéo", country:"🇺🇸 US", spend_est:"€4.2K", reach_est:"280K", running_days:12, hook:"POV: your skin after 3 days 🤯", color:"#FF00A3", emoji:"💄" },
@@ -313,9 +318,45 @@
     }
 
     function SniperFeed() {
+      const [shops,setShops]=useState(SHOPS);
+      const [loading,setLoading]=useState(true);
       const [niche,setNiche]=useState("All"), [country,setCountry]=useState("All"), [tier,setTier]=useState("All"), [proOnly,setProOnly]=useState(false), [search,setSearch]=useState(""), [duel,setDuel]=useState([]), [showDuel,setShowDuel]=useState(false), [analytics,setAnalytics]=useState(null);
+
+      // Load shops from Supabase
+      useEffect(()=>{
+        async function loadShops(){
+          try {
+            const {data,error}=await supabase.from("shops").select("*").order("score",{ascending:false});
+            if(!error && data && data.length>0){
+              // Parse JSONB fields that might come as strings
+              const parsed=data.map(s=>{
+                for(const f of ["pixels","apps","traffic","top_products","strategy"]){
+                  if(typeof s[f]==="string") try{s[f]=JSON.parse(s[f])}catch(e){s[f]=[]}
+                  if(!Array.isArray(s[f])) s[f]=[];
+                }
+                // Compute freshness from scanned_at
+                if(s.scanned_at){
+                  const mins=Math.floor((Date.now()-new Date(s.scanned_at).getTime())/60000);
+                  if(mins<1) s.freshness_label="just now";
+                  else if(mins<60) s.freshness_label=`${mins}min ago`;
+                  else if(mins<1440) s.freshness_label=`${Math.floor(mins/60)}h ago`;
+                  else s.freshness_label=`${Math.floor(mins/1440)}d ago`;
+                }
+                return s;
+              });
+              setShops(parsed);
+            }
+          } catch(e){ console.error("Supabase load error:",e); }
+          setLoading(false);
+        }
+        loadShops();
+        // Auto-refresh every 30 seconds
+        const interval=setInterval(loadShops,30000);
+        return ()=>clearInterval(interval);
+      },[]);
+
       const handleDuel=shop=>setDuel(d=>d.find(s=>s.domain===shop.domain)?d.filter(s=>s.domain!==shop.domain):d.length>=2?[d[1],shop]:[...d,shop]);
-      const filtered=SHOPS.filter(s=>(!proOnly||s.is_pro)&&(niche==="All"||s.niche===niche)&&(country==="All"||s.country===country)&&(tier==="All"||s.score_tier===tier)&&(!search||s.shop_name.toLowerCase().includes(search.toLowerCase()))).sort((a,b)=>b.score-a.score);
+      const filtered=shops.filter(s=>(!proOnly||s.is_pro)&&(niche==="All"||s.niche===niche)&&(country==="All"||s.country===country)&&(tier==="All"||s.score_tier===tier)&&(!search||s.shop_name.toLowerCase().includes(search.toLowerCase()))).sort((a,b)=>b.score-a.score);
       return (
         <div style={{display:"flex",height:"100%"}}>
           <aside style={{width:200,flexShrink:0,background:"#fff",borderRight:"1.5px solid #ede3d0",padding:16,overflowY:"auto"}}>
@@ -350,7 +391,8 @@
             </div>
             <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(290px,1fr))",gap:14}}>
               {filtered.map(shop=><ShopCard key={shop.domain} shop={shop} onAnalytics={setAnalytics} onDuel={handleDuel} isDueling={duel.some(s=>s.domain===shop.domain)}/>)}
-              {filtered.length===0&&<div style={{gridColumn:"1/-1",textAlign:"center",padding:"80px 0",color:"#9e8e7a"}}>Aucun store ne correspond 🎯</div>}
+              {loading&&<div style={{gridColumn:"1/-1",textAlign:"center",padding:"80px 0",color:"#FF00A3",fontWeight:700}}>Chargement depuis Supabase...</div>}
+              {!loading&&filtered.length===0&&<div style={{gridColumn:"1/-1",textAlign:"center",padding:"80px 0",color:"#9e8e7a"}}>Aucun store ne correspond 🎯</div>}
             </div>
           </main>
           {analytics&&<ShopAnalytics shop={analytics} onClose={()=>setAnalytics(null)}/>}
@@ -360,8 +402,16 @@
     }
 
     function App() {
-      const [tab,setTab]=useState("feed"), [count,setCount]=useState(1247892);
-      useEffect(()=>{const t=setInterval(()=>setCount(c=>c+Math.floor(Math.random()*4)),1800);return()=>clearInterval(t)},[]);
+      const [tab,setTab]=useState("feed"), [count,setCount]=useState(0);
+      useEffect(()=>{
+        async function getCount(){
+          const {count:c}=await supabase.from("shops").select("*",{count:"exact",head:true});
+          if(c) setCount(c);
+        }
+        getCount();
+        const t=setInterval(getCount,15000);
+        return ()=>clearInterval(t);
+      },[]);
       return (
         <div style={{height:"100vh",display:"flex",flexDirection:"column",background:"#FFF6E1"}}>
           <nav style={{display:"flex",alignItems:"center",padding:"0 20px",height:56,background:"#fff",borderBottom:"1.5px solid #ede3d0",flexShrink:0}}>
