@@ -423,10 +423,7 @@ td{padding:11px 14px;vertical-align:middle;}
       window._supabaseShops = shops;
     }
   } catch(e) { console.log('Using demo data', e); }
-  // Show plan badge in sidebar if free
-  if (plan === 'free') {
-    Peekr.showUpgradeBanner('dashboard', 'starter');
-  }
+  // Freemium restrictions applied after render via applyDashboardFreemium()
 })();
 
 const D=[
@@ -934,6 +931,35 @@ document.querySelectorAll('thead th').forEach(th=>{
   }
 });
 re();
+
+// Freemium restrictions
+const _origRe = re;
+re = function() {
+  _origRe();
+  applyDashboardFreemium();
+};
+async function applyDashboardFreemium() {
+  const plan = window._userPlan || await Peekr.getUserPlan();
+  if (plan !== 'free') return;
+  Peekr.injectFreemiumStyles();
+  const rows = document.querySelectorAll('#tb tr');
+  rows.forEach((row, i) => {
+    const tds = row.querySelectorAll('td');
+    if (i >= 5) {
+      // Blur entire row + lock badge
+      Peekr.lockTableRow(row, i);
+      row.style.cursor = 'default';
+      row.onclick = null;
+      row.setAttribute('onclick', "window.location.href='peekr-pricing.html'");
+    } else {
+      // Visible row but blur sensitive columns: visits(3), revenue(4), ads(5)
+      if (tds[3]) tds[3].classList.add('pkr-sensitive');
+      if (tds[4]) tds[4].classList.add('pkr-sensitive');
+      if (tds[5]) tds[5].classList.add('pkr-sensitive');
+    }
+  });
+}
+applyDashboardFreemium();
 </script>
 </body>
 </html>

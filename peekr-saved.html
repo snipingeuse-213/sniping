@@ -312,6 +312,15 @@ td{padding:11px 14px;vertical-align:middle;}
   if (!session) return;
   const plan = await Peekr.getUserPlan();
   window._userPlan = plan;
+  if (plan === 'free') {
+    Peekr.injectFreemiumStyles();
+    // Show info banner about save limits
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:linear-gradient(135deg,#FFF0F4,#FAD0DC);border:1.5px solid rgba(232,121,154,0.3);border-radius:16px;padding:20px 24px;margin:0 0 24px;display:flex;align-items:center;gap:16px;';
+    banner.innerHTML = '<span style="font-size:28px;">🔒</span><div><strong style="font-size:14px;color:#1A0A0F;">Free plan — 2 saves max</strong><p style="font-size:13px;color:#7A6068;margin:4px 0 0;">Upgrade to Starter to save unlimited shops and ads. <a href="peekr-pricing.html" style="color:#E8799A;font-weight:700;text-decoration:none;">See plans →</a></p></div>';
+    const main = document.querySelector('.page-content') || document.querySelector('main') || document.querySelector('.content');
+    if (main) main.insertBefore(banner, main.firstChild);
+  }
 })();
 </script>
 

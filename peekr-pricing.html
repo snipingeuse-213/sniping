@@ -163,12 +163,12 @@ nav {
 
 /* ── CARDS ── */
 .cards-wrap {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 0 24px 100px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
   align-items: start;
 }
 .card {
@@ -426,7 +426,10 @@ nav {
 }
 .bottom-cta a:hover { background: var(--pink); }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .cards-wrap { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
   .cards-wrap { grid-template-columns: 1fr; max-width: 480px; }
   nav { padding: 0 20px; }
   .nav-links { display: none; }
@@ -443,7 +446,6 @@ nav {
     <li><a href="peekr-landing.html#features">Features</a></li>
     <li><a href="peekr-pricing.html" class="active">Pricing</a></li>
     <li><a href="peekr-affiliate.html">Affiliate</a></li>
-    <li><a href="peekr-terms.html">Terms</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
     <a href="login.html" style="font-size:14px;font-weight:700;color:var(--black);text-decoration:none;opacity:0.6;transition:opacity .2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">Login</a>
@@ -467,10 +469,43 @@ nav {
 <!-- CARDS -->
 <div class="cards-wrap">
 
+  <!-- FREE -->
+  <div class="card">
+    <div class="card-plan">Free</div>
+    <p class="card-tagline">Explore the platform — see what's out there, but keep it blurry.</p>
+    <div class="price-row">
+      <span class="price-currency">$</span>
+      <div class="price-amount">0</div>
+    </div>
+    <div class="price-sub">forever</div>
+    <div class="price-save">​</div>
+    <a href="signup.html" class="card-btn" style="background:var(--gray-light);color:var(--black);">Sign up free</a>
+    <hr class="card-divider"/>
+    <span class="feat-group-label">🔍 Sniper Feed</span>
+    <ul class="feat-list">
+      <li><span class="icon">✓</span>5 shops visible</li>
+      <li><span class="icon">✓</span>Niche & country visible</li>
+      <li class="locked"><span class="icon"></span>Revenue & traffic blurred</li>
+      <li class="locked"><span class="icon"></span>Apps & strategies blurred</li>
+    </ul>
+    <span class="feat-group-label">⚡ Features</span>
+    <ul class="feat-list">
+      <li class="locked"><span class="icon"></span>Trending Ads</li>
+      <li class="locked"><span class="icon"></span>Brand Tracker</li>
+      <li class="locked"><span class="icon"></span>Duel Mode</li>
+      <li class="locked"><span class="icon"></span>Export</li>
+    </ul>
+    <span class="feat-group-label">📊 Extras</span>
+    <ul class="feat-list">
+      <li><span class="icon">✓</span>2 saved shops max</li>
+      <li><span class="icon">✓</span>Best Trends (blurred data)</li>
+    </ul>
+  </div>
+
   <!-- STARTER -->
   <div class="card">
     <div class="card-plan">Starter</div>
-    <p class="card-tagline">For solo founders spotting their first winning stores.</p>
+    <p class="card-tagline">Unlock all data — see revenue, traffic, ads & apps for every store.</p>
     <div class="price-row">
       <span class="price-currency">$</span>
       <div class="price-amount" data-monthly="29" data-yearly="20">29</div>
@@ -481,16 +516,18 @@ nav {
     <hr class="card-divider"/>
     <span class="feat-group-label">🔍 Sniper Feed</span>
     <ul class="feat-list">
-      <li><span class="icon">✓</span>500 new stores / day</li>
-      <li><span class="icon">✓</span>Score, country & date filters</li>
-      <li><span class="icon">✓</span>Store analytics</li>
-      <li><span class="icon">✓</span>Mini traffic graph</li>
+      <li><span class="icon">✓</span>100 shops — all data visible</li>
+      <li><span class="icon">✓</span>Revenue, traffic, apps unblurred</li>
+      <li><span class="icon">✓</span>All 14 filters</li>
+      <li><span class="icon">✓</span>Full store analytics</li>
     </ul>
     <span class="feat-group-label">⚡ Features</span>
     <ul class="feat-list">
+      <li><span class="icon">✓</span>Trending Ads (50 ads)</li>
+      <li><span class="icon">✓</span>Brand Tracker (3 brands)</li>
+      <li><span class="icon">✓</span>Best Trends — full data</li>
       <li class="locked"><span class="icon"></span>Duel Mode</li>
-      <li class="locked"><span class="icon"></span>Active ads count filter</li>
-      <li class="locked"><span class="icon"></span>API access</li>
+      <li class="locked"><span class="icon"></span>Export</li>
     </ul>
     <span class="feat-group-label">🙋 Support</span>
     <ul class="feat-list">

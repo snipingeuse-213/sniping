@@ -312,6 +312,7 @@ td{padding:11px 14px;vertical-align:middle;}
   if (!session) return;
   const plan = await Peekr.getUserPlan();
   window._userPlan = plan;
+  if (plan === 'free') { Peekr.showPageLock('Export Data', 'Pro'); return; }
 })();
 </script>
 

@@ -22,10 +22,10 @@ if (typeof supabase === 'undefined') {
 
 // Plan limits configuration
 const PLAN_LIMITS = {
-  free: { shops: 10, ads: 5, savedShops: 3, savedAds: 5, brandTracker: 0, export: false, duel: false },
-  starter: { shops: 100, ads: 50, savedShops: 25, savedAds: 50, brandTracker: 0, export: false, duel: false },
-  pro: { shops: 1000, ads: 500, savedShops: -1, savedAds: -1, brandTracker: 10, export: true, duel: true },
-  agency: { shops: -1, ads: -1, savedShops: -1, savedAds: -1, brandTracker: -1, export: true, duel: true }
+  free: { shops: 5, ads: 0, savedShops: 2, savedAds: 0, brandTracker: 0, export: false, duel: false, blurSensitive: true },
+  starter: { shops: 100, ads: 50, savedShops: 25, savedAds: 50, brandTracker: 3, export: false, duel: false, blurSensitive: false },
+  pro: { shops: 1000, ads: 500, savedShops: -1, savedAds: -1, brandTracker: 10, export: true, duel: true, blurSensitive: false },
+  agency: { shops: -1, ads: -1, savedShops: -1, savedAds: -1, brandTracker: -1, export: true, duel: true, blurSensitive: false }
 };
 
 // Initialize Supabase client
@@ -568,10 +568,11 @@ async function canAccess(feature) {
 
     const featureMap = {
       'dashboard': ['free', 'starter', 'pro', 'agency'],
-      'trending-ads': ['free', 'starter', 'pro', 'agency'],
-      'best-trends': ['starter', 'pro', 'agency'],
-      'saved': ['starter', 'pro', 'agency'],
-      'brand-tracker': ['pro', 'agency'],
+      'overview': ['free', 'starter', 'pro', 'agency'],
+      'trending-ads': ['starter', 'pro', 'agency'],
+      'best-trends': ['free', 'starter', 'pro', 'agency'],
+      'saved': ['free', 'starter', 'pro', 'agency'],
+      'brand-tracker': ['starter', 'pro', 'agency'],
       'export': ['pro', 'agency'],
       'duel': ['pro', 'agency'],
       'api': ['agency']
@@ -724,6 +725,146 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
 });
 
 /**
+ * Freemium UI Helpers
+ */
+
+/**
+ * Inject freemium CSS styles into the page
+ */
+function injectFreemiumStyles() {
+  if (document.getElementById('peekr-freemium-css')) return;
+  const style = document.createElement('style');
+  style.id = 'peekr-freemium-css';
+  style.textContent = `
+    .pkr-blurred { filter: blur(8px); user-select: none; pointer-events: none; transition: filter .3s; }
+    .pkr-blurred-row { position: relative; }
+    .pkr-blurred-row > td, .pkr-blurred-row > div { filter: blur(7px); user-select: none; }
+    .pkr-blurred-row > td:first-child, .pkr-blurred-row > td:nth-child(2) { filter: none; }
+    .pkr-sensitive { filter: blur(7px); user-select: none; pointer-events: none; }
+    .pkr-lock-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(255,240,244,0.92); backdrop-filter: blur(6px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+    }
+    .pkr-lock-overlay .pkr-lock-icon { font-size: 64px; margin-bottom: 20px; }
+    .pkr-lock-overlay h2 { font-size: 28px; font-weight: 800; color: #1A0A0F; margin-bottom: 12px; letter-spacing: -0.03em; }
+    .pkr-lock-overlay p { font-size: 15px; color: #7A6068; max-width: 420px; line-height: 1.6; margin-bottom: 28px; }
+    .pkr-lock-overlay .pkr-upgrade-btn {
+      background: #1A0A0F; color: #fff; border: none; padding: 14px 36px;
+      border-radius: 100px; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: 'Figtree', sans-serif; transition: all .25s; text-decoration: none; display: inline-block;
+    }
+    .pkr-lock-overlay .pkr-upgrade-btn:hover { background: #E8799A; transform: translateY(-2px); }
+    .pkr-lock-overlay .pkr-plans-hint { font-size: 12px; color: #7A6068; margin-top: 12px; }
+    .pkr-upgrade-badge {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #1A0A0F, #E8799A); color: #fff;
+      padding: 8px 18px; border-radius: 100px; font-size: 12px; font-weight: 700;
+      white-space: nowrap; z-index: 10; pointer-events: auto; cursor: pointer;
+      box-shadow: 0 4px 16px rgba(232,121,154,0.3); transition: all .25s;
+    }
+    .pkr-upgrade-badge:hover { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 6px 24px rgba(232,121,154,0.4); }
+    .pkr-row-locked { position: relative; overflow: visible; }
+  `;
+  document.head.appendChild(style);
+}
+
+/**
+ * Show a full-page lock overlay for pages blocked on free plan
+ * @param {string} feature - Feature name to display
+ * @param {string} minPlan - Minimum plan required
+ */
+function showPageLock(feature, minPlan) {
+  injectFreemiumStyles();
+  const overlay = document.createElement('div');
+  overlay.className = 'pkr-lock-overlay';
+  overlay.innerHTML = `
+    <div class="pkr-lock-icon">🔒</div>
+    <h2>${feature} is a ${minPlan}+ feature</h2>
+    <p>Upgrade your plan to unlock ${feature} and get full access to Peekr's ecom intelligence tools.</p>
+    <a href="peekr-pricing.html" class="pkr-upgrade-btn">See plans & upgrade →</a>
+    <div class="pkr-plans-hint">Starting at $29/mo — cancel anytime</div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+/**
+ * Apply blur to sensitive data cells in a table row or card
+ * Call this on elements containing revenue, traffic, apps, strategies data
+ * @param {HTMLElement} el - Element to blur
+ */
+function blurElement(el) {
+  injectFreemiumStyles();
+  el.classList.add('pkr-sensitive');
+}
+
+/**
+ * Make a table row appear locked (blurred with upgrade badge)
+ * @param {HTMLElement} row - TR element
+ * @param {number} index - Row index (for positioning)
+ */
+function lockTableRow(row, index) {
+  injectFreemiumStyles();
+  row.classList.add('pkr-blurred-row', 'pkr-row-locked');
+  const badge = document.createElement('a');
+  badge.href = 'peekr-pricing.html';
+  badge.className = 'pkr-upgrade-badge';
+  badge.textContent = '🔒 Upgrade to unlock';
+  badge.style.position = 'absolute';
+  badge.style.right = '20px';
+  badge.style.top = '50%';
+  badge.style.transform = 'translateY(-50%)';
+  badge.style.left = 'auto';
+  row.style.position = 'relative';
+  row.appendChild(badge);
+}
+
+/**
+ * Apply freemium restrictions to the current page
+ * Call after DOM is ready and data is rendered
+ * @param {string} page - Page identifier (dashboard, trending-ads, overview, best-trends, saved, brand-tracker, duel, export)
+ * @param {Object} options - { tableSelector, rowSelector, sensitiveSelectors, visibleCount }
+ */
+async function applyFreemiumRestrictions(page, options = {}) {
+  const plan = await getUserPlan();
+  const limits = PLAN_LIMITS[plan];
+
+  // If not free plan, no restrictions to apply (starter+ see everything on accessible pages)
+  if (plan !== 'free') return { plan, restricted: false };
+
+  injectFreemiumStyles();
+
+  // Check if page is fully locked
+  const hasAccess = await canAccess(page);
+  if (!hasAccess) {
+    const planNames = { 'trending-ads': 'Starter', 'brand-tracker': 'Starter', 'export': 'Pro', 'duel': 'Pro' };
+    showPageLock(page.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), planNames[page] || 'Starter');
+    return { plan, restricted: true, locked: true };
+  }
+
+  // Apply row-level restrictions (blur rows beyond visible count)
+  const visibleCount = options.visibleCount || limits.shops;
+  if (options.rowSelector) {
+    const rows = document.querySelectorAll(options.rowSelector);
+    rows.forEach((row, i) => {
+      if (i >= visibleCount) {
+        lockTableRow(row, i);
+      }
+    });
+  }
+
+  // Apply sensitive data blur
+  if (limits.blurSensitive && options.sensitiveSelectors) {
+    options.sensitiveSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => blurElement(el));
+    });
+  }
+
+  return { plan, restricted: true, locked: false };
+}
+
+/**
  * Export all functions to global Peekr namespace
  */
 window.Peekr = {
@@ -763,6 +904,11 @@ window.Peekr = {
 
   // UI
   showUpgradeBanner,
+  showPageLock,
+  blurElement,
+  lockTableRow,
+  applyFreemiumRestrictions,
+  injectFreemiumStyles,
 
   // Constants
   PLAN_LIMITS

@@ -312,6 +312,27 @@ td{padding:11px 14px;vertical-align:middle;}
   if (!session) return;
   const plan = await Peekr.getUserPlan();
   window._userPlan = plan;
+  if (plan === 'free') {
+    Peekr.injectFreemiumStyles();
+    // Blur growth percentages and detailed data
+    document.querySelectorAll('.bt-niche-growth, .bt-growth-percent, .bt-table-row').forEach(el => el.classList.add('pkr-sensitive'));
+    // Blur product trends table
+    document.querySelectorAll('.bt-products-table, .bt-opp-card').forEach(el => {
+      el.style.position = 'relative';
+      el.classList.add('pkr-blurred');
+    });
+    // Add upgrade badge to products section
+    const prodSection = document.querySelector('.bt-products-table');
+    if (prodSection) {
+      const badge = document.createElement('a');
+      badge.href = 'peekr-pricing.html';
+      badge.className = 'pkr-upgrade-badge';
+      badge.textContent = '🔒 Upgrade to see trending products';
+      badge.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;pointer-events:auto;';
+      prodSection.style.position = 'relative';
+      prodSection.appendChild(badge);
+    }
+  }
 })();
 </script>
 

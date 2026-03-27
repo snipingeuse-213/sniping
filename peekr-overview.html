@@ -920,9 +920,29 @@ td{padding:11px 14px;vertical-align:middle;}
       window._supabaseShops = shops;
     }
   } catch(e) { console.log('Using demo data', e); }
-  // Show plan badge in sidebar if free
+  // Freemium: blur KPIs and analytics for free plan
   if (plan === 'free') {
-    Peekr.showUpgradeBanner('dashboard', 'starter');
+    Peekr.injectFreemiumStyles();
+    // Blur KPI values
+    document.querySelectorAll('.kpi-value').forEach(el => el.classList.add('pkr-sensitive'));
+    document.querySelectorAll('.kpi-change').forEach(el => el.classList.add('pkr-sensitive'));
+    // Blur analytics sections
+    document.querySelectorAll('.two-column-grid, .section-title + .two-column-grid').forEach(el => {
+      el.style.position = 'relative';
+      el.classList.add('pkr-blurred');
+      const badge = document.createElement('a');
+      badge.href = 'peekr-pricing.html';
+      badge.className = 'pkr-upgrade-badge';
+      badge.textContent = '🔒 Upgrade to see analytics';
+      badge.style.position = 'absolute';
+      badge.style.top = '50%';
+      badge.style.left = '50%';
+      badge.style.transform = 'translate(-50%, -50%)';
+      badge.style.zIndex = '10';
+      badge.style.pointerEvents = 'auto';
+      el.parentElement.style.position = 'relative';
+      el.parentElement.appendChild(badge);
+    });
   }
 })();
 </script>
