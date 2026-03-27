@@ -915,7 +915,7 @@ td{padding:11px 14px;vertical-align:middle;}
   window._userPlan = plan;
   // Load shops from Supabase
   try {
-    const { data: shops } = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 10, orderBy: 'score', orderDir: 'desc' });
+    const shops = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 1000, orderBy: 'score', orderDir: 'desc' });
     if (shops && shops.length > 0) {
       window._supabaseShops = shops;
     }

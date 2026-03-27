@@ -857,79 +857,46 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 
   <script>
-    // Sample data for export
-    const SAMPLE_SHOPS = [
-      {
-        name: 'TrendHub Store',
-        domain: 'trendhub.com',
-        category: 'Fashion',
-        score: 87,
-        visits: '245K',
-        revenue: '$1.2M',
-        liveAds: 156,
-        theme: 'Empire',
-        currency: 'USD',
-        created: '2022-05-15',
-        apps: 18,
-        country: 'United States'
-      },
-      {
-        name: 'StyleHub Pro',
-        domain: 'stylehubpro.com',
-        category: 'Fashion',
-        score: 92,
-        visits: '512K',
-        revenue: '$3.2M',
-        liveAds: 289,
-        theme: 'Prestige',
-        currency: 'USD',
-        created: '2021-03-20',
-        apps: 24,
-        country: 'United States'
-      },
-      {
-        name: 'Quick Goods',
-        domain: 'quickgoods.com',
-        category: 'General',
-        score: 78,
-        visits: '189K',
-        revenue: '$890K',
-        liveAds: 98,
-        theme: 'Debut',
-        currency: 'USD',
-        created: '2023-01-10',
-        apps: 12,
-        country: 'United States'
-      },
-      {
-        name: 'Premium Select',
-        domain: 'premiumselect.com',
-        category: 'Luxury',
-        score: 95,
-        visits: '618K',
-        revenue: '$4.5M',
-        liveAds: 342,
-        theme: 'Narrative',
-        currency: 'USD',
-        created: '2020-11-08',
-        apps: 28,
-        country: 'United States'
-      },
-      {
-        name: 'Smart Shop',
-        domain: 'smartshop.io',
-        category: 'Electronics',
-        score: 82,
-        visits: '321K',
-        revenue: '$1.8M',
-        liveAds: 176,
-        theme: 'Dawn',
-        currency: 'USD',
-        created: '2022-07-22',
-        apps: 20,
-        country: 'United States'
+    // Load real shop data from Supabase for export
+    let SAMPLE_SHOPS = [];
+    function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
+    function fmtR(min,max){
+      const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
+      if(!min&&!max)return'$0';return f(Math.round((min+max)/2));
+    }
+    const countryNames={US:'United States',GB:'United Kingdom',CA:'Canada',DE:'Germany',FR:'France',AU:'Australia',SE:'Sweden',NL:'Netherlands',JP:'Japan',KR:'South Korea',IN:'India',BR:'Brazil'};
+    async function loadExportShops(){
+      try{
+        const shops = await Peekr.getShops({limit:1000,orderBy:'score',orderDir:'desc'});
+        if(shops&&shops.length>0){
+          SAMPLE_SHOPS=shops.map(s=>({
+            name:s.name||s.domain,domain:s.domain,category:s.niche||'General',
+            score:s.score||0,visits:fmtV(s.monthly_visits),
+            revenue:fmtR(s.revenue_min||0,s.revenue_max||0),
+            liveAds:s.live_ads||0,theme:s.theme||'Unknown',currency:s.currency||'USD',
+            created:s.created_date||'',apps:(s.apps||[]).length,
+            country:countryNames[(s.country||'US').toUpperCase()]||(s.country||'US')
+          }));
+        }
+      }catch(e){console.log('[Peekr Export] Using demo data',e);}
+      if(SAMPLE_SHOPS.length===0){
+        SAMPLE_SHOPS=[
+          {name:'TrendHub Store',domain:'trendhub.com',category:'Fashion',score:87,visits:'245K',revenue:'$1.2M',liveAds:156,theme:'Empire',currency:'USD',created:'2022-05-15',apps:18,country:'United States'}
+        ];
       }
-    ];
+      // Update preview table with real data
+      const tbody=document.querySelector('.preview-table tbody');
+      if(tbody&&SAMPLE_SHOPS.length>0){
+        tbody.innerHTML=SAMPLE_SHOPS.slice(0,3).map(s=>
+          `<tr><td>${s.name}</td><td>${s.domain}</td><td>${s.category}</td><td>${s.score}</td></tr>`
+        ).join('');
+      }
+    }
+    function waitForExportAuth(){
+      if(window._userPlan){loadExportShops();}
+      else{setTimeout(waitForExportAuth,200);}
+    }
+    waitForExportAuth();
 
     let selectedFormat = 'csv';
 

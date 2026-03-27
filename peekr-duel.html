@@ -679,176 +679,43 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 
   <script>
-    const SHOPS_DATA = [
-      {
-        id: 1,
-        name: 'TrendHub Store',
-        score: 87,
-        visits: '245K',
-        revenue: '$1.2M',
-        liveAds: 156,
-        products: 2841,
-        apps: 18,
-        category: 'Fashion',
-        theme: 'Empire',
-        currency: 'USD',
-        trend: [20, 35, 28, 45, 52, 48, 61]
-      },
-      {
-        id: 2,
-        name: 'StyleHub Pro',
-        score: 92,
-        visits: '512K',
-        revenue: '$3.2M',
-        liveAds: 289,
-        products: 5620,
-        apps: 24,
-        category: 'Fashion',
-        theme: 'Prestige',
-        currency: 'USD',
-        trend: [35, 48, 52, 58, 72, 68, 81]
-      },
-      {
-        id: 3,
-        name: 'Quick Goods',
-        score: 78,
-        visits: '189K',
-        revenue: '$890K',
-        liveAds: 98,
-        products: 1562,
-        apps: 12,
-        category: 'General',
-        theme: 'Debut',
-        currency: 'USD',
-        trend: [15, 22, 18, 28, 35, 31, 42]
-      },
-      {
-        id: 4,
-        name: 'Premium Select',
-        score: 95,
-        visits: '618K',
-        revenue: '$4.5M',
-        liveAds: 342,
-        products: 7234,
-        apps: 28,
-        category: 'Luxury',
-        theme: 'narrative',
-        currency: 'USD',
-        trend: [45, 58, 62, 71, 84, 79, 92]
-      },
-      {
-        id: 5,
-        name: 'Smart Shop',
-        score: 82,
-        visits: '321K',
-        revenue: '$1.8M',
-        liveAds: 176,
-        products: 4100,
-        apps: 20,
-        category: 'Electronics',
-        theme: 'Dawn',
-        currency: 'USD',
-        trend: [28, 38, 42, 51, 58, 55, 67]
-      },
-      {
-        id: 6,
-        name: 'Brand Central',
-        score: 88,
-        visits: '267K',
-        revenue: '$1.5M',
-        liveAds: 203,
-        products: 3456,
-        apps: 19,
-        category: 'Multi-Brand',
-        theme: 'Impulse',
-        currency: 'USD',
-        trend: [22, 35, 39, 48, 56, 52, 65]
-      },
-      {
-        id: 7,
-        name: 'Market Leader',
-        score: 91,
-        visits: '478K',
-        revenue: '$2.9M',
-        liveAds: 267,
-        products: 6120,
-        apps: 25,
-        category: 'General',
-        theme: 'Prestige',
-        currency: 'USD',
-        trend: [38, 49, 54, 63, 75, 72, 84]
-      },
-      {
-        id: 8,
-        name: 'Eco Store',
-        score: 79,
-        visits: '156K',
-        revenue: '$720K',
-        liveAds: 87,
-        products: 892,
-        apps: 10,
-        category: 'Sustainable',
-        theme: 'Minimal',
-        currency: 'USD',
-        trend: [12, 18, 21, 29, 34, 31, 38]
-      },
-      {
-        id: 9,
-        name: 'Tech Nexus',
-        score: 89,
-        visits: '534K',
-        revenue: '$2.1M',
-        liveAds: 298,
-        products: 4567,
-        apps: 26,
-        category: 'Electronics',
-        theme: 'Brooklyn',
-        currency: 'USD',
-        trend: [41, 52, 58, 65, 76, 71, 85]
-      },
-      {
-        id: 10,
-        name: 'Vintage Collectibles',
-        score: 75,
-        visits: '98K',
-        revenue: '$450K',
-        liveAds: 56,
-        products: 1234,
-        apps: 8,
-        category: 'Collectibles',
-        theme: 'Classic',
-        currency: 'USD',
-        trend: [10, 14, 16, 22, 26, 24, 31]
-      },
-      {
-        id: 11,
-        name: 'Wellness World',
-        score: 84,
-        visits: '289K',
-        revenue: '$1.3M',
-        liveAds: 145,
-        products: 2987,
-        apps: 15,
-        category: 'Health',
-        theme: 'Supply',
-        currency: 'USD',
-        trend: [25, 32, 37, 45, 52, 48, 58]
-      },
-      {
-        id: 12,
-        name: 'Fashion Forward',
-        score: 86,
-        visits: '412K',
-        revenue: '$2.4M',
-        liveAds: 224,
-        products: 5890,
-        apps: 22,
-        theme: 'Prestige',
-        currency: 'USD',
-        category: 'Fashion',
-        trend: [32, 44, 49, 58, 68, 63, 76]
+    let SHOPS_DATA = [];
+    // Format helpers
+    function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
+    function fmtR(min,max){
+      const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
+      if(!min&&!max)return'$0';return f(Math.round((min+max)/2));
+    }
+    // Load shops from Supabase for duel
+    async function loadDuelShops(){
+      try{
+        const shops = await Peekr.getShops({limit:100,orderBy:'score',orderDir:'desc'});
+        if(shops&&shops.length>0){
+          SHOPS_DATA=shops.map((s,i)=>({
+            id:i+1,name:s.name||s.domain,score:s.score||0,
+            visits:fmtV(s.monthly_visits),revenue:fmtR(s.revenue_min||0,s.revenue_max||0),
+            liveAds:s.live_ads||0,products:s.products_count||0,
+            apps:(s.apps||[]).length,category:s.niche||'General',
+            theme:s.theme||'Unknown',currency:s.currency||'USD',
+            trend:s.traffic_trend||Array.from({length:7},()=>Math.round(Math.random()*80+10))
+          }));
+        }
+      }catch(e){console.log('[Peekr Duel] Using demo data',e);}
+      if(SHOPS_DATA.length===0){
+        SHOPS_DATA=[
+          {id:1,name:'TrendHub Store',score:87,visits:'245K',revenue:'$1.2M',liveAds:156,products:2841,apps:18,category:'Fashion',theme:'Empire',currency:'USD',trend:[20,35,28,45,52,48,61]},
+          {id:2,name:'StyleHub Pro',score:92,visits:'512K',revenue:'$3.2M',liveAds:289,products:5620,apps:24,category:'Fashion',theme:'Prestige',currency:'USD',trend:[35,48,52,58,72,68,81]},
+          {id:3,name:'Quick Goods',score:78,visits:'189K',revenue:'$890K',liveAds:98,products:1562,apps:12,category:'General',theme:'Debut',currency:'USD',trend:[15,22,18,28,35,31,42]}
+        ];
       }
-    ];
+      populateDropdowns();
+    }
+    // Wait for auth then load
+    function waitForDuelAuth(){
+      if(window._userPlan){loadDuelShops();}
+      else{setTimeout(waitForDuelAuth,200);}
+    }
+    waitForDuelAuth();
 
     // Populate dropdowns
     function populateDropdowns() {

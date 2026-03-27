@@ -955,8 +955,8 @@ td{padding:11px 14px;vertical-align:middle;}
       if (plan === 'free') { Peekr.showPageLock('Trending Ads', 'Starter'); return; }
     })();
 
-    // Demo Ad Data
-    const demoAds = [
+    // Ad Data — fetched from Supabase, with demo fallback
+    let demoAds = [
       {
         id: 1,
         platform: 'meta',
@@ -1183,6 +1183,23 @@ td{padding:11px 14px;vertical-align:middle;}
       }
     ];
 
+    // Try loading real ads from Supabase
+    async function loadRealAds(){
+      try{
+        const ads = await Peekr.getAds({limit:500});
+        if(ads&&ads.length>0){
+          const countryFlags={US:'\u{1F1FA}\u{1F1F8}',GB:'\u{1F1EC}\u{1F1E7}',CA:'\u{1F1E8}\u{1F1E6}',DE:'\u{1F1E9}\u{1F1EA}',FR:'\u{1F1EB}\u{1F1F7}',AU:'\u{1F1E6}\u{1F1FA}',SE:'\u{1F1F8}\u{1F1EA}',NL:'\u{1F1F3}\u{1F1F1}',JP:'\u{1F1EF}\u{1F1F5}',KR:'\u{1F1F0}\u{1F1F7}',IN:'\u{1F1EE}\u{1F1F3}',BR:'\u{1F1E7}\u{1F1F7}'};
+          demoAds=ads.map((a,i)=>({
+            id:i+1,platform:a.platform||'meta',format:a.format||'image',status:a.status||'active',
+            shop:a.shop_name||'Unknown',country:countryFlags[(a.country||'US').toUpperCase()]||'\u{1F30D}',
+            headline:a.headline||'Ad Creative',copy:a.copy||'',
+            daysActive:a.days_active||0,likes:a.likes||0,shares:a.shares||0,saved:false
+          }));
+          console.log('[Peekr Ads] Loaded '+demoAds.length+' ads from Supabase');
+        }
+      }catch(e){console.log('[Peekr Ads] Using demo data',e);}
+    }
+
     let currentView = 'grid';
     let currentPage = 1;
     const adsPerPage = 16;
@@ -1194,7 +1211,9 @@ td{padding:11px 14px;vertical-align:middle;}
     };
 
     // Initialize
-    function init() {
+    async function init() {
+      await loadRealAds();
+      filteredAds = [...demoAds];
       loadSavedAds();
       renderAds();
       attachEventListeners();
