@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Peekr — Sign Up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --pink: #F4A7B9;
+  --pink-dark: #E8799A;
+  --pink-light: #FAD0DC;
+  --pink-pale: #FFF0F4;
+  --black: #1A0A0F;
+  --white: #FFFFFF;
+  --gray: #7A6068;
+  --gray-light: #f5f0f2;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Figtree', sans-serif;
+  background: var(--pink-pale);
+  color: var(--black);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* BLOBS */
+.blob-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.22; }
+.blob-1 { width: 500px; height: 500px; background: var(--pink-dark); top: -150px; left: -80px; animation: float1 9s ease-in-out infinite; }
+.blob-2 { width: 350px; height: 350px; background: var(--pink); bottom: 80px; right: -120px; animation: float2 11s ease-in-out infinite; }
+@keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,40px)} }
+@keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-40px,-30px)} }
+
+/* NAV */
+nav {
+  position: relative; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 60px;
+  height: 64px;
+  background: rgba(255,240,244,0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(244,167,185,0.25);
+}
+.nav-logo { text-decoration: none; display: flex; align-items: center; }
+.nav-logo-text { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.04em; }
+.nav-logo-dot { color: var(--pink-dark); }
+.nav-links { display: flex; align-items: center; gap: 28px; }
+.nav-links a { font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; transition: color .2s; }
+.nav-links a:hover { color: var(--black); }
+.nav-login { font-size: 13px; font-weight: 700; color: var(--gray); text-decoration: none; transition: color .2s; }
+.nav-login:hover { color: var(--black); }
+
+/* MAIN */
+main {
+  position: relative; z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+/* CARD */
+.auth-card {
+  background: white;
+  border-radius: 28px;
+  border: 1.5px solid rgba(244,167,185,0.3);
+  padding: 48px 44px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 60px rgba(232,121,154,0.08);
+}
+
+.auth-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--pink-pale); border: 1.5px solid var(--pink-light);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 12px; font-weight: 700; color: var(--pink-dark);
+  margin-bottom: 20px;
+}
+
+.auth-card h1 {
+  font-size: 28px; font-weight: 800;
+  letter-spacing: -0.03em; line-height: 1.15;
+  margin-bottom: 8px;
+}
+.auth-card h1 span { color: var(--pink-dark); }
+
+.auth-sub {
+  font-size: 14px; color: var(--gray);
+  line-height: 1.6; margin-bottom: 28px;
+}
+
+/* PERKS */
+.perks {
+  display: flex; flex-direction: column; gap: 6px;
+  margin-bottom: 28px;
+}
+.perk {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--gray);
+}
+.perk-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--pink-dark); flex-shrink: 0;
+}
+
+/* FORM */
+.form-row { display: flex; gap: 12px; }
+.form-row .form-group { flex: 1; }
+.form-group { margin-bottom: 14px; }
+.form-group label {
+  display: block;
+  font-size: 13px; font-weight: 700;
+  color: var(--black); margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--gray-light);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px; font-weight: 500;
+  color: var(--black);
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
+.form-group input::placeholder { color: rgba(122,96,104,0.5); }
+.form-group input:focus {
+  border-color: var(--pink);
+  background: white;
+}
+
+.terms-check {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 20px; margin-top: 4px;
+}
+.terms-check input[type="checkbox"] {
+  width: 16px; height: 16px;
+  margin-top: 2px; flex-shrink: 0;
+  accent-color: var(--pink-dark);
+  cursor: pointer;
+}
+.terms-check label {
+  font-size: 12px; color: var(--gray); line-height: 1.5;
+  cursor: pointer;
+}
+.terms-check a { color: var(--pink-dark); font-weight: 700; text-decoration: none; }
+.terms-check a:hover { text-decoration: underline; }
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: var(--black);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Figtree', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: all .25s;
+  margin-bottom: 16px;
+}
+.btn-submit:hover { background: var(--pink-dark); transform: translateY(-1px); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* DIVIDER */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 4px 0 16px;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: rgba(244,167,185,0.35);
+}
+.divider span { font-size: 12px; color: var(--gray); font-weight: 600; }
+
+/* GOOGLE BTN */
+.btn-google {
+  width: 100%;
+  padding: 13px;
+  background: white;
+  color: var(--black);
+  border: 1.5px solid rgba(26,10,15,0.15);
+  border-radius: 100px;
+  font-family: 'Figtree', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  transition: all .25s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+.btn-google:hover { border-color: var(--black); background: var(--gray-light); }
+
+/* FOOTER LINK */
+.auth-footer {
+  text-align: center;
+  font-size: 13px; color: var(--gray);
+}
+.auth-footer a { color: var(--pink-dark); font-weight: 700; text-decoration: none; }
+.auth-footer a:hover { text-decoration: underline; }
+
+/* MESSAGE */
+.auth-msg {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px; font-weight: 600;
+  margin-bottom: 16px;
+  display: none;
+}
+.auth-msg.error { background: #fff0f0; color: #c0392b; border: 1px solid #fcc; }
+.auth-msg.success { background: #f0fff4; color: #1a7a4a; border: 1px solid #b7e4c7; }
+.auth-msg.show { display: block; }
+
+/* CONFIRMATION STATE */
+.confirm-state { display: none; text-align: center; }
+.confirm-state.show { display: block; }
+.confirm-icon { font-size: 48px; margin-bottom: 16px; }
+.confirm-state h2 { font-size: 22px; font-weight: 800; margin-bottom: 10px; }
+.confirm-state p { font-size: 14px; color: var(--gray); line-height: 1.65; }
+.form-state { }
+.form-state.hide { display: none; }
+
+@media (max-width: 480px) {
+  nav { padding: 0 20px; }
+  .auth-card { padding: 32px 20px; }
+  .nav-links { display: none; }
+  .form-row { flex-direction: column; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="blob-bg">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="peekr-landing.html" class="nav-logo">
+    <span class="nav-logo-text">peekr<span class="nav-logo-dot">.</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="peekr-landing.html">Home</a>
+    <a href="peekr-pricing.html">Pricing</a>
+    <a href="peekr-affiliate.html">Affiliate</a>
+  </div>
+  <a href="login.html" class="nav-login">Already have an account? Log in →</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="auth-card">
+
+    <!-- FORM STATE -->
+    <div class="form-state" id="formState">
+      <div class="auth-badge">🚀 Get started for free</div>
+      <h1>Join <span>Peekr</span> today</h1>
+      <p class="auth-sub">Spy on winning products before they go viral. No credit card required.</p>
+
+      <div class="perks">
+        <div class="perk"><div class="perk-dot"></div>Free trial — no card needed</div>
+        <div class="perk"><div class="perk-dot"></div>Access 10,000+ tracked products</div>
+        <div class="perk"><div class="perk-dot"></div>Cancel anytime</div>
+      </div>
+
+      <div class="auth-msg" id="authMsg"></div>
+
+      <form id="signupForm" autocomplete="on">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Jane" required autocomplete="given-name"/>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Doe" autocomplete="family-name"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email"/>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Min. 8 characters" required autocomplete="new-password" minlength="8"/>
+        </div>
+
+        <div class="terms-check">
+          <input type="checkbox" id="terms" name="terms" required/>
+          <label for="terms">I agree to the <a href="peekr-terms.html" target="_blank">Terms of Service</a> and Privacy Policy</label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Create my account →</button>
+      </form>
+
+      <div class="divider"><span>or sign up with</span></div>
+
+      <button class="btn-google" id="googleBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+
+      <p class="auth-footer">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+
+    <!-- CONFIRMATION STATE -->
+    <div class="confirm-state" id="confirmState">
+      <div class="confirm-icon">📬</div>
+      <h2>Check your inbox!</h2>
+      <p>We sent a confirmation link to <strong id="confirmedEmail"></strong>.<br/>Click the link to activate your account and start using Peekr.</p>
+    </div>
+
+  </div>
+</main>
+
+<script>
+const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_zh2lFb4rbEA739EH5oe-fA_KqN7wVTl';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const form = document.getElementById('signupForm');
+const submitBtn = document.getElementById('submitBtn');
+const googleBtn = document.getElementById('googleBtn');
+const msgEl = document.getElementById('authMsg');
+const formState = document.getElementById('formState');
+const confirmState = document.getElementById('confirmState');
+const confirmedEmail = document.getElementById('confirmedEmail');
+
+function showMsg(text, type) {
+  msgEl.textContent = text;
+  msgEl.className = `auth-msg ${type} show`;
+}
+function hideMsg() {
+  msgEl.className = 'auth-msg';
+}
+
+// Check if already logged in
+sb.auth.getSession().then(({ data: { session } }) => {
+  if (session) window.location.href = 'peekr-dashboard.html';
+});
+
+// Email/password signup
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  hideMsg();
+
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Creating account…';
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`.trim()
+      },
+      emailRedirectTo: window.location.origin + '/peekr-dashboard.html'
+    }
+  });
+
+  if (error) {
+    showMsg(error.message, 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Create my account →';
+  } else if (data.user && data.user.identities && data.user.identities.length === 0) {
+    showMsg('An account with this email already exists. Please log in instead.', 'error');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Create my account →';
+  } else {
+    // Show confirmation screen
+    confirmedEmail.textContent = email;
+    formState.classList.add('hide');
+    confirmState.classList.add('show');
+  }
+});
+
+// Google OAuth
+googleBtn.addEventListener('click', async () => {
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/peekr-dashboard.html' }
+  });
+  if (error) showMsg(error.message, 'error');
+});
+</script>
+
+</body>
+</html>
