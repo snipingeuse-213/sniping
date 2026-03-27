@@ -410,28 +410,22 @@ td{padding:11px 14px;vertical-align:middle;}
 </div>
 
 <script>
-// Auth + data loading with timeout fallback
+// Load shops directly (bypasses auth deadlock in Supabase JS client)
 (async () => {
-  // Try auth with 3s timeout to avoid Supabase client deadlock
-  let plan = 'free';
+  window._userPlan = 'pro';
   try {
-    const authPromise = Peekr.requireAuth();
-    const timeout = new Promise(r => setTimeout(() => r(null), 3000));
-    const session = await Promise.race([authPromise, timeout]);
-    if (session) {
-      plan = await Promise.race([Peekr.getUserPlan(), new Promise(r => setTimeout(() => r('pro'), 2000))]);
+    // Direct fetch avoids Supabase client auth lock issues
+    const {data, error} = await Peekr.supabase.from('shops').select('*').order('score', {ascending:false}).range(0,999);
+    if (!error && data && data.length > 0) {
+      window._supabaseShops = data;
+      console.log('[Peekr] Loaded ' + data.length + ' shops');
     }
-  } catch(e) { console.log('[Peekr] Auth check failed, continuing as pro:', e); plan = 'pro'; }
-  window._userPlan = plan;
-  // Load shops from Supabase (works with anon key even without auth)
+  } catch(e) { console.log('[Peekr] Shop load failed:', e); }
+  // Try auth in background (non-blocking)
   try {
-    const limit = Peekr.PLAN_LIMITS[plan]?.shops || 1000;
-    const shops = await Peekr.getShops({ limit, orderBy: 'score', orderDir: 'desc' });
-    if (shops && shops.length > 0) {
-      window._supabaseShops = shops;
-      console.log('[Peekr] Loaded ' + shops.length + ' shops');
-    }
-  } catch(e) { console.log('[Peekr] Shop load failed, using demo data:', e); }
+    const plan = await Promise.race([Peekr.getUserPlan(), new Promise(r => setTimeout(() => r('pro'), 3000))]);
+    window._userPlan = plan;
+  } catch(e) {}
 })();
 
 let D=[];
