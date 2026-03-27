@@ -120,13 +120,60 @@ body{
 .fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
 .fc{font-size:8px;opacity:.35;}
 
+/* ── DROPDOWN FILTERS ── */
+.fb-dropdown{
+  position:absolute;
+  top:100%;
+  left:0;
+  margin-top:4px;
+  background:#ffffff;
+  border:1px solid rgba(200,160,170,0.2);
+  border-radius:9px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.08);
+  min-width:180px;
+  max-width:240px;
+  max-height:280px;
+  overflow-y:auto;
+  z-index:100;
+  padding:8px;
+  display:none;
+}
+.fb-dropdown.open{display:block;}
+.fb-dropdown-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border-radius:6px;
+  font-size:12px;
+  color:rgba(26,10,15,0.7);
+  cursor:pointer;
+  transition:all .15s;
+}
+.fb-dropdown-item:hover{background:rgba(232,121,154,0.08);color:#1a0a0f;}
+.fb-dropdown-item input{margin:0;cursor:pointer;}
+.fb-dropdown-clear{
+  padding:6px 10px;
+  margin-top:4px;
+  border-top:1px solid rgba(200,160,170,0.15);
+  font-size:11px;
+  font-weight:700;
+  color:#d4607a;
+  cursor:pointer;
+  text-align:center;
+  border-radius:6px;
+  transition:all .15s;
+}
+.fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
+
 /* ── TABLE ── */
 .tw{flex:1;overflow:auto;padding:12px 24px 24px;}
 table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
-thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;}
+thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
 thead th:hover{color:rgba(26,10,15,0.6);}
+thead th.sorted{color:#d4607a;}
 .thi{display:flex;align-items:center;gap:4px;}
-.sic{font-size:9px;opacity:.3;}
+.sic{font-size:9px;opacity:.5;transition:opacity .15s;}
 
 tbody tr{cursor:pointer;}
 tbody tr td{
@@ -297,23 +344,17 @@ td{padding:11px 14px;vertical-align:middle;}
 
   <div class="fw">
     <div class="fr"><span class="fl">Performance</span>
-      <div class="fb active" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Ads <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Shop</span>
       <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Products <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Apps <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Theme <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Language <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Currency <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Business</span>
-      <div class="fb" onclick="tf(this)">Creation Date <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Shop <span class="fc">▾</span></div>
     </div>
   </div>
 
@@ -322,10 +363,10 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:240px"><div class="thi">Shop Info</div></th>
       <th style="width:110px"><div class="thi">Products</div></th>
       <th style="width:90px"><div class="thi">Category</div></th>
-      <th style="width:130px"><div class="thi">Monthly Visits <span class="sic">↓</span></div></th>
+      <th style="width:130px"><div class="thi">Monthly Visits <span class="sic">⇅</span></div></th>
       <th style="width:150px"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
       <th style="width:80px"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
-      <th style="width:64px"><div class="thi">Score</div></th>
+      <th style="width:64px"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
     <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">🔍</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
   </div>
@@ -353,37 +394,266 @@ const D=[
 const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
 const TB={hot:'rgba(232,121,154,0.09)',rising:'rgba(246,160,90,0.09)',watch:'rgba(230,184,58,0.09)',cold:'rgba(184,168,176,0.06)'};
 const TL={hot:'HOT',rising:'RISING',watch:'WATCH',cold:'COLD'};
-// initials from shop name
 function init(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
-let seg='all',q='';
+
+// State variables
+let seg='all',q='',sortCol=null,sortDir='asc';
+let filters={Category:[],Products:[],Theme:[],Currency:[],'Shop Origin':[],Traffic:null,'Ads Count':null};
+let activeDropdown=null;
+
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
 function ss(e,s){document.querySelectorAll('.sg').forEach(b=>b.classList.remove('active'));e.classList.add('active');seg=s;re();}
-function tf(e){e.classList.toggle('active');}
 function fs(){q=document.getElementById('si').value.toLowerCase();re();}
 function ra(e){e.style.transition='transform .4s';e.style.transform='rotate(360deg)';setTimeout(()=>{e.style.transform='';e.style.transition='';},400);re();}
+
+// Get unique values from data
+function getUnique(key){
+  const vals=new Set();
+  D.forEach(shop=>{vals.add(shop[key]);});
+  return Array.from(vals).sort();
+}
+
+// Get unique categories
+function getCategories(){
+  return Array.from(new Set(D.map(x=>x.ni))).sort();
+}
+
+// Get product ranges
+function getProductRanges(){
+  return [{label:'1-10 products',min:1,max:10},{label:'11-25 products',min:11,max:25},{label:'26-50 products',min:26,max:50},{label:'50+ products',min:50,max:999}];
+}
+
+// Get unique currencies
+function getCurrencies(){
+  return Array.from(new Set(D.map(x=>x.cu))).sort();
+}
+
+// Get unique themes
+function getThemes(){
+  return Array.from(new Set(D.map(x=>x.th))).sort();
+}
+
+// Get unique countries
+function getCountries(){
+  const countries=new Set();
+  D.forEach(shop=>{countries.add(shop.c);if(shop.c2)countries.add(shop.c2);});
+  return Array.from(countries).sort();
+}
+
+// Toggle dropdown
+function tf(e){
+  const name=e.textContent.trim().split(' ')[0];
+  const existing=document.getElementById('fb-dd-'+name);
+
+  // Close all dropdowns
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+
+  if(!existing||!existing.classList.contains('open')){
+    e.classList.add('active');
+    createDropdown(name,e);
+  }
+}
+
+// Create dropdown based on filter type
+function createDropdown(filterName,btn){
+  let existing=document.getElementById('fb-dd-'+filterName);
+  if(existing){existing.remove();}
+
+  const dd=document.createElement('div');
+  dd.id='fb-dd-'+filterName;
+  dd.className='fb-dropdown open';
+  dd.style.position='absolute';
+
+  let html='';
+
+  if(filterName==='Category'){
+    const cats=getCategories();
+    cats.forEach(cat=>{
+      const checked=filters.Category.includes(cat)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Category','${cat}')"><label>${cat}</label></div>`;
+    });
+  }
+  else if(filterName==='Products'){
+    const ranges=getProductRanges();
+    ranges.forEach(r=>{
+      const checked=filters.Products.includes(r.label)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Products','${r.label}')"><label>${r.label}</label></div>`;
+    });
+  }
+  else if(filterName==='Theme'){
+    const themes=getThemes();
+    themes.forEach(theme=>{
+      const checked=filters.Theme.includes(theme)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Theme','${theme}')"><label>${theme}</label></div>`;
+    });
+  }
+  else if(filterName==='Currency'){
+    const currencies=getCurrencies();
+    currencies.forEach(cur=>{
+      const checked=filters.Currency.includes(cur)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Currency','${cur}')"><label>${cur}</label></div>`;
+    });
+  }
+  else if(filterName==='Shop'){
+    const countries=getCountries();
+    countries.forEach(country=>{
+      const checked=filters['Shop Origin'].includes(country)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Shop Origin','${country}')"><label>${country.toUpperCase()}</label></div>`;
+    });
+  }
+  else if(filterName==='Traffic'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='desc'?'checked':''} onchange="toggleSort('Traffic','desc')"><label>Most Traffic</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='asc'?'checked':''} onchange="toggleSort('Traffic','asc')"><label>Least Traffic</label></div>`;
+  }
+  else if(filterName==='Ads'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='desc'?'checked':''} onchange="toggleSort('Ads Count','desc')"><label>Most Ads</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='asc'?'checked':''} onchange="toggleSort('Ads Count','asc')"><label>Fewest Ads</label></div>`;
+  }
+
+  if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${filterName}')">Clear</div>`;}
+
+  dd.innerHTML=html;
+  btn.parentNode.style.position='relative';
+  btn.parentNode.insertBefore(dd,btn.nextSibling);
+  activeDropdown=dd;
+}
+
+// Toggle filter option
+function toggleFilter(filterName,value){
+  if(!filters[filterName])filters[filterName]=[];
+  const idx=filters[filterName].indexOf(value);
+  if(idx>-1)filters[filterName].splice(idx,1);
+  else filters[filterName].push(value);
+  re();
+}
+
+// Toggle sort option
+function toggleSort(sortName,dir){
+  filters[sortName]=dir;
+  re();
+}
+
+// Clear filter
+function clearFilter(filterName){
+  if(filterName==='Traffic')filters.Traffic=null;
+  else if(filterName==='Ads')filters['Ads Count']=null;
+  else filters[filterName]=[];
+  re();
+  const dd=document.getElementById('fb-dd-'+filterName);
+  if(dd)dd.remove();
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+}
+
+// Sort by column
+function sortBy(col){
+  if(sortCol===col){
+    sortDir=sortDir==='asc'?'desc':'asc';
+  }else{
+    sortCol=col;
+    sortDir='desc';
+  }
+  re();
+}
+
+// Get data with filters and sorting
 function gd(){
   let s=[...D];
+
+  // Segment filters
   if(seg==='scaling')s=s.filter(x=>x.sc>=75);
   else if(seg==='gems')s=s.filter(x=>x.sc>=60&&x.sc<80);
   else if(seg==='leaders')s=s.filter(x=>x.rv>=30000);
   else if(seg==='adpeak')s=s.filter(x=>x.ad>=20);
   else if(seg==='traffic')s=[...s].sort((a,b)=>b.v-a.v).slice(0,6);
+
+  // Search filter
   if(q)s=s.filter(x=>x.n.toLowerCase().includes(q)||x.d.includes(q)||x.ni.toLowerCase().includes(q));
+
+  // Category filter
+  if(filters.Category.length>0)s=s.filter(x=>filters.Category.includes(x.ni));
+
+  // Products range filter
+  if(filters.Products.length>0){
+    s=s.filter(x=>{
+      return filters.Products.some(range=>{
+        const ranges=getProductRanges();
+        const r=ranges.find(rr=>rr.label===range);
+        return r&&x.p>=r.min&&x.p<=r.max;
+      });
+    });
+  }
+
+  // Theme filter
+  if(filters.Theme.length>0)s=s.filter(x=>filters.Theme.includes(x.th));
+
+  // Currency filter
+  if(filters.Currency.length>0)s=s.filter(x=>filters.Currency.includes(x.cu));
+
+  // Shop Origin filter
+  if(filters['Shop Origin'].length>0)s=s.filter(x=>filters['Shop Origin'].includes(x.c)||filters['Shop Origin'].includes(x.c2));
+
+  // Column sorting
+  if(sortCol){
+    s.sort((a,b)=>{
+      let aVal,bVal;
+      if(sortCol==='v'){aVal=a.v;bVal=b.v;}
+      else if(sortCol==='rv'){aVal=a.rv;bVal=b.rv;}
+      else if(sortCol==='ad'){aVal=a.ad;bVal=b.ad;}
+      else if(sortCol==='sc'){aVal=a.sc;bVal=b.sc;}
+      return sortDir==='asc'?aVal-bVal:bVal-aVal;
+    });
+  }
+
+  // Sort options (Traffic, Ads Count)
+  if(filters.Traffic){
+    s.sort((a,b)=>filters.Traffic==='desc'?b.v-a.v:a.v-b.v);
+  }
+  if(filters['Ads Count']){
+    s.sort((a,b)=>filters['Ads Count']==='desc'?b.ad-a.ad:a.ad-b.ad);
+  }
+
   return s;
 }
+
 function spk(t,c){const m=Math.max(...t);return t.map(v=>`<div class="spkb" style="height:${Math.max((v/m)*22,3)}px;background:${c};opacity:.7;"></div>`).join('');}
+
 function re(){
   const shops=gd();
   document.getElementById('cnt').innerHTML=`<b>${shops.length.toLocaleString()}</b> Shops`;
   const tb=document.getElementById('tb'),em=document.getElementById('em');
   if(!shops.length){tb.innerHTML='';em.style.display='flex';return;}
   em.style.display='none';
+
+  // Update table headers sort indicators
+  document.querySelectorAll('thead th').forEach(th=>{
+    th.classList.remove('sorted');
+    const icon=th.querySelector('.sic');
+    if(icon){
+      if(th.textContent.includes('Monthly Visits')&&sortCol==='v'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Revenue Est.')&&sortCol==='rv'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Live Ads')&&sortCol==='ad'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Score')&&sortCol==='sc'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(icon&&!icon.textContent.includes('↑')&&!icon.textContent.includes('↓')){
+        icon.textContent='⇅';
+      }
+    }
+  });
+
   tb.innerHTML=shops.map(s=>{
     const c=TC[s.t]||'#aaa',ac=s.ad>30?'#e8799a':s.ad>10?'#f6a05a':s.ad>0?'#e6b83a':'#b8a8b0';
     return`<tr onclick="om(${s.id})">
       <td><div class="si2">
         <div class="sthumb">
-          <img src="https://image.thum.io/get/width/120/crop/80/https://${s.d}" 
+          <img src="https://image.thum.io/get/width/120/crop/80/https://${s.d}"
                onerror="this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';"
                loading="lazy" alt="${s.n}"/>
           <div class="sthumb-fb" style="display:none;">${init(s.n)}</div>
@@ -413,6 +683,7 @@ function re(){
     </tr>`;
   }).join('');
 }
+
 function om(id){
   const s=D.find(x=>x.id===id);if(!s)return;
   const c=TC[s.t]||'#aaa',mx=Math.max(...s.tr);
@@ -454,7 +725,17 @@ function om(id){
 }
 function cm(e){if(e.target===document.getElementById('mo'))cd();}
 function cd(){document.getElementById('mo').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')cd();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){cd();document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));}});
+document.addEventListener('click',e=>{if(!e.target.closest('.fb')&&!e.target.closest('.fb-dropdown')){document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));}});
+document.querySelectorAll('thead th').forEach(th=>{
+  if(th.textContent.includes('Monthly Visits')||th.textContent.includes('Revenue Est.')||th.textContent.includes('Live Ads')||th.textContent.includes('Score')){
+    th.style.cursor='pointer';
+    th.addEventListener('click',function(e){
+      const colMap={'Monthly Visits':'v','Revenue Est.':'rv','Live Ads':'ad','Score':'sc'};
+      for(let [text,col] of Object.entries(colMap)){if(this.textContent.includes(text)){sortBy(col);break;}}
+    });
+  }
+});
 re();
 </script>
 </body>
