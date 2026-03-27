@@ -486,11 +486,16 @@ function fs(){
   }
 }
 async function liveSearch(term){
-  if(!Peekr.supabase)return;
   _apiSearching=true;re();
   try{
-    const{data,error}=await Peekr.supabase.rpc('search_storeleads',{p_query:term,p_limit:20});
-    if(error)throw error;
+    const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+    const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+    const resp=await fetch(_SB+'/rest/v1/rpc/search_storeleads',{
+      method:'POST',headers:{'apikey':_AK,'Authorization':'Bearer '+_AK,'Content-Type':'application/json'},
+      body:JSON.stringify({p_query:term,p_limit:20})
+    });
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
     if(q!==term)return;
     const parsed=typeof data==='string'?JSON.parse(data):data;
     const shops=parsed.results||parsed.shops||[];
