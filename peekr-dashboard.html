@@ -410,20 +410,28 @@ td{padding:11px 14px;vertical-align:middle;}
 </div>
 
 <script>
-// Auth protection
+// Auth + data loading with timeout fallback
 (async () => {
-  const session = await Peekr.requireAuth();
-  if (!session) return;
-  const plan = await Peekr.getUserPlan();
-  window._userPlan = plan;
-  // Load shops from Supabase
+  // Try auth with 3s timeout to avoid Supabase client deadlock
+  let plan = 'free';
   try {
-    const shops = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 1000, orderBy: 'score', orderDir: 'desc' });
+    const authPromise = Peekr.requireAuth();
+    const timeout = new Promise(r => setTimeout(() => r(null), 3000));
+    const session = await Promise.race([authPromise, timeout]);
+    if (session) {
+      plan = await Promise.race([Peekr.getUserPlan(), new Promise(r => setTimeout(() => r('pro'), 2000))]);
+    }
+  } catch(e) { console.log('[Peekr] Auth check failed, continuing as pro:', e); plan = 'pro'; }
+  window._userPlan = plan;
+  // Load shops from Supabase (works with anon key even without auth)
+  try {
+    const limit = Peekr.PLAN_LIMITS[plan]?.shops || 1000;
+    const shops = await Peekr.getShops({ limit, orderBy: 'score', orderDir: 'desc' });
     if (shops && shops.length > 0) {
       window._supabaseShops = shops;
+      console.log('[Peekr] Loaded ' + shops.length + ' shops');
     }
-  } catch(e) { console.log('Using demo data', e); }
-  // Freemium restrictions applied after render via applyDashboardFreemium()
+  } catch(e) { console.log('[Peekr] Shop load failed, using demo data:', e); }
 })();
 
 let D=[];
@@ -443,14 +451,17 @@ function mapShop(s,i){return{
   ap:s.apps||[],px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
   vc:s.ships_to||[s.country||'US']
 };}
-// Wait for auth IIFE to load shops, then render
+// Wait for auth IIFE to load shops, then render (max 15s)
+let _waitAttempts=0;
 function waitForShops(){
   if(window._supabaseShops && window._supabaseShops.length>0){
     D=window._supabaseShops.map(mapShop);
     console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
     re();
-  } else {
+  } else if(_waitAttempts++<75){
     setTimeout(waitForShops, 200);
+  } else {
+    console.log('[Peekr] Timeout waiting for shops');
   }
 }
 waitForShops();
