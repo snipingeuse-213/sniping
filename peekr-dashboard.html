@@ -486,18 +486,21 @@ async function liveSearch(term){
     const{data,error}=await Peekr.supabase.rpc('search_storeleads',{p_query:term,p_limit:20});
     if(error)throw error;
     if(q!==term)return;
-    const results=typeof data==='string'?JSON.parse(data):data;
-    const shops=results.shops||[];
+    const parsed=typeof data==='string'?JSON.parse(data):data;
+    const shops=parsed.results||parsed.shops||[];
     const localDomains=new Set(D.map(x=>x.d));
-    _apiResults=shops.filter(s=>!localDomains.has(s.domain)).map((s,i)=>({
-      id:90000+i,n:s.name||s.domain,d:s.domain,ni:s.niche||'General',sc:s.score||0,t:'cold',
-      c:(s.country||'us').toLowerCase(),c2:'',cr:s.created_date||'',ag:calcAge(s.created_date),
-      v:s.monthly_visits||0,vf:fmtV(s.monthly_visits),r:fmtR(s.revenue_min||0,s.revenue_max||0),
-      rv:Math.round(((s.revenue_min||0)+(s.revenue_max||0))/2),
-      tr:Array.from({length:6},()=>Math.round((s.monthly_visits||1000)*(0.8+Math.random()*0.4))),
-      ad:0,th:'Unknown',cu:'USD',p:s.products_count||0,
-      ap:[],px:[],st:[],lang:'en',sp:'Unknown',vc:[s.country||'US'],_live:true
-    }));
+    _apiResults=shops.filter(s=>!localDomains.has(s.domain)).map((s,i)=>{
+      const niche=(s.categories&&s.categories[0])||'General';
+      return{
+        id:90000+i,n:s.name||s.domain,d:s.domain,ni:niche,sc:s.platform_rank?Math.min(99,Math.round(100-Math.log10(s.platform_rank)*15)):50,t:'cold',
+        c:(s.country||'us').toLowerCase(),c2:'',cr:s.created_at||'',ag:calcAge(s.created_at),
+        v:s.monthly_visits||0,vf:fmtV(s.monthly_visits),r:fmtR(s.estimated_sales?Math.round(s.estimated_sales*0.8):0,s.estimated_sales||0),
+        rv:s.estimated_sales||0,
+        tr:Array.from({length:6},()=>Math.round((s.monthly_visits||1000)*(0.8+Math.random()*0.4))),
+        ad:0,th:s.theme||'Unknown',cu:'USD',p:s.products_count||0,
+        ap:[],px:[],st:[],lang:'en',sp:'Unknown',vc:[s.country||'US'],_live:true
+      };
+    });
     _apiSearching=false;re();
   }catch(e){console.error('[Peekr] Live search error:',e);_apiSearching=false;re();}
 }
