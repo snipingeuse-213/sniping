@@ -426,20 +426,41 @@ td{padding:11px 14px;vertical-align:middle;}
   // Freemium restrictions applied after render via applyDashboardFreemium()
 })();
 
-const D=[
-  {id:1,n:"Velvet Bloom",d:"velvetbloom.myshopify.com",ni:"Beauty",sc:92,t:"hot",c:"us",c2:"gb",cr:"2026-01-14",ag:"2 months",v:105000,vf:"105K",r:"$38K – $52K",rv:42000,tr:[12,18,22,31,28,44,58,72,69,88,91,105],ad:47,th:"Prestige",cu:"USD",p:34,ap:["Loox","Klaviyo","ReConvert","GemPages","AfterShip"],px:["Meta","TikTok","Google"],st:["Meta Ads","TikTok Organic","Email Flows"],lang:"English",sp:"Shopify Plus",vc:["us","gb","ca","de"]},
-  {id:2,n:"ZenFlow",d:"zenflow.store",ni:"Fitness",sc:83,t:"hot",c:"gb",c2:"us",cr:"2026-01-22",ag:"2 months",v:99000,vf:"99K",r:"$28K – $40K",rv:34000,tr:[20,24,29,33,38,44,52,61,70,78,88,99],ad:61,th:"Impulse",cu:"GBP",p:27,ap:["Yotpo","Klaviyo","CartHook","PageFly"],px:["Meta","TikTok","Snapchat"],st:["Meta Ads","TikTok Ads","Influencers"],lang:"English",sp:"Advanced",vc:["gb","us","au"]},
-  {id:3,n:"NordHome",d:"nordhome.myshopify.com",ni:"Home & Living",sc:88,t:"hot",c:"se",c2:"dk",cr:"2026-01-05",ag:"2.5 months",v:121000,vf:"121K",r:"$45K – $70K",rv:58000,tr:[30,35,42,48,55,63,72,80,92,101,112,121],ad:38,th:"Prestige",cu:"SEK",p:63,ap:["Loox","Klaviyo","Bold","Yotpo","FOMO"],px:["Meta","TikTok","Google"],st:["Meta Ads","Google Shopping","Email"],lang:"Swedish",sp:"Shopify Plus",vc:["se","dk","no","de"]},
-  {id:4,n:"ByteGear",d:"bytegear.myshopify.com",ni:"Tech",sc:81,t:"hot",c:"us",c2:"jp",cr:"2026-01-18",ag:"2 months",v:88000,vf:"88K",r:"$32K – $48K",rv:40000,tr:[18,22,27,31,36,42,48,55,63,71,79,88],ad:33,th:"Turbo",cu:"USD",p:18,ap:["Klaviyo","Gorgias","ReConvert","Hotjar"],px:["Meta","Google","TikTok"],st:["Google Shopping","Meta Ads","Retargeting"],lang:"English",sp:"Advanced",vc:["us","jp","ca"]},
-  {id:5,n:"Iron Pulse",d:"ironpulse.myshopify.com",ni:"Fitness",sc:78,t:"rising",c:"us",c2:"ca",cr:"2026-02-03",ag:"7 weeks",v:52000,vf:"52K",r:"$14K – $22K",rv:18000,tr:[5,8,11,9,14,19,22,28,35,31,40,52],ad:23,th:"Motion",cu:"USD",p:18,ap:["Judge.me","Klaviyo","Tidio","Hotjar"],px:["Meta","TikTok"],st:["Meta Ads","TikTok Ads","SMS"],lang:"English",sp:"Basic",vc:["us","ca"]},
-  {id:6,n:"PureRoots",d:"pureroots.store",ni:"Health",sc:74,t:"rising",c:"us",c2:"au",cr:"2026-02-07",ag:"7 weeks",v:44000,vf:"44K",r:"$15K – $25K",rv:20000,tr:[8,11,14,16,19,22,26,30,34,37,41,44],ad:14,th:"Craft",cu:"USD",p:31,ap:["Klaviyo","Yotpo","ReConvert"],px:["Meta","Pinterest"],st:["Meta Ads","Influencers","Email"],lang:"English",sp:"Basic",vc:["us","au"]},
-  {id:7,n:"GlowTech",d:"glowtech.myshopify.com",ni:"Beauty",sc:71,t:"rising",c:"de",c2:"fr",cr:"2026-02-10",ag:"6 weeks",v:38000,vf:"38K",r:"$11K – $17K",rv:14000,tr:[6,8,9,11,13,16,19,22,25,28,32,38],ad:19,th:"Turbo",cu:"EUR",p:21,ap:["Loox","Klaviyo","Bold Upsell"],px:["Meta","Google","Pinterest"],st:["Meta Ads","Google Shopping"],lang:"German",sp:"Shopify",vc:["de","fr","at","ch"]},
-  {id:8,n:"Luna Jewels",d:"lunajewels.shop",ni:"Jewelry",sc:65,t:"rising",c:"fr",c2:"it",cr:"2026-02-18",ag:"5 weeks",v:33000,vf:"33K",r:"$8K – $14K",rv:11000,tr:[8,9,10,12,11,14,16,18,22,21,27,33],ad:8,th:"Dawn",cu:"EUR",p:52,ap:["Loox","Klaviyo","Smile.io"],px:["Meta","Pinterest"],st:["Pinterest Ads","Meta Ads","SEO"],lang:"French",sp:"Basic",vc:["fr","it","be"]},
-  {id:9,n:"UrbanLens",d:"urbanlens.myshopify.com",ni:"Fashion",sc:69,t:"rising",c:"us",c2:"mx",cr:"2026-02-22",ag:"4 weeks",v:28000,vf:"28K",r:"$9K – $15K",rv:12000,tr:[5,7,9,10,12,14,16,18,20,22,25,28],ad:11,th:"Focal",cu:"USD",p:44,ap:["Loox","Klaviyo","Zipify"],px:["Meta","TikTok"],st:["TikTok Organic","Meta Ads"],lang:"English",sp:"Shopify",vc:["us","mx"]},
-  {id:10,n:"Cozy Kitchen",d:"cozykitchen.myshopify.com",ni:"Home & Living",sc:47,t:"watch",c:"us",c2:"",cr:"2026-03-01",ag:"3 weeks",v:10000,vf:"10K",r:"$2K – $4K",rv:3000,tr:[3,4,4,5,5,6,7,6,8,7,9,10],ad:2,th:"Debut",cu:"USD",p:9,ap:["Mailchimp","AfterShip"],px:["Google"],st:["Google Ads"],lang:"English",sp:"Basic",vc:["us"]},
-  {id:11,n:"SolarBags",d:"solarbags.store",ni:"Fashion",sc:55,t:"watch",c:"gb",c2:"au",cr:"2026-03-05",ag:"3 weeks",v:16000,vf:"16K",r:"$5K – $9K",rv:7000,tr:[3,4,5,6,6,8,9,10,12,13,14,16],ad:5,th:"Minimal",cu:"GBP",p:22,ap:["Klaviyo","AfterShip"],px:["Meta"],st:["Meta Ads","SEO"],lang:"English",sp:"Basic",vc:["gb","au"]},
-  {id:12,n:"Paw Haus",d:"pawhaus.myshopify.com",ni:"Pets",sc:31,t:"cold",c:"ca",c2:"",cr:"2026-03-12",ag:"2 weeks",v:4000,vf:"4K",r:"$600 – $1K",rv:800,tr:[1,1,2,1,2,2,2,3,2,3,3,4],ad:0,th:"Unknown",cu:"USD",p:4,ap:["AfterShip"],px:[],st:["Organic"],lang:"English",sp:"Basic",vc:["ca"]},
-];
+let D=[];
+const SUPABASE_URL='https://vsyceexjsitliwaasdhd.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
+function fmtR(min,max){
+  const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
+  return f(min)+' – '+f(max);
+}
+function calcAge(d){if(!d)return'N/A';const ms=Date.now()-new Date(d).getTime();const days=Math.floor(ms/864e5);if(days<7)return days+' days';if(days<60)return Math.round(days/7)+' weeks';if(days<365)return Math.round(days/30)+' months';return Math.round(days/365)+' years';}
+function mapShop(s,i){return{
+  id:i+1,n:s.name||s.domain,d:s.domain,ni:s.niche||'General',sc:s.score||0,t:s.trend_tag||'cold',
+  c:(s.country||'US').toLowerCase(),c2:'',cr:s.created_date||'',ag:calcAge(s.created_date),
+  v:s.monthly_visits||0,vf:fmtV(s.monthly_visits),r:fmtR(s.revenue_min||0,s.revenue_max||0),
+  rv:Math.round(((s.revenue_min||0)+(s.revenue_max||0))/2),
+  tr:s.traffic_trend||Array.from({length:12},()=>Math.round(Math.random()*(s.monthly_visits||1000)/1000)),
+  ad:s.live_ads||0,th:s.theme||'Unknown',cu:s.currency||'USD',p:s.products_count||0,
+  ap:s.apps||[],px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
+  vc:s.ships_to||[s.country||'US']
+};}
+async function loadShops(){
+  try{
+    const r=await fetch(SUPABASE_URL+'/rest/v1/shops?select=*&order=score.desc&limit=1000',{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    if(!r.ok)throw new Error('API '+r.status);
+    const data=await r.json();
+    D=data.map(mapShop);
+    console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
+  }catch(e){
+    console.error('[Peekr] Failed to load shops:',e);
+    D=[];
+  }
+  re();
+}
+loadShops();
 const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
 const TB={hot:'rgba(232,121,154,0.09)',rising:'rgba(246,160,90,0.09)',watch:'rgba(230,184,58,0.09)',cold:'rgba(184,168,176,0.06)'};
 const TL={hot:'HOT',rising:'RISING',watch:'WATCH',cold:'COLD'};
