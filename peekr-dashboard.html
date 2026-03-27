@@ -345,16 +345,22 @@ td{padding:11px 14px;vertical-align:middle;}
   <div class="fw">
     <div class="fr"><span class="fl">Performance</span>
       <div class="fb" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Ads <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Shop</span>
       <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Products <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Apps <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Theme <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Language <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Currency <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Business</span>
-      <div class="fb" onclick="tf(this)">Shop <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Creation Date <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
     </div>
   </div>
 
@@ -378,18 +384,18 @@ td{padding:11px 14px;vertical-align:middle;}
 
 <script>
 const D=[
-  {id:1,n:"Velvet Bloom",d:"velvetbloom.myshopify.com",ni:"Beauty",sc:92,t:"hot",c:"us",c2:"gb",cr:"2026-01-14",ag:"2 months",v:105000,vf:"105K",r:"$38K – $52K",rv:42000,tr:[12,18,22,31,28,44,58,72,69,88,91,105],ad:47,th:"Prestige",cu:"USD",p:34,ap:["Loox","Klaviyo","ReConvert","GemPages","AfterShip"],px:["Meta","TikTok","Google"],st:["Meta Ads","TikTok Organic","Email Flows"]},
-  {id:2,n:"ZenFlow",d:"zenflow.store",ni:"Fitness",sc:83,t:"hot",c:"gb",c2:"us",cr:"2026-01-22",ag:"2 months",v:99000,vf:"99K",r:"$28K – $40K",rv:34000,tr:[20,24,29,33,38,44,52,61,70,78,88,99],ad:61,th:"Impulse",cu:"GBP",p:27,ap:["Yotpo","Klaviyo","CartHook","PageFly"],px:["Meta","TikTok","Snapchat"],st:["Meta Ads","TikTok Ads","Influencers"]},
-  {id:3,n:"NordHome",d:"nordhome.myshopify.com",ni:"Home & Living",sc:88,t:"hot",c:"se",c2:"dk",cr:"2026-01-05",ag:"2.5 months",v:121000,vf:"121K",r:"$45K – $70K",rv:58000,tr:[30,35,42,48,55,63,72,80,92,101,112,121],ad:38,th:"Prestige",cu:"SEK",p:63,ap:["Loox","Klaviyo","Bold","Yotpo","FOMO"],px:["Meta","TikTok","Google"],st:["Meta Ads","Google Shopping","Email"]},
-  {id:4,n:"ByteGear",d:"bytegear.myshopify.com",ni:"Tech",sc:81,t:"hot",c:"us",c2:"jp",cr:"2026-01-18",ag:"2 months",v:88000,vf:"88K",r:"$32K – $48K",rv:40000,tr:[18,22,27,31,36,42,48,55,63,71,79,88],ad:33,th:"Turbo",cu:"USD",p:18,ap:["Klaviyo","Gorgias","ReConvert","Hotjar"],px:["Meta","Google","TikTok"],st:["Google Shopping","Meta Ads","Retargeting"]},
-  {id:5,n:"Iron Pulse",d:"ironpulse.myshopify.com",ni:"Fitness",sc:78,t:"rising",c:"us",c2:"ca",cr:"2026-02-03",ag:"7 weeks",v:52000,vf:"52K",r:"$14K – $22K",rv:18000,tr:[5,8,11,9,14,19,22,28,35,31,40,52],ad:23,th:"Motion",cu:"USD",p:18,ap:["Judge.me","Klaviyo","Tidio","Hotjar"],px:["Meta","TikTok"],st:["Meta Ads","TikTok Ads","SMS"]},
-  {id:6,n:"PureRoots",d:"pureroots.store",ni:"Health",sc:74,t:"rising",c:"us",c2:"au",cr:"2026-02-07",ag:"7 weeks",v:44000,vf:"44K",r:"$15K – $25K",rv:20000,tr:[8,11,14,16,19,22,26,30,34,37,41,44],ad:14,th:"Craft",cu:"USD",p:31,ap:["Klaviyo","Yotpo","ReConvert"],px:["Meta","Pinterest"],st:["Meta Ads","Influencers","Email"]},
-  {id:7,n:"GlowTech",d:"glowtech.myshopify.com",ni:"Beauty",sc:71,t:"rising",c:"de",c2:"fr",cr:"2026-02-10",ag:"6 weeks",v:38000,vf:"38K",r:"$11K – $17K",rv:14000,tr:[6,8,9,11,13,16,19,22,25,28,32,38],ad:19,th:"Turbo",cu:"EUR",p:21,ap:["Loox","Klaviyo","Bold Upsell"],px:["Meta","Google","Pinterest"],st:["Meta Ads","Google Shopping"]},
-  {id:8,n:"Luna Jewels",d:"lunajewels.shop",ni:"Jewelry",sc:65,t:"rising",c:"fr",c2:"it",cr:"2026-02-18",ag:"5 weeks",v:33000,vf:"33K",r:"$8K – $14K",rv:11000,tr:[8,9,10,12,11,14,16,18,22,21,27,33],ad:8,th:"Dawn",cu:"EUR",p:52,ap:["Loox","Klaviyo","Smile.io"],px:["Meta","Pinterest"],st:["Pinterest Ads","Meta Ads","SEO"]},
-  {id:9,n:"UrbanLens",d:"urbanlens.myshopify.com",ni:"Fashion",sc:69,t:"rising",c:"us",c2:"mx",cr:"2026-02-22",ag:"4 weeks",v:28000,vf:"28K",r:"$9K – $15K",rv:12000,tr:[5,7,9,10,12,14,16,18,20,22,25,28],ad:11,th:"Focal",cu:"USD",p:44,ap:["Loox","Klaviyo","Zipify"],px:["Meta","TikTok"],st:["TikTok Organic","Meta Ads"]},
-  {id:10,n:"Cozy Kitchen",d:"cozykitchen.myshopify.com",ni:"Home & Living",sc:47,t:"watch",c:"us",c2:"",cr:"2026-03-01",ag:"3 weeks",v:10000,vf:"10K",r:"$2K – $4K",rv:3000,tr:[3,4,4,5,5,6,7,6,8,7,9,10],ad:2,th:"Debut",cu:"USD",p:9,ap:["Mailchimp","AfterShip"],px:["Google"],st:["Google Ads"]},
-  {id:11,n:"SolarBags",d:"solarbags.store",ni:"Fashion",sc:55,t:"watch",c:"gb",c2:"au",cr:"2026-03-05",ag:"3 weeks",v:16000,vf:"16K",r:"$5K – $9K",rv:7000,tr:[3,4,5,6,6,8,9,10,12,13,14,16],ad:5,th:"Minimal",cu:"GBP",p:22,ap:["Klaviyo","AfterShip"],px:["Meta"],st:["Meta Ads","SEO"]},
-  {id:12,n:"Paw Haus",d:"pawhaus.myshopify.com",ni:"Pets",sc:31,t:"cold",c:"ca",c2:"",cr:"2026-03-12",ag:"2 weeks",v:4000,vf:"4K",r:"$600 – $1K",rv:800,tr:[1,1,2,1,2,2,2,3,2,3,3,4],ad:0,th:"Unknown",cu:"USD",p:4,ap:["AfterShip"],px:[],st:["Organic"]},
+  {id:1,n:"Velvet Bloom",d:"velvetbloom.myshopify.com",ni:"Beauty",sc:92,t:"hot",c:"us",c2:"gb",cr:"2026-01-14",ag:"2 months",v:105000,vf:"105K",r:"$38K – $52K",rv:42000,tr:[12,18,22,31,28,44,58,72,69,88,91,105],ad:47,th:"Prestige",cu:"USD",p:34,ap:["Loox","Klaviyo","ReConvert","GemPages","AfterShip"],px:["Meta","TikTok","Google"],st:["Meta Ads","TikTok Organic","Email Flows"],lang:"English",sp:"Shopify Plus",vc:["us","gb","ca","de"]},
+  {id:2,n:"ZenFlow",d:"zenflow.store",ni:"Fitness",sc:83,t:"hot",c:"gb",c2:"us",cr:"2026-01-22",ag:"2 months",v:99000,vf:"99K",r:"$28K – $40K",rv:34000,tr:[20,24,29,33,38,44,52,61,70,78,88,99],ad:61,th:"Impulse",cu:"GBP",p:27,ap:["Yotpo","Klaviyo","CartHook","PageFly"],px:["Meta","TikTok","Snapchat"],st:["Meta Ads","TikTok Ads","Influencers"],lang:"English",sp:"Advanced",vc:["gb","us","au"]},
+  {id:3,n:"NordHome",d:"nordhome.myshopify.com",ni:"Home & Living",sc:88,t:"hot",c:"se",c2:"dk",cr:"2026-01-05",ag:"2.5 months",v:121000,vf:"121K",r:"$45K – $70K",rv:58000,tr:[30,35,42,48,55,63,72,80,92,101,112,121],ad:38,th:"Prestige",cu:"SEK",p:63,ap:["Loox","Klaviyo","Bold","Yotpo","FOMO"],px:["Meta","TikTok","Google"],st:["Meta Ads","Google Shopping","Email"],lang:"Swedish",sp:"Shopify Plus",vc:["se","dk","no","de"]},
+  {id:4,n:"ByteGear",d:"bytegear.myshopify.com",ni:"Tech",sc:81,t:"hot",c:"us",c2:"jp",cr:"2026-01-18",ag:"2 months",v:88000,vf:"88K",r:"$32K – $48K",rv:40000,tr:[18,22,27,31,36,42,48,55,63,71,79,88],ad:33,th:"Turbo",cu:"USD",p:18,ap:["Klaviyo","Gorgias","ReConvert","Hotjar"],px:["Meta","Google","TikTok"],st:["Google Shopping","Meta Ads","Retargeting"],lang:"English",sp:"Advanced",vc:["us","jp","ca"]},
+  {id:5,n:"Iron Pulse",d:"ironpulse.myshopify.com",ni:"Fitness",sc:78,t:"rising",c:"us",c2:"ca",cr:"2026-02-03",ag:"7 weeks",v:52000,vf:"52K",r:"$14K – $22K",rv:18000,tr:[5,8,11,9,14,19,22,28,35,31,40,52],ad:23,th:"Motion",cu:"USD",p:18,ap:["Judge.me","Klaviyo","Tidio","Hotjar"],px:["Meta","TikTok"],st:["Meta Ads","TikTok Ads","SMS"],lang:"English",sp:"Basic",vc:["us","ca"]},
+  {id:6,n:"PureRoots",d:"pureroots.store",ni:"Health",sc:74,t:"rising",c:"us",c2:"au",cr:"2026-02-07",ag:"7 weeks",v:44000,vf:"44K",r:"$15K – $25K",rv:20000,tr:[8,11,14,16,19,22,26,30,34,37,41,44],ad:14,th:"Craft",cu:"USD",p:31,ap:["Klaviyo","Yotpo","ReConvert"],px:["Meta","Pinterest"],st:["Meta Ads","Influencers","Email"],lang:"English",sp:"Basic",vc:["us","au"]},
+  {id:7,n:"GlowTech",d:"glowtech.myshopify.com",ni:"Beauty",sc:71,t:"rising",c:"de",c2:"fr",cr:"2026-02-10",ag:"6 weeks",v:38000,vf:"38K",r:"$11K – $17K",rv:14000,tr:[6,8,9,11,13,16,19,22,25,28,32,38],ad:19,th:"Turbo",cu:"EUR",p:21,ap:["Loox","Klaviyo","Bold Upsell"],px:["Meta","Google","Pinterest"],st:["Meta Ads","Google Shopping"],lang:"German",sp:"Shopify",vc:["de","fr","at","ch"]},
+  {id:8,n:"Luna Jewels",d:"lunajewels.shop",ni:"Jewelry",sc:65,t:"rising",c:"fr",c2:"it",cr:"2026-02-18",ag:"5 weeks",v:33000,vf:"33K",r:"$8K – $14K",rv:11000,tr:[8,9,10,12,11,14,16,18,22,21,27,33],ad:8,th:"Dawn",cu:"EUR",p:52,ap:["Loox","Klaviyo","Smile.io"],px:["Meta","Pinterest"],st:["Pinterest Ads","Meta Ads","SEO"],lang:"French",sp:"Basic",vc:["fr","it","be"]},
+  {id:9,n:"UrbanLens",d:"urbanlens.myshopify.com",ni:"Fashion",sc:69,t:"rising",c:"us",c2:"mx",cr:"2026-02-22",ag:"4 weeks",v:28000,vf:"28K",r:"$9K – $15K",rv:12000,tr:[5,7,9,10,12,14,16,18,20,22,25,28],ad:11,th:"Focal",cu:"USD",p:44,ap:["Loox","Klaviyo","Zipify"],px:["Meta","TikTok"],st:["TikTok Organic","Meta Ads"],lang:"English",sp:"Shopify",vc:["us","mx"]},
+  {id:10,n:"Cozy Kitchen",d:"cozykitchen.myshopify.com",ni:"Home & Living",sc:47,t:"watch",c:"us",c2:"",cr:"2026-03-01",ag:"3 weeks",v:10000,vf:"10K",r:"$2K – $4K",rv:3000,tr:[3,4,4,5,5,6,7,6,8,7,9,10],ad:2,th:"Debut",cu:"USD",p:9,ap:["Mailchimp","AfterShip"],px:["Google"],st:["Google Ads"],lang:"English",sp:"Basic",vc:["us"]},
+  {id:11,n:"SolarBags",d:"solarbags.store",ni:"Fashion",sc:55,t:"watch",c:"gb",c2:"au",cr:"2026-03-05",ag:"3 weeks",v:16000,vf:"16K",r:"$5K – $9K",rv:7000,tr:[3,4,5,6,6,8,9,10,12,13,14,16],ad:5,th:"Minimal",cu:"GBP",p:22,ap:["Klaviyo","AfterShip"],px:["Meta"],st:["Meta Ads","SEO"],lang:"English",sp:"Basic",vc:["gb","au"]},
+  {id:12,n:"Paw Haus",d:"pawhaus.myshopify.com",ni:"Pets",sc:31,t:"cold",c:"ca",c2:"",cr:"2026-03-12",ag:"2 weeks",v:4000,vf:"4K",r:"$600 – $1K",rv:800,tr:[1,1,2,1,2,2,2,3,2,3,3,4],ad:0,th:"Unknown",cu:"USD",p:4,ap:["AfterShip"],px:[],st:["Organic"],lang:"English",sp:"Basic",vc:["ca"]},
 ];
 const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
 const TB={hot:'rgba(232,121,154,0.09)',rising:'rgba(246,160,90,0.09)',watch:'rgba(230,184,58,0.09)',cold:'rgba(184,168,176,0.06)'};
@@ -398,7 +404,7 @@ function init(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCas
 
 // State variables
 let seg='all',q='',sortCol=null,sortDir='asc';
-let filters={Category:[],Products:[],Theme:[],Currency:[],'Shop Origin':[],Traffic:null,'Ads Count':null};
+let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':[],'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null};
 let activeDropdown=null;
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
@@ -442,8 +448,9 @@ function getCountries(){
 
 // Toggle dropdown
 function tf(e){
-  const name=e.textContent.trim().split(' ')[0];
-  const existing=document.getElementById('fb-dd-'+name);
+  const name=e.textContent.trim().replace(/\s*▾\s*$/,'');
+  const ddId='fb-dd-'+name.replace(/\s+/g,'-');
+  const existing=document.getElementById(ddId);
 
   // Close all dropdowns
   document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));
@@ -455,63 +462,116 @@ function tf(e){
   }
 }
 
+// Helper functions for new filters
+function getApps(){
+  const apps=new Set();
+  D.forEach(s=>s.ap.forEach(a=>apps.add(a)));
+  return Array.from(apps).sort();
+}
+function getLanguages(){return Array.from(new Set(D.map(x=>x.lang))).sort();}
+function getShopifyPlans(){return Array.from(new Set(D.map(x=>x.sp))).sort();}
+function getVisitorCountries(){
+  const c=new Set();
+  D.forEach(s=>{if(s.vc)s.vc.forEach(v=>c.add(v));});
+  return Array.from(c).sort();
+}
+function getCreationDateRanges(){
+  return [{label:'Last 2 weeks',days:14},{label:'Last month',days:30},{label:'Last 2 months',days:60},{label:'Last 3 months',days:90}];
+}
+function getAdsGrowth(shop){
+  const tr=shop.tr;if(!tr||tr.length<2)return 0;
+  const recent=tr[tr.length-1],prev=tr[Math.max(0,tr.length-4)];
+  return prev?Math.round(((recent-prev)/prev)*100):0;
+}
+
 // Create dropdown based on filter type
 function createDropdown(filterName,btn){
-  let existing=document.getElementById('fb-dd-'+filterName);
+  const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
+  let existing=document.getElementById(ddId);
   if(existing){existing.remove();}
 
   const dd=document.createElement('div');
-  dd.id='fb-dd-'+filterName;
+  dd.id=ddId;
   dd.className='fb-dropdown open';
   dd.style.position='absolute';
 
   let html='';
+  const esc=(s)=>s.replace(/'/g,"\\'");
 
   if(filterName==='Category'){
-    const cats=getCategories();
-    cats.forEach(cat=>{
+    getCategories().forEach(cat=>{
       const checked=filters.Category.includes(cat)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Category','${cat}')"><label>${cat}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Category','${esc(cat)}')"><label>${cat}</label></div>`;
     });
   }
   else if(filterName==='Products'){
-    const ranges=getProductRanges();
-    ranges.forEach(r=>{
+    getProductRanges().forEach(r=>{
       const checked=filters.Products.includes(r.label)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Products','${r.label}')"><label>${r.label}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Products','${esc(r.label)}')"><label>${r.label}</label></div>`;
+    });
+  }
+  else if(filterName==='Apps'){
+    getApps().forEach(app=>{
+      const checked=filters.Apps.includes(app)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Apps','${esc(app)}')"><label>${app}</label></div>`;
     });
   }
   else if(filterName==='Theme'){
-    const themes=getThemes();
-    themes.forEach(theme=>{
+    getThemes().forEach(theme=>{
       const checked=filters.Theme.includes(theme)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Theme','${theme}')"><label>${theme}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Theme','${esc(theme)}')"><label>${theme}</label></div>`;
+    });
+  }
+  else if(filterName==='Language'){
+    getLanguages().forEach(lang=>{
+      const checked=filters.Language.includes(lang)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Language','${esc(lang)}')"><label>${lang}</label></div>`;
     });
   }
   else if(filterName==='Currency'){
-    const currencies=getCurrencies();
-    currencies.forEach(cur=>{
+    getCurrencies().forEach(cur=>{
       const checked=filters.Currency.includes(cur)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Currency','${cur}')"><label>${cur}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Currency','${esc(cur)}')"><label>${cur}</label></div>`;
     });
   }
-  else if(filterName==='Shop'){
-    const countries=getCountries();
-    countries.forEach(country=>{
+  else if(filterName==='Creation Date'){
+    getCreationDateRanges().forEach(r=>{
+      const checked=filters['Creation Date'].includes(r.label)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Creation Date','${esc(r.label)}')"><label>${r.label}</label></div>`;
+    });
+  }
+  else if(filterName==='Shop Origin'){
+    getCountries().forEach(country=>{
       const checked=filters['Shop Origin'].includes(country)?'checked':'';
       html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Shop Origin','${country}')"><label>${country.toUpperCase()}</label></div>`;
+    });
+  }
+  else if(filterName==='Visitor Country'){
+    getVisitorCountries().forEach(country=>{
+      const checked=filters['Visitor Country'].includes(country)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Visitor Country','${country}')"><label>${country.toUpperCase()}</label></div>`;
+    });
+  }
+  else if(filterName==='Shopify Plan'){
+    getShopifyPlans().forEach(plan=>{
+      const checked=filters['Shopify Plan'].includes(plan)?'checked':'';
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Shopify Plan','${esc(plan)}')"><label>${plan}</label></div>`;
     });
   }
   else if(filterName==='Traffic'){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='desc'?'checked':''} onchange="toggleSort('Traffic','desc')"><label>Most Traffic</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='asc'?'checked':''} onchange="toggleSort('Traffic','asc')"><label>Least Traffic</label></div>`;
   }
-  else if(filterName==='Ads'){
+  else if(filterName==='Ads Count'){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='desc'?'checked':''} onchange="toggleSort('Ads Count','desc')"><label>Most Ads</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='asc'?'checked':''} onchange="toggleSort('Ads Count','asc')"><label>Fewest Ads</label></div>`;
   }
+  else if(filterName==='Ads Growth %'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='desc'?'checked':''} onchange="toggleSort('Ads Growth','desc')"><label>Highest Growth</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='asc'?'checked':''} onchange="toggleSort('Ads Growth','asc')"><label>Lowest Growth</label></div>`;
+  }
 
-  if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${filterName}')">Clear</div>`;}
+  if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;}
 
   dd.innerHTML=html;
   btn.parentNode.style.position='relative';
@@ -537,10 +597,12 @@ function toggleSort(sortName,dir){
 // Clear filter
 function clearFilter(filterName){
   if(filterName==='Traffic')filters.Traffic=null;
-  else if(filterName==='Ads')filters['Ads Count']=null;
-  else filters[filterName]=[];
+  else if(filterName==='Ads Count')filters['Ads Count']=null;
+  else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
+  else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
-  const dd=document.getElementById('fb-dd-'+filterName);
+  const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
+  const dd=document.getElementById(ddId);
   if(dd)dd.remove();
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
 }
@@ -584,14 +646,41 @@ function gd(){
     });
   }
 
+  // Apps filter
+  if(filters.Apps.length>0)s=s.filter(x=>filters.Apps.some(app=>x.ap.includes(app)));
+
   // Theme filter
   if(filters.Theme.length>0)s=s.filter(x=>filters.Theme.includes(x.th));
+
+  // Language filter
+  if(filters.Language.length>0)s=s.filter(x=>filters.Language.includes(x.lang));
 
   // Currency filter
   if(filters.Currency.length>0)s=s.filter(x=>filters.Currency.includes(x.cu));
 
+  // Creation Date filter
+  if(filters['Creation Date'].length>0){
+    const now=new Date();
+    const ranges=getCreationDateRanges();
+    s=s.filter(x=>{
+      const created=new Date(x.cr);
+      return filters['Creation Date'].some(label=>{
+        const r=ranges.find(rr=>rr.label===label);
+        if(!r)return false;
+        const diff=(now-created)/(1000*60*60*24);
+        return diff<=r.days;
+      });
+    });
+  }
+
   // Shop Origin filter
   if(filters['Shop Origin'].length>0)s=s.filter(x=>filters['Shop Origin'].includes(x.c)||filters['Shop Origin'].includes(x.c2));
+
+  // Visitor Country filter
+  if(filters['Visitor Country'].length>0)s=s.filter(x=>x.vc&&filters['Visitor Country'].some(c=>x.vc.includes(c)));
+
+  // Shopify Plan filter
+  if(filters['Shopify Plan'].length>0)s=s.filter(x=>filters['Shopify Plan'].includes(x.sp));
 
   // Column sorting
   if(sortCol){
@@ -611,6 +700,12 @@ function gd(){
   }
   if(filters['Ads Count']){
     s.sort((a,b)=>filters['Ads Count']==='desc'?b.ad-a.ad:a.ad-b.ad);
+  }
+  if(filters['Ads Growth']){
+    s.sort((a,b)=>{
+      const gA=getAdsGrowth(a),gB=getAdsGrowth(b);
+      return filters['Ads Growth']==='desc'?gB-gA:gA-gB;
+    });
   }
 
   return s;
