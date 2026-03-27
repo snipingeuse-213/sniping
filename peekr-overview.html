@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
+<meta name="theme-color" content="#F4A7B9"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
+<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
+<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://peekr.io"/>
+<meta name="twitter:card" content="summary"/>
+<link rel="stylesheet" href="peekr-responsive.css"/>
 <title>Peekr — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -291,6 +300,8 @@ td{padding:11px 14px;vertical-align:middle;}
 .di{font-size:12px;color:rgba(26,10,15,0.5);}
 .di strong{color:#1a0a0f;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="peekr-config.js"></script>
 </head>
 <body>
 
@@ -335,7 +346,7 @@ td{padding:11px 14px;vertical-align:middle;}
     <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">🤝</span>Affiliate</a>
   </div>
   <div class="sb-bot">
-    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+    <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
   </div>
 </aside>
 
@@ -894,6 +905,27 @@ td{padding:11px 14px;vertical-align:middle;}
 </div>
 
 </div>
+
+<script>
+// Auth protection
+(async () => {
+  const session = await Peekr.requireAuth();
+  if (!session) return;
+  const plan = await Peekr.getUserPlan();
+  window._userPlan = plan;
+  // Load shops from Supabase
+  try {
+    const { data: shops } = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 10, orderBy: 'score', orderDir: 'desc' });
+    if (shops && shops.length > 0) {
+      window._supabaseShops = shops;
+    }
+  } catch(e) { console.log('Using demo data', e); }
+  // Show plan badge in sidebar if free
+  if (plan === 'free') {
+    Peekr.showUpgradeBanner('dashboard', 'starter');
+  }
+})();
+</script>
 
 </body>
 </html>
