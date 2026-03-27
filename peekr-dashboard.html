@@ -166,6 +166,22 @@ body{
 }
 .fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
 
+/* ── DATE PICKER ── */
+.date-picker-wrap{padding:8px;}
+.date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
+.date-picker-wrap select,.date-picker-wrap input[type="date"]{
+  width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
+  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
+  outline:none;transition:border .15s;margin-bottom:8px;
+}
+.date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
+.date-picker-apply{
+  width:100%;padding:7px;border:none;border-radius:7px;
+  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
+  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
+}
+.date-picker-apply:hover{background:#d4607a;}
+
 /* ── TABLE ── */
 .tw{flex:1;overflow:auto;padding:12px 24px 24px;}
 table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
@@ -404,7 +420,7 @@ function init(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCas
 
 // State variables
 let seg='all',q='',sortCol=null,sortDir='asc';
-let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':[],'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null};
+let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null};
 let activeDropdown=null;
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
@@ -535,10 +551,43 @@ function createDropdown(filterName,btn){
     });
   }
   else if(filterName==='Creation Date'){
-    getCreationDateRanges().forEach(r=>{
-      const checked=filters['Creation Date'].includes(r.label)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Creation Date','${esc(r.label)}')"><label>${r.label}</label></div>`;
-    });
+    const cd=filters['Creation Date'];
+    const modeVal=cd.mode||'after';
+    const dateVal=cd.date||'';
+    html=`<div class="date-picker-wrap">
+      <label>Condition</label>
+      <select id="cd-mode">
+        <option value="after" ${modeVal==='after'?'selected':''}>Created after</option>
+        <option value="before" ${modeVal==='before'?'selected':''}>Created before</option>
+        <option value="between" ${modeVal==='between'?'selected':''}>Between dates</option>
+        <option value="last7" ${modeVal==='last7'?'selected':''}>Last 7 days</option>
+        <option value="last30" ${modeVal==='last30'?'selected':''}>Last 30 days</option>
+        <option value="last60" ${modeVal==='last60'?'selected':''}>Last 60 days</option>
+        <option value="last90" ${modeVal==='last90'?'selected':''}>Last 90 days</option>
+      </select>
+      <div id="cd-dates">
+        <label>Date</label>
+        <input type="date" id="cd-date1" value="${cd.date||''}"/>
+        <div id="cd-date2-wrap" style="display:none"><label>End date</label><input type="date" id="cd-date2" value="${cd.date2||''}"/></div>
+      </div>
+      <button class="date-picker-apply" onclick="applyDateFilter()">Apply</button>
+    </div>`;
+    dd.innerHTML=html;
+    btn.parentNode.style.position='relative';
+    btn.parentNode.insertBefore(dd,btn.nextSibling);
+    activeDropdown=dd;
+    // Toggle date fields based on mode
+    const modeEl=document.getElementById('cd-mode');
+    function updateDateFields(){
+      const m=modeEl.value;
+      const datesWrap=document.getElementById('cd-dates');
+      const d2=document.getElementById('cd-date2-wrap');
+      if(m.startsWith('last')){datesWrap.style.display='none';}
+      else{datesWrap.style.display='block';d2.style.display=m==='between'?'block':'none';}
+    }
+    modeEl.addEventListener('change',updateDateFields);
+    updateDateFields();
+    return;
   }
   else if(filterName==='Shop Origin'){
     getCountries().forEach(country=>{
@@ -588,6 +637,19 @@ function toggleFilter(filterName,value){
   re();
 }
 
+// Apply date filter
+function applyDateFilter(){
+  const mode=document.getElementById('cd-mode').value;
+  const d1=document.getElementById('cd-date1')?document.getElementById('cd-date1').value:'';
+  const d2=document.getElementById('cd-date2')?document.getElementById('cd-date2').value:'';
+  filters['Creation Date']={mode:mode,date:d1,date2:d2};
+  re();
+  // Close dropdown
+  const dd=document.getElementById('fb-dd-Creation-Date');
+  if(dd)dd.classList.remove('open');
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+}
+
 // Toggle sort option
 function toggleSort(sortName,dir){
   filters[sortName]=dir;
@@ -599,6 +661,7 @@ function clearFilter(filterName){
   if(filterName==='Traffic')filters.Traffic=null;
   else if(filterName==='Ads Count')filters['Ads Count']=null;
   else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
+  else if(filterName==='Creation Date')filters['Creation Date']={mode:null,date:null};
   else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
   const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
@@ -659,18 +722,27 @@ function gd(){
   if(filters.Currency.length>0)s=s.filter(x=>filters.Currency.includes(x.cu));
 
   // Creation Date filter
-  if(filters['Creation Date'].length>0){
+  const cdf=filters['Creation Date'];
+  if(cdf&&cdf.mode){
     const now=new Date();
-    const ranges=getCreationDateRanges();
-    s=s.filter(x=>{
-      const created=new Date(x.cr);
-      return filters['Creation Date'].some(label=>{
-        const r=ranges.find(rr=>rr.label===label);
-        if(!r)return false;
-        const diff=(now-created)/(1000*60*60*24);
-        return diff<=r.days;
-      });
-    });
+    if(cdf.mode==='after'&&cdf.date){
+      const d=new Date(cdf.date);
+      s=s.filter(x=>new Date(x.cr)>=d);
+    }else if(cdf.mode==='before'&&cdf.date){
+      const d=new Date(cdf.date);
+      s=s.filter(x=>new Date(x.cr)<=d);
+    }else if(cdf.mode==='between'&&cdf.date&&cdf.date2){
+      const d1=new Date(cdf.date),d2=new Date(cdf.date2);
+      s=s.filter(x=>{const c=new Date(x.cr);return c>=d1&&c<=d2;});
+    }else if(cdf.mode==='last7'){
+      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=7);
+    }else if(cdf.mode==='last30'){
+      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=30);
+    }else if(cdf.mode==='last60'){
+      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=60);
+    }else if(cdf.mode==='last90'){
+      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=90);
+    }
   }
 
   // Shop Origin filter
