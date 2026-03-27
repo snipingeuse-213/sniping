@@ -410,22 +410,23 @@ td{padding:11px 14px;vertical-align:middle;}
 </div>
 
 <script>
-// Load shops directly (bypasses auth deadlock in Supabase JS client)
+// Load shops via raw fetch (bypasses Supabase JS client auth deadlock entirely)
 (async () => {
   window._userPlan = 'pro';
   try {
-    // Direct fetch avoids Supabase client auth lock issues
-    const {data, error} = await Peekr.supabase.from('shops').select('*').order('score', {ascending:false}).range(0,999);
-    if (!error && data && data.length > 0) {
-      window._supabaseShops = data;
-      console.log('[Peekr] Loaded ' + data.length + ' shops');
+    const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+    const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+    const r = await fetch(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=1000', {
+      headers: { 'apikey': _AK }
+    });
+    if (r.ok) {
+      const shops = await r.json();
+      if (shops && shops.length > 0) {
+        window._supabaseShops = shops;
+        console.log('[Peekr] Loaded ' + shops.length + ' shops via direct fetch');
+      }
     }
   } catch(e) { console.log('[Peekr] Shop load failed:', e); }
-  // Try auth in background (non-blocking)
-  try {
-    const plan = await Promise.race([Peekr.getUserPlan(), new Promise(r => setTimeout(() => r('pro'), 3000))]);
-    window._userPlan = plan;
-  } catch(e) {}
 })();
 
 let D=[];
