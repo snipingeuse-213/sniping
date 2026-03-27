@@ -418,7 +418,7 @@ td{padding:11px 14px;vertical-align:middle;}
   window._userPlan = plan;
   // Load shops from Supabase
   try {
-    const { data: shops } = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 10, orderBy: 'score', orderDir: 'desc' });
+    const shops = await Peekr.getShops({ limit: Peekr.PLAN_LIMITS[plan]?.shops || 1000, orderBy: 'score', orderDir: 'desc' });
     if (shops && shops.length > 0) {
       window._supabaseShops = shops;
     }
@@ -427,8 +427,6 @@ td{padding:11px 14px;vertical-align:middle;}
 })();
 
 let D=[];
-const SUPABASE_URL='https://vsyceexjsitliwaasdhd.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
 function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
 function fmtR(min,max){
   const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
@@ -445,22 +443,17 @@ function mapShop(s,i){return{
   ap:s.apps||[],px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
   vc:s.ships_to||[s.country||'US']
 };}
-async function loadShops(){
-  try{
-    const r=await fetch(SUPABASE_URL+'/rest/v1/shops?select=*&order=score.desc&limit=1000',{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    if(!r.ok)throw new Error('API '+r.status);
-    const data=await r.json();
-    D=data.map(mapShop);
+// Wait for auth IIFE to load shops, then render
+function waitForShops(){
+  if(window._supabaseShops && window._supabaseShops.length>0){
+    D=window._supabaseShops.map(mapShop);
     console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
-  }catch(e){
-    console.error('[Peekr] Failed to load shops:',e);
-    D=[];
+    re();
+  } else {
+    setTimeout(waitForShops, 200);
   }
-  re();
 }
-loadShops();
+waitForShops();
 const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
 const TB={hot:'rgba(232,121,154,0.09)',rising:'rgba(246,160,90,0.09)',watch:'rgba(230,184,58,0.09)',cold:'rgba(184,168,176,0.06)'};
 const TL={hot:'HOT',rising:'RISING',watch:'WATCH',cold:'COLD'};
