@@ -335,6 +335,9 @@ td{padding:11px 14px;vertical-align:middle;}
     <a class="ni" href="peekr-saved.html"><span class="ni-ico">📋</span>Saved Ads</a>
     <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
   </div>
+  <div class="sb-sec"><div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
+  </div>
   <div class="sb-sec"><div class="sb-lbl">Tools</div>
     <a class="ni" href="peekr-duel.html"><span class="ni-ico">⚔️</span>Duel Mode</a>
     <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export<span class="nb s">Soon</span></a>
@@ -410,20 +413,22 @@ td{padding:11px 14px;vertical-align:middle;}
 </div>
 
 <script>
-// Load shops via raw fetch (bypasses Supabase JS client auth deadlock entirely)
+// Load shops via raw fetch with retry logic
 (async () => {
   window._userPlan = 'pro';
+  const _SB2=_SB;const _AK2=_AK;
+  async function fetchRetry(url, retries=3) {
+    for (let i=0; i<retries; i++) {
+      try { const r = await fetch(url, {headers:{'apikey':_AK2}}); if(r.ok) return await r.json(); if(r.status>=500&&i<retries-1){await new Promise(r=>setTimeout(r,1000*(i+1)));continue;} return []; } catch(e){if(i<retries-1){await new Promise(r=>setTimeout(r,1000*(i+1)));continue;}throw e;}
+    } return [];
+  }
   try {
     const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
     const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
     // Fetch top shops + FR shops in parallel for country diversity
     const [r1, r2] = await Promise.all([
-      fetch(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=1000', {
-        headers: { 'apikey': _AK }
-      }),
-      fetch(_SB + '/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000', {
-        headers: { 'apikey': _AK }
-      })
+      fetchRetry(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=1000'),
+      fetchRetry(_SB + '/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000')
     ]);
     let allShops = [];
     if (r1.ok) { const s = await r1.json(); if (s && s.length) allShops = s; }
@@ -936,12 +941,12 @@ function re(){
         </div>
         <div>
           <div style="display:flex;align-items:center;gap:6px;">
-            <span class="sname">${s.n}</span>
+            <a class="sname" href="https://${s.d}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.n}</a>
             ${s._live?'<span style="background:linear-gradient(135deg,#e8799a,#c74b7a);color:#fff;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;">API</span>':''}
             ${s.sc>=75?'<span class="prbg">PRO</span>':''}
             <img class="flag-img" src="https://flagcdn.com/w40/${s.c}.png" alt="${s.c}"/>${s.c2?`<img class="flag-img" src="https://flagcdn.com/w40/${s.c2}.png" alt="${s.c2}"/>`:'' }
           </div>
-          <div class="sdomain">${s.d}</div>
+          <a href="https://${s.d}" target="_blank" rel="noopener" class="sdomain" style="color:var(--pink);text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
           <div class="sage">${s.cr} · ${s.ag}</div>
         </div>
       </div></td>
@@ -971,7 +976,7 @@ function om(id){
         <div class="msn">${s.n}</div>
         <span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:${TB[s.t]};color:${c};border:1px solid ${c}44;">${TL[s.t]}</span>
       </div>
-      <div class="mdom">${s.d}</div>
+      <a class="mdom" href="https://${s.d}" target="_blank" rel="noopener" style="color:var(--pink);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
     </div>
     <div class="mcl" onclick="cd()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>`;
   document.getElementById('mb').innerHTML=`
