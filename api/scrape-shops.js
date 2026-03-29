@@ -234,7 +234,7 @@ async function updateImportState(id, offset, inserted) {
 }
 
 // Main handler
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const startTime = Date.now();
   let totalImported = 0;
   const results = { storeleads: 0, scraped: 0, discovered: 0 };
