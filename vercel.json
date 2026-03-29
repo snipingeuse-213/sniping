@@ -1,6 +1,4 @@
 {
-    "buildCommand": "",
-    "outputDirectory": ".",
     "framework": null,
     "rewrites": [
         {
@@ -9,7 +7,7 @@
         }
     ],
     "functions": {
-        "api/scrape-shops.js": {
+        "api/*.js": {
             "maxDuration": 60
         }
     },
