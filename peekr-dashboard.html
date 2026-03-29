@@ -324,6 +324,7 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
   <div class="sb-sec"><div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analyse</div>
     <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
@@ -377,6 +378,7 @@ td{padding:11px 14px;vertical-align:middle;}
       <div class="fb" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Shop</span>
       <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
@@ -399,10 +401,11 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:240px"><div class="thi">Shop Info</div></th>
       <th style="width:110px"><div class="thi">Products</div></th>
       <th style="width:90px"><div class="thi">Category</div></th>
-      <th style="width:130px"><div class="thi">Monthly Visits <span class="sic">⇅</span></div></th>
-      <th style="width:150px"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
-      <th style="width:80px"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
-      <th style="width:64px"><div class="thi">Score <span class="sic">⇅</span></div></th>
+      <th style="width:130px;cursor:pointer" onclick="sortBy('v')"><div class="thi">Monthly Visits <span class="sic">⇅</span></div></th>
+      <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
+      <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
+      <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Est. Sales <span class="sic">⇅</span></div></th>
+      <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
     <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">🔍</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
   </div>
@@ -416,29 +419,29 @@ td{padding:11px 14px;vertical-align:middle;}
 // Load shops via raw fetch with retry logic
 (async () => {
   window._userPlan = 'pro';
-  const _SB2=_SB;const _AK2=_AK;
-  async function fetchRetry(url, retries=3) {
+  const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+  const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+  async function fetchWithRetry(url, retries=3) {
     for (let i=0; i<retries; i++) {
-      try { const r = await fetch(url, {headers:{'apikey':_AK2}}); if(r.ok) return await r.json(); if(r.status>=500&&i<retries-1){await new Promise(r=>setTimeout(r,1000*(i+1)));continue;} return []; } catch(e){if(i<retries-1){await new Promise(r=>setTimeout(r,1000*(i+1)));continue;}throw e;}
-    } return [];
+      try {
+        const r = await fetch(url, { headers: { 'apikey': _AK } });
+        if (r.ok) return await r.json();
+        if (r.status >= 500 && i < retries-1) { await new Promise(r=>setTimeout(r, 1000*(i+1))); continue; }
+        console.log('[Peekr] Fetch ' + r.status + ' for ' + url.split('?')[0]);
+        return [];
+      } catch(e) { if (i < retries-1) { await new Promise(r=>setTimeout(r, 1000*(i+1))); continue; } throw e; }
+    }
+    return [];
   }
   try {
-    const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
-    const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
-    // Fetch top shops + FR shops in parallel for country diversity
-    const [r1, r2] = await Promise.all([
-      fetchRetry(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=1000'),
-      fetchRetry(_SB + '/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000')
+    const [s1, s2] = await Promise.all([
+      fetchWithRetry(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=1000'),
+      fetchWithRetry(_SB + '/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000')
     ]);
-    let allShops = [];
-    if (r1.ok) { const s = await r1.json(); if (s && s.length) allShops = s; }
-    if (r2.ok) {
-      const s2 = await r2.json();
-      if (s2 && s2.length) {
-        const existing = new Set(allShops.map(s => s.domain));
-        const newShops = s2.filter(s => !existing.has(s.domain));
-        allShops = allShops.concat(newShops);
-      }
+    let allShops = s1 || [];
+    if (s2 && s2.length) {
+      const existing = new Set(allShops.map(s => s.domain));
+      allShops = allShops.concat(s2.filter(s => !existing.has(s.domain)));
     }
     if (allShops.length > 0) {
       window._supabaseShops = allShops;
@@ -462,22 +465,60 @@ function mapShop(s,i){return{
   tr:(()=>{const t=s.traffic_trend||[];if(t.length>=4)return t;const v=s.monthly_visits||1000;const base=t.length?t[0]:v;return Array.from({length:12},(_, i)=>Math.round(base*(0.7+Math.random()*0.3)*(0.85+i*0.015)));})(),
   ad:s.live_ads||0,th:s.theme||'Unknown',cu:s.currency||'USD',p:s.products_count||0,
   ap:s.apps||[],px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
-  vc:s.ships_to||[s.country||'US']
+  vc:s.ships_to||[s.country||'US'],es:s.estimated_sales||0,esy:s.estimated_sales_yearly||0,
+  ico:s.icon||''
 };}
-// Wait for auth IIFE to load shops, then render (max 15s)
+// Direct fetch fallback — always works regardless of peekr-config.js auth state
+async function directFetchShops(){
+  const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+  const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+  try{
+    const [s1,s2]=await Promise.all([
+      fetch(_SB+'/rest/v1/shops?select=*&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
+      fetch(_SB+'/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[])
+    ]);
+    let allShops=s1||[];
+    if(s2&&s2.length){const existing=new Set(allShops.map(s=>s.domain));allShops=allShops.concat(s2.filter(s=>!existing.has(s.domain)));}
+    if(allShops.length>0){
+      window._supabaseShops=allShops;
+      console.log('[Peekr] Direct fetch loaded '+allShops.length+' shops');
+    }
+  }catch(e){console.error('[Peekr] Direct fetch failed:',e);}
+}
+// Wait for IIFE to load shops, with direct fetch fallback
 let _waitAttempts=0;
 function waitForShops(){
   if(window._supabaseShops && window._supabaseShops.length>0){
     D=window._supabaseShops.map(mapShop);
     console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
     re();
-  } else if(_waitAttempts++<75){
+  } else if(_waitAttempts++<25){
     setTimeout(waitForShops, 200);
   } else {
-    console.log('[Peekr] Timeout waiting for shops');
+    console.log('[Peekr] IIFE timeout, triggering direct fetch...');
+    directFetchShops().then(()=>{
+      if(window._supabaseShops&&window._supabaseShops.length>0){
+        D=window._supabaseShops.map(mapShop);
+        re();
+      }
+    });
   }
 }
 waitForShops();
+// Backup: also try on DOMContentLoaded in case everything else fails
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    if(!window._supabaseShops||window._supabaseShops.length===0){
+      console.log('[Peekr] DOMContentLoaded backup fetch...');
+      directFetchShops().then(()=>{
+        if(window._supabaseShops&&window._supabaseShops.length>0&&D.length===0){
+          D=window._supabaseShops.map(mapShop);
+          re();
+        }
+      });
+    }
+  },500);
+});
 const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
 const TB={hot:'rgba(232,121,154,0.09)',rising:'rgba(246,160,90,0.09)',watch:'rgba(230,184,58,0.09)',cold:'rgba(184,168,176,0.06)'};
 const TL={hot:'HOT',rising:'RISING',watch:'WATCH',cold:'COLD'};
@@ -485,7 +526,7 @@ function init(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCas
 
 // State variables
 let seg='all',q='',sortCol=null,sortDir='asc';
-let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null};
+let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null};
 let activeDropdown=null;
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
@@ -726,6 +767,10 @@ function createDropdown(filterName,btn){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='desc'?'checked':''} onchange="toggleSort('Ads Growth','desc')"><label>Highest Growth</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='asc'?'checked':''} onchange="toggleSort('Ads Growth','asc')"><label>Lowest Growth</label></div>`;
   }
+  else if(filterName==='Est. Sales'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='desc'?'checked':''} onchange="toggleSort('Est. Sales','desc')"><label>Highest Sales</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='asc'?'checked':''} onchange="toggleSort('Est. Sales','asc')"><label>Lowest Sales</label></div>`;
+  }
 
   if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;}
 
@@ -768,6 +813,7 @@ function clearFilter(filterName){
   if(filterName==='Traffic')filters.Traffic=null;
   else if(filterName==='Ads Count')filters['Ads Count']=null;
   else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
+  else if(filterName==='Est. Sales')filters['Est. Sales']=null;
   else if(filterName==='Creation Date')filters['Creation Date']={mode:null,date:null};
   else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
@@ -868,6 +914,7 @@ function gd(){
       if(sortCol==='v'){aVal=a.v;bVal=b.v;}
       else if(sortCol==='rv'){aVal=a.rv;bVal=b.rv;}
       else if(sortCol==='ad'){aVal=a.ad;bVal=b.ad;}
+      else if(sortCol==='es'){aVal=a.es;bVal=b.es;}
       else if(sortCol==='sc'){aVal=a.sc;bVal=b.sc;}
       return sortDir==='asc'?aVal-bVal:bVal-aVal;
     });
@@ -885,6 +932,9 @@ function gd(){
       const gA=getAdsGrowth(a),gB=getAdsGrowth(b);
       return filters['Ads Growth']==='desc'?gB-gA:gA-gB;
     });
+  }
+  if(filters['Est. Sales']){
+    s.sort((a,b)=>filters['Est. Sales']==='desc'?b.es-a.es:a.es-b.es);
   }
 
   return s;
@@ -920,6 +970,9 @@ function re(){
       }else if(th.textContent.includes('Live Ads')&&sortCol==='ad'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Est. Sales')&&sortCol==='es'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Score')&&sortCol==='sc'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
@@ -934,7 +987,7 @@ function re(){
     return`<tr onclick="om(${s.id})">
       <td><div class="si2">
         <div class="sthumb">
-          <img src="https://image.thum.io/get/width/120/crop/80/https://${s.d}"
+          <img src="https://image.thum.io/get/width/400/crop/200/https://${s.d}"
                onerror="this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';"
                loading="lazy" alt="${s.n}"/>
           <div class="sthumb-fb" style="display:none;">${init(s.n)}</div>
@@ -961,6 +1014,7 @@ function re(){
         <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
         <span style="color:${ac};font-weight:800;">${s.ad}</span>
       </div></td>
+      <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
   }).join('');
@@ -1000,6 +1054,7 @@ function om(id){
         <div class="di">Market <strong>${s.c.toUpperCase()} ${s.c2?s.c2.toUpperCase():''}</strong></div>
         <div class="di">Created <strong>${s.cr}</strong></div>
         <div class="di">Age <strong>${s.ag}</strong></div>
+        <div class="di">Est. Sales <strong>${s.es?fmtV(s.es):'N/A'}</strong></div>
       </div>
     </div>
     ${s.ad>0?`<a class="mml" href="https://www.facebook.com/ads/library/?q=${encodeURIComponent(s.n)}" target="_blank">View ${s.ad} active ads on Meta Ad Library →</a>`:''}`;
