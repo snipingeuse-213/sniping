@@ -1,8 +1,14 @@
 {
     "rewrites": [
-          {
-                  "source": "/",
-                  "destination": "/peekr-landing.html"
-          }
+        {
+            "source": "/",
+            "destination": "/peekr-landing.html"
+        }
+    ],
+    "crons": [
+        {
+            "path": "/api/scrape-shops",
+            "schedule": "* * * * *"
+        }
     ]
 }
