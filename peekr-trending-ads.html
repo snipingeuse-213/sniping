@@ -3,14 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
+<meta name="description" content="Peekr — Discover winning ads from top Shopify stores. Spy on Meta ads before they blow up."/>
 <meta name="theme-color" content="#F4A7B9"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
-<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://peekr.io"/>
-<meta name="twitter:card" content="summary"/>
 <link rel="stylesheet" href="peekr-responsive.css"/>
 <title>Peekr — Trending Ads</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -29,7 +24,7 @@ body{
   position:relative;
 }
 
-/* ── SAME FLOATING OBJECTS AS LANDING ── */
+/* ── FLOATING OBJECTS ── */
 .page-objects{
   position:fixed;inset:0;
   pointer-events:none;z-index:0;overflow:hidden;
@@ -59,14 +54,11 @@ body{
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
 }
-.sb-logo{
-  padding:16px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
 .sb-logo img{height:32px;width:auto;}
 .sb-sec{padding:10px 0 2px;}
 .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
 .ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
 .ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
 .ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
@@ -101,24 +93,6 @@ body{
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
 .cnt{font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);}
 .cnt b{color:#1a0a0f;font-size:15px;}
-.lpill{display:flex;align-items:center;gap:5px;background:rgba(82,200,122,0.1);border:1px solid rgba(82,200,122,0.25);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:#2a9e54;}
-.ldot{width:6px;height:6px;border-radius:50%;background:#52c87a;animation:bl 2s infinite;}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
-.bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
-.bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
-
-/* ── SEGMENTS ── */
-.segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
-.sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
-.sg.active{
-  background:rgba(255,252,248,0.85);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.9);
-  box-shadow:0 2px 12px rgba(200,100,140,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-  color:#d4607a;
-}
-.sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
 /* ── FILTERS ── */
 .fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
@@ -127,181 +101,85 @@ body{
 .fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
 .fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
 .fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fc{font-size:8px;opacity:.35;}
 
-/* ── DROPDOWN FILTERS ── */
-.fb-dropdown{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:4px;
-  background:#ffffff;
-  border:1px solid rgba(200,160,170,0.2);
-  border-radius:9px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.08);
-  min-width:180px;
-  max-width:240px;
-  max-height:280px;
-  overflow-y:auto;
-  z-index:100;
-  padding:8px;
-  display:none;
-}
-.fb-dropdown.open{display:block;}
-.fb-dropdown-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius:6px;
-  font-size:12px;
-  color:rgba(26,10,15,0.7);
-  cursor:pointer;
-  transition:all .15s;
-}
-.fb-dropdown-item:hover{background:rgba(232,121,154,0.08);color:#1a0a0f;}
-.fb-dropdown-item input{margin:0;cursor:pointer;}
-.fb-dropdown-clear{
-  padding:6px 10px;
-  margin-top:4px;
-  border-top:1px solid rgba(200,160,170,0.15);
-  font-size:11px;
-  font-weight:700;
-  color:#d4607a;
-  cursor:pointer;
-  text-align:center;
-  border-radius:6px;
-  transition:all .15s;
-}
-.fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
-
-/* ── DATE PICKER ── */
-.date-picker-wrap{padding:8px;}
-.date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
-.date-picker-wrap select,.date-picker-wrap input[type="date"]{
-  width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
-  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
-  outline:none;transition:border .15s;margin-bottom:8px;
-}
-.date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
-.date-picker-apply{
-  width:100%;padding:7px;border:none;border-radius:7px;
-  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
-  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
-}
-.date-picker-apply:hover{background:#d4607a;}
-
-/* ── TABLE ── */
-.tw{flex:1;overflow:auto;padding:12px 24px 24px;}
-table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
-thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
-thead th:hover{color:rgba(26,10,15,0.6);}
-thead th.sorted{color:#d4607a;}
-.thi{display:flex;align-items:center;gap:4px;}
-.sic{font-size:9px;opacity:.5;transition:opacity .15s;}
-
-tbody tr{cursor:pointer;}
-tbody tr td{
-  background:#ffffff;
-  border-top:1px solid rgba(220,200,210,0.12);
-  border-bottom:1px solid rgba(220,200,210,0.12);
-  transition:all .15s;
-}
-tbody tr td:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(200,160,170,0.1);}
-tbody tr td:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(200,160,170,0.1);}
-tbody tr:hover td{
-  background:#fff8fa;
-  border-color:rgba(232,121,154,0.15);
-  box-shadow:0 2px 12px rgba(200,100,140,0.07);
-}
-td{padding:11px 14px;vertical-align:middle;}
-
-.si2{display:flex;align-items:center;gap:10px;}
-.sthumb{
-  width:52px;height:40px;border-radius:9px;
-  overflow:hidden;
-  border:1px solid rgba(200,160,170,0.15);
-  flex-shrink:0;
-  background:rgba(245,240,235,0.8);
-  position:relative;
-}
-.sthumb img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-}
-.sthumb-fb{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);
-}
-.sname{font-size:13px;font-weight:800;color:#1a0a0f;}
-.sdomain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:1px;}
-.sage{font-size:10px;color:rgba(26,10,15,0.3);margin-top:2px;}
-.pc{display:flex;gap:3px;}
-.pt{width:34px;height:34px;border-radius:7px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(26,10,15,0.35);}
-.pct{font-size:10px;color:rgba(26,10,15,0.3);margin-top:3px;}
-.tv{font-size:13px;font-weight:800;color:#1a0a0f;}
-.spk{display:flex;align-items:flex-end;gap:1.5px;height:22px;margin-top:4px;}
-.spkb{width:3px;border-radius:2px 2px 0 0;min-height:3px;}
-.rv{font-size:12px;font-weight:600;color:rgba(26,10,15,0.5);}
-.flags{display:flex;gap:3px;align-items:center;}
-.flag-img{
-  width:22px;height:22px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1.5px solid rgba(220,200,210,0.25);
-  box-shadow:0 1px 3px rgba(0,0,0,0.08);
-  flex-shrink:0;
-}
-.acs{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800;}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.scp{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:12px;font-weight:900;border:2px solid;}
-.prbg{font-size:9px;font-weight:800;background:linear-gradient(90deg,#e8799a,#f4a7b9);color:#fff;padding:2px 6px;border-radius:20px;}
-.tag-niche{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
-
-/* ── MODAL ── */
-.mo{position:fixed;inset:0;background:rgba(26,10,15,0.18);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .2s;}
-.mo.open{opacity:1;pointer-events:all;}
-.md{
-  width:660px;max-height:88vh;
+/* ── CARDS GRID ── */
+.cw{flex:1;overflow:auto;padding:20px 24px;}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.ad-card{
   background:rgba(255,252,248,0.88);
-  backdrop-filter:blur(32px) saturate(1.6);
-  -webkit-backdrop-filter:blur(32px) saturate(1.6);
-  border:1.5px solid rgba(255,255,255,0.9);
-  border-radius:24px;
-  box-shadow:0 32px 80px rgba(200,80,120,0.14),inset 0 2px 0 rgba(255,255,255,1);
-  overflow:hidden;display:flex;flex-direction:column;
-  transform:translateY(20px) scale(.97);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.9);
+  border-radius:16px;
+  overflow:hidden;
+  transition:all .2s;
+  box-shadow:0 2px 12px rgba(200,100,140,0.06);
 }
-.mo.open .md{transform:translateY(0) scale(1);}
-.mh{padding:22px 24px 18px;border-bottom:1px solid rgba(200,160,170,0.12);display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(252,228,236,0.2));}
-.mico{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(244,167,185,0.15),rgba(255,255,255,0.8));border:1px solid rgba(200,160,170,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(26,10,15,0.4);flex-shrink:0;}
-.msn{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
-.mdom{font-size:12px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:3px;}
-.mcl{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:rgba(26,10,15,0.4);transition:all .15s;flex-shrink:0;}
-.mcl:hover{background:#fff;color:#e8799a;border-color:#e8799a;}
-.mb{padding:20px 24px;overflow-y:auto;flex:1;}
-.msts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
-.stb{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.18);border-radius:12px;padding:12px;}
-.stl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.stv{font-size:20px;font-weight:900;letter-spacing:-.02em;color:#1a0a0f;}
-.msec{margin-bottom:18px;}
-.mst2{font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.tgl{display:flex;flex-wrap:wrap;gap:5px;}
-.tg{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid;}
-.mcht{display:flex;align-items:flex-end;gap:4px;height:64px;padding:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;margin-bottom:20px;}
-.chb{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-.mml{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(232,121,154,0.06);border:1px solid rgba(232,121,154,0.18);border-radius:12px;color:#d4607a;font-size:13px;font-weight:700;text-decoration:none;transition:all .15s;}
-.mml:hover{background:rgba(232,121,154,0.1);}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;padding:14px;}
-.di{font-size:12px;color:rgba(26,10,15,0.5);}
-.di strong{color:#1a0a0f;}
+.ad-card:hover{
+  border-color:rgba(232,121,154,0.3);
+  box-shadow:0 8px 28px rgba(200,100,140,0.12);
+  transform:translateY(-2px);
+}
+.ad-thumb{
+  width:100%;height:160px;
+  background:#f0ece6;
+  position:relative;overflow:hidden;
+}
+.ad-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.ad-thumb-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(26,10,15,0.2);letter-spacing:.05em;}
+.ad-score{
+  position:absolute;top:10px;right:10px;
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:#fff;
+  border:2px solid rgba(255,255,255,0.9);
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.ad-body{padding:16px;}
+.ad-name{font-size:14px;font-weight:800;color:#1a0a0f;margin-bottom:2px;}
+.ad-domain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-bottom:10px;}
+.ad-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.ad-tag{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
+.ad-stats{display:flex;gap:16px;margin-bottom:14px;}
+.ad-stat-val{font-size:13px;font-weight:800;color:#1a0a0f;}
+.ad-stat-lbl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:600;}
+.ad-btn{
+  display:block;width:100%;padding:10px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#e8799a,#d4607a);
+  color:#fff;font-family:'Figtree',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;text-align:center;text-decoration:none;
+  transition:all .2s;
+}
+.ad-btn:hover{box-shadow:0 4px 16px rgba(232,121,154,0.35);transform:translateY(-1px);}
+.ad-btn-sec{
+  display:block;width:100%;padding:8px;border:1px solid rgba(200,160,170,0.25);border-radius:10px;
+  background:transparent;color:rgba(26,10,15,0.55);font-family:'Figtree',sans-serif;font-size:12px;font-weight:600;
+  cursor:pointer;text-align:center;text-decoration:none;margin-top:8px;
+  transition:all .2s;
+}
+.ad-btn-sec:hover{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.04);}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,rgba(255,252,248,0.95),rgba(252,228,236,0.3));
+  border:1px solid rgba(255,255,255,0.9);
+  border-radius:16px;
+  padding:32px;margin-bottom:24px;
+  display:flex;align-items:center;gap:32px;
+  box-shadow:0 2px 12px rgba(200,100,140,0.06);
+}
+.hero-text h2{font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;}
+.hero-text p{font-size:14px;color:rgba(26,10,15,0.5);line-height:1.5;}
+.hero-stats{display:flex;gap:24px;margin-top:14px;}
+.hs{text-align:center;}
+.hs-val{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:#e8799a;}
+.hs-lbl{font-size:11px;color:rgba(26,10,15,0.4);font-weight:600;}
+
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
+.loading-state{text-align:center;padding:60px;color:rgba(26,10,15,0.35);font-size:14px;font-weight:600;}
+
+@media(max-width:1100px){.cards-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.cards-grid{grid-template-columns:1fr;}.hero{flex-direction:column;text-align:center;}.hero-stats{justify-content:center;}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="peekr-config.js"></script>
 </head>
 <body>
 
@@ -317,8 +195,6 @@ td{padding:11px 14px;vertical-align:middle;}
   <div class="po-worm2"></div>
 </div>
 
-
-
 <!-- SIDEBAR -->
 <aside class="sb">
   <div class="sb-logo">
@@ -326,6 +202,7 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
   <div class="sb-sec"><div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analyse</div>
     <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
@@ -350,1095 +227,208 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 </aside>
 
-<div class="main" style="overflow-y:auto;">
-
-<style>
-    #sec-trending-ads {
-      background: #fafafa;
-      min-height: 100vh;
-      padding: 32px 24px;
-      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    #sec-trending-ads * {
-      box-sizing: border-box;
-    }
-
-    /* Header Section */
-    .trending-ads-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .trending-ads-header-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex: 1;
-      min-width: 300px;
-    }
-
-    .trending-ads-title {
-      font-family: 'Clash Display', 'Figtree', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0;
-    }
-
-    .trending-ads-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #f0f0f0;
-      border-radius: 20px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #666;
-    }
-
-    .trending-ads-badge-dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: pulse-dot 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .trending-ads-search {
-      flex: 1;
-      min-width: 200px;
-      max-width: 380px;
-    }
-
-    .trending-ads-search input {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: 'Figtree', sans-serif;
-      background: #ffffff;
-      transition: all 0.2s;
-    }
-
-    .trending-ads-search input:focus {
-      outline: none;
-      border-color: #e8799a;
-      box-shadow: 0 0 0 3px rgba(232, 121, 154, 0.1);
-    }
-
-    .trending-ads-search input::placeholder {
-      color: #999;
-    }
-
-    .trending-ads-controls {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .trending-ads-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      background: #ffffff;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.2s;
-      color: #666;
-    }
-
-    .trending-ads-btn:hover {
-      background: #f5f5f5;
-      border-color: #d0d0d0;
-    }
-
-    .trending-ads-btn.active {
-      background: #e8799a;
-      color: #ffffff;
-      border-color: #e8799a;
-    }
-
-    /* Filters Row */
-    .trending-ads-filters {
-      background: #ffffff;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 24px;
-      border: 1px solid #f0f0f0;
-      overflow-x: auto;
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .trending-ads-filter-group {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      white-space: nowrap;
-    }
-
-    .trending-ads-filter-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .trending-ads-filter-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      border-radius: 20px;
-      border: 1px solid #e0e0e0;
-      background: #ffffff;
-      font-size: 13px;
-      font-weight: 500;
-      color: #666;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .trending-ads-filter-pill:hover {
-      border-color: #d0d0d0;
-      background: #f9f9f9;
-    }
-
-    .trending-ads-filter-pill.active {
-      background: #e8799a;
-      color: #ffffff;
-      border-color: #e8799a;
-    }
-
-    .trending-ads-filter-pill-icon {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    /* Grid Layout */
-    .trending-ads-grid-wrapper {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-
-    @media (max-width: 1400px) {
-      .trending-ads-grid-wrapper {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 1024px) {
-      .trending-ads-grid-wrapper {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .trending-ads-grid-wrapper {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .trending-ads-grid-wrapper.list-view {
-      grid-template-columns: 1fr;
-    }
-
-    /* Ad Card */
-    .trending-ad-card {
-      background: #ffffff;
-      border-radius: 14px;
-      border: 1px solid #f0f0f0;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .trending-ad-card:hover {
-      border-color: #e0e0e0;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      transform: translateY(-4px);
-    }
-
-    .trending-ad-card-thumbnail {
-      width: 100%;
-      aspect-ratio: 1;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    .trending-ad-card-thumbnail.meta {
-      background: linear-gradient(135deg, #1877F2 0%, #0a66c2 100%);
-    }
-
-    .trending-ad-card-thumbnail.tiktok {
-      background: linear-gradient(135deg, #000000 0%, #333333 100%);
-    }
-
-    .trending-ad-card-thumbnail.google {
-      background: linear-gradient(135deg, #34A853 0%, #188038 100%);
-    }
-
-    .trending-ad-card-thumbnail.pinterest {
-      background: linear-gradient(135deg, #E60023 0%, #a3001f 100%);
-    }
-
-    .trending-ad-card-thumbnail.snapchat {
-      background: linear-gradient(135deg, #FFFC00 0%, #ffdb00 100%);
-      color: rgba(0, 0, 0, 0.2);
-    }
-
-    .trending-ad-card-badges {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .trending-ad-card-platform-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.95);
-      font-size: 11px;
-      font-weight: 700;
-      color: #1a1a1a;
-      backdrop-filter: blur(4px);
-    }
-
-    .trending-ad-card-platform-badge.meta {
-      color: #1877F2;
-    }
-
-    .trending-ad-card-platform-badge.tiktok {
-      color: #000000;
-    }
-
-    .trending-ad-card-platform-badge.google {
-      color: #34A853;
-    }
-
-    .trending-ad-card-platform-badge.pinterest {
-      color: #E60023;
-    }
-
-    .trending-ad-card-platform-badge.snapchat {
-      color: #ffdb00;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
-
-    .trending-ad-card-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 8px;
-      border-radius: 6px;
-      background: rgba(34, 197, 94, 0.95);
-      font-size: 11px;
-      font-weight: 700;
-      color: #ffffff;
-      backdrop-filter: blur(4px);
-    }
-
-    .trending-ad-card-status-badge.new {
-      background: rgba(59, 130, 246, 0.95);
-    }
-
-    .trending-ad-card-content {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .trending-ad-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .trending-ad-card-shop {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .trending-ad-card-shop-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    .trending-ad-card-country-flag {
-      font-size: 14px;
-    }
-
-    .trending-ad-card-headline {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1a1a1a;
-      line-height: 1.4;
-      margin-bottom: 8px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .trending-ad-card-copy {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.4;
-      margin-bottom: 12px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .trending-ad-card-metrics {
-      display: flex;
-      gap: 12px;
-      font-size: 11px;
-      color: #999;
-      margin-bottom: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #f5f5f5;
-    }
-
-    .trending-ad-card-metric {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .trending-ad-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-top: auto;
-    }
-
-    .trending-ad-card-save-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      background: #ffffff;
-      cursor: pointer;
-      font-size: 16px;
-      transition: all 0.2s;
-      color: #999;
-    }
-
-    .trending-ad-card-save-btn:hover {
-      border-color: #e8799a;
-      color: #e8799a;
-      background: #fff5f7;
-    }
-
-    .trending-ad-card-save-btn.saved {
-      color: #e8799a;
-      border-color: #e8799a;
-      background: #fff5f7;
-    }
-
-    .trending-ad-card-save-btn.saved::before {
-      content: '♥';
-    }
-
-    .trending-ad-card-view-link {
-      font-size: 12px;
-      font-weight: 600;
-      color: #e8799a;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .trending-ad-card-view-link:hover {
-      gap: 6px;
-      color: #d65a7a;
-    }
-
-    /* Pagination */
-    .trending-ads-pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-top: 32px;
-    }
-
-    .trending-ads-pagination-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      height: 36px;
-      padding: 0 8px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      background: #ffffff;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      color: #666;
-      transition: all 0.2s;
-    }
-
-    .trending-ads-pagination-btn:hover:not(:disabled) {
-      border-color: #d0d0d0;
-      background: #f9f9f9;
-    }
-
-    .trending-ads-pagination-btn.active {
-      background: #e8799a;
-      color: #ffffff;
-      border-color: #e8799a;
-    }
-
-    .trending-ads-pagination-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .trending-ads-pagination-info {
-      font-size: 13px;
-      color: #999;
-      margin: 0 8px;
-    }
-
-    /* List View */
-    .trending-ad-card.list-view-card {
-      flex-direction: row;
-      height: auto;
-    }
-
-    .trending-ad-card.list-view-card .trending-ad-card-thumbnail {
-      width: 120px;
-      height: 120px;
-      min-width: 120px;
-      aspect-ratio: 1;
-    }
-
-    .trending-ad-card.list-view-card .trending-ad-card-content {
-      flex: 1;
-      padding: 16px;
-    }
-  </style>
-
-  <div class="trending-ads-header">
-    <div class="trending-ads-header-left">
-      <h1 class="trending-ads-title">Trending Ads</h1>
-      <div class="trending-ads-badge">
-        <span class="trending-ads-badge-dot"></span>
-        <span>Live • <span class="trending-ads-count">156</span> Ads</span>
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-title">Trending Ads</div>
+    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">🔍</span><input type="text" placeholder="Search shops or ads..." id="searchInput" oninput="applyFilters();renderCards()"/></div>
+    <div class="tb-r">
+      <div class="cnt"><b id="totalCount">0</b> shops with ads</div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="fw">
+    <div class="fr">
+      <div class="fl">Platform</div>
+      <button class="fb active" data-platform="meta" onclick="togglePlatform(this)">📘 Meta</button>
+      <button class="fb" data-platform="tiktok" onclick="togglePlatform(this)" style="opacity:.5;cursor:not-allowed" title="Coming soon">🎵 TikTok</button>
+      <button class="fb" data-platform="google" onclick="togglePlatform(this)" style="opacity:.5;cursor:not-allowed" title="Coming soon">🔎 Google</button>
+    </div>
+    <div class="fr">
+      <div class="fl">Score</div>
+      <button class="fb active" data-score="all" onclick="setScore(this)">All</button>
+      <button class="fb" data-score="80" onclick="setScore(this)">80+ Hot</button>
+      <button class="fb" data-score="60" onclick="setScore(this)">60-79 Rising</button>
+    </div>
+    <div class="fr">
+      <div class="fl">Country</div>
+      <select id="countryFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;">
+        <option value="">All Countries</option>
+      </select>
+      <select id="nicheFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
+        <option value="">All Niches</option>
+      </select>
+      <select id="sortFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
+        <option value="score">Sort: Score</option>
+        <option value="visits">Sort: Visits</option>
+        <option value="newest">Sort: Newest</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="cw">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-text" style="flex:1">
+        <h2>Discover Winning Ads</h2>
+        <p>Browse top-performing Shopify stores and spy their live Meta ads. Every card links directly to the Meta Ad Library.</p>
+        <div class="hero-stats">
+          <div class="hs"><div class="hs-val" id="heroShops">0</div><div class="hs-lbl">Shops Tracked</div></div>
+          <div class="hs"><div class="hs-val">Meta</div><div class="hs-lbl">Ad Library</div></div>
+          <div class="hs"><div class="hs-val">Live</div><div class="hs-lbl">Real-time Data</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="trending-ads-search">
-      <input type="text" class="trending-ads-search-input" placeholder="Search by brand, headline...">
-    </div>
+    <!-- LOADING -->
+    <div id="loadingState" class="loading-state">Loading trending ads...</div>
 
-    <div class="trending-ads-controls">
-      <button class="trending-ads-btn" id="trending-ads-refresh-btn" title="Refresh">
-        🔄
-      </button>
-      <button class="trending-ads-btn active" id="trending-ads-grid-btn" title="Grid View">
-        ⊞
-      </button>
-      <button class="trending-ads-btn" id="trending-ads-list-btn" title="List View">
-        ≡
-      </button>
+    <!-- CARDS -->
+    <div class="cards-grid" id="cardsGrid" style="display:none"></div>
+
+    <!-- EMPTY -->
+    <div id="emptyState" class="empty" style="display:none">
+      <div style="font-size:40px;margin-bottom:12px;opacity:.4">🔍</div>
+      <div style="font-size:14px;font-weight:600">No shops match your filters</div>
     </div>
   </div>
-
-  <div class="trending-ads-filters">
-    <div class="trending-ads-filter-group">
-      <span class="trending-ads-filter-label">Platform</span>
-      <button class="trending-ads-filter-pill active" data-filter-type="platform" data-filter-value="all">All</button>
-      <button class="trending-ads-filter-pill" data-filter-type="platform" data-filter-value="meta">
-        <span class="trending-ads-filter-pill-icon" style="background: #1877F2;"></span> Meta
-      </button>
-      <button class="trending-ads-filter-pill" data-filter-type="platform" data-filter-value="tiktok">
-        <span class="trending-ads-filter-pill-icon" style="background: #000000;"></span> TikTok
-      </button>
-      <button class="trending-ads-filter-pill" data-filter-type="platform" data-filter-value="google">
-        <span class="trending-ads-filter-pill-icon" style="background: #34A853;"></span> Google
-      </button>
-      <button class="trending-ads-filter-pill" data-filter-type="platform" data-filter-value="pinterest">
-        <span class="trending-ads-filter-pill-icon" style="background: #E60023;"></span> Pinterest
-      </button>
-      <button class="trending-ads-filter-pill" data-filter-type="platform" data-filter-value="snapchat">
-        <span class="trending-ads-filter-pill-icon" style="background: #ffdb00;"></span> Snapchat
-      </button>
-    </div>
-
-    <div class="trending-ads-filter-group">
-      <span class="trending-ads-filter-label">Format</span>
-      <button class="trending-ads-filter-pill active" data-filter-type="format" data-filter-value="all">All</button>
-      <button class="trending-ads-filter-pill" data-filter-type="format" data-filter-value="image">Image</button>
-      <button class="trending-ads-filter-pill" data-filter-type="format" data-filter-value="video">Video</button>
-      <button class="trending-ads-filter-pill" data-filter-type="format" data-filter-value="carousel">Carousel</button>
-    </div>
-
-    <div class="trending-ads-filter-group">
-      <span class="trending-ads-filter-label">Status</span>
-      <button class="trending-ads-filter-pill active" data-filter-type="status" data-filter-value="all">All</button>
-      <button class="trending-ads-filter-pill" data-filter-type="status" data-filter-value="active">Active</button>
-      <button class="trending-ads-filter-pill" data-filter-type="status" data-filter-value="new">New</button>
-    </div>
-  </div>
-
-  <div class="trending-ads-grid-wrapper" id="trending-ads-grid">
-    <!-- Cards will be inserted here -->
-  </div>
-
-  <div class="trending-ads-pagination">
-    <button class="trending-ads-pagination-btn" id="prev-page-btn">← Prev</button>
-    <span class="trending-ads-pagination-info">
-      Page <span id="current-page">1</span> of <span id="total-pages">4</span>
-    </span>
-    <button class="trending-ads-pagination-btn" id="next-page-btn">Next →</button>
-  </div>
-
-  <script>
-    // Auth protection
-    (async () => {
-      const session = await Peekr.requireAuth();
-      if (!session) return;
-      const plan = await Peekr.getUserPlan();
-      window._userPlan = plan;
-      if (plan === 'free') { Peekr.showPageLock('Trending Ads', 'Starter'); return; }
-    })();
-
-    // Ad Data — fetched from Supabase, with demo fallback
-    let demoAds = [
-      {
-        id: 1,
-        platform: 'meta',
-        format: 'image',
-        status: 'active',
-        shop: 'Velvet Bloom',
-        country: '🇺🇸',
-        headline: 'Transform Your Skin in 7 Days',
-        copy: 'Premium skincare infused with organic botanicals. Save 30% today.',
-        daysActive: 12,
-        likes: 2847,
-        shares: 156,
-        saved: false
-      },
-      {
-        id: 2,
-        platform: 'tiktok',
-        format: 'video',
-        status: 'active',
-        shop: 'ZenFlow',
-        country: '🇨🇦',
-        headline: 'The Home Gym That Fits Anywhere',
-        copy: 'Compact. Versatile. Life-changing. Join 50k+ happy users.',
-        daysActive: 8,
-        likes: 5123,
-        shares: 412,
-        saved: false
-      },
-      {
-        id: 3,
-        platform: 'google',
-        format: 'carousel',
-        status: 'new',
-        shop: 'NordHome',
-        country: '🇸🇪',
-        headline: 'Nordic Design, Delivered',
-        copy: 'Minimalist furniture that transforms spaces. Free shipping.',
-        daysActive: 2,
-        likes: 1240,
-        shares: 89,
-        saved: false
-      },
-      {
-        id: 4,
-        platform: 'pinterest',
-        format: 'image',
-        status: 'active',
-        shop: 'Luna Candles',
-        country: '🇩🇪',
-        headline: 'Hand-Poured Luxury Candles',
-        copy: 'Natural wax. Soy-based. 50+ scents. Ships worldwide.',
-        daysActive: 15,
-        likes: 3521,
-        shares: 234,
-        saved: false
-      },
-      {
-        id: 5,
-        platform: 'meta',
-        format: 'video',
-        status: 'active',
-        shop: 'ProTech Gadgets',
-        country: '🇺🇸',
-        headline: 'Smart Home That Actually Works',
-        copy: 'Control everything with your voice. Easy installation.',
-        daysActive: 6,
-        likes: 4156,
-        shares: 301,
-        saved: false
-      },
-      {
-        id: 6,
-        platform: 'tiktok',
-        format: 'video',
-        status: 'new',
-        shop: 'BewBeauty',
-        country: '🇬🇧',
-        headline: 'Cruelty-Free Makeup Revolution',
-        copy: 'Bold colors. Clean ingredients. Zero guilt.',
-        daysActive: 1,
-        likes: 8934,
-        shares: 567,
-        saved: false
-      },
-      {
-        id: 7,
-        platform: 'google',
-        format: 'image',
-        status: 'active',
-        shop: 'EcoStyle',
-        country: '🇦🇺',
-        headline: 'Sustainable Fashion for Everyone',
-        copy: 'Organic cotton. Ethically made. Prices you\'ll love.',
-        daysActive: 11,
-        likes: 2134,
-        shares: 145,
-        saved: false
-      },
-      {
-        id: 8,
-        platform: 'snapchat',
-        format: 'video',
-        status: 'active',
-        shop: 'FitLife App',
-        country: '🇮🇳',
-        headline: 'Fitness Coach in Your Pocket',
-        copy: 'AI-powered workouts. 10M+ downloads. Free trial today.',
-        daysActive: 9,
-        likes: 6234,
-        shares: 423,
-        saved: false
-      },
-      {
-        id: 9,
-        platform: 'pinterest',
-        format: 'carousel',
-        status: 'active',
-        shop: 'GreenSpaces',
-        country: '🇭🇴',
-        headline: 'Indoor Plants Delivered Fresh',
-        copy: 'Rare varieties. Expert care tips included. 100% satisfaction.',
-        daysActive: 13,
-        likes: 3987,
-        shares: 278,
-        saved: false
-      },
-      {
-        id: 10,
-        platform: 'meta',
-        format: 'image',
-        status: 'new',
-        shop: 'WaterWell',
-        country: '🇳🇿',
-        headline: 'Premium Water Bottles for Life',
-        copy: 'Insulated for 24hrs. Eco-friendly. Pick your color.',
-        daysActive: 3,
-        likes: 1876,
-        shares: 123,
-        saved: false
-      },
-      {
-        id: 11,
-        platform: 'tiktok',
-        format: 'image',
-        status: 'active',
-        shop: 'SnapSnacks',
-        country: '🇲🇽',
-        headline: 'Healthy Snacks, Serious Taste',
-        copy: 'Zero guilt. 100% organic. Delivered to your door.',
-        daysActive: 7,
-        likes: 5678,
-        shares: 389,
-        saved: false
-      },
-      {
-        id: 12,
-        platform: 'google',
-        format: 'video',
-        status: 'active',
-        shop: 'TechFlow',
-        country: '🇯🇵',
-        headline: 'Wireless Tech That\'s Actually Wireless',
-        copy: 'No cables. No limits. 40hr battery life.',
-        daysActive: 10,
-        likes: 4421,
-        shares: 312,
-        saved: false
-      },
-      {
-        id: 13,
-        platform: 'snapchat',
-        format: 'carousel',
-        status: 'new',
-        shop: 'ChefBox',
-        country: '🇫🇷',
-        headline: 'Meal Kits from Top Chefs',
-        copy: 'Restaurant quality. Home cooked. 30min prep time.',
-        daysActive: 4,
-        likes: 2943,
-        shares: 201,
-        saved: false
-      },
-      {
-        id: 14,
-        platform: 'meta',
-        format: 'carousel',
-        status: 'active',
-        shop: 'SkinGlow Pro',
-        country: '🇰🇷',
-        headline: 'Korean Beauty Simplified',
-        copy: 'K-beauty essentials. Clinical results. Dermatologist tested.',
-        daysActive: 14,
-        likes: 6123,
-        shares: 445,
-        saved: false
-      },
-      {
-        id: 15,
-        platform: 'pinterest',
-        format: 'image',
-        status: 'active',
-        shop: 'CosyHome',
-        country: '🇪🇸',
-        headline: 'Create Your Dream Space',
-        copy: 'Home decor that tells your story. Curated collections.',
-        daysActive: 16,
-        likes: 4567,
-        shares: 298,
-        saved: false
-      },
-      {
-        id: 16,
-        platform: 'tiktok',
-        format: 'video',
-        status: 'active',
-        shop: 'ActiveLife',
-        country: '🇧🇷',
-        headline: 'Sportswear Built for You',
-        copy: 'Breathable. Stylish. Sustainable. Move freely.',
-        daysActive: 5,
-        likes: 7234,
-        shares: 521,
-        saved: false
-      }
-    ];
-
-    // Try loading real ads from Supabase
-    async function loadRealAds(){
-      try{
-        const ads = await Peekr.getAds({limit:500});
-        if(ads&&ads.length>0){
-          const countryFlags={US:'\u{1F1FA}\u{1F1F8}',GB:'\u{1F1EC}\u{1F1E7}',CA:'\u{1F1E8}\u{1F1E6}',DE:'\u{1F1E9}\u{1F1EA}',FR:'\u{1F1EB}\u{1F1F7}',AU:'\u{1F1E6}\u{1F1FA}',SE:'\u{1F1F8}\u{1F1EA}',NL:'\u{1F1F3}\u{1F1F1}',JP:'\u{1F1EF}\u{1F1F5}',KR:'\u{1F1F0}\u{1F1F7}',IN:'\u{1F1EE}\u{1F1F3}',BR:'\u{1F1E7}\u{1F1F7}'};
-          demoAds=ads.map((a,i)=>({
-            id:i+1,platform:a.platform||'meta',format:a.format||'image',status:a.status||'active',
-            shop:a.shop_name||'Unknown',country:countryFlags[(a.country||'US').toUpperCase()]||'\u{1F30D}',
-            headline:a.headline||'Ad Creative',copy:a.copy||'',
-            daysActive:a.days_active||0,likes:a.likes||0,shares:a.shares||0,saved:false
-          }));
-          console.log('[Peekr Ads] Loaded '+demoAds.length+' ads from Supabase');
-        }
-      }catch(e){console.log('[Peekr Ads] Using demo data',e);}
-    }
-
-    let currentView = 'grid';
-    let currentPage = 1;
-    const adsPerPage = 16;
-    let filteredAds = [...demoAds];
-    let activeFilters = {
-      platform: 'all',
-      format: 'all',
-      status: 'all'
-    };
-
-    // Initialize
-    async function init() {
-      await loadRealAds();
-      filteredAds = [...demoAds];
-      loadSavedAds();
-      renderAds();
-      attachEventListeners();
-      updatePagination();
-    }
-
-    // Load saved ads from localStorage
-    function loadSavedAds() {
-      const saved = localStorage.getItem('peekr-trending-ads-saved');
-      if (saved) {
-        const savedIds = JSON.parse(saved);
-        demoAds.forEach(ad => {
-          ad.saved = savedIds.includes(ad.id);
-        });
-      }
-    }
-
-    // Save to localStorage
-    function saveAdState(adId, saved) {
-      let savedIds = JSON.parse(localStorage.getItem('peekr-trending-ads-saved') || '[]');
-      if (saved && !savedIds.includes(adId)) {
-        savedIds.push(adId);
-      } else if (!saved && savedIds.includes(adId)) {
-        savedIds = savedIds.filter(id => id !== adId);
-      }
-      localStorage.setItem('peekr-trending-ads-saved', JSON.stringify(savedIds));
-    }
-
-    // Render ads
-    function renderAds() {
-      const grid = document.getElementById('trending-ads-grid');
-      grid.innerHTML = '';
-
-      const startIdx = (currentPage - 1) * adsPerPage;
-      const endIdx = Math.min(startIdx + adsPerPage, filteredAds.length);
-      const adsToShow = filteredAds.slice(startIdx, endIdx);
-
-      adsToShow.forEach(ad => {
-        const card = createAdCard(ad);
-        grid.appendChild(card);
-      });
-    }
-
-    // Create ad card
-    function createAdCard(ad) {
-      const card = document.createElement('div');
-      card.className = `trending-ad-card ${currentView === 'list' ? 'list-view-card' : ''}`;
-
-      const platformColors = {
-        meta: { name: 'Meta', color: '#1877F2' },
-        tiktok: { name: 'TikTok', color: '#000000' },
-        google: { name: 'Google', color: '#34A853' },
-        pinterest: { name: 'Pinterest', color: '#E60023' },
-        snapchat: { name: 'Snapchat', color: '#ffdb00' }
-      };
-
-      const platformInfo = platformColors[ad.platform];
-
-      card.innerHTML = `
-        <div class="trending-ad-card-thumbnail ${ad.platform}">
-          <div class="trending-ad-card-badges">
-            <div class="trending-ad-card-platform-badge ${ad.platform}">
-              ${platformInfo.name}
-            </div>
-            <div class="trending-ad-card-status-badge ${ad.status}">
-              ${ad.status.charAt(0).toUpperCase() + ad.status.slice(1)}
-            </div>
-          </div>
-        </div>
-        <div class="trending-ad-card-content">
-          <div class="trending-ad-card-header">
-            <div>
-              <div class="trending-ad-card-shop">
-                <span class="trending-ad-card-shop-name">${ad.shop}</span>
-                <span class="trending-ad-card-country-flag">${ad.country}</span>
-              </div>
-              <h3 class="trending-ad-card-headline">${ad.headline}</h3>
-              <p class="trending-ad-card-copy">${ad.copy}</p>
-            </div>
-          </div>
-          <div class="trending-ad-card-metrics">
-            <div class="trending-ad-card-metric">📅 ${ad.daysActive} days</div>
-            <div class="trending-ad-card-metric">👍 ${ad.likes.toLocaleString()}</div>
-            <div class="trending-ad-card-metric">↗️ ${ad.shares.toLocaleString()}</div>
-          </div>
-          <div class="trending-ad-card-footer">
-            <button class="trending-ad-card-save-btn ${ad.saved ? 'saved' : ''}" data-ad-id="${ad.id}">
-              ${ad.saved ? '♥' : '♡'}
-            </button>
-            <a class="trending-ad-card-view-link" href="#" data-ad-id="${ad.id}">
-              View on Ad Library →
-            </a>
-          </div>
-        </div>
-      `;
-
-      return card;
-    }
-
-    // Filter ads
-    function filterAds() {
-      filteredAds = demoAds.filter(ad => {
-        const platformMatch = activeFilters.platform === 'all' || ad.platform === activeFilters.platform;
-        const formatMatch = activeFilters.format === 'all' || ad.format === activeFilters.format;
-        const statusMatch = activeFilters.status === 'all' || ad.status === activeFilters.status;
-        return platformMatch && formatMatch && statusMatch;
-      });
-
-      currentPage = 1;
-      updatePagination();
-      renderAds();
-    }
-
-    // Update pagination
-    function updatePagination() {
-      const totalPages = Math.ceil(filteredAds.length / adsPerPage);
-      document.getElementById('total-pages').textContent = totalPages;
-      document.getElementById('current-page').textContent = currentPage;
-      document.getElementById('prev-page-btn').disabled = currentPage === 1;
-      document.getElementById('next-page-btn').disabled = currentPage === totalPages || totalPages === 0;
-    }
-
-    // Event listeners
-    function attachEventListeners() {
-      // View toggle
-      document.getElementById('trending-ads-grid-btn').addEventListener('click', function() {
-        currentView = 'grid';
-        document.getElementById('trending-ads-grid-btn').classList.add('active');
-        document.getElementById('trending-ads-list-btn').classList.remove('active');
-        document.getElementById('trending-ads-grid').classList.remove('list-view');
-        renderAds();
-      });
-
-      document.getElementById('trending-ads-list-btn').addEventListener('click', function() {
-        currentView = 'list';
-        document.getElementById('trending-ads-list-btn').classList.add('active');
-        document.getElementById('trending-ads-grid-btn').classList.remove('active');
-        document.getElementById('trending-ads-grid').classList.add('list-view');
-        renderAds();
-      });
-
-      // Refresh button
-      document.getElementById('trending-ads-refresh-btn').addEventListener('click', function() {
-        this.style.transform = 'rotate(0deg)';
-        this.style.transition = 'none';
-        setTimeout(() => {
-          this.style.transition = 'transform 0.6s ease';
-          this.style.transform = 'rotate(360deg)';
-        }, 10);
-      });
-
-      // Filter pills
-      document.querySelectorAll('.trending-ads-filter-pill').forEach(pill => {
-        pill.addEventListener('click', function() {
-          const filterType = this.dataset.filterType;
-          const filterValue = this.dataset.filterValue;
-
-          // Remove active from other pills in same group
-          document.querySelectorAll(`.trending-ads-filter-pill[data-filter-type="${filterType}"]`).forEach(p => {
-            p.classList.remove('active');
-          });
-
-          this.classList.add('active');
-          activeFilters[filterType] = filterValue;
-          filterAds();
-        });
-      });
-
-      // Save buttons
-      document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('trending-ad-card-save-btn')) {
-          const adId = parseInt(e.target.dataset.adId);
-          const ad = demoAds.find(a => a.id === adId);
-          ad.saved = !ad.saved;
-          saveAdState(adId, ad.saved);
-          e.target.classList.toggle('saved');
-          e.target.textContent = ad.saved ? '♥' : '♡';
-        }
-
-        if (e.target.classList.contains('trending-ad-card-view-link')) {
-          e.preventDefault();
-          const adId = e.target.dataset.adId;
-          alert(`Opening Ad Library for Ad #${adId}`);
-        }
-      });
-
-      // Pagination
-      document.getElementById('prev-page-btn').addEventListener('click', function() {
-        if (currentPage > 1) {
-          currentPage--;
-          updatePagination();
-          renderAds();
-          window.scrollTo(0, 0);
-        }
-      });
-
-      document.getElementById('next-page-btn').addEventListener('click', function() {
-        const totalPages = Math.ceil(filteredAds.length / adsPerPage);
-        if (currentPage < totalPages) {
-          currentPage++;
-          updatePagination();
-          renderAds();
-          window.scrollTo(0, 0);
-        }
-      });
-
-      // Search (placeholder functionality)
-      document.querySelector('.trending-ads-search-input').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        filteredAds = demoAds.filter(ad => {
-          return ad.headline.toLowerCase().includes(searchTerm) ||
-                 ad.copy.toLowerCase().includes(searchTerm) ||
-                 ad.shop.toLowerCase().includes(searchTerm);
-        });
-        currentPage = 1;
-        updatePagination();
-        renderAds();
-      });
-    }
-
-    // Start
-    init();
-  </script>
-
 </div>
 
+<script>
+const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDY4NzMsImV4cCI6MjA1ODQyMjg3M30.1FiWG8gKL50dUqqA_fKOPT5-NfUVpx3sVxflKr-ouPY';
+
+const FLAGS = {US:'🇺🇸',GB:'🇬🇧',CA:'🇨🇦',AU:'🇦🇺',DE:'🇩🇪',FR:'🇫🇷',IT:'🇮🇹',ES:'🇪🇸',NL:'🇳🇱',SE:'🇸🇪',JP:'🇯🇵',CN:'🇨🇳',IN:'🇮🇳',BR:'🇧🇷',MX:'🇲🇽',SG:'🇸🇬',HK:'🇭🇰',NZ:'🇳🇿',ZA:'🇿🇦',KR:'🇰🇷'};
+
+let allShops = [];
+let filtered = [];
+let scoreFilter = 'all';
+
+function fmt(n){if(!n||n===0)return '—';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toString();}
+
+function scoreColor(s){
+  if(s>=80) return {bg:'linear-gradient(135deg,#e8799a,#d4607a)',border:'#d4607a'};
+  if(s>=60) return {bg:'linear-gradient(135deg,#f4a7b9,#e8799a)',border:'#e8799a'};
+  return {bg:'linear-gradient(135deg,#ccc,#999)',border:'#999'};
+}
+
+async function fetchShops(){
+  try{
+    // Fetch top shops by score (with ads potential)
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,created_date,theme,shopify_plan,products_count&score=gte.55&order=score.desc&limit=300`,
+      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
+    );
+    if(!r.ok) throw new Error(`API ${r.status}`);
+    allShops = await r.json();
+
+    // Populate filters
+    const countries = [...new Set(allShops.map(s=>s.country).filter(Boolean))].sort();
+    const niches = [...new Set(allShops.map(s=>s.niche).filter(Boolean))].sort();
+    const cSel = document.getElementById('countryFilter');
+    countries.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=`${FLAGS[c]||'🌐'} ${c}`;cSel.appendChild(o);});
+    const nSel = document.getElementById('nicheFilter');
+    niches.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;nSel.appendChild(o);});
+
+    document.getElementById('heroShops').textContent = allShops.length.toLocaleString();
+    applyFilters();
+    renderCards();
+  } catch(e){
+    console.error(e);
+    document.getElementById('loadingState').innerHTML = '<div style="color:#d4607a">Failed to load: '+e.message+'</div>';
+  }
+}
+
+function applyFilters(){
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const country = document.getElementById('countryFilter').value;
+  const niche = document.getElementById('nicheFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+
+  filtered = allShops.filter(s=>{
+    if(scoreFilter==='80' && s.score<80) return false;
+    if(scoreFilter==='60' && (s.score<60||s.score>=80)) return false;
+    if(country && s.country!==country) return false;
+    if(niche && s.niche!==niche) return false;
+    if(search){
+      const m = (s.name||'').toLowerCase().includes(search) || (s.domain||'').toLowerCase().includes(search) || (s.niche||'').toLowerCase().includes(search);
+      if(!m) return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a,b)=>{
+    if(sort==='visits') return (b.monthly_visits||0)-(a.monthly_visits||0);
+    if(sort==='newest') return new Date(b.created_date)-new Date(a.created_date);
+    return (b.score||0)-(a.score||0);
+  });
+
+  document.getElementById('totalCount').textContent = filtered.length;
+}
+
+function renderCards(){
+  const grid = document.getElementById('cardsGrid');
+  const loading = document.getElementById('loadingState');
+  const empty = document.getElementById('emptyState');
+
+  loading.style.display='none';
+
+  if(filtered.length===0){
+    grid.style.display='none';
+    empty.style.display='flex';
+    return;
+  }
+
+  grid.style.display='grid';
+  empty.style.display='none';
+
+  grid.innerHTML = filtered.map(s=>{
+    const sc = scoreColor(s.score||0);
+    const metaUrl = `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(s.domain)}`;
+    const thumbUrl = `https://image.thum.io/get/width/400/crop/200/https://${s.domain}`;
+    const age = s.created_date ? Math.floor((Date.now()-new Date(s.created_date))/(1000*60*60*24)) : null;
+
+    return `<div class="ad-card">
+      <div class="ad-thumb">
+        <img src="${thumbUrl}" alt="${s.name||s.domain}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="ad-thumb-fb" style="display:none">${(s.name||s.domain||'').substring(0,2).toUpperCase()}</div>
+        <div class="ad-score" style="background:${sc.bg}">${Math.round(s.score||0)}</div>
+      </div>
+      <div class="ad-body">
+        <div class="ad-name">${FLAGS[s.country]||'🌐'} ${s.name||s.domain}</div>
+        <div class="ad-domain">${s.domain}</div>
+        <div class="ad-meta">
+          ${s.niche?`<span class="ad-tag">${s.niche}</span>`:''}
+          ${s.shopify_plan?`<span class="ad-tag">${s.shopify_plan}</span>`:''}
+          ${s.country?`<span class="ad-tag">${s.country}</span>`:''}
+        </div>
+        <div class="ad-stats">
+          <div><div class="ad-stat-val">${fmt(s.monthly_visits)}</div><div class="ad-stat-lbl">Monthly Visits</div></div>
+          <div><div class="ad-stat-val">${fmt(s.products_count)}</div><div class="ad-stat-lbl">Products</div></div>
+          ${age!==null?`<div><div class="ad-stat-val">${age}d</div><div class="ad-stat-lbl">Age</div></div>`:''}
+        </div>
+        <a href="${metaUrl}" target="_blank" class="ad-btn">📘 View Ads on Meta</a>
+        <a href="https://${s.domain}" target="_blank" class="ad-btn-sec">Visit Store</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setScore(el){
+  document.querySelectorAll('[data-score]').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  scoreFilter = el.dataset.score;
+  applyFilters();
+  renderCards();
+}
+
+function togglePlatform(el){
+  if(el.dataset.platform!=='meta'){return;}
+}
+
+document.addEventListener('DOMContentLoaded',fetchShops);
+</script>
 </body>
 </html>

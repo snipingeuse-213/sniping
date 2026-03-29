@@ -1,152 +1,766 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog & Tips - Peekr</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh}
-a{color:#a78bfa;text-decoration:none}
-a:hover{color:#c4b5fd}
-.nav{background:rgba(10,10,15,0.95);border-bottom:1px solid rgba(167,139,250,0.15);padding:12px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
-.nav .logo{font-size:20px;font-weight:700;color:#a78bfa;margin-right:20px}
-.nav a{color:#999;font-size:13px;transition:color 0.2s}
-.nav a:hover,.nav a.active{color:#a78bfa}
-.wrap{max-width:1100px;margin:0 auto;padding:40px 20px}
-.hero{text-align:center;margin-bottom:40px}
-.hero h1{font-size:32px;font-weight:700;color:#fff;margin-bottom:10px}
-.hero p{color:#888;font-size:16px}
-.filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
-.chip{padding:8px 18px;border-radius:20px;border:1px solid rgba(167,139,250,0.2);background:transparent;color:#999;cursor:pointer;font-size:13px;transition:all 0.2s}
-.chip:hover,.chip.active{background:rgba(167,139,250,0.15);color:#a78bfa;border-color:#a78bfa}
-.search-box{display:flex;justify-content:center;margin-bottom:30px}
-.search-box input{width:100%;max-width:400px;padding:10px 16px;border-radius:10px;border:1px solid rgba(167,139,250,0.2);background:rgba(255,255,255,0.05);color:#fff;font-size:14px;outline:none}
-.search-box input:focus{border-color:#a78bfa}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
-.card{background:rgba(255,255,255,0.03);border:1px solid rgba(167,139,250,0.1);border-radius:14px;overflow:hidden;transition:transform 0.2s,border-color 0.2s}
-.card:hover{transform:translateY(-3px);border-color:rgba(167,139,250,0.3)}
-.card-bar{height:3px;background:linear-gradient(90deg,#a78bfa,#7c3aed)}
-.card-bd{padding:24px}
-.badge{display:inline-block;padding:4px 12px;border-radius:12px;background:rgba(167,139,250,0.12);color:#a78bfa;font-size:11px;font-weight:600;text-transform:uppercase;margin-bottom:12px}
-.card-h{font-size:18px;font-weight:600;color:#fff;margin-bottom:10px;line-height:1.3}
-.card-ex{color:#888;font-size:14px;line-height:1.6;margin-bottom:16px}
-.card-meta{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#666}
-.cta{color:#a78bfa;font-weight:600;font-size:13px}
-.cta:hover{color:#c4b5fd}
-.nws{text-align:center;margin-top:50px;padding:40px;background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.15);border-radius:16px}
-.nws-h{font-size:22px;font-weight:600;color:#fff;margin-bottom:10px}
-.nws p{color:#888;font-size:14px;margin-bottom:20px}
-.nws-inp{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.nws-inp input{padding:10px 16px;border-radius:10px;border:1px solid rgba(167,139,250,0.2);background:rgba(255,255,255,0.05);color:#fff;font-size:14px;width:260px;outline:none}
-.nws-btn{padding:10px 24px;border-radius:10px;border:none;background:linear-gradient(135deg,#a78bfa,#7c3aed);color:#fff;font-weight:600;cursor:pointer;font-size:14px}
-.nws-btn:hover{opacity:0.9}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & Tips - Peekr</title>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Figtree', sans-serif;
+            background-color: #f0ece6;
+            color: #333;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 220px;
+            background-color: #1a0a0f;
+            padding: 24px 16px;
+            overflow-y: auto;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sb-logo {
+            font-family: 'Clash Display', sans-serif;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            display: block;
+        }
+
+        .sb-sec {
+            margin-bottom: 28px;
+        }
+
+        .sb-lbl {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+
+        .ni {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 9px;
+            transition: all 0.2s ease;
+            margin-bottom: 6px;
+        }
+
+        .ni:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .ni.active {
+            background: linear-gradient(135deg, #e8799a 0%, #f4a7b9 100%);
+            color: #fff;
+        }
+
+        .ni-ico {
+            font-size: 16px;
+            min-width: 16px;
+        }
+
+        /* MAIN CONTENT */
+        .main-container {
+            margin-left: 220px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #f0ece6;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e8ddd3;
+            padding: 20px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a0a0f;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            border-radius: 12px;
+            padding: 60px 40px;
+            margin-bottom: 48px;
+            border-left: 4px solid #e8799a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .hero-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 16px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #666;
+            max-width: 600px;
+        }
+
+        /* FILTER SECTION */
+        .filter-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            border-radius: 9px;
+            border: 1px solid #ddd;
+            background-color: #ffffff;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .filter-chip:hover {
+            border-color: #e8799a;
+            color: #e8799a;
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #e8799a 0%, #f4a7b9 100%);
+            border-color: #e8799a;
+            color: #fff;
+        }
+
+        /* SEARCH BAR */
+        .search-container {
+            margin-bottom: 32px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            max-width: 400px;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-family: 'Figtree', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #e8799a;
+            box-shadow: 0 0 0 3px rgba(232, 121, 154, 0.1);
+        }
+
+        /* ARTICLE GRID */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .article-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .article-card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .article-gradient {
+            height: 4px;
+            width: 100%;
+        }
+
+        .article-content {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #f4a7b9 0%, #fdc4d4 100%);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+
+        .article-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .article-excerpt {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+            padding-top: 16px;
+            border-top: 1px solid #f0ece6;
+        }
+
+        .article-cta {
+            color: #e8799a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .article-cta:hover {
+            color: #d4607a;
+        }
+
+        /* EXPANDED ARTICLE */
+        .article-expanded {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .article-expanded.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .article-modal {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .article-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .article-modal-close:hover {
+            color: #333;
+        }
+
+        .article-modal-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 12px;
+        }
+
+        .article-modal-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #f0ece6;
+            font-size: 14px;
+            color: #999;
+        }
+
+        .article-modal-content {
+            font-size: 16px;
+            color: #444;
+            line-height: 1.8;
+        }
+
+        .article-modal-content h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin: 28px 0 16px 0;
+        }
+
+        .article-modal-content p {
+            margin-bottom: 16px;
+        }
+
+        .article-modal-content ul, .article-modal-content ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .article-modal-content li {
+            margin-bottom: 8px;
+        }
+
+        .article-modal-content strong {
+            color: #e8799a;
+        }
+
+        /* NEWSLETTER SECTION */
+        .newsletter-section {
+            background: linear-gradient(135deg, #1a0a0f 0%, #2d1318 100%);
+            border-radius: 12px;
+            padding: 48px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .newsletter-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .newsletter-subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 9px;
+            font-family: 'Figtree', sans-serif;
+            font-size: 14px;
+        }
+
+        .newsletter-input::placeholder {
+            color: #ccc;
+        }
+
+        .newsletter-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #e8799a 0%, #f4a7b9 100%);
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-family: 'Figtree', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 121, 154, 0.3);
+        }
+
+        /* NO RESULTS */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .no-results-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .no-results-text {
+            font-size: 16px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .articles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 180px;
+                padding: 16px 12px;
+            }
+
+            .main-container {
+                margin-left: 180px;
+            }
+
+            .content {
+                padding: 24px 20px;
+            }
+
+            .hero {
+                padding: 40px 24px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .article-modal {
+                padding: 24px;
+                margin: 20px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+            }
+
+            .main-container {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 16px 20px;
+            }
+
+            .topbar-title {
+                font-size: 20px;
+            }
+
+            .content {
+                padding: 20px 16px;
+            }
+
+            .hero {
+                padding: 32px 20px;
+                border-radius: 8px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .filter-section {
+                overflow-x: auto;
+                padding-bottom: 12px;
+            }
+
+            .filter-chip {
+                white-space: nowrap;
+            }
+
+            .newsletter-form {
+                gap: 8px;
+            }
+
+            .newsletter-input,
+            .newsletter-btn {
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
 <body>
-<nav class="nav">
-<span class="logo">Peekr</span>
-<a href="peekr-dashboard.html">Dashboard</a>
-<a href="peekr-trending-ads.html">Trending Ads</a>
-<a href="peekr-brand-tracker.html">Brand Tracker</a>
-<a href="peekr-best-trends.html">Best Trends</a>
-<a href="peekr-blog.html" class="active">Blog & Tips</a>
-</nav>
-<div class="wrap">
-<div class="hero">
-<h1>Ecom Intelligence Hub</h1>
-<p>Master ecommerce with data-driven insights, winning strategies, and proven scaling tactics</p>
-</div>
-<div class="filters">
-<button class="chip active" data-cat="all">All</button>
-<button class="chip" data-cat="strategy">Strategy</button>
-<button class="chip" data-cat="advertising">Advertising</button>
-<button class="chip" data-cat="product">Product</button>
-<button class="chip" data-cat="scaling">Scaling</button>
-<button class="chip" data-cat="tools">Tools</button>
-</div>
-<div class="search-box"><input type="text" id="search" placeholder="Search articles..."></div>
-<div class="grid" id="grid">
+    <aside class="sidebar">
+        <a class="sb-logo" href="peekr-landing.html" style="text-decoration:none;">Peekr</a>
+        <div class="sb-sec">
+            <div class="sb-lbl">Overview</div>
+            <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
+            <a class="ni active" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
+        </div>
+        <div class="sb-sec">
+            <div class="sb-lbl">Analyse</div>
+            <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
+            <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">📣</span>Trending Ads</a>
+            <a class="ni" href="peekr-brand-tracker.html"><span class="ni-ico">🔍</span>Brand Tracker</a>
+            <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">🔥</span>Best Trends</a>
+        </div>
+        <div class="sb-sec">
+            <div class="sb-lbl">Favorites</div>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">📋</span>Saved Ads</a>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
+        </div>
+        <div class="sb-sec">
+            <div class="sb-lbl">Tools</div>
+            <a class="ni" href="peekr-duel.html"><span class="ni-ico">⚔️</span>Duel Mode</a>
+            <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export</a>
+        </div>
+        <div class="sb-sec">
+            <div class="sb-lbl">Account</div>
+            <a class="ni" href="peekr-pricing.html"><span class="ni-ico">💎</span>Upgrade</a>
+            <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">🤝</span>Affiliate</a>
+        </div>
+    </aside>
 
-<div class="card" data-cat="strategy">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Strategy</span>
-<h3 class="card-h">How to Find Winning Products in 2026</h3>
-<p class="card-ex">Discover proven methods to identify high-demand products before your competitors. Learn the data signals that predict winners.</p>
-<div class="card-meta"><span>5 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+    <div class="main-container">
+        <div class="topbar">
+            <div class="topbar-title">Blog & Tips</div>
+        </div>
 
-<div class="card" data-cat="advertising">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Advertising</span>
-<h3 class="card-h">Meta Ads Spy: The Complete Guide</h3>
-<p class="card-ex">Master the art of analyzing competitor Facebook and Meta ads. Find winning creatives and steal market share with smart intelligence.</p>
-<div class="card-meta"><span>7 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+        <div class="content">
+            <div class="hero">
+                <h1 class="hero-title">Ecommerce Tips & Insights</h1>
+                <p class="hero-subtitle">Transform your Shopify strategy with practical advice, updated guides, and 2026 market trends. Learn how to use Peekr to dominate your niche.</p>
+            </div>
 
-<div class="card" data-cat="strategy">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Strategy</span>
-<h3 class="card-h">Shopify Store Analysis: What Top Sellers Do Differently</h3>
-<p class="card-ex">Reverse-engineer successful stores. Analyze product selection, pricing, marketing, and conversion tactics of industry leaders.</p>
-<div class="card-meta"><span>6 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search articles...">
+            </div>
 
-<div class="card" data-cat="scaling">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Scaling</span>
-<h3 class="card-h">Scaling Your Store from $1K to $10K/Month</h3>
-<p class="card-ex">Step-by-step playbook for sustainable growth. Optimize ad spend, expand product lines, and build repeatable systems.</p>
-<div class="card-meta"><span>8 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+            <div class="filter-section">
+                <button class="filter-chip active" data-category="all">All</button>
+                <button class="filter-chip" data-category="strategy">Strategy</button>
+                <button class="filter-chip" data-category="advertising">Advertising</button>
+                <button class="filter-chip" data-category="product">Product</button>
+                <button class="filter-chip" data-category="scaling">Scaling</button>
+                <button class="filter-chip" data-category="tools">Tools</button>
+            </div>
 
-<div class="card" data-cat="advertising">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Advertising</span>
-<h3 class="card-h">TikTok Ads vs Meta Ads: Where to Spend Your Budget</h3>
-<p class="card-ex">Compare platform performance, audience reach, and ROI. Make data-backed decisions on where to allocate your ad budget.</p>
-<div class="card-meta"><span>6 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+            <div class="articles-grid" id="articlesGrid"></div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <div class="no-results-icon">🔍</div>
+                <div class="no-results-text">No articles match your search</div>
+            </div>
 
-<div class="card" data-cat="tools">
-<div class="card-bar"></div>
-<div class="card-bd">
-<span class="badge">Tools</span>
-<h3 class="card-h">Essential Ecom Tools Every Seller Needs</h3>
-<p class="card-ex">Curated toolkit for modern ecommerce entrepreneurs. From analytics to fulfillment, discover the best platforms and apps.</p>
-<div class="card-meta"><span>5 min read</span><a href="#" class="cta">Read More</a></div>
-</div>
-</div>
+            <div class="newsletter-section">
+                <h2 class="newsletter-title">Stay Updated</h2>
+                <p class="newsletter-subtitle">Get our best ecommerce tips delivered to your inbox every week. Insider insights, growth strategies, and market trends.</p>
+                <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-</div>
+    <div class="article-expanded" id="articleModal">
+        <div class="article-modal">
+            <button class="article-modal-close" onclick="closeArticle()">✕</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 
-<section class="nws">
-<h2 class="nws-h">Subscribe to Our Newsletter</h2>
-<p>Get weekly insights on trending products, winning ads, and scaling strategies delivered to your inbox.</p>
-<div class="nws-inp">
-<input type="email" placeholder="your@email.com" id="email">
-<button class="nws-btn" onclick="subscribe()">Subscribe</button>
-</div>
-</section>
-</div>
+    <script>
+        const articles = [
+            {id: 1, title: "How to Find a Winning Product in 2026", category: "strategy", excerpt: "Discover proven strategies to identify high-potential products using Peekr and trend analysis.", readTime: "8 min read", gradient: "linear-gradient(135deg, #e8799a 0%, #f4a7b9 100%)", content: "<h3>Product Research: The Art and Science</h3><p>Finding a winning product in 2026 requires a blend of data and intuition. With Peekr, you have access to real data on what your competitors are selling.</p><h3>Step 1: Analyze Trends with Peekr</h3><p>Start by exploring Peekr's Trends section. Filter by niche, price point, and engagement. Products with strong growth are signs of upward trends.</p><ul><li><strong>Check search volume:</strong> More stores = more validated demand</li><li><strong>Analyze price:</strong> Products 30-150 USD offer best margin-to-volume ratio</li><li><strong>Examine social engagement:</strong> Strong TikTok/Instagram engagement converts better</li></ul><h3>Step 2: Deep Competitive Research</h3><p>Use Peekr to analyze top 3-5 competitors. How do they position products? What benefits highlight they emphasize? Identify the gaps - angles nobody exploits. That's your differentiation opportunity.</p><h3>Step 3: Validate with Quick Tests</h3><p>Test with small Meta ads budget (50-100 USD/day for 5 days). This costs under 500 USD but validates real demand.</p><ul><li>ROAS 1.5+ = move forward</li><li>ROAS 1.0-1.5 = test different angles</li><li>ROAS below 1.0 = move to another product</li></ul><h3>Step 4: Check Supply Chain</h3><p>Peekr shows demand, but verify supply. Can you source reliably? At what cost? What's margin potential?</p><ul><li>Supplier cost vs retail (3-4x markup minimum)</li><li>MOQ affordability</li><li>Shipping time and costs</li></ul><h3>The Golden Rule</h3><p>A winning product isn't about being unique. Find products with clear problems they solve, 3-50 competitors already selling it, low saturation, and 50-70% margin potential after all costs.</p><h3>Conclusion</h3><p>Use Peekr to validate your instinct with real data. Test before scaling. Winners are methodical, not lucky.</p>"},
+            {id: 2, title: "5 Fatal Dropshipping Mistakes to Avoid", category: "strategy", excerpt: "The mistakes that kill 90% of dropshipping stores. Learn what not to do.", readTime: "7 min read", gradient: "linear-gradient(135deg, #f4a7b9 0%, #e8799a 100%)", content: "<h3>Why 90% Fail</h3><p>Most dropshipping stores die within 3 months - not because the concept fails, but because of predictable mistakes.</p><h3>Mistake #1: Wrong Product Choice</h3><p>Signs of doomed products: nobody selling it (no demand exists), 500+ stores already selling (oversaturated), inconsistent supplier quality, profit margin under 25%.</p><p><strong>Fix:</strong> Use Peekr to validate 5-30 stores already selling profitably.</p><h3>Mistake #2: Inadequate Testing Budget</h3><p>Launching with 100 USD is like opening a restaurant with 100 USD in the till. Testing needs 200-500 USD minimum (5-7 days ads). Most winners need 1000+ USD to find winning angle.</p><h3>Mistake #3: Poor Landing Page</h3><p>70% success = page, 30% = ads. Common issues: no clear photos, weak value proposition, no social proof, slow mobile loading.</p><h3>Mistake #4: Scaling Too Fast</h3><p>One sale at 50 USD/day doesn't mean jump to 500 USD/day. Scale by 10-15% daily max. Wait 7 days between changes. Monitor ROAS - drop below 1.2? Pause and analyze.</p><h3>Mistake #5: Ignoring Customer Experience</h3><p>One bad review kills trust. Quality control, accurate shipping times, 12-hour email response, easy returns all matter.</p><h3>Bonus: Mindset Mistake</h3><p>Expecting overnight success. Winners treat this like business, not lottery. Takes 3-6 months of effort to hit 10K/month.</p><h3>Conclusion</h3><p>Avoid these 5 mistakes and you're in top 20%. Most fail due to laziness or impatience, not lack of opportunity.</p>"},
+            {id: 3, title: "Meta Ads: Complete Guide for Ecommerce", category: "advertising", excerpt: "Master Facebook and Instagram ads for your store. From pixel setup to scaling profitably.", readTime: "12 min read", gradient: "linear-gradient(135deg, #d4607a 0%, #fdc4d4 100%)", content: "<h3>Why Meta Dominates</h3><p>Meta (Facebook + Instagram) generates 40% of all ecommerce traffic. If not using it, you're leaving money on table.</p><h3>Step 1: Set Up Pixel</h3><p>The Meta Pixel is foundation. Track: PageView, AddToCart, InitiateCheckout, Purchase. Without proper setup, retargeting doesn't work. Verify with Pixel Helper.</p><h3>Step 2: Structure Campaigns (CBO)</h3><p>Use Campaign Budget Optimization. Facebook distributes budget to best ad sets automatically. Minimum 15 USD/day (algo needs to optimize). One campaign = ONE objective. Wait 7-14 days before evaluating.</p><h3>Step 3: Audiences That Convert</h3><p><strong>Cold Traffic:</strong> Broad interests, Lookalike 1%, Layered audiences</p><p><strong>Warm Traffic:</strong> Website visitors (7-15 days), Abandoned cart, Previous buyers</p><h3>Step 4: Creative That Wins</h3><p><strong>Video:</strong> 9-15 seconds max, Hook in 1 second, Captions (85% watch mute), Clear CTA</p><p><strong>Static Images:</strong> White/minimal background, Product 70%, Minimal text, Benefits visible</p><h3>Step 5: Copywriting</h3><p><strong>Problem → Solution → Proof → CTA</strong></p><p>Example: Your phone dies 4 PM? Power bank customers get 3 days battery. 50K mAh, ultra-fast charging. Try risk-free 30 days. Buy Now.</p><h3>Step 6: Optimize and Scale</h3><p>Days 1-7: Learning phase, change nothing. Days 8-14: Evaluate ROAS, cut underperformers. Days 15+: Scale 10-15% daily if ROAS above 1.5.</p><h3>Metrics to Monitor</h3><p>ROAS 2.5+ for scaling, CPC lower is better, CTR 1%+ for cold, CAC under 30% AOV, ROAS by acquisition week.</p><h3>Common Mistakes</h3><p>Changing too fast, Too many ad sets, Poor landing page, Ignoring mobile, Wrong price.</p><h3>Conclusion</h3><p>Meta is cash machine for ecommerce. Data, testing, and patience win. Follow this guide and scale what works.</p>"},
+            {id: 4, title: "Optimize Your Product Page for Conversions", category: "product", excerpt: "Transform visitors into buyers with the essential elements of a high-converting product page.", readTime: "9 min read", gradient: "linear-gradient(135deg, #f4a7b9 0%, #f0ece6 100%)", content: "<h3>Your Product Page: Your 24/7 Salesman</h3><p>1000 visitors/day at 1-2% conversion = bad. Optimize to 3-5% = 300 USD more daily = 9000 USD/month.</p><h3>Element #1: Photos (Most Critical)</h3><p>Mobile visitors: 3-5 seconds. Photos decide if they stay.</p><ul><li>Photo 1: Product alone, white background, front view</li><li>Photo 2: Product in use</li><li>Photo 3: Details (stitching, materials)</li><li>Photo 4: Size/comparison</li><li>Photo 5: Key benefit text overlay</li></ul><p>Golden rule: 2000x2000px+ and under 200kb.</p><h3>Element #2: Title (SEO + Conversion)</h3><p><strong>Weak:</strong> Phone Power Bank</p><p><strong>Strong:</strong> 50000mAh Fast Charging Power Bank - iPhone, Samsung, iPad Compatible</p><h3>Element #3: Description</h3><p>Sell benefits, not features. Your phone dies too fast? → Problem. Charge 5 devices = Solution with proof.</p><h3>Element #4: Price</h3><p>Show savings: Original price crossed out, Your price, You save 25 USD (highlighted).</p><h3>Element #5: CTA Button</h3><p>Not "Add to Cart" (boring). Yes, I Want It! or Buy with 30-Day Guarantee.</p><h3>Element #6: Social Proof</h3><p>Reviews with photos, 4.5+ stars (+30% conversion), Trusted by 2340 customers, 30-day guarantee.</p><h3>Element #7: Urgency/Scarcity</h3><p>Only 3 in stock (if true), Sale ends tomorrow (if real), 250 viewing (if accurate). Fake FOMO damages trust.</p><h3>Element #8: Practical Info</h3><p>Shipping: Free US, delivery timeline. Returns: 30 days. Options: Size/color selector. FAQ: Common questions.</p><h3>Element #9: Recommendations</h3><p>Customers also bought = 15-20% AOV boost.</p><h3>Checklist</h3><p>5+ photos, SEO title, Benefit-focused description, Reviews with stars, Guarantee/returns clear, Prominent CTA, Pricing with savings, Legitimate urgency, Product recommendations.</p><h3>Conclusion</h3><p>Optimized page = 2x conversion rate. Test, measure, iterate. Small improvements add up.</p>"},
+            {id: 5, title: "Shopify vs Other Platforms: 2026 Comparison", category: "tools", excerpt: "Shopify, WooCommerce, Wix, BigCommerce - which platform is right for you?", readTime: "10 min read", gradient: "linear-gradient(135deg, #e8799a 0%, #d4607a 100%)", content: "<h3>Which Platform?</h3><p>2026: more options than ever. But 95% choose between Shopify and WooCommerce.</p><h3>Shopify: The Champion</h3><p><strong>Cost:</strong> 29, 99, or 299 USD/month (plus apps)</p><p><strong>Strengths:</strong> 99.99% uptime, Built-in integrations (Meta, Google, TikTok), Great SEO, Responsive support, Easy migration, 3000+ apps, Scales effortlessly</p><p><strong>Weaknesses:</strong> 2.9% + 0.30 USD transaction fees, Real cost 150+ USD/month with apps, Custom dev expensive</p><p><strong>Verdict:</strong> Best choice to start and scale. Pay for infrastructure and expertise.</p><h3>WooCommerce: DIY Alternative</h3><p><strong>Cost:</strong> Free plugin + 10-50 USD hosting + 10 USD domain</p><p><strong>Strengths:</strong> Low cost, Extreme flexibility, No limits, Massive community, Great for SEO</p><p><strong>Weaknesses:</strong> Self-maintenance, Slower than Shopify, Forums/docs support only, Complex setup, Security risk</p><p><strong>Verdict:</strong> Good if technical. Not ideal for fast launch.</p><h3>Wix: Drag-and-Drop</h3><p><strong>Cost:</strong> 20-75 USD/month</p><p><strong>Strengths:</strong> Easy, Modern templates, Responsive design, Good for services</p><p><strong>Weaknesses:</strong> Average performance (SEO impact), Hard to edit after, Fewer integrations, Transaction fees</p><p><strong>Verdict:</strong> OK for portfolios. Poor for serious ecommerce.</p><h3>BigCommerce: Scale-Up Choice</h3><p><strong>Cost:</strong> 29-249 USD/month</p><p><strong>Strengths:</strong> Best for 50K+ products, B2B tools, Superior API</p><p><strong>Weaknesses:</strong> More expensive, Fewer apps, Less intuitive</p><p><strong>Verdict:</strong> Only for specific B2B/large catalog needs.</p><h3>Comparison</h3><p>Ease: Wix > Shopify > BigCommerce > WooCommerce</p><p>Cost: WooCommerce < Shopify < Wix < BigCommerce</p><p>Performance: Shopify ≈ BigCommerce > Wix > WooCommerce</p><p>Integrations: Shopify > WooCommerce > BigCommerce > Wix</p><p>Scalability: Shopify ≈ BigCommerce > WooCommerce > Wix</p><h3>By Use Case</h3><p>Dropshipping: Shopify. Established ecommerce: Shopify or WooCommerce. Services: Wix. B2B: BigCommerce. Blog + sales: WooCommerce.</p><h3>The Real Answer</h3><p>95%: Shopify. Not cheapest, but fastest to launch and scale. Your time > monthly fees.</p><h3>Conclusion</h3><p>Stop debating. Launch on Shopify, validate products. Migrate later if needed.</p>"},
+            {id: 6, title: "Scaling Your Store from $0 to $10K/month", category: "scaling", excerpt: "Step-by-step roadmap to grow from zero to 10,000 dollars monthly. Timeline: 3-6 months.", readTime: "13 min read", gradient: "linear-gradient(135deg, #fdc4d4 0%, #f4a7b9 100%)", content: "<h3>Zero to 10K: Realistic in 3-6 Months</h3><p>Most common goal. Realistic? Yes. Need roadmap.</p><h3>Phase 1: Validation (Weeks 1-4, 500-1000 USD)</h3><p>Find product with ROAS 1.5+. Research 10-20 with Peekr. Test 3 products. 50 USD/day x 5 days each. Keep winner.</p><h3>Phase 2: Optimization (Weeks 5-8, 1000-2000 USD)</h3><p>Reach 100 USD/day profitably (ROAS 2.0+). Test 3-5 creatives, audience combos, landing page, product page. Result: 1500-2000 USD/month revenue.</p><h3>Phase 3: Scaling (Weeks 9-16, 2000-5000 USD)</h3><p>Scale 100 to 300 USD/day. Increase 10-15% every 2-3 days (if ROAS > 1.5). Expand audiences. Launch upsells. Email retargeting. Result: 4000-5000 USD/month gross (25-30% profit).</p><h3>Phase 4: Profit Optimization (Months 4-5)</h3><p>Revenue hits don't equal profit. Reduce supplier costs (5-10% typical). Cheaper shipping. SMS marketing (3-4x email ROAS). Affiliate programs (10-15% commission). Result: 7000-10K/month with 2000-3000 USD net profit.</p><h3>Scaling Mistakes</h3><p>Too fast (breaks algo), Ignoring metrics, Forgetting margin, Poor quality (returns spike), No customer service.</p><h3>Overlooked Levers</h3><p>SMS marketing, Micro-influencers (20-50K followers), Affiliate programs, Partnerships, TikTok Ads (less saturated).</p><h3>Market Reality</h3><p>10K/month possible. 80% quit before Phase 3 because: wrong product (Phase 1 fails), capital runs out, give up early (2-3 weeks insufficient), don't optimize (guessing not data).</p><h3>Conclusion</h3><p>0-10K/month doable in 6 months. Test, measure, optimize daily. Peekr shows what winners test.</p>"},
+            {id: 7, title: "Ecommerce Trends to Watch", category: "strategy", excerpt: "AI, social commerce, sustainability, subscriptions - trends shaping 2026.", readTime: "8 min read", gradient: "linear-gradient(135deg, #d4607a 0%, #fdc4d4 100%)", content: "<h3>Ecommerce 2026: Major Shifts</h3><p>World moves fast. Ignoring trends = losing to winners embracing them.</p><h3>Trend #1: AI Personalization (Game Changer)</h3><p>70% ecommerce sites use AI by 2026. Product recommendations, Email subject lines (personalized per customer), Dynamic pricing, AI chatbots (resolve 60% without humans). Impact: AOV +15-25%, conversion +10-20%.</p><h3>Trend #2: Social Commerce</h3><p>TikTok/Instagram = showrooms. Customers discover before Google searching. TikTok Shop (direct sales), Instagram Shops (native checkout), Live shopping (3x conversion), User-generated content (authentic+free). Action: Setup TikTok Shop, monthly live shopping.</p><h3>Trend #3: Sustainability</h3><p>45% millennials prefer sustainable brands, even more expensive. Eco-packaging, Carbon-neutral shipping, Durable products, Transparency. Impact: +20% conversion younger customers, positive PR.</p><h3>Trend #4: Subscriptions</h3><p>Monthly selling > one-time. Subscription boxes, Auto-replenishment, VIP membership. Impact: LTV 3-5x increase, lower CAC needed.</p><h3>Trend #5: Omnichannel</h3><p>Winners aren't online OR offline - both. Pop-ups, Buy online/pickup local, Virtual try-on (AR).</p><h3>Trend #6: Voice Commerce</h3><p>Alexa, Google Assistant shopping begins. Optimize voice search, Alexa setup. Impact: Small 2026, 150% YoY growth.</p><h3>Trend #7: Returns/Circular Economy</h3><p>Frictionless returns expected. Free returns, Reuse (refurbished resale), Trade-in programs.</p><h3>Trend #8: Direct-to-Consumer</h3><p>Marketplaces less important 2026. Winners build audience (email, social), sell directly. Margin: 50% vs 15% marketplace.</p><h3>Trend #9: Data Privacy</h3><p>Google kills 3rd-party cookies 2026. Invest first-party data, Contextual targeting.</p><h3>Trend #10: Community</h3><p>Winners have community. Discord, Facebook groups, Slack. Customers = advocates. Direct product feedback.</p><h3>Which to Adopt First?</h3><p>Small budget: AI + premium email. Young audience: TikTok Shop + live. Premium: Sustainability + VIP. Consumables: Subscription.</p><h3>Conclusion</h3><p>2026 = AI, social, direct relationships. Winners adopt 2-3, master, ignore rest.</p>"},
+            {id: 8, title: "How to Spy on Competitors with Peekr", category: "tools", excerpt: "Complete guide: analyze competitors, find winning products, dissect their ads.", readTime: "11 min read", gradient: "linear-gradient(135deg, #f4a7b9 0%, #e8799a 100%)", content: "<h3>Peekr: Competitive Intelligence Weapon</h3><p>Every successful ecommerce entrepreneur uses this secret weapon.</p><h3>Step 1: Find Competitors</h3><p>Search any Shopify domain. Have competitors? Enter domain. Starting? Search niche (phone cases, fitness). Peekr shows all Shopify stores. Sort by revenue = see winners.</p><p><strong>Pro:</strong> Don't copy #1. Analyze #3-5 (profitable, not saturated).</p><h3>Step 2: Analyze Winning Products</h3><p>For each competitor, Peekr shows: Top products (by engagement), Price, Reviews, Trends (rising/declining).</p><p><strong>Use case:</strong> Smartwatch niche. Search top competitor. See top 10 products. Launch variation #2-3 with different angle.</p><h3>Step 3: Spot Trends</h3><p>Peekr Trends show: Rising products (early opportunity), Declining (avoid), By category, Timeline (seasonal/year-round).</p><p><strong>Gold:</strong> Trending up + low competition = jackpot. Peekr shows 3-4 selling. They're your models.</p><h3>Step 4: Ad Spy (Meta Integration)</h3><p>Identify profitable competitor. Peekr shows products. Click View Ads = every ad they run. SEE exact video/image, copy, audience targeting.</p><p><strong>Use case:</strong> Competitor copies your product. With Peekr, see creative + copy. Do it better. Faster feedback.</p><h3>Step 5: Landing Page Analysis</h3><p>Analyze competitor landing pages: Layout (CTA placement), Copy (messaging), Social proof (reviews, guarantees), Objections addressed.</p><p><strong>Tip:</strong> Don't copy blindly. Analyze WHY, then improve.</p><h3>Step 6: Monitor Competitors</h3><p>Watch Competitor feature sends alerts: New product, Price changes, New campaigns, Traffic boosts.</p><p><strong>Use case:</strong> You launch. Competitor copies 2 weeks later. Peekr alerts you immediately. Adjust strategy.</p><h3>Step 7: Benchmarking</h3><p>Compare your store vs competitors: Traffic (you 500/day, them 5000/day = 10x behind), Conversion (you 1%, them 2.5% = optimization issue), AOV (you 50, them 120 = upsell opportunity), Products (you 20, them 200 = they test more).</p><h3>Step 8: Influencer Strategy</h3><p>If competitor uses influencers: Peekr shows which ones. Contact them (cheaper than competitor paid). See performance (engagement = conversion proxy).</p><h3>Case Studies</h3><p><strong>Scenario 1: Zero Start</strong> Search niche. See top 20 stores. For each, see top 5 products. Note patterns (70% sell A, 60% B). These = validated. Launch A or B variant with different angle.</p><p><strong>Scenario 2: Underperforming Product</strong> Find 3 competitors (winning). Analyze landing page vs yours. See top 5 ads (why better?). Analyze customer reviews (what missing?). Iterate.</p><p><strong>Scenario 3: New Niche</strong> Search niche. See trending (up vs down). Pick trending product with 5-15 competitors (sweet spot). Analyze #3-5 (strategy, pricing, ads, page). Launch better version.</p><h3>Common Mistakes</h3><p>Copy blindly (Google penalizes), Ignore decline signals (don't launch declining), Forget supply (verify sourcing), Overcomplicate (#1 = simplest).</p><h3>Peekr vs Others</h3><p>Shopify Spotter, SimilarWeb, Semrush exist. Peekr = specific Shopify ecommerce focus on products and ads.</p><h3>Conclusion</h3><p>Peekr = ecommerce cheat code. Winners use daily. You should too - not copy, learn 10x faster.</p>"}
+        ];
 
-<script>
-const chps=document.querySelectorAll('.chip'),grid=document.getElementById('grid'),cds=grid.querySelectorAll('.card'),srch=document.getElementById('search');
-function flt(){const act=document.querySelector('.chip.active').dataset.cat,q=srch.value.toLowerCase();
-cds.forEach(c=>{const cat=c.dataset.cat,txt=c.textContent.toLowerCase(),show=(cat===act||act==='all')&&txt.includes(q);c.style.display=show?'block':'none'})}
-chps.forEach(c=>c.addEventListener('click',e=>{document.querySelector('.chip.active').classList.remove('active');e.target.classList.add('active');flt()}));
-srch.addEventListener('input',flt);
-function subscribe(){const em=document.getElementById('email').value;if(em){alert('Thanks for subscribing: '+em);document.getElementById('email').value=''}}
-</script>
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        function renderArticles() {
+            const grid = document.getElementById('articlesGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            let filtered = articles.filter(article => {
+                const categoryMatch = currentCategory === 'all' || article.category === currentCategory;
+                const searchMatch = article.title.toLowerCase().includes(currentSearchTerm.toLowerCase()) || article.excerpt.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                return categoryMatch && searchMatch;
+            });
+
+            if (filtered.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+
+            filtered.forEach(article => {
+                const card = document.createElement('div');
+                card.className = 'article-card';
+                card.onclick = () => openArticle(article);
+
+                card.innerHTML = `
+                    <div class="article-gradient" style="${article.gradient}"></div>
+                    <div class="article-content">
+                        <div class="article-category">${getCategoryLabel(article.category)}</div>
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="article-meta">
+                            <span>${article.readTime}</span>
+                            <span class="article-cta">Read article →</span>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {strategy: 'Strategy', advertising: 'Advertising', product: 'Product', scaling: 'Scaling', tools: 'Tools'};
+            return labels[category] || category;
+        }
+
+        function openArticle(article) {
+            const modal = document.getElementById('articleModal');
+            const modalContent = document.getElementById('modalContent');
+            modalContent.innerHTML = `<h2 class="article-modal-title">${article.title}</h2><div class="article-modal-meta"><span>${getCategoryLabel(article.category)}</span><span>${article.readTime}</span></div><div class="article-modal-content">${article.content}</div>`;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeArticle() {
+            const modal = document.getElementById('articleModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            alert('Thank you! You\'ve subscribed to the Peekr newsletter!');
+            e.target.reset();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value;
+            renderArticles();
+        });
+
+        document.querySelectorAll('.filter-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                currentCategory = chip.dataset.category;
+                renderArticles();
+            });
+        });
+
+        document.getElementById('articleModal').addEventListener('click', (e) => {
+            if (e.target.id === 'articleModal') {
+                closeArticle();
+            }
+        });
+
+        renderArticles();
+    </script>
 </body>
 </html>

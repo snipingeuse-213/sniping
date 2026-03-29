@@ -1,1145 +1,905 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
-<meta name="theme-color" content="#F4A7B9"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
-<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://peekr.io"/>
-<meta name="twitter:card" content="summary"/>
-<link rel="stylesheet" href="peekr-responsive.css"/>
-<title>Peekr — Best Trends</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{
-  font-family:'Figtree',sans-serif;
-  background:#f0ece6;
-  color:#1a0a0f;
-  display:flex;
-  height:100vh;
-  position:relative;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Trends - Peekr</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap');
 
-/* ── SAME FLOATING OBJECTS AS LANDING ── */
-.page-objects{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:0;overflow:hidden;
-}
-.po{position:absolute;border-radius:50%;}
-.po.p1{width:100px;height:100px;top:5%;left:0%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -10px -10px 20px rgba(0,0,0,0.18),inset 6px 6px 12px rgba(255,255,255,0.55),0 14px 36px rgba(0,0,0,0.08);animation:fl1 7s ease-in-out infinite;}
-.po.p2{width:55px;height:55px;top:3%;right:5%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -7px -7px 14px rgba(0,0,0,0.15),inset 4px 4px 8px rgba(255,255,255,0.5);animation:fl2 9s ease-in-out infinite;}
-.po.p3{width:30px;height:30px;top:15%;right:2%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);animation:fl1 6s ease-in-out infinite 1s;}
-.po.p4{width:16px;height:16px;top:25%;right:14%;background:radial-gradient(circle at 35% 30%,#eee,#bbb 50%,#888 85%);animation:fl2 5s ease-in-out infinite .5s;}
-.po.pp{width:70px;height:70px;top:50%;right:1%;background:radial-gradient(circle at 38% 32%,#fbc0d4,#e8799a 55%,#c85080 85%);box-shadow:inset -9px -9px 18px rgba(0,0,0,0.18),inset 5px 5px 10px rgba(255,200,220,0.4),0 12px 32px rgba(200,60,100,0.22);animation:fl2 8s ease-in-out infinite .3s;}
-.po.pg{width:40px;height:40px;bottom:15%;left:2%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.9),rgba(220,215,210,0.4) 50%,transparent 80%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 6px 20px rgba(0,0,0,0.06);animation:fl1 10s ease-in-out infinite 1.5s;}
-.po-worm1{position:absolute;width:6px;height:60px;top:62%;left:1%;background:linear-gradient(180deg,#f4a7b9,#e8799a);border-radius:3px;transform:rotate(20deg);opacity:.7;animation:fl1 9s ease-in-out infinite .4s;}
-.po-worm2{position:absolute;width:5px;height:50px;top:75%;right:4%;background:linear-gradient(180deg,#e8799a,#c85080);border-radius:3px;transform:rotate(-15deg);opacity:.65;animation:fl2 7s ease-in-out infinite .8s;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-@keyframes fl1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
-@keyframes fl2{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-8px) rotate(2deg)}}
+        body {
+            font-family: 'Figtree', sans-serif;
+            background-color: #f0ece6;
+            display: flex;
+            min-height: 100vh;
+        }
 
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #1a0a0f;
+            color: #ffffff;
+            padding: 24px 16px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* ── SIDEBAR ── */
-.sb{
-  width:220px;flex-shrink:0;
-  position:relative;z-index:20;
-  background:#1a0a0f;
-  border-right:none;
-  display:flex;flex-direction:column;
-  overflow-y:auto;overflow-x:hidden;
-}
-.sb-logo{
-  padding:16px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-}
-.sb-logo img{height:32px;width:auto;}
-.sb-sec{padding:10px 0 2px;}
-.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;}
-.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
-.ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
-.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
-.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
-.ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
-.nb{margin-left:auto;background:#e8799a;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
-.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
-.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
-.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
-.uc:hover{background:rgba(255,255,255,0.12);}
-.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
-.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
-.up{font-size:10px;color:#e8799a;font-weight:700;}
+        .sidebar-logo {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: #e8799a;
+        }
 
-/* ── MAIN ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:#ffffff;}
+        .sidebar-nav {
+            flex: 1;
+        }
 
-/* ── TOPBAR ── */
-.topbar{
-  height:56px;flex-shrink:0;
-  display:flex;align-items:center;gap:12px;
-  padding:0 24px;
-  background:#ffffff;
-  border-bottom:1px solid rgba(220,200,210,0.18);
-  box-shadow:0 1px 0 rgba(220,200,210,0.12);
-}
-.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f;}
-.sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
-.sbox:focus-within{background:#fff;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
-.sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
-.sbox input::placeholder{color:rgba(26,10,15,0.3);}
-.tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.cnt{font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);}
-.cnt b{color:#1a0a0f;font-size:15px;}
-.lpill{display:flex;align-items:center;gap:5px;background:rgba(82,200,122,0.1);border:1px solid rgba(82,200,122,0.25);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:#2a9e54;}
-.ldot{width:6px;height:6px;border-radius:50%;background:#52c87a;animation:bl 2s infinite;}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
-.bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
-.bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
+        .nav-item {
+            display: block;
+            padding: 12px 12px;
+            margin-bottom: 8px;
+            border-radius: 9px;
+            text-decoration: none;
+            color: #b0b0b0;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
 
-/* ── SEGMENTS ── */
-.segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
-.sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
-.sg.active{
-  background:rgba(255,252,248,0.85);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.9);
-  box-shadow:0 2px 12px rgba(200,100,140,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-  color:#d4607a;
-}
-.sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+        .nav-item:hover {
+            background-color: rgba(232, 121, 154, 0.1);
+            color: #e8799a;
+        }
 
-/* ── FILTERS ── */
-.fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
-.fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
-.fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
-.fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fc{font-size:8px;opacity:.35;}
+        .nav-item.active {
+            background-color: #e8799a;
+            color: #ffffff;
+        }
 
-/* ── DROPDOWN FILTERS ── */
-.fb-dropdown{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:4px;
-  background:#ffffff;
-  border:1px solid rgba(200,160,170,0.2);
-  border-radius:9px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.08);
-  min-width:180px;
-  max-width:240px;
-  max-height:280px;
-  overflow-y:auto;
-  z-index:100;
-  padding:8px;
-  display:none;
-}
-.fb-dropdown.open{display:block;}
-.fb-dropdown-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius:6px;
-  font-size:12px;
-  color:rgba(26,10,15,0.7);
-  cursor:pointer;
-  transition:all .15s;
-}
-.fb-dropdown-item:hover{background:rgba(232,121,154,0.08);color:#1a0a0f;}
-.fb-dropdown-item input{margin:0;cursor:pointer;}
-.fb-dropdown-clear{
-  padding:6px 10px;
-  margin-top:4px;
-  border-top:1px solid rgba(200,160,170,0.15);
-  font-size:11px;
-  font-weight:700;
-  color:#d4607a;
-  cursor:pointer;
-  text-align:center;
-  border-radius:6px;
-  transition:all .15s;
-}
-.fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
+        .sidebar-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #707070;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
 
-/* ── DATE PICKER ── */
-.date-picker-wrap{padding:8px;}
-.date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
-.date-picker-wrap select,.date-picker-wrap input[type="date"]{
-  width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
-  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
-  outline:none;transition:border .15s;margin-bottom:8px;
-}
-.date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
-.date-picker-apply{
-  width:100%;padding:7px;border:none;border-radius:7px;
-  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
-  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
-}
-.date-picker-apply:hover{background:#d4607a;}
+        .sidebar-user {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(232, 121, 154, 0.2);
+        }
 
-/* ── TABLE ── */
-.tw{flex:1;overflow:auto;padding:12px 24px 24px;}
-table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
-thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
-thead th:hover{color:rgba(26,10,15,0.6);}
-thead th.sorted{color:#d4607a;}
-.thi{display:flex;align-items:center;gap:4px;}
-.sic{font-size:9px;opacity:.5;transition:opacity .15s;}
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e8799a, #d4607a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
 
-tbody tr{cursor:pointer;}
-tbody tr td{
-  background:#ffffff;
-  border-top:1px solid rgba(220,200,210,0.12);
-  border-bottom:1px solid rgba(220,200,210,0.12);
-  transition:all .15s;
-}
-tbody tr td:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(200,160,170,0.1);}
-tbody tr td:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(200,160,170,0.1);}
-tbody tr:hover td{
-  background:#fff8fa;
-  border-color:rgba(232,121,154,0.15);
-  box-shadow:0 2px 12px rgba(200,100,140,0.07);
-}
-td{padding:11px 14px;vertical-align:middle;}
+        .user-info {
+            font-size: 12px;
+        }
 
-.si2{display:flex;align-items:center;gap:10px;}
-.sthumb{
-  width:52px;height:40px;border-radius:9px;
-  overflow:hidden;
-  border:1px solid rgba(200,160,170,0.15);
-  flex-shrink:0;
-  background:rgba(245,240,235,0.8);
-  position:relative;
-}
-.sthumb img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-}
-.sthumb-fb{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);
-}
-.sname{font-size:13px;font-weight:800;color:#1a0a0f;}
-.sdomain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:1px;}
-.sage{font-size:10px;color:rgba(26,10,15,0.3);margin-top:2px;}
-.pc{display:flex;gap:3px;}
-.pt{width:34px;height:34px;border-radius:7px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(26,10,15,0.35);}
-.pct{font-size:10px;color:rgba(26,10,15,0.3);margin-top:3px;}
-.tv{font-size:13px;font-weight:800;color:#1a0a0f;}
-.spk{display:flex;align-items:flex-end;gap:1.5px;height:22px;margin-top:4px;}
-.spkb{width:3px;border-radius:2px 2px 0 0;min-height:3px;}
-.rv{font-size:12px;font-weight:600;color:rgba(26,10,15,0.5);}
-.flags{display:flex;gap:3px;align-items:center;}
-.flag-img{
-  width:22px;height:22px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1.5px solid rgba(220,200,210,0.25);
-  box-shadow:0 1px 3px rgba(0,0,0,0.08);
-  flex-shrink:0;
-}
-.acs{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800;}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.scp{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:12px;font-weight:900;border:2px solid;}
-.prbg{font-size:9px;font-weight:800;background:linear-gradient(90deg,#e8799a,#f4a7b9);color:#fff;padding:2px 6px;border-radius:20px;}
-.tag-niche{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
+        .user-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
 
-/* ── MODAL ── */
-.mo{position:fixed;inset:0;background:rgba(26,10,15,0.18);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .2s;}
-.mo.open{opacity:1;pointer-events:all;}
-.md{
-  width:660px;max-height:88vh;
-  background:rgba(255,252,248,0.88);
-  backdrop-filter:blur(32px) saturate(1.6);
-  -webkit-backdrop-filter:blur(32px) saturate(1.6);
-  border:1.5px solid rgba(255,255,255,0.9);
-  border-radius:24px;
-  box-shadow:0 32px 80px rgba(200,80,120,0.14),inset 0 2px 0 rgba(255,255,255,1);
-  overflow:hidden;display:flex;flex-direction:column;
-  transform:translateY(20px) scale(.97);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
-.mo.open .md{transform:translateY(0) scale(1);}
-.mh{padding:22px 24px 18px;border-bottom:1px solid rgba(200,160,170,0.12);display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(252,228,236,0.2));}
-.mico{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(244,167,185,0.15),rgba(255,255,255,0.8));border:1px solid rgba(200,160,170,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(26,10,15,0.4);flex-shrink:0;}
-.msn{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
-.mdom{font-size:12px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:3px;}
-.mcl{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:rgba(26,10,15,0.4);transition:all .15s;flex-shrink:0;}
-.mcl:hover{background:#fff;color:#e8799a;border-color:#e8799a;}
-.mb{padding:20px 24px;overflow-y:auto;flex:1;}
-.msts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
-.stb{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.18);border-radius:12px;padding:12px;}
-.stl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.stv{font-size:20px;font-weight:900;letter-spacing:-.02em;color:#1a0a0f;}
-.msec{margin-bottom:18px;}
-.mst2{font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.tgl{display:flex;flex-wrap:wrap;gap:5px;}
-.tg{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid;}
-.mcht{display:flex;align-items:flex-end;gap:4px;height:64px;padding:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;margin-bottom:20px;}
-.chb{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-.mml{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(232,121,154,0.06);border:1px solid rgba(232,121,154,0.18);border-radius:12px;color:#d4607a;font-size:13px;font-weight:700;text-decoration:none;transition:all .15s;}
-.mml:hover{background:rgba(232,121,154,0.1);}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;padding:14px;}
-.di{font-size:12px;color:rgba(26,10,15,0.5);}
-.di strong{color:#1a0a0f;}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="peekr-config.js"></script>
+        .user-plan {
+            font-size: 11px;
+            color: #b0b0b0;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 220px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Topbar */
+        .topbar {
+            background-color: #ffffff;
+            padding: 20px 32px;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a0a0f;
+        }
+
+        .topbar-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .time-period-filter {
+            display: flex;
+            gap: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 9px;
+            background-color: #ffffff;
+            color: #666;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #e8799a;
+            color: #e8799a;
+        }
+
+        .filter-btn.active {
+            background-color: #e8799a;
+            color: #ffffff;
+            border-color: #e8799a;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .section {
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 20px;
+        }
+
+        /* Niches Grid */
+        .niches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .niche-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #f0ece6;
+        }
+
+        .niche-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(232, 121, 154, 0.15);
+            border-color: #e8799a;
+        }
+
+        .niche-name {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 12px;
+        }
+
+        .niche-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .stat-label {
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #1a0a0f;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #f4a7b9;
+            color: #ffffff;
+        }
+
+        .score-badge.high {
+            background-color: #e8799a;
+        }
+
+        .score-badge.medium {
+            background-color: #f4a7b9;
+        }
+
+        .score-badge.low {
+            background-color: #d4607a;
+        }
+
+        .trend-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 8px;
+        }
+
+        .trend-hot {
+            background-color: #ffe0e6;
+            color: #e8799a;
+        }
+
+        .trend-rising {
+            background-color: #ffedc7;
+            color: #d97706;
+        }
+
+        .trend-watch {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+
+        .expand-btn {
+            margin-top: 12px;
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e8799a;
+            border-radius: 9px;
+            background-color: transparent;
+            color: #e8799a;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .expand-btn:hover {
+            background-color: #e8799a;
+            color: #ffffff;
+        }
+
+        .niche-expanded {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .niche-expanded.active {
+            max-height: 500px;
+        }
+
+        .top-shops {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0ece6;
+        }
+
+        .shop-link {
+            display: block;
+            padding: 8px 0;
+            font-size: 12px;
+            color: #e8799a;
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .shop-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Categories Chart */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 1200px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #f0ece6;
+        }
+
+        .chart-title {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a0a0f;
+            margin-bottom: 20px;
+        }
+
+        .bar-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .bar-label {
+            width: 120px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bar-wrapper {
+            flex: 1;
+            background-color: #f0ece6;
+            border-radius: 6px;
+            height: 24px;
+            overflow: hidden;
+            margin: 0 12px;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e8799a, #f4a7b9);
+            border-radius: 6px;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .bar-value {
+            font-size: 11px;
+            font-weight: 600;
+            color: #1a0a0f;
+        }
+
+        /* Countries Grid */
+        .countries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .country-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #f0ece6;
+        }
+
+        .country-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(232, 121, 154, 0.1);
+            border-color: #e8799a;
+        }
+
+        .country-card.active {
+            background-color: #ffeef4;
+            border-color: #e8799a;
+        }
+
+        .country-flag {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .country-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1a0a0f;
+            margin-bottom: 4px;
+        }
+
+        .country-count {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .country-avg-score {
+            font-size: 11px;
+            font-weight: 600;
+            color: #e8799a;
+        }
+
+        /* Loading & Empty States */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+        }
+
+        .spinner {
+            border: 3px solid #f0ece6;
+            border-top: 3px solid #e8799a;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        /* Scrollbar */
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f0ece6;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #e8799a;
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(232, 121, 154, 0.3);
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
-
-<script>
-// Auth protection
-(async () => {
-  const session = await Peekr.requireAuth();
-  if (!session) return;
-  const plan = await Peekr.getUserPlan();
-  window._userPlan = plan;
-  if (plan === 'free') {
-    Peekr.injectFreemiumStyles();
-    // Blur growth percentages and detailed data
-    document.querySelectorAll('.bt-niche-growth, .bt-growth-percent, .bt-table-row').forEach(el => el.classList.add('pkr-sensitive'));
-    // Blur product trends table
-    document.querySelectorAll('.bt-products-table, .bt-opp-card').forEach(el => {
-      el.style.position = 'relative';
-      el.classList.add('pkr-blurred');
-    });
-    // Add upgrade badge to products section
-    const prodSection = document.querySelector('.bt-products-table');
-    if (prodSection) {
-      const badge = document.createElement('a');
-      badge.href = 'peekr-pricing.html';
-      badge.className = 'pkr-upgrade-badge';
-      badge.textContent = '🔒 Upgrade to see trending products';
-      badge.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;pointer-events:auto;';
-      prodSection.style.position = 'relative';
-      prodSection.appendChild(badge);
-    }
-  }
-})();
-</script>
-
-<!-- FLOATING OBJECTS -->
-<div class="page-objects">
-  <div class="po p1"></div>
-  <div class="po p2"></div>
-  <div class="po p3"></div>
-  <div class="po p4"></div>
-  <div class="po pp"></div>
-  <div class="po pg"></div>
-  <div class="po-worm1"></div>
-  <div class="po-worm2"></div>
-</div>
-
-
-
-<!-- SIDEBAR -->
-<aside class="sb">
-  <div class="sb-logo">
-    <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Analyse</div>
-    <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">📣</span>Trending Ads</a>
-    <a class="ni" href="peekr-brand-tracker.html"><span class="ni-ico">🔍</span>Brand Tracker<span class="nb">Pro</span></a>
-    <a class="ni active" href="peekr-best-trends.html"><span class="ni-ico">🔥</span>Best Trends<span class="nb s">Soon</span></a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">📋</span>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-duel.html"><span class="ni-ico">⚔️</span>Duel Mode</a>
-    <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export<span class="nb s">Soon</span></a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">💎</span>Upgrade<span class="nb">🔥</span></a>
-    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">🤝</span>Affiliate</a>
-  </div>
-  <div class="sb-bot">
-    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
-  </div>
-</aside>
-
-<div class="main" style="overflow-y:auto;">
-
-<style>
-    .best-trends {
-      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      padding: 32px 24px;
-      background: #f8f7fb;
-      min-height: 100vh;
-    }
-
-    .bt-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-
-    .bt-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0;
-    }
-
-    .bt-time-selector {
-      display: flex;
-      gap: 8px;
-      background: #fff;
-      padding: 6px;
-      border-radius: 10px;
-      border: 1px solid #e0dde6;
-    }
-
-    .bt-time-btn {
-      padding: 8px 14px;
-      border: none;
-      background: transparent;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #7a7a8a;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .bt-time-btn.active {
-      background: #e8799a;
-      color: #fff;
-    }
-
-    .bt-time-btn:hover {
-      color: #1a1a1a;
-    }
-
-    .bt-section {
-      margin-bottom: 40px;
-    }
-
-    .bt-section-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0 0 20px 0;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #e0dde6;
-    }
-
-    /* Trending Niches Grid */
-    .bt-niches-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
-    }
-
-    .bt-niche-card {
-      background: #fff;
-      border: 1px solid #e0dde6;
-      border-radius: 14px;
-      padding: 16px;
-      transition: all 0.2s;
-    }
-
-    .bt-niche-card:hover {
-      border-color: #e8799a;
-      box-shadow: 0 4px 12px rgba(232, 121, 154, 0.08);
-      transform: translateY(-2px);
-    }
-
-    .bt-niche-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 12px;
-    }
-
-    .bt-niche-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 0;
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .bt-niche-emoji {
-      font-size: 18px;
-    }
-
-    .bt-niche-growth {
-      font-size: 18px;
-      font-weight: 700;
-      color: #2a9e54;
-      margin: 0 0 8px 0;
-    }
-
-    .bt-niche-stats {
-      font-size: 12px;
-      color: #7a7a8a;
-      margin: 0;
-    }
-
-    .bt-niche-description {
-      font-size: 12px;
-      color: #9a9aa8;
-      margin: 8px 0 0 0;
-      line-height: 1.4;
-    }
-
-    .bt-niche-sparkline {
-      height: 20px;
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      margin-top: 10px;
-    }
-
-    .bt-niche-bar {
-      flex: 1;
-      background: linear-gradient(180deg, #2a9e54 0%, #5cb77f 100%);
-      border-radius: 2px;
-      opacity: 0.7;
-    }
-
-    /* Rising Products Table */
-    .bt-products-table {
-      background: #fff;
-      border: 1px solid #e0dde6;
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .bt-table-header {
-      display: grid;
-      grid-template-columns: 2fr 1.5fr 1fr 1.2fr 1.2fr 0.6fr;
-      gap: 16px;
-      padding: 16px 20px;
-      background: #f8f7fb;
-      border-bottom: 1px solid #e0dde6;
-      font-size: 12px;
-      font-weight: 600;
-      color: #7a7a8a;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .bt-table-row {
-      display: grid;
-      grid-template-columns: 2fr 1.5fr 1fr 1.2fr 1.2fr 0.6fr;
-      gap: 16px;
-      padding: 16px 20px;
-      border-bottom: 1px solid #f0eff3;
-      align-items: center;
-      transition: background 0.15s;
-    }
-
-    .bt-table-row:hover {
-      background: #f8f7fb;
-    }
-
-    .bt-table-row:last-child {
-      border-bottom: none;
-    }
-
-    .bt-product-name {
-      font-size: 14px;
-      font-weight: 500;
-      color: #1a1a1a;
-      margin: 0;
-    }
-
-    .bt-product-category {
-      font-size: 13px;
-      color: #7a7a8a;
-      background: #f0eff3;
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-      width: fit-content;
-    }
-
-    .bt-growth-percent {
-      font-size: 14px;
-      font-weight: 700;
-      color: #2a9e54;
-      margin: 0;
-    }
-
-    .bt-shop-count {
-      font-size: 13px;
-      color: #4a4a4a;
-      margin: 0;
-    }
-
-    .bt-price-range {
-      font-size: 13px;
-      color: #7a7a8a;
-      margin: 0;
-    }
-
-    .bt-trend-arrow {
-      font-size: 16px;
-      text-align: center;
-    }
-
-    /* Hot Categories Heatmap */
-    .bt-heatmap {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-      gap: 8px;
-    }
-
-    .bt-heatmap-cell {
-      aspect-ratio: 1;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 600;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-      padding: 8px;
-    }
-
-    .bt-heatmap-cell:hover {
-      transform: scale(1.05);
-    }
-
-    .bt-heatmap-cell.intensity-1 {
-      background: rgba(232, 121, 154, 0.2);
-      color: #1a1a1a;
-    }
-
-    .bt-heatmap-cell.intensity-2 {
-      background: rgba(232, 121, 154, 0.4);
-      color: #1a1a1a;
-    }
-
-    .bt-heatmap-cell.intensity-3 {
-      background: rgba(232, 121, 154, 0.6);
-      color: #fff;
-    }
-
-    .bt-heatmap-cell.intensity-4 {
-      background: rgba(232, 121, 154, 0.8);
-      color: #fff;
-    }
-
-    .bt-heatmap-cell.intensity-5 {
-      background: rgba(232, 121, 154, 1);
-      color: #fff;
-    }
-
-    /* Opportunities Section */
-    .bt-opportunities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .bt-opportunity-card {
-      background: linear-gradient(135deg, #fff9fa 0%, #f8f7fb 100%);
-      border: 1px solid #e8799a;
-      border-radius: 14px;
-      padding: 20px;
-      transition: all 0.2s;
-    }
-
-    .bt-opportunity-card:hover {
-      border-color: #e8799a;
-      box-shadow: 0 6px 16px rgba(232, 121, 154, 0.12);
-      transform: translateY(-3px);
-    }
-
-    .bt-opp-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .bt-opp-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0 0 8px 0;
-    }
-
-    .bt-opp-description {
-      font-size: 13px;
-      color: #7a7a8a;
-      margin: 0 0 12px 0;
-      line-height: 1.5;
-    }
-
-    .bt-opp-metrics {
-      display: flex;
-      gap: 12px;
-      font-size: 12px;
-    }
-
-    .bt-opp-metric {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .bt-opp-metric-label {
-      color: #9a9aa8;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-    }
-
-    .bt-opp-metric-value {
-      color: #1a1a1a;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .bt-opp-btn {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 8px 12px;
-      background: #e8799a;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .bt-opp-btn:hover {
-      background: #d55b7a;
-      transform: translateX(2px);
-    }
-
-    .bt-empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      background: #fff;
-      border: 2px dashed #e0dde6;
-      border-radius: 14px;
-    }
-
-    .bt-empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .bt-empty-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 0 0 8px 0;
-    }
-
-    .bt-empty-text {
-      font-size: 14px;
-      color: #7a7a8a;
-      margin: 0;
-    }
-  </style>
-
-  <div class="best-trends">
-    <div class="bt-header">
-      <h1 class="bt-title">Best Trends</h1>
-      <div class="bt-time-selector">
-        <button class="bt-time-btn">7d</button>
-        <button class="bt-time-btn active">30d</button>
-        <button class="bt-time-btn">90d</button>
-      </div>
+    <!-- Sidebar -->
+    <div class="sidebar" style="padding:0;display:flex;flex-direction:column;">
+        <div style="padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);">
+            <span style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#e8799a;">Peekr</span>
+        </div>
+        <div style="padding:10px 0 2px;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Overview</div>
+            <a href="peekr-overview.html" class="nav-item">📊 Dashboard</a>
+            <a href="peekr-blog.html" class="nav-item">📝 Blog & Tips</a>
+        </div>
+        <div style="padding:10px 0 2px;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Analyse</div>
+            <a href="peekr-dashboard.html" class="nav-item">🏪 Trending Shops</a>
+            <a href="peekr-trending-ads.html" class="nav-item">📣 Trending Ads</a>
+            <a href="peekr-brand-tracker.html" class="nav-item">🔍 Brand Tracker</a>
+            <a href="peekr-best-trends.html" class="nav-item active">🔥 Best Trends</a>
+        </div>
+        <div style="padding:10px 0 2px;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Favorites</div>
+            <a href="peekr-saved.html" class="nav-item">📋 Saved Ads</a>
+            <a href="peekr-saved.html" class="nav-item">⭐ Saved Shops</a>
+        </div>
+        <div style="padding:10px 0 2px;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Tools</div>
+            <a href="peekr-duel.html" class="nav-item">⚔️ Duel Mode</a>
+            <a href="peekr-export.html" class="nav-item">📤 Export</a>
+        </div>
+        <div style="padding:10px 0 2px;">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Account</div>
+            <a href="peekr-pricing.html" class="nav-item">💎 Upgrade</a>
+            <a href="peekr-affiliate.html" class="nav-item">🤝 Affiliate</a>
+        </div>
+        <div style="margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;">
+                <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;">LR</div>
+                <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);">Lyli Rose</div><div style="font-size:10px;color:#e8799a;font-weight:700;">Pro Plan</div></div>
+            </div>
+        </div>
     </div>
 
-    <!-- Trending Niches Section -->
-    <div class="bt-section">
-      <h2 class="bt-section-title">Trending Niches</h2>
-      <div class="bt-niches-grid">
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">💄</span>
-              Clean Beauty
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+34%</p>
-          <p class="bt-niche-stats">342 shops</p>
-          <p class="bt-niche-description">Natural and organic cosmetics market</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 35%"></div>
-            <div class="bt-niche-bar" style="height: 48%"></div>
-            <div class="bt-niche-bar" style="height: 52%"></div>
-            <div class="bt-niche-bar" style="height: 61%"></div>
-            <div class="bt-niche-bar" style="height: 68%"></div>
-            <div class="bt-niche-bar" style="height: 74%"></div>
-            <div class="bt-niche-bar" style="height: 82%"></div>
-          </div>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <div class="topbar-title">Best Trends</div>
+            <div class="topbar-controls">
+                <div class="time-period-filter">
+                    <button class="filter-btn active" data-period="30">Last 30 days</button>
+                    <button class="filter-btn" data-period="90">Last 90 days</button>
+                    <button class="filter-btn" data-period="180">Last 6 months</button>
+                    <button class="filter-btn" data-period="all">All time</button>
+                </div>
+            </div>
         </div>
 
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">♻️</span>
-              Eco Home
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+28%</p>
-          <p class="bt-niche-stats">289 shops</p>
-          <p class="bt-niche-description">Sustainable home goods & decor</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 40%"></div>
-            <div class="bt-niche-bar" style="height: 45%"></div>
-            <div class="bt-niche-bar" style="height: 51%"></div>
-            <div class="bt-niche-bar" style="height: 58%"></div>
-            <div class="bt-niche-bar" style="height: 64%"></div>
-            <div class="bt-niche-bar" style="height: 70%"></div>
-            <div class="bt-niche-bar" style="height: 76%"></div>
-          </div>
-        </div>
+        <!-- Content -->
+        <div class="content">
+            <!-- Trending Niches Section -->
+            <div class="section">
+                <h2 class="section-title">Trending Niches</h2>
+                <div id="niches-loading" class="loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="niches-grid" class="niches-grid" style="display: none;"></div>
+                <div id="niches-empty" class="empty-state" style="display: none;">
+                    <p>No trending niches found for this period.</p>
+                </div>
+            </div>
 
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">⌚</span>
-              Luxury Watches
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+42%</p>
-          <p class="bt-niche-stats">156 shops</p>
-          <p class="bt-niche-description">Premium timepieces and accessories</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 32%"></div>
-            <div class="bt-niche-bar" style="height: 41%"></div>
-            <div class="bt-niche-bar" style="height: 48%"></div>
-            <div class="bt-niche-bar" style="height: 62%"></div>
-            <div class="bt-niche-bar" style="height: 72%"></div>
-            <div class="bt-niche-bar" style="height: 82%"></div>
-            <div class="bt-niche-bar" style="height: 90%"></div>
-          </div>
-        </div>
+            <!-- Top Growing Categories -->
+            <div class="section">
+                <h2 class="section-title">Top Growing Categories</h2>
+                <div class="categories-grid">
+                    <div class="chart-container">
+                        <h3 class="chart-title">Niches by Shop Count</h3>
+                        <div id="categories-chart"></div>
+                    </div>
+                    <div class="chart-container">
+                        <h3 class="chart-title">Average Score by Niche</h3>
+                        <div id="scores-chart"></div>
+                    </div>
+                </div>
+            </div>
 
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">🧘</span>
-              Wellness Tech
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+31%</p>
-          <p class="bt-niche-stats">201 shops</p>
-          <p class="bt-niche-description">Fitness trackers and wellness devices</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 38%"></div>
-            <div class="bt-niche-bar" style="height: 44%"></div>
-            <div class="bt-niche-bar" style="height: 50%"></div>
-            <div class="bt-niche-bar" style="height: 57%"></div>
-            <div class="bt-niche-bar" style="height: 65%"></div>
-            <div class="bt-niche-bar" style="height: 72%"></div>
-            <div class="bt-niche-bar" style="height: 78%"></div>
-          </div>
+            <!-- Country Breakdown -->
+            <div class="section">
+                <h2 class="section-title">Country Breakdown</h2>
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Click a country to filter trending niches</p>
+                <div id="countries-grid" class="countries-grid"></div>
+            </div>
         </div>
-
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">👜</span>
-              Indie Handbags
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+26%</p>
-          <p class="bt-niche-stats">267 shops</p>
-          <p class="bt-niche-description">Designer bags from emerging brands</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 36%"></div>
-            <div class="bt-niche-bar" style="height: 42%"></div>
-            <div class="bt-niche-bar" style="height: 49%"></div>
-            <div class="bt-niche-bar" style="height: 55%"></div>
-            <div class="bt-niche-bar" style="height: 62%"></div>
-            <div class="bt-niche-bar" style="height: 68%"></div>
-            <div class="bt-niche-bar" style="height: 73%"></div>
-          </div>
-        </div>
-
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">🎮</span>
-              Gaming Gear
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+39%</p>
-          <p class="bt-niche-stats">198 shops</p>
-          <p class="bt-niche-description">Esports equipment and peripherals</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 34%"></div>
-            <div class="bt-niche-bar" style="height: 46%"></div>
-            <div class="bt-niche-bar" style="height: 54%"></div>
-            <div class="bt-niche-bar" style="height: 64%"></div>
-            <div class="bt-niche-bar" style="height: 72%"></div>
-            <div class="bt-niche-bar" style="height: 80%"></div>
-            <div class="bt-niche-bar" style="height: 88%"></div>
-          </div>
-        </div>
-
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">🌱</span>
-              Plant-Based Food
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+23%</p>
-          <p class="bt-niche-stats">312 shops</p>
-          <p class="bt-niche-description">Vegan snacks and dairy alternatives</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 40%"></div>
-            <div class="bt-niche-bar" style="height: 47%"></div>
-            <div class="bt-niche-bar" style="height: 52%"></div>
-            <div class="bt-niche-bar" style="height: 59%"></div>
-            <div class="bt-niche-bar" style="height: 64%"></div>
-            <div class="bt-niche-bar" style="height: 69%"></div>
-            <div class="bt-niche-bar" style="height: 74%"></div>
-          </div>
-        </div>
-
-        <div class="bt-niche-card">
-          <div class="bt-niche-header">
-            <h3 class="bt-niche-name">
-              <span class="bt-niche-emoji">📱</span>
-              Phone Accessories
-            </h3>
-          </div>
-          <p class="bt-niche-growth">+19%</p>
-          <p class="bt-niche-stats">421 shops</p>
-          <p class="bt-niche-description">Cases, chargers, and phone protection</p>
-          <div class="bt-niche-sparkline">
-            <div class="bt-niche-bar" style="height: 42%"></div>
-            <div class="bt-niche-bar" style="height: 44%"></div>
-            <div class="bt-niche-bar" style="height: 47%"></div>
-            <div class="bt-niche-bar" style="height: 50%"></div>
-            <div class="bt-niche-bar" style="height: 54%"></div>
-            <div class="bt-niche-bar" style="height: 57%"></div>
-            <div class="bt-niche-bar" style="height: 61%"></div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Rising Products Section -->
-    <div class="bt-section">
-      <h2 class="bt-section-title">Rising Products</h2>
-      <div class="bt-products-table">
-        <div class="bt-table-header">
-          <div>Product Type</div>
-          <div>Category</div>
-          <div>Growth</div>
-          <div>Shops</div>
-          <div>Avg Price</div>
-          <div>Trend</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Wireless Earbuds</div>
-          <div class="bt-product-category">Electronics</div>
-          <div class="bt-growth-percent">+47%</div>
-          <div class="bt-shop-count">284 shops</div>
-          <div class="bt-price-range">$45–$180</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Silk Pillowcases</div>
-          <div class="bt-product-category">Beauty</div>
-          <div class="bt-growth-percent">+52%</div>
-          <div class="bt-shop-count">156 shops</div>
-          <div class="bt-price-range">$18–$48</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Plant Pots</div>
-          <div class="bt-product-category">Home</div>
-          <div class="bt-growth-percent">+38%</div>
-          <div class="bt-shop-count">198 shops</div>
-          <div class="bt-price-range">$12–$65</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Laptop Stands</div>
-          <div class="bt-product-category">Office</div>
-          <div class="bt-growth-percent">+44%</div>
-          <div class="bt-shop-count">213 shops</div>
-          <div class="bt-price-range">$25–$120</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Weighted Blankets</div>
-          <div class="bt-product-category">Wellness</div>
-          <div class="bt-growth-percent">+41%</div>
-          <div class="bt-shop-count">167 shops</div>
-          <div class="bt-price-range">$60–$200</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Reusable Straws</div>
-          <div class="bt-product-category">Eco-friendly</div>
-          <div class="bt-growth-percent">+35%</div>
-          <div class="bt-shop-count">289 shops</div>
-          <div class="bt-price-range">$8–$22</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Blue Light Glasses</div>
-          <div class="bt-product-category">Accessories</div>
-          <div class="bt-growth-percent">+43%</div>
-          <div class="bt-shop-count">172 shops</div>
-          <div class="bt-price-range">$35–$85</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Bamboo Toothbrushes</div>
-          <div class="bt-product-category">Health</div>
-          <div class="bt-growth-percent">+29%</div>
-          <div class="bt-shop-count">224 shops</div>
-          <div class="bt-price-range">$3–$12</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Marble Coasters</div>
-          <div class="bt-product-category">Decor</div>
-          <div class="bt-growth-percent">+37%</div>
-          <div class="bt-shop-count">141 shops</div>
-          <div class="bt-price-range">$15–$45</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-        <div class="bt-table-row">
-          <div class="bt-product-name">Smart Water Bottles</div>
-          <div class="bt-product-category">Wellness</div>
-          <div class="bt-growth-percent">+33%</div>
-          <div class="bt-shop-count">98 shops</div>
-          <div class="bt-price-range">$30–$65</div>
-          <div class="bt-trend-arrow">📈</div>
-        </div>
-      </div>
-    </div>
+    <script>
+        // Supabase credentials
+        const _SB = 'https://vsyceexjsitliwaasdhd.supabase.co';
+        const _AK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDY4NzMsImV4cCI6MjA1ODQyMjg3M30.1FiWG8gKL50dUqqA_fKOPT5-NfUVpx3sVxflKr-ouPY';
 
-    <!-- Hot Categories Heatmap -->
-    <div class="bt-section">
-      <h2 class="bt-section-title">Hot Categories Heatmap</h2>
-      <div class="bt-heatmap">
-        <div class="bt-heatmap-cell intensity-5">Beauty</div>
-        <div class="bt-heatmap-cell intensity-4">Home</div>
-        <div class="bt-heatmap-cell intensity-5">Fashion</div>
-        <div class="bt-heatmap-cell intensity-3">Sports</div>
-        <div class="bt-heatmap-cell intensity-4">Electronics</div>
-        <div class="bt-heatmap-cell intensity-5">Wellness</div>
-        <div class="bt-heatmap-cell intensity-2">Toys</div>
-        <div class="bt-heatmap-cell intensity-4">Accessories</div>
-        <div class="bt-heatmap-cell intensity-3">Food</div>
-        <div class="bt-heatmap-cell intensity-5">Eco-friendly</div>
-        <div class="bt-heatmap-cell intensity-2">Books</div>
-        <div class="bt-heatmap-cell intensity-4">Garden</div>
-      </div>
-    </div>
+        // State
+        let allShops = [];
+        let filteredShops = [];
+        let selectedCountry = null;
 
-    <!-- Opportunities Section -->
-    <div class="bt-section">
-      <h2 class="bt-section-title">Growth Opportunities</h2>
-      <div class="bt-opportunities-grid">
-        <div class="bt-opportunity-card">
-          <div class="bt-opp-icon">🎨</div>
-          <h3 class="bt-opp-title">Personalized Art</h3>
-          <p class="bt-opp-description">Custom wall art and prints are trending but supply is limited. Early movers can capture this emerging niche.</p>
-          <div class="bt-opp-metrics">
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Growth</span>
-              <span class="bt-opp-metric-value">+18%</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Shops</span>
-              <span class="bt-opp-metric-value">47</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">AOV</span>
-              <span class="bt-opp-metric-value">$85</span>
-            </div>
-          </div>
-          <button class="bt-opp-btn">Explore →</button>
-        </div>
+        // Country flag mapping
+        const countryFlags = {
+            'US': '🇺🇸', 'GB': '🇬🇧', 'FR': '🇫🇷', 'DE': '🇩🇪', 'CA': '🇨🇦',
+            'AU': '🇦🇺', 'IT': '🇮🇹', 'ES': '🇪🇸', 'NL': '🇳🇱', 'SE': '🇸🇪',
+            'JP': '🇯🇵', 'BR': '🇧🇷', 'MX': '🇲🇽', 'IN': '🇮🇳', 'SG': '🇸🇬'
+        };
 
-        <div class="bt-opportunity-card">
-          <div class="bt-opp-icon">🧩</div>
-          <h3 class="bt-opp-title">Puzzle & Brain Games</h3>
-          <p class="bt-opp-description">Educational toys and puzzles growing 15% monthly. Low saturation with high repeat purchase potential.</p>
-          <div class="bt-opp-metrics">
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Growth</span>
-              <span class="bt-opp-metric-value">+15%</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Shops</span>
-              <span class="bt-opp-metric-value">62</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">AOV</span>
-              <span class="bt-opp-metric-value">$32</span>
-            </div>
-          </div>
-          <button class="bt-opp-btn">Explore →</button>
-        </div>
+        // Fetch shops from Supabase
+        async function fetchShops() {
+            try {
+                const response = await fetch(
+                    `${_SB}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,created_date,trend_tag&order=score.desc&limit=1000`,
+                    {
+                        headers: {
+                            'apikey': _AK,
+                            'Authorization': `Bearer ${_AK}`
+                        }
+                    }
+                );
 
-        <div class="bt-opportunity-card">
-          <div class="bt-opp-icon">🌙</div>
-          <h3 class="bt-opp-title">Sleep & Relaxation</h3>
-          <p class="bt-opp-description">Sleep masks, aromatherapy, and meditation products. Mental wellness trend with strong margins.</p>
-          <div class="bt-opp-metrics">
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Growth</span>
-              <span class="bt-opp-metric-value">+22%</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">Shops</span>
-              <span class="bt-opp-metric-value">73</span>
-            </div>
-            <div class="bt-opp-metric">
-              <span class="bt-opp-metric-label">AOV</span>
-              <span class="bt-opp-metric-value">$58</span>
-            </div>
-          </div>
-          <button class="bt-opp-btn">Explore →</button>
-        </div>
-      </div>
-    </div>
-  </div>
+                if (!response.ok) throw new Error('Failed to fetch shops');
 
-</div>
+                allShops = await response.json();
+                filterAndRender();
+            } catch (error) {
+                console.error('Error fetching shops:', error);
+                document.getElementById('niches-loading').style.display = 'none';
+                document.getElementById('niches-empty').style.display = 'block';
+            }
+        }
 
+        // Calculate days ago from today
+        function getDaysAgo(days) {
+            const date = new Date();
+            date.setDate(date.getDate() - days);
+            return date.toISOString().split('T')[0];
+        }
+
+        // Filter shops by time period
+        function filterAndRender() {
+            const period = document.querySelector('.filter-btn.active').dataset.period;
+            const cutoffDate = period === 'all' ? null : getDaysAgo(parseInt(period));
+
+            filteredShops = allShops.filter(shop => {
+                const matchesPeriod = !cutoffDate || (shop.created_date && shop.created_date >= cutoffDate);
+                const matchesCountry = !selectedCountry || shop.country === selectedCountry;
+                return matchesPeriod && matchesCountry;
+            });
+
+            renderNiches();
+            renderCharts();
+            renderCountries();
+        }
+
+        // Aggregate shops by niche
+        function getNicheAggregates() {
+            const nicheMap = {};
+
+            filteredShops.forEach(shop => {
+                const niche = shop.niche || 'Uncategorized';
+                if (!nicheMap[niche]) {
+                    nicheMap[niche] = {
+                        name: niche,
+                        shops: [],
+                        totalScore: 0,
+                        totalVisits: 0
+                    };
+                }
+                nicheMap[niche].shops.push(shop);
+                nicheMap[niche].totalScore += shop.score || 0;
+                nicheMap[niche].totalVisits += shop.monthly_visits || 0;
+            });
+
+            // Convert to array and sort by average score
+            return Object.values(nicheMap)
+                .map(niche => ({
+                    ...niche,
+                    count: niche.shops.length,
+                    avgScore: Math.round(niche.totalScore / niche.shops.length),
+                    topShops: niche.shops.sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 5)
+                }))
+                .sort((a, b) => b.avgScore - a.avgScore);
+        }
+
+        // Determine trend indicator
+        function getTrendIndicator(shops) {
+            if (!shops.length) return 'watch';
+
+            const trendCounts = {};
+            shops.forEach(shop => {
+                const trend = shop.trend_tag || 'watch';
+                trendCounts[trend] = (trendCounts[trend] || 0) + 1;
+            });
+
+            if (trendCounts['hot'] && trendCounts['hot'] > shops.length * 0.4) return 'hot';
+            if (trendCounts['rising'] && trendCounts['rising'] > shops.length * 0.4) return 'rising';
+            return 'watch';
+        }
+
+        // Score badge class
+        function getScoreBadgeClass(score) {
+            if (score >= 75) return 'high';
+            if (score >= 50) return 'medium';
+            return 'low';
+        }
+
+        // Render niches grid
+        function renderNiches() {
+            const niches = getNicheAggregates();
+            const grid = document.getElementById('niches-grid');
+            const loading = document.getElementById('niches-loading');
+            const empty = document.getElementById('niches-empty');
+
+            if (niches.length === 0) {
+                loading.style.display = 'none';
+                empty.style.display = 'block';
+                grid.style.display = 'none';
+                return;
+            }
+
+            loading.style.display = 'none';
+            empty.style.display = 'none';
+            grid.style.display = 'grid';
+
+            grid.innerHTML = niches.map((niche, idx) => {
+                const trend = getTrendIndicator(niche.shops);
+                const scoreClass = getScoreBadgeClass(niche.avgScore);
+
+                return `
+                    <div class="niche-card">
+                        <div class="niche-name">
+                            ${niche.name}
+                            <span class="trend-indicator trend-${trend}">${trend}</span>
+                        </div>
+                        <div class="niche-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">Shops:</span>
+                                <span class="stat-value">${niche.count}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Avg Score:</span>
+                                <span class="score-badge ${scoreClass}">${niche.avgScore}</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Monthly Traffic:</span>
+                                <span class="stat-value">${formatNumber(niche.totalVisits)}</span>
+                            </div>
+                        </div>
+                        <button class="expand-btn" onclick="toggleExpand(${idx})">View Top 5 Shops</button>
+                        <div class="niche-expanded" id="expand-${idx}">
+                            <div class="top-shops">
+                                ${niche.topShops.map(shop => `
+                                    <a href="https://${shop.domain}" target="_blank" class="shop-link">
+                                        ${shop.name || shop.domain}
+                                    </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle niche expansion
+        function toggleExpand(idx) {
+            const elem = document.getElementById(`expand-${idx}`);
+            elem.classList.toggle('active');
+        }
+
+        // Format numbers
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num.toString();
+        }
+
+        // Render charts
+        function renderCharts() {
+            const niches = getNicheAggregates().slice(0, 15);
+
+            // Shop count chart
+            const maxCount = Math.max(...niches.map(n => n.count));
+            document.getElementById('categories-chart').innerHTML = niches.map(niche => `
+                <div class="bar-item">
+                    <div class="bar-label" title="${niche.name}">${niche.name}</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="width: ${(niche.count / maxCount) * 100}%">
+                            <span class="bar-value">${niche.count}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Score chart
+            const maxScore = Math.max(...niches.map(n => n.avgScore));
+            document.getElementById('scores-chart').innerHTML = niches.map(niche => `
+                <div class="bar-item">
+                    <div class="bar-label" title="${niche.name}">${niche.name}</div>
+                    <div class="bar-wrapper">
+                        <div class="bar-fill" style="width: ${(niche.avgScore / maxScore) * 100}%">
+                            <span class="bar-value">${niche.avgScore}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Aggregate countries
+        function getCountryAggregates() {
+            const countryMap = {};
+
+            filteredShops.forEach(shop => {
+                const country = shop.country || 'Unknown';
+                if (!countryMap[country]) {
+                    countryMap[country] = {
+                        code: country,
+                        shops: [],
+                        totalScore: 0
+                    };
+                }
+                countryMap[country].shops.push(shop);
+                countryMap[country].totalScore += shop.score || 0;
+            });
+
+            return Object.values(countryMap)
+                .map(country => ({
+                    ...country,
+                    count: country.shops.length,
+                    avgScore: Math.round(country.totalScore / country.shops.length)
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 12);
+        }
+
+        // Render countries
+        function renderCountries() {
+            const countries = getCountryAggregates();
+            const grid = document.getElementById('countries-grid');
+
+            grid.innerHTML = countries.map(country => {
+                const flag = countryFlags[country.code] || '🌍';
+                const isActive = selectedCountry === country.code;
+
+                return `
+                    <div class="country-card ${isActive ? 'active' : ''}" onclick="filterByCountry('${country.code}')">
+                        <div class="country-flag">${flag}</div>
+                        <div class="country-name">${country.code}</div>
+                        <div class="country-count">${country.count} shops</div>
+                        <div class="country-avg-score">Avg: ${country.avgScore}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter by country
+        function filterByCountry(code) {
+            selectedCountry = selectedCountry === code ? null : code;
+            filterAndRender();
+        }
+
+        // Time period filter handler
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                filterAndRender();
+            });
+        });
+
+        // Initialize
+        fetchShops();
+    </script>
 </body>
 </html>

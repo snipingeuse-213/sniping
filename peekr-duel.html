@@ -3,14 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
+<meta name="description" content="Peekr Duel Mode — Compare two Shopify stores head-to-head."/>
 <meta name="theme-color" content="#F4A7B9"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
-<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://peekr.io"/>
-<meta name="twitter:card" content="summary"/>
 <link rel="stylesheet" href="peekr-responsive.css"/>
 <title>Peekr — Duel Mode</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -20,53 +15,24 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{
-  font-family:'Figtree',sans-serif;
-  background:#f0ece6;
-  color:#1a0a0f;
-  display:flex;
-  height:100vh;
-  position:relative;
-}
+body{font-family:'Figtree',sans-serif;background:#f0ece6;color:#1a0a0f;display:flex;height:100vh;position:relative;}
 
-/* ── SAME FLOATING OBJECTS AS LANDING ── */
-.page-objects{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:0;overflow:hidden;
-}
+.page-objects{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
 .po{position:absolute;border-radius:50%;}
 .po.p1{width:100px;height:100px;top:5%;left:0%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -10px -10px 20px rgba(0,0,0,0.18),inset 6px 6px 12px rgba(255,255,255,0.55),0 14px 36px rgba(0,0,0,0.08);animation:fl1 7s ease-in-out infinite;}
-.po.p2{width:55px;height:55px;top:3%;right:5%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -7px -7px 14px rgba(0,0,0,0.15),inset 4px 4px 8px rgba(255,255,255,0.5);animation:fl2 9s ease-in-out infinite;}
-.po.p3{width:30px;height:30px;top:15%;right:2%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);animation:fl1 6s ease-in-out infinite 1s;}
-.po.p4{width:16px;height:16px;top:25%;right:14%;background:radial-gradient(circle at 35% 30%,#eee,#bbb 50%,#888 85%);animation:fl2 5s ease-in-out infinite .5s;}
 .po.pp{width:70px;height:70px;top:50%;right:1%;background:radial-gradient(circle at 38% 32%,#fbc0d4,#e8799a 55%,#c85080 85%);box-shadow:inset -9px -9px 18px rgba(0,0,0,0.18),inset 5px 5px 10px rgba(255,200,220,0.4),0 12px 32px rgba(200,60,100,0.22);animation:fl2 8s ease-in-out infinite .3s;}
-.po.pg{width:40px;height:40px;bottom:15%;left:2%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.9),rgba(220,215,210,0.4) 50%,transparent 80%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 6px 20px rgba(0,0,0,0.06);animation:fl1 10s ease-in-out infinite 1.5s;}
-.po-worm1{position:absolute;width:6px;height:60px;top:62%;left:1%;background:linear-gradient(180deg,#f4a7b9,#e8799a);border-radius:3px;transform:rotate(20deg);opacity:.7;animation:fl1 9s ease-in-out infinite .4s;}
-.po-worm2{position:absolute;width:5px;height:50px;top:75%;right:4%;background:linear-gradient(180deg,#e8799a,#c85080);border-radius:3px;transform:rotate(-15deg);opacity:.65;animation:fl2 7s ease-in-out infinite .8s;}
-
 @keyframes fl1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
 @keyframes fl2{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-8px) rotate(2deg)}}
 
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
 
-/* ── SIDEBAR ── */
-.sb{
-  width:220px;flex-shrink:0;
-  position:relative;z-index:20;
-  background:#1a0a0f;
-  border-right:none;
-  display:flex;flex-direction:column;
-  overflow-y:auto;overflow-x:hidden;
-}
-.sb-logo{
-  padding:16px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-}
+.sb{width:220px;flex-shrink:0;position:relative;z-index:20;background:#1a0a0f;border-right:none;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
 .sb-logo img{height:32px;width:auto;}
 .sb-sec{padding:10px 0 2px;}
 .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
 .ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
 .ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
 .ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
@@ -76,267 +42,66 @@ body{
 .nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
 .sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
 .uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
-.uc:hover{background:rgba(255,255,255,0.12);}
 .ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
 .up{font-size:10px;color:#e8799a;font-weight:700;}
 
-/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:#ffffff;}
-
-/* ── TOPBAR ── */
-.topbar{
-  height:56px;flex-shrink:0;
-  display:flex;align-items:center;gap:12px;
-  padding:0 24px;
-  background:#ffffff;
-  border-bottom:1px solid rgba(220,200,210,0.18);
-  box-shadow:0 1px 0 rgba(220,200,210,0.12);
-}
+.topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;background:#ffffff;border-bottom:1px solid rgba(220,200,210,0.18);}
 .tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f;}
-.sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
-.sbox:focus-within{background:#fff;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
-.sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
-.sbox input::placeholder{color:rgba(26,10,15,0.3);}
-.tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.cnt{font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);}
-.cnt b{color:#1a0a0f;font-size:15px;}
-.lpill{display:flex;align-items:center;gap:5px;background:rgba(82,200,122,0.1);border:1px solid rgba(82,200,122,0.25);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:#2a9e54;}
-.ldot{width:6px;height:6px;border-radius:50%;background:#52c87a;animation:bl 2s infinite;}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
-.bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
-.bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
 
-/* ── SEGMENTS ── */
-.segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
-.sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
-.sg.active{
-  background:rgba(255,252,248,0.85);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.9);
-  box-shadow:0 2px 12px rgba(200,100,140,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-  color:#d4607a;
-}
-.sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.cw{flex:1;overflow:auto;padding:32px 24px;}
 
-/* ── FILTERS ── */
-.fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
-.fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
-.fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
-.fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fc{font-size:8px;opacity:.35;}
+/* DUEL LAYOUT */
+.duel-hero{text-align:center;margin-bottom:32px;}
+.duel-hero h2{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;margin-bottom:8px;}
+.duel-hero p{color:rgba(26,10,15,0.5);font-size:14px;}
 
-/* ── DROPDOWN FILTERS ── */
-.fb-dropdown{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:4px;
-  background:#ffffff;
-  border:1px solid rgba(200,160,170,0.2);
-  border-radius:9px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.08);
-  min-width:180px;
-  max-width:240px;
-  max-height:280px;
-  overflow-y:auto;
-  z-index:100;
-  padding:8px;
-  display:none;
-}
-.fb-dropdown.open{display:block;}
-.fb-dropdown-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius:6px;
-  font-size:12px;
-  color:rgba(26,10,15,0.7);
-  cursor:pointer;
-  transition:all .15s;
-}
-.fb-dropdown-item:hover{background:rgba(232,121,154,0.08);color:#1a0a0f;}
-.fb-dropdown-item input{margin:0;cursor:pointer;}
-.fb-dropdown-clear{
-  padding:6px 10px;
-  margin-top:4px;
-  border-top:1px solid rgba(200,160,170,0.15);
-  font-size:11px;
-  font-weight:700;
-  color:#d4607a;
-  cursor:pointer;
-  text-align:center;
-  border-radius:6px;
-  transition:all .15s;
-}
-.fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
+.duel-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:start;margin-bottom:32px;}
+.duel-box{position:relative;}
+.duel-box label{display:block;font-size:12px;font-weight:700;color:rgba(26,10,15,0.4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.duel-box input{width:100%;padding:12px 16px;border:1.5px solid rgba(200,160,170,0.25);border-radius:12px;font-family:'Figtree',sans-serif;font-size:14px;color:#1a0a0f;background:#fff;transition:all .2s;}
+.duel-box input:focus{outline:none;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
+.duel-vs{display:flex;align-items:center;justify-content:center;padding-top:24px;font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:#e8799a;}
+.duel-results{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid rgba(200,160,170,0.2);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);z-index:50;max-height:240px;overflow-y:auto;margin-top:4px;display:none;}
+.duel-results.open{display:block;}
+.duel-result-item{padding:10px 16px;cursor:pointer;font-size:13px;transition:background .15s;display:flex;justify-content:space-between;align-items:center;}
+.duel-result-item:hover{background:rgba(232,121,154,0.06);}
+.duel-result-item .rn{font-weight:600;color:#1a0a0f;}
+.duel-result-item .rd{font-size:11px;color:rgba(26,10,15,0.4);font-family:monospace;}
+.duel-result-item .rs{background:#e8799a;color:#fff;font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;}
 
-/* ── DATE PICKER ── */
-.date-picker-wrap{padding:8px;}
-.date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
-.date-picker-wrap select,.date-picker-wrap input[type="date"]{
-  width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
-  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
-  outline:none;transition:border .15s;margin-bottom:8px;
-}
-.date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
-.date-picker-apply{
-  width:100%;padding:7px;border:none;border-radius:7px;
-  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
-  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
-}
-.date-picker-apply:hover{background:#d4607a;}
+/* COMPARISON TABLE */
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;background:rgba(255,252,248,0.88);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.9);border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(200,100,140,0.06);}
+.compare-table th{padding:14px 20px;font-size:12px;font-weight:800;color:rgba(26,10,15,0.4);text-transform:uppercase;letter-spacing:.05em;background:rgba(245,240,235,0.6);text-align:left;}
+.compare-table th:first-child{width:180px;}
+.compare-table td{padding:14px 20px;border-top:1px solid rgba(200,160,170,0.1);font-size:14px;}
+.compare-table td:first-child{font-weight:700;color:rgba(26,10,15,0.5);font-size:12px;}
+.compare-table .winner{color:#d4607a;font-weight:800;background:rgba(232,121,154,0.04);}
+.compare-table .shop-header{font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;color:#1a0a0f;}
+.compare-empty{text-align:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
+.compare-empty div:first-child{font-size:48px;margin-bottom:12px;opacity:.4;}
 
-/* ── TABLE ── */
-.tw{flex:1;overflow:auto;padding:12px 24px 24px;}
-table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
-thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
-thead th:hover{color:rgba(26,10,15,0.6);}
-thead th.sorted{color:#d4607a;}
-.thi{display:flex;align-items:center;gap:4px;}
-.sic{font-size:9px;opacity:.5;transition:opacity .15s;}
-
-tbody tr{cursor:pointer;}
-tbody tr td{
-  background:#ffffff;
-  border-top:1px solid rgba(220,200,210,0.12);
-  border-bottom:1px solid rgba(220,200,210,0.12);
-  transition:all .15s;
-}
-tbody tr td:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(200,160,170,0.1);}
-tbody tr td:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(200,160,170,0.1);}
-tbody tr:hover td{
-  background:#fff8fa;
-  border-color:rgba(232,121,154,0.15);
-  box-shadow:0 2px 12px rgba(200,100,140,0.07);
-}
-td{padding:11px 14px;vertical-align:middle;}
-
-.si2{display:flex;align-items:center;gap:10px;}
-.sthumb{
-  width:52px;height:40px;border-radius:9px;
-  overflow:hidden;
-  border:1px solid rgba(200,160,170,0.15);
-  flex-shrink:0;
-  background:rgba(245,240,235,0.8);
-  position:relative;
-}
-.sthumb img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-}
-.sthumb-fb{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);
-}
-.sname{font-size:13px;font-weight:800;color:#1a0a0f;}
-.sdomain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:1px;}
-.sage{font-size:10px;color:rgba(26,10,15,0.3);margin-top:2px;}
-.pc{display:flex;gap:3px;}
-.pt{width:34px;height:34px;border-radius:7px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(26,10,15,0.35);}
-.pct{font-size:10px;color:rgba(26,10,15,0.3);margin-top:3px;}
-.tv{font-size:13px;font-weight:800;color:#1a0a0f;}
-.spk{display:flex;align-items:flex-end;gap:1.5px;height:22px;margin-top:4px;}
-.spkb{width:3px;border-radius:2px 2px 0 0;min-height:3px;}
-.rv{font-size:12px;font-weight:600;color:rgba(26,10,15,0.5);}
-.flags{display:flex;gap:3px;align-items:center;}
-.flag-img{
-  width:22px;height:22px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1.5px solid rgba(220,200,210,0.25);
-  box-shadow:0 1px 3px rgba(0,0,0,0.08);
-  flex-shrink:0;
-}
-.acs{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800;}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.scp{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:12px;font-weight:900;border:2px solid;}
-.prbg{font-size:9px;font-weight:800;background:linear-gradient(90deg,#e8799a,#f4a7b9);color:#fff;padding:2px 6px;border-radius:20px;}
-.tag-niche{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
-
-/* ── MODAL ── */
-.mo{position:fixed;inset:0;background:rgba(26,10,15,0.18);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .2s;}
-.mo.open{opacity:1;pointer-events:all;}
-.md{
-  width:660px;max-height:88vh;
-  background:rgba(255,252,248,0.88);
-  backdrop-filter:blur(32px) saturate(1.6);
-  -webkit-backdrop-filter:blur(32px) saturate(1.6);
-  border:1.5px solid rgba(255,255,255,0.9);
-  border-radius:24px;
-  box-shadow:0 32px 80px rgba(200,80,120,0.14),inset 0 2px 0 rgba(255,255,255,1);
-  overflow:hidden;display:flex;flex-direction:column;
-  transform:translateY(20px) scale(.97);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
-.mo.open .md{transform:translateY(0) scale(1);}
-.mh{padding:22px 24px 18px;border-bottom:1px solid rgba(200,160,170,0.12);display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(252,228,236,0.2));}
-.mico{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(244,167,185,0.15),rgba(255,255,255,0.8));border:1px solid rgba(200,160,170,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(26,10,15,0.4);flex-shrink:0;}
-.msn{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
-.mdom{font-size:12px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:3px;}
-.mcl{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:rgba(26,10,15,0.4);transition:all .15s;flex-shrink:0;}
-.mcl:hover{background:#fff;color:#e8799a;border-color:#e8799a;}
-.mb{padding:20px 24px;overflow-y:auto;flex:1;}
-.msts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
-.stb{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.18);border-radius:12px;padding:12px;}
-.stl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.stv{font-size:20px;font-weight:900;letter-spacing:-.02em;color:#1a0a0f;}
-.msec{margin-bottom:18px;}
-.mst2{font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.tgl{display:flex;flex-wrap:wrap;gap:5px;}
-.tg{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid;}
-.mcht{display:flex;align-items:flex-end;gap:4px;height:64px;padding:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;margin-bottom:20px;}
-.chb{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-.mml{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(232,121,154,0.06);border:1px solid rgba(232,121,154,0.18);border-radius:12px;color:#d4607a;font-size:13px;font-weight:700;text-decoration:none;transition:all .15s;}
-.mml:hover{background:rgba(232,121,154,0.1);}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;padding:14px;}
-.di{font-size:12px;color:rgba(26,10,15,0.5);}
-.di strong{color:#1a0a0f;}
+.btn-meta{display:inline-block;padding:8px 16px;background:linear-gradient(135deg,#e8799a,#d4607a);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700;transition:all .2s;margin-top:4px;}
+.btn-meta:hover{box-shadow:0 4px 12px rgba(232,121,154,0.3);}
+.btn-visit{display:inline-block;padding:6px 14px;border:1px solid rgba(200,160,170,0.25);color:rgba(26,10,15,0.55);border-radius:8px;text-decoration:none;font-size:11px;font-weight:600;margin-left:6px;transition:all .2s;}
+.btn-visit:hover{border-color:#e8799a;color:#d4607a;}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="peekr-config.js"></script>
 </head>
 <body>
 
-<script>
-// Auth protection
-(async () => {
-  const session = await Peekr.requireAuth();
-  if (!session) return;
-  const plan = await Peekr.getUserPlan();
-  window._userPlan = plan;
-  if (plan === 'free') { Peekr.showPageLock('Duel Mode', 'Pro'); return; }
-})();
-</script>
-
-<!-- FLOATING OBJECTS -->
 <div class="page-objects">
   <div class="po p1"></div>
-  <div class="po p2"></div>
-  <div class="po p3"></div>
-  <div class="po p4"></div>
   <div class="po pp"></div>
-  <div class="po pg"></div>
-  <div class="po-worm1"></div>
-  <div class="po-worm2"></div>
 </div>
 
-
-
-<!-- SIDEBAR -->
 <aside class="sb">
   <div class="sb-logo">
     <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analyse</div>
     <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
@@ -361,535 +126,126 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 </aside>
 
-<div class="main" style="overflow-y:auto;">
-
-<style>
-    #sec-duel {
-      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    .duel-container {
-      padding: 32px 24px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .duel-header {
-      margin-bottom: 40px;
-    }
-
-    .duel-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0 0 8px 0;
-    }
-
-    .duel-subtitle {
-      font-size: 15px;
-      color: #666;
-      margin: 0;
-    }
-
-    /* Shop Selector Section */
-    .shop-selector-section {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 20px;
-      align-items: flex-end;
-      margin-bottom: 40px;
-    }
-
-    .shop-selector {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .selector-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #1a1a1a;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .shop-dropdown {
-      padding: 12px 16px;
-      border: 2px solid #e8e8e8;
-      border-radius: 12px;
-      font-family: 'Figtree', sans-serif;
-      font-size: 15px;
-      color: #1a1a1a;
-      background: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .shop-dropdown:hover {
-      border-color: #e8799a;
-      box-shadow: 0 0 0 3px rgba(232, 121, 154, 0.1);
-    }
-
-    .shop-dropdown:focus {
-      outline: none;
-      border-color: #e8799a;
-      box-shadow: 0 0 0 3px rgba(232, 121, 154, 0.1);
-    }
-
-    .vs-badge {
-      font-size: 24px;
-      font-weight: 700;
-      color: #e8799a;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .compare-btn {
-      width: 100%;
-      padding: 12px 24px;
-      background: #e8799a;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'Figtree', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-    }
-
-    .compare-btn:hover:not(:disabled) {
-      background: #d56a85;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(232, 121, 154, 0.3);
-    }
-
-    .compare-btn:disabled {
-      background: #ddd;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    /* Comparison Table */
-    .comparison-wrapper {
-      background: white;
-      border: 1px solid #e8e8e8;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .comparison-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .comparison-table th {
-      background: #f9f9f9;
-      padding: 16px;
-      text-align: left;
-      font-size: 14px;
-      font-weight: 600;
-      color: #1a1a1a;
-      border-bottom: 2px solid #e8e8e8;
-    }
-
-    .comparison-table td {
-      padding: 16px;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 14px;
-      color: #1a1a1a;
-    }
-
-    .comparison-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .metric-name {
-      font-weight: 600;
-      color: #666;
-      text-transform: uppercase;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      width: 160px;
-    }
-
-    .metric-value {
-      text-align: center;
-      font-weight: 600;
-      padding: 12px 16px;
-      border-radius: 8px;
-    }
-
-    .metric-value.winner {
-      background: rgba(232, 121, 154, 0.15);
-      color: #e8799a;
-    }
-
-    .score-circle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      font-weight: 700;
-      font-size: 16px;
-      background: #f0f0f0;
-      color: #1a1a1a;
-    }
-
-    .score-circle.high {
-      background: rgba(232, 121, 154, 0.2);
-      color: #e8799a;
-    }
-
-    .sparkline {
-      height: 30px;
-      width: 100%;
-      max-width: 120px;
-      display: inline-block;
-    }
-
-    /* Winner Badge */
-    .winner-section {
-      padding: 32px 24px;
-      text-align: center;
-      border-top: 2px solid #e8e8e8;
-    }
-
-    .winner-badge {
-      display: inline-block;
-      background: rgba(232, 121, 154, 0.1);
-      border: 2px solid #e8799a;
-      padding: 20px 40px;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: 700;
-      color: #e8799a;
-    }
-
-    /* Empty State */
-    .empty-compare {
-      background: white;
-      border: 2px dashed #e8e8e8;
-      border-radius: 14px;
-      padding: 60px 20px;
-      text-align: center;
-      display: none;
-    }
-
-    .empty-compare.show {
-      display: block;
-    }
-
-    .empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .empty-text {
-      font-size: 16px;
-      color: #666;
-      font-weight: 500;
-    }
-
-    @media (max-width: 1024px) {
-      .shop-selector-section {
-        grid-template-columns: 1fr;
-      }
-
-      .vs-badge {
-        display: none;
-      }
-
-      .comparison-table {
-        font-size: 13px;
-      }
-
-      .comparison-table td,
-      .comparison-table th {
-        padding: 12px;
-      }
-
-      .metric-name {
-        width: 120px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .duel-container {
-        padding: 20px 16px;
-      }
-
-      .duel-title {
-        font-size: 24px;
-      }
-
-      .comparison-table {
-        font-size: 12px;
-      }
-
-      .metric-value {
-        padding: 8px 10px;
-      }
-
-      .score-circle {
-        width: 40px;
-        height: 40px;
-        font-size: 14px;
-      }
-
-      .comparison-table th,
-      .comparison-table td {
-        padding: 10px;
-      }
-    }
-  </style>
-
-  <div class="duel-container">
-    <div class="duel-header">
-      <h1 class="duel-title">⚔️ Duel Mode</h1>
-      <p class="duel-subtitle">Compare two shops side by side and see who comes out on top</p>
-    </div>
-
-    <div class="shop-selector-section">
-      <div class="shop-selector">
-        <label class="selector-label">Shop 1</label>
-        <select id="shop1-select" class="shop-dropdown">
-          <option value="">Select Shop 1</option>
-        </select>
-      </div>
-
-      <div class="vs-badge">VS</div>
-
-      <div class="shop-selector">
-        <label class="selector-label">Shop 2</label>
-        <select id="shop2-select" class="shop-dropdown">
-          <option value="">Select Shop 2</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="compare-btn" id="compare-btn" disabled>Compare Shops</button>
-
-    <div id="comparison-results" style="margin-top: 32px;"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title">Duel Mode</div>
   </div>
 
-  <script>
-    let SHOPS_DATA = [];
-    // Format helpers
-    function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
-    function fmtR(min,max){
-      const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
-      if(!min&&!max)return'$0';return f(Math.round((min+max)/2));
-    }
-    // Load shops from Supabase for duel
-    async function loadDuelShops(){
-      try{
-        const shops = await Peekr.getShops({limit:100,orderBy:'score',orderDir:'desc'});
-        if(shops&&shops.length>0){
-          SHOPS_DATA=shops.map((s,i)=>({
-            id:i+1,name:s.name||s.domain,score:s.score||0,
-            visits:fmtV(s.monthly_visits),revenue:fmtR(s.revenue_min||0,s.revenue_max||0),
-            liveAds:s.live_ads||0,products:s.products_count||0,
-            apps:(s.apps||[]).length,category:s.niche||'General',
-            theme:s.theme||'Unknown',currency:s.currency||'USD',
-            trend:s.traffic_trend||Array.from({length:7},()=>Math.round(Math.random()*80+10))
-          }));
-        }
-      }catch(e){console.log('[Peekr Duel] Using demo data',e);}
-      if(SHOPS_DATA.length===0){
-        SHOPS_DATA=[
-          {id:1,name:'TrendHub Store',score:87,visits:'245K',revenue:'$1.2M',liveAds:156,products:2841,apps:18,category:'Fashion',theme:'Empire',currency:'USD',trend:[20,35,28,45,52,48,61]},
-          {id:2,name:'StyleHub Pro',score:92,visits:'512K',revenue:'$3.2M',liveAds:289,products:5620,apps:24,category:'Fashion',theme:'Prestige',currency:'USD',trend:[35,48,52,58,72,68,81]},
-          {id:3,name:'Quick Goods',score:78,visits:'189K',revenue:'$890K',liveAds:98,products:1562,apps:12,category:'General',theme:'Debut',currency:'USD',trend:[15,22,18,28,35,31,42]}
-        ];
-      }
-      populateDropdowns();
-    }
-    // Wait for auth then load
-    function waitForDuelAuth(){
-      if(window._userPlan){loadDuelShops();}
-      else{setTimeout(waitForDuelAuth,200);}
-    }
-    waitForDuelAuth();
+  <div class="cw">
+    <div class="duel-hero">
+      <h2>Shop vs Shop</h2>
+      <p>Compare two Shopify stores head-to-head. Search by name or domain.</p>
+    </div>
 
-    // Populate dropdowns
-    function populateDropdowns() {
-      const select1 = document.getElementById('shop1-select');
-      const select2 = document.getElementById('shop2-select');
+    <div class="duel-inputs">
+      <div class="duel-box">
+        <label>Shop 1</label>
+        <input type="text" id="input1" placeholder="Search a shop..." oninput="searchFor(1)"/>
+        <div class="duel-results" id="results1"></div>
+      </div>
+      <div class="duel-vs">VS</div>
+      <div class="duel-box">
+        <label>Shop 2</label>
+        <input type="text" id="input2" placeholder="Search a shop..." oninput="searchFor(2)"/>
+        <div class="duel-results" id="results2"></div>
+      </div>
+    </div>
 
-      SHOPS_DATA.forEach(shop => {
-        const option1 = document.createElement('option');
-        option1.value = shop.id;
-        option1.textContent = shop.name;
-        select1.appendChild(option1);
-
-        const option2 = document.createElement('option');
-        option2.value = shop.id;
-        option2.textContent = shop.name;
-        select2.appendChild(option2);
-      });
-    }
-
-    // Get shop data by ID
-    function getShop(id) {
-      return SHOPS_DATA.find(shop => shop.id === parseInt(id));
-    }
-
-    // Simple sparkline SVG
-    function createSparkline(values) {
-      const max = Math.max(...values);
-      const width = 120;
-      const height = 30;
-      const points = values.map((v, i) => {
-        const x = (i / (values.length - 1)) * width;
-        const y = height - (v / max) * (height - 4);
-        return `${x},${y}`;
-      }).join(' ');
-
-      return `<svg viewBox="0 0 ${width} ${height}" class="sparkline">
-        <polyline points="${points}" fill="none" stroke="#e8799a" stroke-width="2" vector-effect="non-scaling-stroke"/>
-      </svg>`;
-    }
-
-    // Render comparison
-    function renderComparison() {
-      const shop1Id = document.getElementById('shop1-select').value;
-      const shop2Id = document.getElementById('shop2-select').value;
-
-      if (!shop1Id || !shop2Id || shop1Id === shop2Id) {
-        document.getElementById('comparison-results').innerHTML = '';
-        return;
-      }
-
-      const shop1 = getShop(shop1Id);
-      const shop2 = getShop(shop2Id);
-
-      // Calculate wins
-      let shop1Wins = 0;
-      let shop2Wins = 0;
-
-      if (shop1.score > shop2.score) shop1Wins++;
-      else if (shop2.score > shop1.score) shop2Wins++;
-
-      if (parseInt(shop1.visits) > parseInt(shop2.visits)) shop1Wins++;
-      else if (parseInt(shop2.visits) > parseInt(shop1.visits)) shop2Wins++;
-
-      if (parseInt(shop1.revenue.replace(/[^0-9.]/g, '')) > parseInt(shop2.revenue.replace(/[^0-9.]/g, ''))) shop1Wins++;
-      else if (parseInt(shop2.revenue.replace(/[^0-9.]/g, '')) > parseInt(shop1.revenue.replace(/[^0-9.]/g, ''))) shop2Wins++;
-
-      if (shop1.liveAds > shop2.liveAds) shop1Wins++;
-      else if (shop2.liveAds > shop1.liveAds) shop2Wins++;
-
-      if (shop1.products > shop2.products) shop1Wins++;
-      else if (shop2.products > shop1.products) shop2Wins++;
-
-      if (shop1.apps > shop2.apps) shop1Wins++;
-      else if (shop2.apps > shop1.apps) shop2Wins++;
-
-      // Apps count is not a winning metric, continue with others
-
-      const winner = shop1Wins > shop2Wins ? shop1 : shop2;
-
-      const html = `
-        <div class="comparison-wrapper">
-          <table class="comparison-table">
-            <thead>
-              <tr>
-                <th>Metric</th>
-                <th style="text-align: center;">${shop1.name}</th>
-                <th style="text-align: center;">${shop2.name}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="metric-name">Score</td>
-                <td class="metric-value ${shop1.score > shop2.score ? 'winner' : ''}">
-                  <div class="score-circle ${shop1.score > shop2.score ? 'high' : ''}">${shop1.score}</div>
-                </td>
-                <td class="metric-value ${shop2.score > shop1.score ? 'winner' : ''}">
-                  <div class="score-circle ${shop2.score > shop1.score ? 'high' : ''}">${shop2.score}</div>
-                </td>
-              </tr>
-              <tr>
-                <td class="metric-name">Monthly Visits</td>
-                <td class="metric-value ${parseInt(shop1.visits) > parseInt(shop2.visits) ? 'winner' : ''}">${shop1.visits}</td>
-                <td class="metric-value ${parseInt(shop2.visits) > parseInt(shop1.visits) ? 'winner' : ''}">${shop2.visits}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Revenue Est.</td>
-                <td class="metric-value ${parseInt(shop1.revenue.replace(/[^0-9.]/g, '')) > parseInt(shop2.revenue.replace(/[^0-9.]/g, '')) ? 'winner' : ''}">${shop1.revenue}</td>
-                <td class="metric-value ${parseInt(shop2.revenue.replace(/[^0-9.]/g, '')) > parseInt(shop1.revenue.replace(/[^0-9.]/g, '')) ? 'winner' : ''}">${shop2.revenue}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Live Ads</td>
-                <td class="metric-value ${shop1.liveAds > shop2.liveAds ? 'winner' : ''}">${shop1.liveAds}</td>
-                <td class="metric-value ${shop2.liveAds > shop1.liveAds ? 'winner' : ''}">${shop2.liveAds}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Products</td>
-                <td class="metric-value ${shop1.products > shop2.products ? 'winner' : ''}">${shop1.products.toLocaleString()}</td>
-                <td class="metric-value ${shop2.products > shop1.products ? 'winner' : ''}">${shop2.products.toLocaleString()}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Apps</td>
-                <td class="metric-value">${shop1.apps}</td>
-                <td class="metric-value">${shop2.apps}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Category</td>
-                <td class="metric-value">${shop1.category}</td>
-                <td class="metric-value">${shop2.category}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Theme</td>
-                <td class="metric-value">${shop1.theme}</td>
-                <td class="metric-value">${shop2.theme}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Currency</td>
-                <td class="metric-value">${shop1.currency}</td>
-                <td class="metric-value">${shop2.currency}</td>
-              </tr>
-              <tr>
-                <td class="metric-name">Traffic Trend</td>
-                <td class="metric-value">${createSparkline(shop1.trend)}</td>
-                <td class="metric-value">${createSparkline(shop2.trend)}</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="winner-section">
-            <div class="winner-badge">🏆 ${winner.name} wins ${Math.max(shop1Wins, shop2Wins)}/9 metrics</div>
-          </div>
-        </div>
-      `;
-
-      document.getElementById('comparison-results').innerHTML = html;
-    }
-
-    // Event listeners
-    document.getElementById('shop1-select').addEventListener('change', function() {
-      const btn = document.getElementById('compare-btn');
-      btn.disabled = !this.value || !document.getElementById('shop2-select').value || this.value === document.getElementById('shop2-select').value;
-    });
-
-    document.getElementById('shop2-select').addEventListener('change', function() {
-      const btn = document.getElementById('compare-btn');
-      btn.disabled = !this.value || !document.getElementById('shop1-select').value || this.value === document.getElementById('shop1-select').value;
-    });
-
-    document.getElementById('compare-btn').addEventListener('click', renderComparison);
-
-    // Initialize
-    populateDropdowns();
-  </script>
+    <div id="compareSection">
+      <div class="compare-empty">
+        <div>⚔️</div>
+        <div style="font-size:14px;font-weight:600">Select two shops above to start the duel</div>
+      </div>
+    </div>
+  </div>
 </div>
 
-</div>
+<script>
+const SB='https://vsyceexjsitliwaasdhd.supabase.co';
+const AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDY4NzMsImV4cCI6MjA1ODQyMjg3M30.1FiWG8gKL50dUqqA_fKOPT5-NfUVpx3sVxflKr-ouPY';
+const FLAGS={US:'🇺🇸',GB:'🇬🇧',CA:'🇨🇦',AU:'🇦🇺',DE:'🇩🇪',FR:'🇫🇷',IT:'🇮🇹',ES:'🇪🇸',NL:'🇳🇱',IN:'🇮🇳',BR:'🇧🇷',MX:'🇲🇽'};
 
+let shop1=null, shop2=null;
+let debounce1=null, debounce2=null;
+
+function fmt(n){if(!n||n===0)return '—';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toString();}
+
+function age(d){if(!d)return '—';const days=Math.floor((Date.now()-new Date(d))/(864e5));if(days>365)return Math.floor(days/365)+'y';if(days>30)return Math.floor(days/30)+'mo';return days+'d';}
+
+async function searchFor(n){
+  const input = document.getElementById('input'+n);
+  const q = input.value.trim();
+  const container = document.getElementById('results'+n);
+
+  if(n===1){clearTimeout(debounce1);debounce1=setTimeout(()=>doSearch(q,n),300);}
+  else{clearTimeout(debounce2);debounce2=setTimeout(()=>doSearch(q,n),300);}
+}
+
+async function doSearch(q,n){
+  const container = document.getElementById('results'+n);
+  if(q.length<2){container.classList.remove('open');container.innerHTML='';return;}
+
+  try{
+    const r=await fetch(`${SB}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,created_date,theme,shopify_plan,products_count&or=(domain.ilike.*${encodeURIComponent(q)}*,name.ilike.*${encodeURIComponent(q)}*)&order=score.desc&limit=8`,
+      {headers:{'apikey':AK,'Authorization':`Bearer ${AK}`}});
+    const data=await r.json();
+
+    if(data.length===0){container.innerHTML='<div style="padding:12px;color:rgba(26,10,15,0.3);font-size:13px">No results</div>';container.classList.add('open');return;}
+
+    container.innerHTML=data.map((s,i)=>`<div class="duel-result-item" onclick='selectShop(${n},${JSON.stringify(s).replace(/'/g,"&#39;")})'>
+      <div><span class="rn">${FLAGS[s.country]||'🌐'} ${s.name||s.domain}</span><br/><span class="rd">${s.domain}</span></div>
+      <span class="rs">${Math.round(s.score||0)}</span>
+    </div>`).join('');
+    container.classList.add('open');
+  }catch(e){console.error(e);}
+}
+
+function selectShop(n,s){
+  if(n===1){shop1=s;document.getElementById('input1').value=s.name||s.domain;}
+  else{shop2=s;document.getElementById('input2').value=s.name||s.domain;}
+  document.getElementById('results'+n).classList.remove('open');
+  if(shop1&&shop2) renderCompare();
+}
+
+function renderCompare(){
+  const s=document.getElementById('compareSection');
+  const rows=[
+    ['Score',Math.round(shop1.score||0),Math.round(shop2.score||0),'higher'],
+    ['Monthly Visits',fmt(shop1.monthly_visits),fmt(shop2.monthly_visits),'higher'],
+    ['Products',fmt(shop1.products_count),fmt(shop2.products_count),'higher'],
+    ['Shopify Plan',shop1.shopify_plan||'—',shop2.shopify_plan||'—','none'],
+    ['Theme',shop1.theme||'—',shop2.theme||'—','none'],
+    ['Niche',shop1.niche||'—',shop2.niche||'—','none'],
+    ['Country',(FLAGS[shop1.country]||'')+' '+(shop1.country||'—'),(FLAGS[shop2.country]||'')+' '+(shop2.country||'—'),'none'],
+    ['Store Age',age(shop1.created_date),age(shop2.created_date),'none'],
+  ];
+
+  function winClass(r,col){
+    if(r[3]==='none')return '';
+    const v1=parseFloat(String(r[1]).replace(/[KM,]/g,''))||0;
+    const v2=parseFloat(String(r[2]).replace(/[KM,]/g,''))||0;
+    if(r[3]==='higher'){if(col===1&&v1>v2)return ' winner';if(col===2&&v2>v1)return ' winner';}
+    return '';
+  }
+
+  s.innerHTML=`<table class="compare-table">
+    <thead><tr><th>Metric</th><th><div class="shop-header">${FLAGS[shop1.country]||''} ${shop1.name||shop1.domain}</div></th><th><div class="shop-header">${FLAGS[shop2.country]||''} ${shop2.name||shop2.domain}</div></th></tr></thead>
+    <tbody>
+      ${rows.map(r=>`<tr><td>${r[0]}</td><td class="${winClass(r,1)}">${r[1]}</td><td class="${winClass(r,2)}">${r[2]}</td></tr>`).join('')}
+      <tr><td>Meta Ads</td>
+        <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(shop1.domain)}" target="_blank" class="btn-meta">View Ads</a><a href="https://${shop1.domain}" target="_blank" class="btn-visit">Visit</a></td>
+        <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(shop2.domain)}" target="_blank" class="btn-meta">View Ads</a><a href="https://${shop2.domain}" target="_blank" class="btn-visit">Visit</a></td>
+      </tr>
+    </tbody>
+  </table>`;
+}
+
+// Close dropdowns on click outside
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.duel-box')){
+    document.querySelectorAll('.duel-results').forEach(d=>d.classList.remove('open'));
+  }
+});
+</script>
 </body>
 </html>
