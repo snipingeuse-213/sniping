@@ -1,10 +1,18 @@
 {
+    "buildCommand": "",
+    "outputDirectory": ".",
+    "framework": null,
     "rewrites": [
         {
             "source": "/",
             "destination": "/peekr-landing.html"
         }
     ],
+    "functions": {
+        "api/scrape-shops.js": {
+            "maxDuration": 60
+        }
+    },
     "crons": [
         {
             "path": "/api/scrape-shops",
