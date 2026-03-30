@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr â Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
+<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
 <meta name="theme-color" content="#F4A7B9"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðï¸</text></svg>"/>
-<meta property="og:title" content="Peekr â Ecom Intelligence Platform"/>
+<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
 <meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://peekr.io"/>
 <meta name="twitter:card" content="summary"/>
 <link rel="stylesheet" href="peekr-responsive.css"/>
-<title>Peekr â Dashboard</title>
+<title>Peekr — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -358,7 +358,7 @@ td{padding:11px 14px;vertical-align:middle;}
     <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">ð</span><input type="text" placeholder="Search shopsâ¦" id="si" oninput="fs()"/></div>
     <div class="tb-r">
       <div class="lpill"><div class="ldot"></div>Live</div>
-      <div class="cnt" id="cnt"><b>â</b> Shops</div>
+      <div class="cnt" id="cnt"><b>—</b> Shops</div>
       <div class="bico" onclick="ra(this)">â»</div>
       <div class="bico">â</div>
     </div>
@@ -429,7 +429,7 @@ window._userPlan = 'pro';
 window._totalShopCount = 0;
 window._supabaseShops = [];
 
-// Fetch helper â single request, no retries
+// Fetch helper — single request, no retries
 async function sbFetch(url) {
   try {
     const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=exact' } });
@@ -439,7 +439,7 @@ async function sbFetch(url) {
   } catch(e) { return { data: [], count: 0 }; }
 }
 
-// Server-side page fetch for pagination â fetches a specific page directly from Supabase
+// Server-side page fetch for pagination — fetches a specific page directly from Supabase
 async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams) {
   const offset = page * pageSize;
   let url = _SB+'/rest/v1/shops?select='+_COLS;
@@ -492,7 +492,7 @@ let D=[];
 function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
 function fmtR(min,max){
   const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
-  return f(min)+' â '+f(max);
+  return f(min)+' – '+f(max);
 }
 function calcAge(d){if(!d)return'N/A';const ms=Date.now()-new Date(d).getTime();const days=Math.floor(ms/864e5);if(days<7)return days+' days';if(days<60)return Math.round(days/7)+' weeks';if(days<365)return Math.round(days/30)+' months';return Math.round(days/365)+' years';}
 function mapShop(s,i){return{
@@ -507,7 +507,7 @@ function mapShop(s,i){return{
   aov:s.avg_price_usd||0,us:(s.estimated_sales&&s.avg_price_usd&&s.avg_price_usd>0)?Math.round(s.estimated_sales/s.avg_price_usd):0,
   ico:s.icon||''
 };}
-// Direct fetch fallback â single sequential query (uses global _SB, _AK, _COLS)
+// Direct fetch fallback — single sequential query (uses global _SB, _AK, _COLS)
 async function directFetchShops(){
   try{
     const r=await fetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc&limit=1000',{headers:{'apikey':_AK}});
@@ -828,7 +828,7 @@ function toggleFilter(filterName,value){
   re();
 }
 
-// Apply date filter â server-side for "lastX" modes since only top 10K shops are loaded locally
+// Apply date filter — server-side for "lastX" modes since only top 10K shops are loaded locally
 async function applyDateFilter(){
   const mode=document.getElementById('cd-mode').value;
   const d1=document.getElementById('cd-date1')?document.getElementById('cd-date1').value:'';
@@ -860,7 +860,7 @@ async function applyDateFilter(){
       console.log('[Peekr] Server date filter error:',e);
     }
   }else{
-    // For manual date modes (after/before/between), clear server results â use client-side
+    // For manual date modes (after/before/between), clear server results — use client-side
     window._dateFilteredShops=null;
   }
 
@@ -951,7 +951,7 @@ function gd(){
   // Currency filter
   if(filters.Currency.length>0)s=s.filter(x=>filters.Currency.includes(x.cu));
 
-  // Creation Date filter â skip "lastX" modes here since they use server-side data
+  // Creation Date filter — skip "lastX" modes here since they use server-side data
   const cdf=filters['Creation Date'];
   if(cdf&&cdf.mode&&!cdf.mode.startsWith('last')){
     const now=new Date();
@@ -1030,7 +1030,7 @@ function re(){
     const apiFiltered=_apiResults.filter(x=>x.n.toLowerCase().includes(q)||x.d.includes(q)||x.ni.toLowerCase().includes(q));
     shops=[...shops,...apiFiltered];
   }
-  // Show total DB count (not just loaded count) â but use actual count when server-side filter is active
+  // Show total DB count (not just loaded count) — but use actual count when server-side filter is active
   const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode&&filters['Creation Date'].mode.startsWith('last')&&window._dateFilteredShops;
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
@@ -1106,7 +1106,7 @@ function re(){
       lastP = p;
     }
     ph += `<button onclick="nextPage(${totalPages})" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:${currentPage>=totalPages-1?'#f5f5f5':'#fff'};cursor:${currentPage>=totalPages-1?'default':'pointer'};color:${currentPage>=totalPages-1?'#bbb':'#333'};font-size:12px;" ${currentPage>=totalPages-1?'disabled':''}>Next â</button>`;
-    ph += `<span style="color:#999;font-size:11px;margin-left:8px;">${pageStart+1}â${Math.min(pageStart+pageSize, totalFiltered)} of ${totalFiltered.toLocaleString()}</span>`;
+    ph += `<span style="color:#999;font-size:11px;margin-left:8px;">${pageStart+1}–${Math.min(pageStart+pageSize, totalFiltered)} of ${totalFiltered.toLocaleString()}</span>`;
     pager.innerHTML = ph;
     pager.style.display = 'flex';
   } else if (pager) { pager.style.display = 'none'; }
@@ -1133,7 +1133,7 @@ function re(){
         </div>
       </div></td>
       <td>
-        <div class="pc">${[0,1,2].map(i=>`<div class="pt" style="opacity:${1-i*.3};background:linear-gradient(135deg,${c}12,transparent);">${s.p-i>0?''+(s.p-i*10):'â'}</div>`).join('')}</div>
+        <div class="pc">${[0,1,2].map(i=>`<div class="pt" style="opacity:${1-i*.3};background:linear-gradient(135deg,${c}12,transparent);">${s.p-i>0?''+(s.p-i*10):'—'}</div>`).join('')}</div>
         <div class="pct">${s.p} total</div>
       </td>
       <td><span class="tag-niche">${s.ni}</span></td>
@@ -1144,9 +1144,9 @@ function re(){
         <span style="color:${ac};font-weight:800;">${s.ad}</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       </a></td>
-      <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'â'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov:'â'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'â'}</div></td>
+      <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov:'—'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
   }).join('');
