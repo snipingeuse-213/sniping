@@ -830,22 +830,26 @@ async function applyDateFilter(){
   const d2=document.getElementById('cd-date2')?document.getElementById('cd-date2').value:'';
   filters['Creation Date']={mode:mode,date:d1,date2:d2};
 
-  // For "lastX" modes, fetch matching shops server-side from Supabase
+  // For "lastX" modes, fetch matching shops server-side from Supabase (paginated to bypass 1000 row limit)
   if(mode.startsWith('last')){
     const daysMap={last7:7,last30:30,last60:60,last90:90};
     const days=daysMap[mode]||30;
     const cutoff=new Date(Date.now()-days*864e5).toISOString().split('T')[0];
     try{
-      const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc&limit=5000';
-      const res=await sbFetch(url);
-      if(res.data&&res.data.length>0){
-        // Store server-filtered results separately for rendering
-        window._dateFilteredShops=res.data;
-        console.log('[Peekr] Server date filter: '+res.data.length+' shops created in last '+days+' days');
-      }else{
-        window._dateFilteredShops=[];
-        console.log('[Peekr] Server date filter: 0 shops found for last '+days+' days');
+      let allResults=[];
+      let offset=0;
+      const pageSize=1000;
+      while(true){
+        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc&limit='+pageSize+'&offset='+offset;
+        const res=await sbFetch(url);
+        if(!res.data||res.data.length===0)break;
+        allResults=allResults.concat(res.data);
+        if(res.data.length<pageSize)break;
+        offset+=pageSize;
+        if(offset>=10000)break;
       }
+      window._dateFilteredShops=allResults;
+      console.log('[Peekr] Server date filter: '+allResults.length+' shops created in last '+days+' days');
     }catch(e){
       window._dateFilteredShops=[];
       console.log('[Peekr] Server date filter error:',e);
