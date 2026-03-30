@@ -261,6 +261,8 @@ body{
       </select>
       <select id="sortFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
         <option value="score">Sort: Score</option>
+        <option value="ads">Sort: Live Ads</option>
+        <option value="revenue">Sort: Revenue</option>
         <option value="visits">Sort: Visits</option>
         <option value="newest">Sort: Newest</option>
       </select>
@@ -318,7 +320,7 @@ async function fetchShops(){
   try{
     // Fetch top shops by score (with ads potential)
     const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,created_date,theme,shopify_plan,products_count&score=gte.55&order=score.desc&limit=300`,
+      `${SUPABASE_URL}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,estimated_sales,live_ads,created_date,theme,shopify_plan,products_count&score=gte.55&order=score.desc&limit=500`,
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
     );
     if(!r.ok) throw new Error(`API ${r.status}`);
@@ -362,6 +364,8 @@ function applyFilters(){
   filtered.sort((a,b)=>{
     if(sort==='visits') return (b.monthly_visits||0)-(a.monthly_visits||0);
     if(sort==='newest') return new Date(b.created_date)-new Date(a.created_date);
+    if(sort==='ads') return (b.live_ads||0)-(a.live_ads||0);
+    if(sort==='revenue') return (b.estimated_sales||0)-(a.estimated_sales||0);
     return (b.score||0)-(a.score||0);
   });
 
@@ -406,10 +410,11 @@ function renderCards(){
         </div>
         <div class="ad-stats">
           <div><div class="ad-stat-val">${fmt(s.monthly_visits)}</div><div class="ad-stat-lbl">Monthly Visits</div></div>
-          <div><div class="ad-stat-val">${fmt(s.products_count)}</div><div class="ad-stat-lbl">Products</div></div>
+          <div><div class="ad-stat-val" style="${(s.live_ads||0)>0?'color:#e8799a;font-weight:900;':''}">${s.live_ads||0}</div><div class="ad-stat-lbl">Live Ads</div></div>
+          <div><div class="ad-stat-val">${fmt(s.estimated_sales)}</div><div class="ad-stat-lbl">Est. Revenue</div></div>
           ${age!==null?`<div><div class="ad-stat-val">${age}d</div><div class="ad-stat-lbl">Age</div></div>`:''}
         </div>
-        <a href="${metaUrl}" target="_blank" class="ad-btn">📘 View Ads on Meta</a>
+        <a href="${metaUrl}" target="_blank" class="ad-btn">🔍 Spy Ads on Meta</a>
         <a href="https://${s.domain}" target="_blank" class="ad-btn-sec">Visit Store</a>
       </div>
     </div>`;
