@@ -14,7 +14,7 @@
     "crons": [
         {
             "path": "/api/scrape-shops",
-            "schedule": "* * * * *"
+            "schedule": "0 0 * * *"
         }
     ]
 }
