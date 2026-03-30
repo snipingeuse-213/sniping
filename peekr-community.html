@@ -228,6 +228,47 @@ body{
 .badge-pro{background:rgba(168,85,247,0.15);color:#c084fc;}
 .badge-agency{background:rgba(245,158,11,0.15);color:#fbbf24;}
 .post-time{font-size:11px;color:var(--text3);}
+
+/* ── ACHIEVEMENT BADGES ── */
+.user-badges{display:flex;gap:3px;flex-wrap:wrap;align-items:center;}
+.ach-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:1px 7px;border-radius:20px;
+  font-size:8.5px;font-weight:800;letter-spacing:.04em;
+  white-space:nowrap;cursor:default;position:relative;
+  transition:all .15s;
+}
+.ach-badge:hover{transform:scale(1.08);}
+.ach-badge .ab-ico{font-size:10px;line-height:1;}
+/* Revenue badges */
+.ab-1k{background:rgba(52,211,153,0.12);color:#34d399;border:1px solid rgba(52,211,153,0.18);}
+.ab-1k:hover{box-shadow:0 0 10px rgba(52,211,153,0.3);}
+.ab-10k{background:rgba(96,165,250,0.12);color:#60a5fa;border:1px solid rgba(96,165,250,0.18);}
+.ab-10k:hover{box-shadow:0 0 10px rgba(96,165,250,0.3);}
+.ab-100k{background:rgba(192,132,252,0.12);color:#c084fc;border:1px solid rgba(192,132,252,0.18);}
+.ab-100k:hover{box-shadow:0 0 10px rgba(192,132,252,0.3);}
+.ab-1m{background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.18);box-shadow:0 0 6px rgba(251,191,36,0.15);}
+.ab-1m:hover{box-shadow:0 0 14px rgba(251,191,36,0.4);}
+/* Activity badges */
+.ab-first{background:rgba(255,45,120,0.1);color:var(--neon-soft);border:1px solid rgba(255,45,120,0.15);}
+.ab-first:hover{box-shadow:0 0 10px var(--neon-glow2);}
+.ab-writer{background:rgba(14,165,233,0.1);color:#38bdf8;border:1px solid rgba(14,165,233,0.15);}
+.ab-writer:hover{box-shadow:0 0 10px rgba(14,165,233,0.3);}
+.ab-star{background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.15);}
+.ab-star:hover{box-shadow:0 0 10px rgba(245,158,11,0.3);}
+.ab-top{background:linear-gradient(135deg,rgba(255,45,120,0.15),rgba(168,85,247,0.15));color:#fff;border:1px solid rgba(255,45,120,0.2);box-shadow:0 0 8px var(--neon-glow2);}
+.ab-top:hover{box-shadow:0 0 16px var(--neon-glow);}
+/* Badge tooltip */
+.ach-badge[data-tip]::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) scale(0.9);
+  background:var(--dark4);color:var(--text1);
+  font-size:10px;font-weight:600;letter-spacing:0;
+  padding:4px 10px;border-radius:6px;border:1px solid var(--border);
+  white-space:nowrap;pointer-events:none;opacity:0;
+  transition:all .15s;z-index:100;
+}
+.ach-badge[data-tip]:hover::after{opacity:1;transform:translateX(-50%) scale(1);}
 .pin-icon{position:absolute;top:12px;right:14px;font-size:14px;color:var(--neon);opacity:.7;}
 .post-title{font-size:15px;font-weight:800;color:var(--text1);margin-bottom:6px;line-height:1.4;}
 .post-body{font-size:13px;color:var(--text2);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
@@ -427,6 +468,8 @@ body{
 .member-info{flex:1;min-width:0;}
 .member-name{font-size:12px;font-weight:700;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .member-role{font-size:10px;color:var(--text3);font-weight:600;}
+.member-badges{display:flex;gap:2px;margin-top:2px;flex-wrap:wrap;}
+.member-badges .ach-badge{font-size:7.5px;padding:0px 5px;}
 
 /* ── EMPTY STATE ── */
 .empty-state{
@@ -618,6 +661,47 @@ const SB_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
+// ── BADGE DEFINITIONS ──
+const BADGE_DEFS = {
+  // Revenue milestones
+  '1k':   { ico:'💰', label:'1K Club',  cls:'ab-1k',  tip:'Reached $1K/month revenue' },
+  '10k':  { ico:'🔥', label:'10K Club', cls:'ab-10k', tip:'Reached $10K/month revenue' },
+  '100k': { ico:'💎', label:'100K',     cls:'ab-100k',tip:'Reached $100K/month revenue' },
+  '1m':   { ico:'👑', label:'1M Club',  cls:'ab-1m',  tip:'$1M+/month — legendary status' },
+  // Activity milestones
+  'first-post': { ico:'🎯', label:'First Post', cls:'ab-first', tip:'Made their first community post' },
+  'writer':     { ico:'✍️', label:'Writer',     cls:'ab-writer', tip:'Published 10+ posts' },
+  'star':       { ico:'⭐', label:'Rising Star',cls:'ab-star',  tip:'Received 100+ upvotes' },
+  'top':        { ico:'🏆', label:'Top Contributor', cls:'ab-top', tip:'Most active community member' }
+};
+
+// Demo badge assignments per username (in production: from Supabase user_badges table)
+const USER_BADGES = {
+  'Alex':   ['100k','writer','star','top'],
+  'Sarah':  ['10k','first-post','writer'],
+  'Mike':   ['1k','first-post'],
+  'Emma':   ['1m','writer','star'],
+  'Tom':    ['10k','star'],
+  'Nina':   ['first-post'],
+  'Leo':    ['1k','writer'],
+  'Chloe':  ['100k','star','top'],
+  'James':  ['first-post'],
+  'Lea':    ['10k','writer','star'],
+  'Hugo':   ['1m','top','star'],
+  'Jade':   ['1k','first-post']
+};
+
+function renderBadges(username, compact) {
+  const badges = USER_BADGES[username] || [];
+  if (badges.length === 0) return '';
+  const max = compact ? 3 : 5;
+  return '<span class="user-badges">' + badges.slice(0, max).map(id => {
+    const b = BADGE_DEFS[id];
+    if (!b) return '';
+    return `<span class="ach-badge ${b.cls}" data-tip="${b.tip}"><span class="ab-ico">${b.ico}</span>${b.label}</span>`;
+  }).join('') + (badges.length > max ? `<span class="ach-badge ab-first" style="opacity:.5">+${badges.length - max}</span>` : '') + '</span>';
+}
+
 // ── CHANNELS ──
 const CHANNELS = [
   { id: 'winning-products', emoji: '🔥', name: 'Winning Products', desc: 'Share & discover winning products and hot niches' },
@@ -724,7 +808,7 @@ function renderSinglePost(p, isNew) {
       <div class="post-head">
         <div class="post-avatar" style="background:${avatarGrad(p.username)}">${(p.username||'?').charAt(0).toUpperCase()}</div>
         <div class="post-meta">
-          <div class="post-author">${esc(p.username || 'Anonymous')} <span class="post-badge ${badgeClass(p.user_plan)}">${(p.user_plan||'free').toUpperCase()}</span></div>
+          <div class="post-author">${esc(p.username || 'Anonymous')} <span class="post-badge ${badgeClass(p.user_plan)}">${(p.user_plan||'free').toUpperCase()}</span> ${renderBadges(p.username)}</div>
           <div class="post-time">${timeAgo(p.created_at)}</div>
         </div>
       </div>
@@ -761,7 +845,7 @@ async function openThread(postId) {
       <div class="post-head">
         <div class="post-avatar" style="background:${avatarGrad(post.username)}">${(post.username||'?').charAt(0).toUpperCase()}</div>
         <div class="post-meta">
-          <div class="post-author">${esc(post.username || 'Anonymous')} <span class="post-badge ${badgeClass(post.user_plan)}">${(post.user_plan||'free').toUpperCase()}</span></div>
+          <div class="post-author">${esc(post.username || 'Anonymous')} <span class="post-badge ${badgeClass(post.user_plan)}">${(post.user_plan||'free').toUpperCase()}</span> ${renderBadges(post.username)}</div>
           <div class="post-time">${timeAgo(post.created_at)}</div>
         </div>
       </div>
@@ -797,7 +881,7 @@ function renderComment(c) {
     <div class="comment-card" data-id="${c.id}">
       <div class="comment-avatar" style="background:${avatarGrad(c.username)}">${(c.username||'?').charAt(0).toUpperCase()}</div>
       <div class="comment-content">
-        <div class="comment-author">${esc(c.username || 'Anonymous')} <span class="post-badge ${badgeClass(c.user_plan)}">${(c.user_plan||'free').toUpperCase()}</span> <span class="comment-time">${timeAgo(c.created_at)}</span></div>
+        <div class="comment-author">${esc(c.username || 'Anonymous')} <span class="post-badge ${badgeClass(c.user_plan)}">${(c.user_plan||'free').toUpperCase()}</span> ${renderBadges(c.username)} <span class="comment-time">${timeAgo(c.created_at)}</span></div>
         <div class="comment-body">${esc(c.body)}</div>
         <div class="comment-actions">
           <div class="pf-item" onclick="voteComment('${c.id}',this)">
@@ -930,6 +1014,7 @@ function setupPresence() {
       <div class="member-info">
         <div class="member-name">${n}</div>
         <div class="member-role">${plans[i].charAt(0).toUpperCase() + plans[i].slice(1)}</div>
+        <div class="member-badges">${renderBadges(n, true)}</div>
       </div>
     </div>`).join('');
 }
