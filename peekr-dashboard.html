@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#F4A7B9"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
 <meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
+<meta property="og:description" content="Spy on winning Shopify stores, trhhending products, and viral ads."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://peekr.io"/>
 <meta name="twitter:card" content="summary"/>
@@ -425,7 +425,7 @@ td{padding:11px 14px;vertical-align:middle;}
   window._userPlan = 'pro';
   const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
   const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
-  async function fetchWithRetry(url, retries=3) {
+  async function fetchWithRetry(url, retries=1) {
     for (let i=0; i<retries; i++) {
       try {
         const r = await fetch(url, { headers: { 'apikey': _AK } });
@@ -441,7 +441,7 @@ td{padding:11px 14px;vertical-align:middle;}
     const [s1, s2, s3] = await Promise.all([
       fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000'),
       fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&country=eq.FR&order=score.desc&limit=1000'),
-      fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000&offset=5000')
+      fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000')
     ]);
     let allShops = s1 || [];
     if (s3 && s3.length) {
@@ -486,7 +486,7 @@ async function directFetchShops(){
     const [s1,s2,s3]=await Promise.all([
       fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
       fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&country=eq.FR&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
-      fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000&offset=5000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[])
+      fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[])
     ]);
     let allShops=s1||[];
     if(s3&&s3.length){const ex=new Set(allShops.map(s=>s.domain));allShops=allShops.concat(s3.filter(s=>!ex.has(s.domain)));}
