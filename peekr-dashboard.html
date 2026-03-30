@@ -1017,10 +1017,11 @@ function re(){
       <td><span class="tag-niche">${s.ni}</span></td>
       <td><div class="tv">${s.vf}</div><div class="spk">${spk(s.tr,c)}</div></td>
       <td><div class="rv">${s.r}</div></td>
-      <td><div class="acs">
+      <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;align-items:center;gap:6px;cursor:pointer;" title="Spy ads on Meta">
         <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
         <span style="color:${ac};font-weight:800;">${s.ad}</span>
-      </div></td>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a></td>
       <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
@@ -1064,7 +1065,10 @@ function om(id){
         <div class="di">Est. Sales <strong>${s.es?fmtV(s.es):'N/A'}</strong></div>
       </div>
     </div>
-    ${s.ad>0?`<a class="mml" href="https://www.facebook.com/ads/library/?q=${encodeURIComponent(s.n)}" target="_blank">View ${s.ad} active ads on Meta Ad Library →</a>`:''}`;
+    <a class="mml" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" style="display:flex;align-items:center;gap:8px;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Spy ${s.ad>0?s.ad+' active ':''}ads on Meta Ad Library
+    </a>`;
   document.getElementById('mo').classList.add('open');
 }
 function cm(e){if(e.target===document.getElementById('mo'))cd();}
