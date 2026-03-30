@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://peekr.io"/>
 <meta name="twitter:card" content="summary"/>
 <link rel="stylesheet" href="peekr-responsive.css"/>
-<title>Peekr — Dashboard</title>
+<title>Peekr — Dashboard</title>h
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -439,9 +439,9 @@ td{padding:11px 14px;vertical-align:middle;}
   }
   try {
     const [s1, s2, s3] = await Promise.all([
-      fetchWithRetry(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=5000'),
-      fetchWithRetry(_SB + '/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000'),
-      fetchWithRetry(_SB + '/rest/v1/shops?select=*&order=score.desc&limit=5000&offset=5000')
+      fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000'),
+      fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&country=eq.FR&order=score.desc&limit=1000'),
+      fetchWithRetry(_SB + '/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000&offset=5000')
     ]);
     let allShops = s1 || [];
     if (s3 && s3.length) {
@@ -484,9 +484,9 @@ async function directFetchShops(){
   const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
   try{
     const [s1,s2,s3]=await Promise.all([
-      fetch(_SB+'/rest/v1/shops?select=*&order=score.desc&limit=5000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
-      fetch(_SB+'/rest/v1/shops?select=*&country=eq.FR&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
-      fetch(_SB+'/rest/v1/shops?select=*&order=score.desc&limit=5000&offset=5000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[])
+      fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
+      fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&country=eq.FR&order=score.desc&limit=1000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[]),
+      fetch(_SB+'/rest/v1/shops?select=name,domain,niche,score,trend_tag,country,created_date,monthly_visits,revenue_min,revenue_max,traffic_trend,live_ads,theme,currency,products_count,apps,ad_platforms,strategies,language,shopify_plan,ships_to,estimated_sales,estimated_sales_yearly,avg_price_usd,icon&order=score.desc&limit=1000&offset=5000',{headers:{'apikey':_AK}}).then(r=>r.ok?r.json():[]).catch(()=>[])
     ]);
     let allShops=s1||[];
     if(s3&&s3.length){const ex=new Set(allShops.map(s=>s.domain));allShops=allShops.concat(s3.filter(s=>!ex.has(s.domain)));}
