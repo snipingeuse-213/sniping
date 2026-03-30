@@ -379,6 +379,8 @@ td{padding:11px 14px;vertical-align:middle;}
       <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">AOV <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Units Sold <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Shop</span>
       <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
@@ -405,6 +407,8 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
       <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
       <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Est. Sales <span class="sic">⇅</span></div></th>
+      <th style="width:75px;cursor:pointer" onclick="sortBy('aov')"><div class="thi">AOV <span class="sic">⇅</span></div></th>
+      <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Units Sold <span class="sic">⇅</span></div></th>
       <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
     <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">🔍</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
@@ -471,6 +475,7 @@ function mapShop(s,i){return{
   ad:s.live_ads||0,th:s.theme||'Unknown',cu:s.currency||'USD',p:s.products_count||0,
   ap:s.apps||[],px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
   vc:s.ships_to||[s.country||'US'],es:s.estimated_sales||0,esy:s.estimated_sales_yearly||0,
+  aov:s.avg_price_usd||0,us:(s.estimated_sales&&s.avg_price_usd&&s.avg_price_usd>0)?Math.round(s.estimated_sales/s.avg_price_usd):0,
   ico:s.icon||''
 };}
 // Direct fetch fallback — always works regardless of peekr-config.js auth state
@@ -533,7 +538,7 @@ function init(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCas
 
 // State variables
 let seg='all',q='',sortCol=null,sortDir='asc';
-let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null};
+let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
 let activeDropdown=null;
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
@@ -778,6 +783,14 @@ function createDropdown(filterName,btn){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='desc'?'checked':''} onchange="toggleSort('Est. Sales','desc')"><label>Highest Sales</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='asc'?'checked':''} onchange="toggleSort('Est. Sales','asc')"><label>Lowest Sales</label></div>`;
   }
+  else if(filterName==='AOV'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="aov" ${filters['AOV']==='desc'?'checked':''} onchange="toggleSort('AOV','desc')"><label>Highest AOV</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="aov" ${filters['AOV']==='asc'?'checked':''} onchange="toggleSort('AOV','asc')"><label>Lowest AOV</label></div>`;
+  }
+  else if(filterName==='Units Sold'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="unitssold" ${filters['Units Sold']==='desc'?'checked':''} onchange="toggleSort('Units Sold','desc')"><label>Most Units</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="unitssold" ${filters['Units Sold']==='asc'?'checked':''} onchange="toggleSort('Units Sold','asc')"><label>Fewest Units</label></div>`;
+  }
 
   if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;}
 
@@ -922,6 +935,8 @@ function gd(){
       else if(sortCol==='rv'){aVal=a.rv;bVal=b.rv;}
       else if(sortCol==='ad'){aVal=a.ad;bVal=b.ad;}
       else if(sortCol==='es'){aVal=a.es;bVal=b.es;}
+      else if(sortCol==='aov'){aVal=a.aov;bVal=b.aov;}
+      else if(sortCol==='us'){aVal=a.us;bVal=b.us;}
       else if(sortCol==='sc'){aVal=a.sc;bVal=b.sc;}
       return sortDir==='asc'?aVal-bVal:bVal-aVal;
     });
@@ -942,6 +957,12 @@ function gd(){
   }
   if(filters['Est. Sales']){
     s.sort((a,b)=>filters['Est. Sales']==='desc'?b.es-a.es:a.es-b.es);
+  }
+  if(filters['AOV']){
+    s.sort((a,b)=>filters['AOV']==='desc'?b.aov-a.aov:a.aov-b.aov);
+  }
+  if(filters['Units Sold']){
+    s.sort((a,b)=>filters['Units Sold']==='desc'?b.us-a.us:a.us-b.us);
   }
 
   return s;
@@ -1023,6 +1044,8 @@ function re(){
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       </a></td>
       <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov:'—'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
   }).join('');
@@ -1047,6 +1070,10 @@ function om(id){
       <div class="stb"><div class="stl">Revenue Est.</div><div class="stv" style="font-size:12px;padding-top:5px;">${s.r}</div></div>
       <div class="stb"><div class="stl">Live Ads</div><div class="stv" style="color:${c};">${s.ad}</div></div>
       <div class="stb"><div class="stl">Apps count</div><div class="stv">${s.ap.length}</div></div>
+    </div>
+    <div class="msts" style="margin-top:8px;">
+      <div class="stb"><div class="stl">AOV</div><div class="stv">${s.aov?'$'+s.aov:'N/A'}</div></div>
+      <div class="stb"><div class="stl">Est. Units Sold</div><div class="stv" style="${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'N/A'}</div></div>
     </div>
     <div class="msec"><div class="mst2">Traffic Trend (12 weeks)</div>
       <div class="mcht">${s.tr.map((v,i)=>`<div class="chb" style="height:${Math.max((v/mx)*64,4)}px;background:${c};opacity:${.25+(i/s.tr.length)*.75};border-radius:4px 4px 0 0;"></div>`).join('')}</div>
