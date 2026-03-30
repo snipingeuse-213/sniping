@@ -555,7 +555,7 @@ let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'C
 let activeDropdown=null;
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
-function ss(e,s){document.querySelectorAll('.sg').forEach(b=>b.classList.remove('active'));e.classList.add('active');seg=s;currentPage=0;re();}
+function ss(e,s){document.querySelectorAll('.sg').forEach(b=>b.classList.remove('active'));e.classList.add('active');seg=s;currentPage=0;filters['Creation Date']={mode:null,date:null};window._dateFilteredShops=null;re();}
 let _searchTimer=null,_apiResults=[],_apiSearching=false;
 function fs(){
   q=document.getElementById('si').value.toLowerCase();
@@ -1028,6 +1028,19 @@ function re(){
   const totalLabel=_apiResults.length>0?`<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from 7.5M catalog</span>`:
     `<b>${displayCount.toLocaleString()}</b> Shops`;
   document.getElementById('cnt').innerHTML=totalLabel;
+  // Update Creation Date button to show active state with clear button
+  document.querySelectorAll('.fb').forEach(btn=>{
+    const name=btn.textContent.replace(/\s*[▾×]\s*$/,'').trim();
+    if(name==='Creation Date'){
+      if(cdfActive){
+        btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null};window._dateFilteredShops=null;re();">×</span>';
+        btn.style.background='rgba(232,121,154,0.15)';btn.style.borderColor='#e8799a';
+      }else{
+        btn.innerHTML='Creation Date <span class="fc">▾</span>';
+        btn.style.background='';btn.style.borderColor='';
+      }
+    }
+  });
   const tb=document.getElementById('tb'),em=document.getElementById('em');
   if(!shops.length&&!_apiSearching){tb.innerHTML='';em.style.display='flex';return;}
   if(!shops.length&&_apiSearching){tb.innerHTML='';em.style.display='flex';em.querySelector('div:last-child').textContent='Searching 7.5M shops…';return;}
