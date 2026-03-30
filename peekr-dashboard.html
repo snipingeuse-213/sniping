@@ -823,12 +823,38 @@ function toggleFilter(filterName,value){
   re();
 }
 
-// Apply date filter
-function applyDateFilter(){
+// Apply date filter — server-side for "lastX" modes since only top 10K shops are loaded locally
+async function applyDateFilter(){
   const mode=document.getElementById('cd-mode').value;
   const d1=document.getElementById('cd-date1')?document.getElementById('cd-date1').value:'';
   const d2=document.getElementById('cd-date2')?document.getElementById('cd-date2').value:'';
   filters['Creation Date']={mode:mode,date:d1,date2:d2};
+
+  // For "lastX" modes, fetch matching shops server-side from Supabase
+  if(mode.startsWith('last')){
+    const daysMap={last7:7,last30:30,last60:60,last90:90};
+    const days=daysMap[mode]||30;
+    const cutoff=new Date(Date.now()-days*864e5).toISOString().split('T')[0];
+    try{
+      const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc&limit=5000';
+      const res=await sbFetch(url);
+      if(res.data&&res.data.length>0){
+        // Store server-filtered results separately for rendering
+        window._dateFilteredShops=res.data;
+        console.log('[Peekr] Server date filter: '+res.data.length+' shops created in last '+days+' days');
+      }else{
+        window._dateFilteredShops=[];
+        console.log('[Peekr] Server date filter: 0 shops found for last '+days+' days');
+      }
+    }catch(e){
+      window._dateFilteredShops=[];
+      console.log('[Peekr] Server date filter error:',e);
+    }
+  }else{
+    // For manual date modes (after/before/between), clear server results — use client-side
+    window._dateFilteredShops=null;
+  }
+
   re();
   // Close dropdown
   const dd=document.getElementById('fb-dd-Creation-Date');
@@ -848,7 +874,7 @@ function clearFilter(filterName){
   else if(filterName==='Ads Count')filters['Ads Count']=null;
   else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
   else if(filterName==='Est. Sales')filters['Est. Sales']=null;
-  else if(filterName==='Creation Date')filters['Creation Date']={mode:null,date:null};
+  else if(filterName==='Creation Date'){filters['Creation Date']={mode:null,date:null};window._dateFilteredShops=null;}
   else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
   const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
@@ -871,7 +897,14 @@ function sortBy(col){
 
 // Get data with filters and sorting
 function gd(){
-  let s=[...D];
+  // If server-side date filter is active, use those results instead of local cache
+  const cdfCheck=filters['Creation Date'];
+  let s;
+  if(cdfCheck&&cdfCheck.mode&&cdfCheck.mode.startsWith('last')&&window._dateFilteredShops){
+    s=window._dateFilteredShops.map(mapShop);
+  }else{
+    s=[...D];
+  }
 
   // Segment filters
   if(seg==='scaling')s=s.filter(x=>x.sc>=75);
@@ -909,9 +942,9 @@ function gd(){
   // Currency filter
   if(filters.Currency.length>0)s=s.filter(x=>filters.Currency.includes(x.cu));
 
-  // Creation Date filter
+  // Creation Date filter — skip "lastX" modes here since they use server-side data
   const cdf=filters['Creation Date'];
-  if(cdf&&cdf.mode){
+  if(cdf&&cdf.mode&&!cdf.mode.startsWith('last')){
     const now=new Date();
     if(cdf.mode==='after'&&cdf.date){
       const d=new Date(cdf.date);
@@ -922,14 +955,6 @@ function gd(){
     }else if(cdf.mode==='between'&&cdf.date&&cdf.date2){
       const d1=new Date(cdf.date),d2=new Date(cdf.date2);
       s=s.filter(x=>{const c=new Date(x.cr);return c>=d1&&c<=d2;});
-    }else if(cdf.mode==='last7'){
-      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=7);
-    }else if(cdf.mode==='last30'){
-      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=30);
-    }else if(cdf.mode==='last60'){
-      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=60);
-    }else if(cdf.mode==='last90'){
-      s=s.filter(x=>(now-new Date(x.cr))/(1000*60*60*24)<=90);
     }
   }
 
@@ -996,9 +1021,10 @@ function re(){
     const apiFiltered=_apiResults.filter(x=>x.n.toLowerCase().includes(q)||x.d.includes(q)||x.ni.toLowerCase().includes(q));
     shops=[...shops,...apiFiltered];
   }
-  // Show total DB count (not just loaded count)
+  // Show total DB count (not just loaded count) — but use actual count when server-side filter is active
+  const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode&&filters['Creation Date'].mode.startsWith('last')&&window._dateFilteredShops;
   const dbTotal = window._totalShopCount || 0;
-  const displayCount = dbTotal > shops.length ? dbTotal : shops.length;
+  const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
   const totalLabel=_apiResults.length>0?`<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from 7.5M catalog</span>`:
     `<b>${displayCount.toLocaleString()}</b> Shops`;
   document.getElementById('cnt').innerHTML=totalLabel;
