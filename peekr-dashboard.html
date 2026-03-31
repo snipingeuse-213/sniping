@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
 <meta name="theme-color" content="#F4A7B9"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>ðï¸</text></svg>"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
 <meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
 <meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
 <meta property="og:type" content="website"/>
@@ -29,7 +29,7 @@ body{
   position:relative;
 }
 
-/* ââ SAME FLOATING OBJECTS AS LANDING ââ */
+/* ── SAME FLOATING OBJECTS AS LANDING ── */
 .page-objects{
   position:fixed;inset:0;
   pointer-events:none;z-index:0;overflow:hidden;
@@ -50,7 +50,7 @@ body{
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
 
-/* ââ SIDEBAR ââ */
+/* ── SIDEBAR ── */
 .sb{
   width:220px;flex-shrink:0;
   position:relative;z-index:20;
@@ -81,10 +81,10 @@ body{
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
 .up{font-size:10px;color:#e8799a;font-weight:700;}
 
-/* ââ MAIN ââ */
+/* ── MAIN ── */
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:#ffffff;}
 
-/* ââ TOPBAR ââ */
+/* ── TOPBAR ── */
 .topbar{
   height:56px;flex-shrink:0;
   display:flex;align-items:center;gap:12px;
@@ -107,7 +107,7 @@ body{
 .bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
 .bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
 
-/* ââ SEGMENTS ââ */
+/* ── SEGMENTS ── */
 .segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
 .sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
 .sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
@@ -120,7 +120,7 @@ body{
 }
 .sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
-/* ââ FILTERS ââ */
+/* ── FILTERS ── */
 .fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
 .fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
@@ -129,7 +129,7 @@ body{
 .fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
 .fc{font-size:8px;opacity:.35;}
 
-/* ââ DROPDOWN FILTERS ââ */
+/* ── DROPDOWN FILTERS ── */
 .fb-dropdown{
   position:absolute;
   top:100%;
@@ -175,7 +175,7 @@ body{
 }
 .fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
 
-/* ââ DATE PICKER ââ */
+/* ── DATE PICKER ── */
 .date-picker-wrap{padding:8px;}
 .date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
 .date-picker-wrap select,.date-picker-wrap input[type="date"]{
@@ -191,7 +191,7 @@ body{
 }
 .date-picker-apply:hover{background:#d4607a;}
 
-/* ââ TABLE ââ */
+/* ── TABLE ── */
 .tw{flex:1;overflow:auto;padding:12px 24px 24px;}
 table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
 thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
@@ -261,7 +261,7 @@ td{padding:11px 14px;vertical-align:middle;}
 .tag-niche{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
 
-/* ââ MODAL ââ */
+/* ── MODAL ── */
 .mo{position:fixed;inset:0;background:rgba(26,10,15,0.18);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .2s;}
 .mo.open{opacity:1;pointer-events:all;}
 .md{
@@ -323,29 +323,29 @@ td{padding:11px 14px;vertical-align:middle;}
     <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><span class="ni-ico">ð</span>Dashboard</a>
-    <a class="ni" href="peekr-blog.html"><span class="ni-ico">ð</span>Blog & Tips</a>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analyse</div>
-    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">ðª</span>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">ð£</span>Trending Ads</a>
-    <a class="ni" href="peekr-brand-tracker.html"><span class="ni-ico">ð</span>Brand Tracker<span class="nb">Pro</span></a>
-    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">ð¥</span>Best Trends<span class="nb s">Soon</span></a>
+    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
+    <a class="ni" href="peekr-brand-tracker.html"><span class="ni-ico">&#128269;</span>Brand Tracker<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">ð</span>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">â­</span>Saved Shops</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Resources</div>
-    <a class="ni" href="peekr-blog.html"><span class="ni-ico">ð</span>Blog & Tips</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-duel.html"><span class="ni-ico">âï¸</span>Duel Mode</a>
-    <a class="ni" href="peekr-export.html"><span class="ni-ico">ð¤</span>Export<span class="nb s">Soon</span></a>
+    <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">ð</span>Upgrade<span class="nb">ð¥</span></a>
-    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">ð¤</span>Affiliate</a>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
   </div>
   <div class="sb-bot">
     <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
@@ -355,12 +355,12 @@ td{padding:11px 14px;vertical-align:middle;}
 <div class="main">
   <div class="topbar">
     <div class="tb-title">Trending Shops</div>
-    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">ð</span><input type="text" placeholder="Search shopsâ¦" id="si" oninput="fs()"/></div>
+    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops…" id="si" oninput="fs()"/></div>
     <div class="tb-r">
       <div class="lpill"><div class="ldot"></div>Live</div>
       <div class="cnt" id="cnt"><b>—</b> Shops</div>
-      <div class="bico" onclick="ra(this)">â»</div>
-      <div class="bico">â</div>
+      <div class="bico" onclick="ra(this)">↻</div>
+      <div class="bico">⊞</div>
     </div>
   </div>
 
@@ -375,26 +375,26 @@ td{padding:11px 14px;vertical-align:middle;}
 
   <div class="fw">
     <div class="fr"><span class="fl">Performance</span>
-      <div class="fb" onclick="tf(this)">Traffic <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Count <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">AOV <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Units Sold <span class="fc">â¾</span></div>
+      <div class="fb" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">AOV <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Units Sold <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Shop</span>
-      <div class="fb" onclick="tf(this)">Category <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Products <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Apps <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Theme <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Language <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Currency <span class="fc">â¾</span></div>
+      <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Products <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Apps <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Theme <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Language <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Currency <span class="fc">▾</span></div>
     </div>
     <div class="fr"><span class="fl">Business</span>
-      <div class="fb" onclick="tf(this)">Creation Date <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">â¾</span></div>
-      <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">â¾</span></div>
+      <div class="fb" onclick="tf(this)">Creation Date <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
+      <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
     </div>
   </div>
 
@@ -403,15 +403,15 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:240px"><div class="thi">Shop Info</div></th>
       <th style="width:110px"><div class="thi">Products</div></th>
       <th style="width:90px"><div class="thi">Category</div></th>
-      <th style="width:130px;cursor:pointer" onclick="sortBy('v')"><div class="thi">Monthly Visits <span class="sic">â</span></div></th>
-      <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenue Est. <span class="sic">â</span></div></th>
-      <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Live Ads <span class="sic">â</span></div></th>
-      <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Est. Sales <span class="sic">â</span></div></th>
-      <th style="width:75px;cursor:pointer" onclick="sortBy('aov')"><div class="thi">AOV <span class="sic">â</span></div></th>
-      <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Units Sold <span class="sic">â</span></div></th>
-      <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">â</span></div></th>
+      <th style="width:130px;cursor:pointer" onclick="sortBy('v')"><div class="thi">Monthly Visits <span class="sic">⇅</span></div></th>
+      <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
+      <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
+      <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Est. Sales <span class="sic">⇅</span></div></th>
+      <th style="width:75px;cursor:pointer" onclick="sortBy('aov')"><div class="thi">AOV <span class="sic">⇅</span></div></th>
+      <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Units Sold <span class="sic">⇅</span></div></th>
+      <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
-    <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">ð</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
+    <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">&#128269;</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
     <div id="pager" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0;font-family:'Figtree',sans-serif;font-size:13px;"></div>
   </div>
 </div>
@@ -466,9 +466,9 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=eq.total_count&select=value', { headers: { 'apikey': _AK } });
       if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
-    // Step 1: fetch total count + first 1000 shops
+    // Step 1: fetch first 1000 shops (no count=exact needed)
     const result = await sbFetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc&limit=1000');
-    window._totalShopCount = result.count || result.data.length;
+    if (!window._totalShopCount) window._totalShopCount = result.count || result.data.length;
     const seen = new Set();
     let allShops = [];
     for (const s of (result.data||[])) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
@@ -643,7 +643,7 @@ function getCountries(){
 
 // Toggle dropdown
 function tf(e){
-  const name=e.textContent.trim().replace(/\s*â¾\s*$/,'');
+  const name=e.textContent.trim().replace(/\s*▾\s*$/,'');
   const ddId='fb-dd-'+name.replace(/\s+/g,'-');
   const existing=document.getElementById(ddId);
 
@@ -1039,20 +1039,20 @@ function re(){
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
-    const name=btn.textContent.replace(/\s*[â¾Ã]\s*$/,'').trim();
+    const name=btn.textContent.replace(/\s*[▾×]\s*$/,'').trim();
     if(name==='Creation Date'){
       if(cdfActive){
-        btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null};window._dateFilteredShops=null;re();">Ã</span>';
+        btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null};window._dateFilteredShops=null;re();">×</span>';
         btn.style.background='rgba(232,121,154,0.15)';btn.style.borderColor='#e8799a';
       }else{
-        btn.innerHTML='Creation Date <span class="fc">â¾</span>';
+        btn.innerHTML='Creation Date <span class="fc">▾</span>';
         btn.style.background='';btn.style.borderColor='';
       }
     }
   });
   const tb=document.getElementById('tb'),em=document.getElementById('em');
   if(!shops.length&&!_apiSearching){tb.innerHTML='';em.style.display='flex';return;}
-  if(!shops.length&&_apiSearching){tb.innerHTML='';em.style.display='flex';em.querySelector('div:last-child').textContent='Searching 7.5M shopsâ¦';return;}
+  if(!shops.length&&_apiSearching){tb.innerHTML='';em.style.display='flex';em.querySelector('div:last-child').textContent='Searching 7.5M shops…';return;}
   em.style.display='none';
 
   // Update table headers sort indicators
@@ -1062,21 +1062,21 @@ function re(){
     if(icon){
       if(th.textContent.includes('Monthly Visits')&&sortCol==='v'){
         th.classList.add('sorted');
-        icon.textContent=sortDir==='asc'?'â':'â';
+        icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Revenue Est.')&&sortCol==='rv'){
         th.classList.add('sorted');
-        icon.textContent=sortDir==='asc'?'â':'â';
+        icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Live Ads')&&sortCol==='ad'){
         th.classList.add('sorted');
-        icon.textContent=sortDir==='asc'?'â':'â';
+        icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Est. Sales')&&sortCol==='es'){
         th.classList.add('sorted');
-        icon.textContent=sortDir==='asc'?'â':'â';
+        icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Score')&&sortCol==='sc'){
         th.classList.add('sorted');
-        icon.textContent=sortDir==='asc'?'â':'â';
-      }else if(icon&&!icon.textContent.includes('â')&&!icon.textContent.includes('â')){
-        icon.textContent='â';
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(icon&&!icon.textContent.includes('↑')&&!icon.textContent.includes('↓')){
+        icon.textContent='⇅';
       }
     }
   });
@@ -1092,7 +1092,7 @@ function re(){
   const pager = document.getElementById('pager');
   if (pager && totalPages > 1) {
     let ph = '';
-    ph += `<button onclick="prevPage()" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:${currentPage===0?'#f5f5f5':'#fff'};cursor:${currentPage===0?'default':'pointer'};color:${currentPage===0?'#bbb':'#333'};font-size:12px;" ${currentPage===0?'disabled':''}>â Prev</button>`;
+    ph += `<button onclick="prevPage()" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:${currentPage===0?'#f5f5f5':'#fff'};cursor:${currentPage===0?'default':'pointer'};color:${currentPage===0?'#bbb':'#333'};font-size:12px;" ${currentPage===0?'disabled':''}>← Prev</button>`;
     // Show page numbers with ellipsis
     const pages = [];
     pages.push(0);
@@ -1101,11 +1101,11 @@ function re(){
     const unique = [...new Set(pages)].sort((a,b)=>a-b);
     let lastP = -1;
     for (const p of unique) {
-      if (lastP >= 0 && p - lastP > 1) ph += '<span style="color:#999;">â¦</span>';
+      if (lastP >= 0 && p - lastP > 1) ph += '<span style="color:#999;">…</span>';
       ph += `<button onclick="goPage(${p})" style="padding:4px 10px;border:1px solid ${p===currentPage?'var(--pink)':'#ddd'};border-radius:6px;background:${p===currentPage?'var(--pink)':'#fff'};color:${p===currentPage?'#fff':'#333'};cursor:pointer;font-size:12px;font-weight:${p===currentPage?'700':'400'};">${p+1}</button>`;
       lastP = p;
     }
-    ph += `<button onclick="nextPage(${totalPages})" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:${currentPage>=totalPages-1?'#f5f5f5':'#fff'};cursor:${currentPage>=totalPages-1?'default':'pointer'};color:${currentPage>=totalPages-1?'#bbb':'#333'};font-size:12px;" ${currentPage>=totalPages-1?'disabled':''}>Next â</button>`;
+    ph += `<button onclick="nextPage(${totalPages})" style="padding:4px 12px;border:1px solid #ddd;border-radius:6px;background:${currentPage>=totalPages-1?'#f5f5f5':'#fff'};cursor:${currentPage>=totalPages-1?'default':'pointer'};color:${currentPage>=totalPages-1?'#bbb':'#333'};font-size:12px;" ${currentPage>=totalPages-1?'disabled':''}>Next →</button>`;
     ph += `<span style="color:#999;font-size:11px;margin-left:8px;">${pageStart+1}–${Math.min(pageStart+pageSize, totalFiltered)} of ${totalFiltered.toLocaleString()}</span>`;
     pager.innerHTML = ph;
     pager.style.display = 'flex';
@@ -1129,7 +1129,7 @@ function re(){
             <img class="flag-img" src="https://flagcdn.com/w40/${s.c}.png" alt="${s.c}"/>${s.c2?`<img class="flag-img" src="https://flagcdn.com/w40/${s.c2}.png" alt="${s.c2}"/>`:'' }
           </div>
           <a href="https://${s.d}" target="_blank" rel="noopener" class="sdomain" style="color:var(--pink);text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
-          <div class="sage">${s.cr} Â· ${s.ag}</div>
+          <div class="sage">${s.cr} · ${s.ag}</div>
         </div>
       </div></td>
       <td>

@@ -1,1145 +1,1008 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
-<meta name="theme-color" content="#F4A7B9"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
-<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://peekr.io"/>
-<meta name="twitter:card" content="summary"/>
-<link rel="stylesheet" href="peekr-responsive.css"/>
-<title>Peekr — Brand Tracker</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-body{
-  font-family:'Figtree',sans-serif;
-  background:#f0ece6;
-  color:#1a0a0f;
-  display:flex;
-  height:100vh;
-  position:relative;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Tracker - Peekr</title>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* ── SAME FLOATING OBJECTS AS LANDING ── */
-.page-objects{
-  position:fixed;inset:0;
-  pointer-events:none;z-index:0;overflow:hidden;
-}
-.po{position:absolute;border-radius:50%;}
-.po.p1{width:100px;height:100px;top:5%;left:0%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -10px -10px 20px rgba(0,0,0,0.18),inset 6px 6px 12px rgba(255,255,255,0.55),0 14px 36px rgba(0,0,0,0.08);animation:fl1 7s ease-in-out infinite;}
-.po.p2{width:55px;height:55px;top:3%;right:5%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -7px -7px 14px rgba(0,0,0,0.15),inset 4px 4px 8px rgba(255,255,255,0.5);animation:fl2 9s ease-in-out infinite;}
-.po.p3{width:30px;height:30px;top:15%;right:2%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);animation:fl1 6s ease-in-out infinite 1s;}
-.po.p4{width:16px;height:16px;top:25%;right:14%;background:radial-gradient(circle at 35% 30%,#eee,#bbb 50%,#888 85%);animation:fl2 5s ease-in-out infinite .5s;}
-.po.pp{width:70px;height:70px;top:50%;right:1%;background:radial-gradient(circle at 38% 32%,#fbc0d4,#e8799a 55%,#c85080 85%);box-shadow:inset -9px -9px 18px rgba(0,0,0,0.18),inset 5px 5px 10px rgba(255,200,220,0.4),0 12px 32px rgba(200,60,100,0.22);animation:fl2 8s ease-in-out infinite .3s;}
-.po.pg{width:40px;height:40px;bottom:15%;left:2%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.9),rgba(220,215,210,0.4) 50%,transparent 80%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 6px 20px rgba(0,0,0,0.06);animation:fl1 10s ease-in-out infinite 1.5s;}
-.po-worm1{position:absolute;width:6px;height:60px;top:62%;left:1%;background:linear-gradient(180deg,#f4a7b9,#e8799a);border-radius:3px;transform:rotate(20deg);opacity:.7;animation:fl1 9s ease-in-out infinite .4s;}
-.po-worm2{position:absolute;width:5px;height:50px;top:75%;right:4%;background:linear-gradient(180deg,#e8799a,#c85080);border-radius:3px;transform:rotate(-15deg);opacity:.65;animation:fl2 7s ease-in-out infinite .8s;}
+    body {
+      font-family: 'Figtree', sans-serif;
+      background-color: #f0ece6;
+      color: #1a0a0f;
+    }
 
-@keyframes fl1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
-@keyframes fl2{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-8px) rotate(2deg)}}
-
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
-
-/* ── SIDEBAR ── */
-.sb{
-  width:220px;flex-shrink:0;
-  position:relative;z-index:20;
-  background:#1a0a0f;
-  border-right:none;
-  display:flex;flex-direction:column;
-  overflow-y:auto;overflow-x:hidden;
-}
-.sb-logo{
-  padding:16px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
-}
-.sb-logo img{height:32px;width:auto;}
-.sb-sec{padding:10px 0 2px;}
-.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;}
-.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
-.ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
-.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
-.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
-.ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
-.nb{margin-left:auto;background:#e8799a;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
-.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
-.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
-.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
-.uc:hover{background:rgba(255,255,255,0.12);}
-.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
-.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
-.up{font-size:10px;color:#e8799a;font-weight:700;}
-
-/* ── MAIN ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:#ffffff;}
-
-/* ── TOPBAR ── */
-.topbar{
-  height:56px;flex-shrink:0;
-  display:flex;align-items:center;gap:12px;
-  padding:0 24px;
-  background:#ffffff;
-  border-bottom:1px solid rgba(220,200,210,0.18);
-  box-shadow:0 1px 0 rgba(220,200,210,0.12);
-}
-.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f;}
-.sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
-.sbox:focus-within{background:#fff;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
-.sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
-.sbox input::placeholder{color:rgba(26,10,15,0.3);}
-.tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.cnt{font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);}
-.cnt b{color:#1a0a0f;font-size:15px;}
-.lpill{display:flex;align-items:center;gap:5px;background:rgba(82,200,122,0.1);border:1px solid rgba(82,200,122,0.25);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;color:#2a9e54;}
-.ldot{width:6px;height:6px;border-radius:50%;background:#52c87a;animation:bl 2s infinite;}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
-.bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
-.bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
-
-/* ── SEGMENTS ── */
-.segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
-.sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
-.sg.active{
-  background:rgba(255,252,248,0.85);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.9);
-  box-shadow:0 2px 12px rgba(200,100,140,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-  color:#d4607a;
-}
-.sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-
-/* ── FILTERS ── */
-.fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
-.fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
-.fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
-.fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
-.fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fc{font-size:8px;opacity:.35;}
-
-/* ── DROPDOWN FILTERS ── */
-.fb-dropdown{
-  position:absolute;
-  top:100%;
-  left:0;
-  margin-top:4px;
-  background:#ffffff;
-  border:1px solid rgba(200,160,170,0.2);
-  border-radius:9px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.08);
-  min-width:180px;
-  max-width:240px;
-  max-height:280px;
-  overflow-y:auto;
-  z-index:100;
-  padding:8px;
-  display:none;
-}
-.fb-dropdown.open{display:block;}
-.fb-dropdown-item{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius:6px;
-  font-size:12px;
-  color:rgba(26,10,15,0.7);
-  cursor:pointer;
-  transition:all .15s;
-}
-.fb-dropdown-item:hover{background:rgba(232,121,154,0.08);color:#1a0a0f;}
-.fb-dropdown-item input{margin:0;cursor:pointer;}
-.fb-dropdown-clear{
-  padding:6px 10px;
-  margin-top:4px;
-  border-top:1px solid rgba(200,160,170,0.15);
-  font-size:11px;
-  font-weight:700;
-  color:#d4607a;
-  cursor:pointer;
-  text-align:center;
-  border-radius:6px;
-  transition:all .15s;
-}
-.fb-dropdown-clear:hover{background:rgba(232,121,154,0.1);}
-
-/* ── DATE PICKER ── */
-.date-picker-wrap{padding:8px;}
-.date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
-.date-picker-wrap select,.date-picker-wrap input[type="date"]{
-  width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
-  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
-  outline:none;transition:border .15s;margin-bottom:8px;
-}
-.date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
-.date-picker-apply{
-  width:100%;padding:7px;border:none;border-radius:7px;
-  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
-  font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
-}
-.date-picker-apply:hover{background:#d4607a;}
-
-/* ── TABLE ── */
-.tw{flex:1;overflow:auto;padding:12px 24px 24px;}
-table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
-thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
-thead th:hover{color:rgba(26,10,15,0.6);}
-thead th.sorted{color:#d4607a;}
-.thi{display:flex;align-items:center;gap:4px;}
-.sic{font-size:9px;opacity:.5;transition:opacity .15s;}
-
-tbody tr{cursor:pointer;}
-tbody tr td{
-  background:#ffffff;
-  border-top:1px solid rgba(220,200,210,0.12);
-  border-bottom:1px solid rgba(220,200,210,0.12);
-  transition:all .15s;
-}
-tbody tr td:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(200,160,170,0.1);}
-tbody tr td:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(200,160,170,0.1);}
-tbody tr:hover td{
-  background:#fff8fa;
-  border-color:rgba(232,121,154,0.15);
-  box-shadow:0 2px 12px rgba(200,100,140,0.07);
-}
-td{padding:11px 14px;vertical-align:middle;}
-
-.si2{display:flex;align-items:center;gap:10px;}
-.sthumb{
-  width:52px;height:40px;border-radius:9px;
-  overflow:hidden;
-  border:1px solid rgba(200,160,170,0.15);
-  flex-shrink:0;
-  background:rgba(245,240,235,0.8);
-  position:relative;
-}
-.sthumb img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-}
-.sthumb-fb{
-  position:absolute;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);
-}
-.sname{font-size:13px;font-weight:800;color:#1a0a0f;}
-.sdomain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:1px;}
-.sage{font-size:10px;color:rgba(26,10,15,0.3);margin-top:2px;}
-.pc{display:flex;gap:3px;}
-.pt{width:34px;height:34px;border-radius:7px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:rgba(26,10,15,0.35);}
-.pct{font-size:10px;color:rgba(26,10,15,0.3);margin-top:3px;}
-.tv{font-size:13px;font-weight:800;color:#1a0a0f;}
-.spk{display:flex;align-items:flex-end;gap:1.5px;height:22px;margin-top:4px;}
-.spkb{width:3px;border-radius:2px 2px 0 0;min-height:3px;}
-.rv{font-size:12px;font-weight:600;color:rgba(26,10,15,0.5);}
-.flags{display:flex;gap:3px;align-items:center;}
-.flag-img{
-  width:22px;height:22px;
-  border-radius:50%;
-  object-fit:cover;
-  border:1.5px solid rgba(220,200,210,0.25);
-  box-shadow:0 1px 3px rgba(0,0,0,0.08);
-  flex-shrink:0;
-}
-.acs{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800;}
-.adot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.scp{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;font-size:12px;font-weight:900;border:2px solid;}
-.prbg{font-size:9px;font-weight:800;background:linear-gradient(90deg,#e8799a,#f4a7b9);color:#fff;padding:2px 6px;border-radius:20px;}
-.tag-niche{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);color:rgba(26,10,15,0.55);}
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
-
-/* ── MODAL ── */
-.mo{position:fixed;inset:0;background:rgba(26,10,15,0.18);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity .2s;}
-.mo.open{opacity:1;pointer-events:all;}
-.md{
-  width:660px;max-height:88vh;
-  background:rgba(255,252,248,0.88);
-  backdrop-filter:blur(32px) saturate(1.6);
-  -webkit-backdrop-filter:blur(32px) saturate(1.6);
-  border:1.5px solid rgba(255,255,255,0.9);
-  border-radius:24px;
-  box-shadow:0 32px 80px rgba(200,80,120,0.14),inset 0 2px 0 rgba(255,255,255,1);
-  overflow:hidden;display:flex;flex-direction:column;
-  transform:translateY(20px) scale(.97);
-  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
-}
-.mo.open .md{transform:translateY(0) scale(1);}
-.mh{padding:22px 24px 18px;border-bottom:1px solid rgba(200,160,170,0.12);display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(252,228,236,0.2));}
-.mico{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(244,167,185,0.15),rgba(255,255,255,0.8));border:1px solid rgba(200,160,170,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(26,10,15,0.4);flex-shrink:0;}
-.msn{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
-.mdom{font-size:12px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:3px;}
-.mcl{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:rgba(26,10,15,0.4);transition:all .15s;flex-shrink:0;}
-.mcl:hover{background:#fff;color:#e8799a;border-color:#e8799a;}
-.mb{padding:20px 24px;overflow-y:auto;flex:1;}
-.msts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
-.stb{background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.18);border-radius:12px;padding:12px;}
-.stl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
-.stv{font-size:20px;font-weight:900;letter-spacing:-.02em;color:#1a0a0f;}
-.msec{margin-bottom:18px;}
-.mst2{font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
-.tgl{display:flex;flex-wrap:wrap;gap:5px;}
-.tg{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid;}
-.mcht{display:flex;align-items:flex-end;gap:4px;height:64px;padding:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;margin-bottom:20px;}
-.chb{flex:1;border-radius:4px 4px 0 0;min-height:4px;}
-.mml{display:flex;align-items:center;gap:8px;padding:12px 16px;background:rgba(232,121,154,0.06);border:1px solid rgba(232,121,154,0.18);border-radius:12px;color:#d4607a;font-size:13px;font-weight:700;text-decoration:none;transition:all .15s;}
-.mml:hover{background:rgba(232,121,154,0.1);}
-.dg{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.15);border-radius:12px;padding:14px;}
-.di{font-size:12px;color:rgba(26,10,15,0.5);}
-.di strong{color:#1a0a0f;}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="peekr-config.js"></script>
-</head>
-<body>
-
-<!-- FLOATING OBJECTS -->
-<div class="page-objects">
-  <div class="po p1"></div>
-  <div class="po p2"></div>
-  <div class="po p3"></div>
-  <div class="po p4"></div>
-  <div class="po pp"></div>
-  <div class="po pg"></div>
-  <div class="po-worm1"></div>
-  <div class="po-worm2"></div>
-</div>
-
-
-
-<!-- SIDEBAR -->
-<aside class="sb">
-  <div class="sb-logo">
-    <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Analyse</div>
-    <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">📣</span>Trending Ads</a>
-    <a class="ni active" href="peekr-brand-tracker.html"><span class="ni-ico">🔍</span>Brand Tracker<span class="nb">Pro</span></a>
-    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">🔥</span>Best Trends<span class="nb s">Soon</span></a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">📋</span>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-duel.html"><span class="ni-ico">⚔️</span>Duel Mode</a>
-    <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export<span class="nb s">Soon</span></a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">💎</span>Upgrade<span class="nb">🔥</span></a>
-    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">🤝</span>Affiliate</a>
-  </div>
-  <div class="sb-bot">
-    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
-  </div>
-</aside>
-
-<div class="main" style="overflow-y:auto;">
-
-<style>
-    .brand-tracker {
-      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      padding: 32px 24px;
-      background: #f8f7fb;
+    .container {
+      display: flex;
       min-height: 100vh;
     }
 
-    .bt-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 32px;
+    /* Sidebar */
+    .sb {
+      width: 220px;
+      background-color: #1a0a0f;
+      color: #ffffff;
+      padding: 20px 0;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .bt-title {
-      font-size: 32px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 0;
+    .sb-logo {
+      padding: 0 16px 24px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 20px;
     }
 
-    .pro-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 12px;
-      background: linear-gradient(135deg, #e8799a 0%, #d55b7a 100%);
-      color: #fff;
-      font-size: 12px;
+    .sb-logo img {
+      height: 32px;
+    }
+
+    .sb-sec {
+      margin-bottom: 24px;
+      padding: 0 12px;
+    }
+
+    .sb-lbl {
+      font-size: 11px;
       font-weight: 600;
-      border-radius: 20px;
       text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      padding: 0 8px;
+      margin-bottom: 8px;
       letter-spacing: 0.5px;
     }
 
-    .bt-search-container {
-      margin-bottom: 40px;
-    }
-
-    .bt-search-wrapper {
+    .ni {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      text-decoration: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      transition: all 0.2s ease;
       position: relative;
-      max-width: 400px;
     }
 
-    .bt-search-input {
+    .ni:hover {
+      background-color: rgba(232, 121, 154, 0.1);
+      color: #ffffff;
+    }
+
+    .ni.active {
+      background-color: #e8799a;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .ni-ico {
+      font-size: 18px;
+      min-width: 20px;
+    }
+
+    .nb {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 700;
+      background-color: rgba(232, 121, 154, 0.2);
+      color: #e8799a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .ni.active .nb {
+      background-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+    }
+
+    .nb.s {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .sb-bot {
+      position: absolute;
+      bottom: 20px;
+      left: 12px;
+      right: 12px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .uc {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background-color: rgba(232, 121, 154, 0.1);
+      border-radius: 9px;
+    }
+
+    .ua {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8799a, #f4a7b9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #ffffff;
+      font-size: 14px;
+    }
+
+    .un {
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .up {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 220px;
+      width: calc(100% - 220px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Topbar */
+    .topbar {
+      background-color: #ffffff;
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a0a0f;
+    }
+
+    /* Content area */
+    .content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    /* Search section */
+    .search-section {
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1a0a0f;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .search-input {
       width: 100%;
       padding: 12px 16px;
-      border: 2px solid #e0dde6;
-      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 9px;
+      font-family: 'Figtree', sans-serif;
       font-size: 14px;
-      font-family: inherit;
-      background: #fff;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
 
-    .bt-search-input:focus {
+    .search-input:focus {
       outline: none;
       border-color: #e8799a;
       box-shadow: 0 0 0 3px rgba(232, 121, 154, 0.1);
     }
 
-    .bt-suggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1px solid #e0dde6;
-      border-top: none;
-      border-radius: 0 0 12px 12px;
-      margin-top: -2px;
-      display: none;
-      z-index: 10;
+    .search-results {
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
     }
 
-    .bt-suggestions.active {
-      display: block;
-    }
-
-    .bt-suggestion-item {
-      padding: 12px 16px;
+    .search-result-card {
+      padding: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 9px;
+      margin-bottom: 8px;
       cursor: pointer;
-      transition: background 0.15s;
-      border-bottom: 1px solid #f0eff3;
-      font-size: 14px;
-      color: #4a4a4a;
+      transition: all 0.2s ease;
     }
 
-    .bt-suggestion-item:last-child {
-      border-bottom: none;
-    }
-
-    .bt-suggestion-item:hover {
-      background: #f8f7fb;
-    }
-
-    .bt-brands-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .bt-brand-card {
-      background: #fff;
-      border: 1px solid #e0dde6;
-      border-radius: 14px;
-      padding: 20px;
-      transition: all 0.2s;
-      position: relative;
-    }
-
-    .bt-brand-card:hover {
+    .search-result-card:hover {
+      background-color: rgba(232, 121, 154, 0.05);
       border-color: #e8799a;
-      box-shadow: 0 4px 12px rgba(232, 121, 154, 0.08);
-      transform: translateY(-2px);
     }
 
-    .bt-card-header {
+    .search-result-name {
+      font-weight: 600;
+      color: #1a0a0f;
+      font-size: 14px;
+    }
+
+    .search-result-domain {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-top: 4px;
+    }
+
+    /* Tabs */
+    .tabs {
       display: flex;
-      justify-content: space-between;
+      gap: 0;
+      margin-bottom: 32px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .tab {
+      padding: 16px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Figtree', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.5);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab:hover {
+      color: #1a0a0f;
+    }
+
+    .tab.active {
+      color: #e8799a;
+      border-bottom-color: #e8799a;
+    }
+
+    /* Brand profile card */
+    .brand-profile {
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .brand-header {
+      display: flex;
       align-items: flex-start;
-      margin-bottom: 16px;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
 
-    .bt-brand-info {
-      display: flex;
-      gap: 12px;
+    .brand-name-section {
       flex: 1;
     }
 
-    .bt-logo {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #e8799a 0%, #f0a9c3 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
+    .brand-name {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 24px;
       font-weight: 700;
-      font-size: 16px;
-      flex-shrink: 0;
+      color: #1a0a0f;
+      margin-bottom: 8px;
     }
 
-    .bt-brand-details h3 {
-      margin: 0 0 2px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a1a;
-    }
-
-    .bt-brand-domain {
-      font-size: 12px;
-      color: #9a9aa8;
-      margin: 0;
-    }
-
-    .bt-remove-btn {
-      background: none;
-      border: none;
-      color: #d0d0d8;
-      cursor: pointer;
-      font-size: 18px;
-      padding: 0;
-      transition: color 0.2s;
-    }
-
-    .bt-remove-btn:hover {
+    .brand-domain {
+      font-size: 14px;
       color: #e8799a;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
     }
 
-    .bt-metrics {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 16px;
+    .brand-domain:hover {
+      color: #d4607a;
     }
 
-    .bt-metric {
-      background: #f8f7fb;
-      padding: 12px;
-      border-radius: 10px;
+    .brand-score {
+      display: inline-block;
+      background: linear-gradient(135deg, #e8799a, #f4a7b9);
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: 14px;
+      margin-top: 12px;
+    }
+
+    .brand-meta {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 12px;
+      margin-top: 12px;
     }
 
-    .bt-metric-label {
-      font-size: 11px;
-      color: #7a7a8a;
+    .brand-country {
+      font-size: 12px;
+      background-color: rgba(0, 0, 0, 0.05);
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .brand-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-item {
+      padding: 16px;
+      background-color: rgba(232, 121, 154, 0.05);
+      border-radius: 9px;
+      border: 1px solid rgba(232, 121, 154, 0.2);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
       text-transform: uppercase;
       font-weight: 600;
+      margin-bottom: 8px;
       letter-spacing: 0.3px;
     }
 
-    .bt-metric-value {
+    .stat-value {
       font-size: 18px;
       font-weight: 700;
-      color: #1a1a1a;
-      display: flex;
-      gap: 4px;
-      align-items: baseline;
+      color: #1a0a0f;
     }
 
-    .bt-change {
-      font-size: 12px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .bt-change.up {
-      color: #2a9e54;
-    }
-
-    .bt-change.down {
-      color: #d4564a;
-    }
-
-    .bt-sparkline {
-      height: 24px;
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      margin-bottom: 12px;
-    }
-
-    .bt-sparkbar {
-      flex: 1;
-      background: linear-gradient(180deg, #e8799a 0%, #f0a9c3 100%);
-      border-radius: 2px;
-      opacity: 0.7;
-      transition: all 0.2s;
-    }
-
-    .bt-sparkbar:hover {
-      opacity: 1;
-    }
-
-    .bt-card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 12px;
-      border-top: 1px solid #f0eff3;
-      font-size: 12px;
-      color: #9a9aa8;
-    }
-
-    .bt-timestamp {
-      display: flex;
-      gap: 4px;
-    }
-
-    .bt-alert-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 6px 10px;
-      background: #fff3f0;
-      border: 1px solid #ffd9ce;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #d4564a;
-      margin-bottom: 12px;
-    }
-
-    .bt-alert-badge.positive {
-      background: #f0f8f4;
-      border-color: #c8e6d9;
-      color: #2a9e54;
-    }
-
-    .bt-section-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin: 40px 0 20px 0;
-      padding-bottom: 12px;
-      border-bottom: 2px solid #e0dde6;
-    }
-
-    .bt-alerts-list {
-      background: #fff;
-      border: 1px solid #e0dde6;
-      border-radius: 14px;
-      overflow: hidden;
-    }
-
-    .bt-alert-item {
-      padding: 16px 20px;
-      border-bottom: 1px solid #f0eff3;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.15s;
-    }
-
-    .bt-alert-item:last-child {
-      border-bottom: none;
-    }
-
-    .bt-alert-item:hover {
-      background: #f8f7fb;
-    }
-
-    .bt-alert-content {
+    .brand-actions {
       display: flex;
       gap: 12px;
-      flex: 1;
+      flex-wrap: wrap;
     }
 
-    .bt-alert-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: #fff3f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
-    .bt-alert-text {
-      flex: 1;
-    }
-
-    .bt-alert-message {
+    .btn {
+      padding: 12px 20px;
+      border-radius: 9px;
+      border: none;
+      font-family: 'Figtree', sans-serif;
       font-size: 14px;
-      font-weight: 500;
-      color: #1a1a1a;
-      margin: 0 0 4px 0;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    .bt-alert-time {
+    .btn-primary {
+      background: linear-gradient(135deg, #e8799a, #f4a7b9);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #d4607a, #e8799a);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(232, 121, 154, 0.3);
+    }
+
+    .btn-secondary {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: #1a0a0f;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-track {
+      background-color: #ffffff;
+      color: #e8799a;
+      border: 2px solid #e8799a;
+    }
+
+    .btn-track:hover {
+      background-color: rgba(232, 121, 154, 0.1);
+    }
+
+    .btn-track.tracked {
+      background-color: #e8799a;
+      color: #ffffff;
+    }
+
+    /* Compare mode */
+    .compare-section {
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .compare-input-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .compare-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a0a0f;
+      margin-bottom: 8px;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 24px;
+    }
+
+    .compare-table th {
+      background-color: rgba(232, 121, 154, 0.1);
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
       font-size: 12px;
-      color: #9a9aa8;
-      margin: 0;
+      color: #1a0a0f;
+      border-bottom: 1px solid rgba(232, 121, 154, 0.2);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
-    .bt-empty-state {
+    .compare-table td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      font-size: 14px;
+      color: #1a0a0f;
+    }
+
+    .compare-table tr:hover {
+      background-color: rgba(232, 121, 154, 0.05);
+    }
+
+    /* Tracked brands */
+    .tracked-section {
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a0a0f;
+      margin-bottom: 20px;
+    }
+
+    .tracked-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .tracked-card {
+      background-color: #f0ece6;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      transition: all 0.2s ease;
+    }
+
+    .tracked-card:hover {
+      border-color: #e8799a;
+      box-shadow: 0 4px 12px rgba(232, 121, 154, 0.2);
+    }
+
+    .tracked-card-name {
+      font-weight: 600;
+      color: #1a0a0f;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .tracked-card-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(0, 0, 0, 0.6);
+      margin-bottom: 6px;
+    }
+
+    .tracked-card-stat-value {
+      font-weight: 600;
+      color: #1a0a0f;
+    }
+
+    .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      background: #fff;
-      border: 2px dashed #e0dde6;
-      border-radius: 14px;
-      margin-top: 20px;
+      padding: 48px 32px;
+      color: rgba(0, 0, 0, 0.5);
     }
 
-    .bt-empty-icon {
+    .empty-state-icon {
       font-size: 48px;
       margin-bottom: 16px;
     }
 
-    .bt-empty-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a1a;
-      margin: 0 0 8px 0;
+    .empty-state-text {
+      font-size: 14px;
     }
 
-    .bt-empty-text {
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: rgba(0, 0, 0, 0.5);
       font-size: 14px;
-      color: #7a7a8a;
-      margin: 0;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(232, 121, 154, 0.3);
+      border-top-color: #e8799a;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
-
-  <div class="brand-tracker">
-    <div class="bt-header">
-      <h1 class="bt-title">Brand Tracker</h1>
-      <span class="pro-badge">✨ Pro</span>
-    </div>
-
-    <div class="bt-search-container">
-      <div class="bt-search-wrapper">
-        <input
-          type="text"
-          class="bt-search-input"
-          placeholder="Search and add brands..."
-          id="brandSearchInput"
-        >
-        <div class="bt-suggestions" id="brandSuggestions">
-          <div class="bt-suggestion-item" data-domain="velvetbloom.com">Velvet Bloom</div>
-          <div class="bt-suggestion-item" data-domain="luxelegance.com">Luxe Elegance</div>
-          <div class="bt-suggestion-item" data-domain="naturelive.com">Nature Live</div>
-          <div class="bt-suggestion-item" data-domain="techpulse.io">Tech Pulse</div>
-        </div>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sb">
+      <div class="sb-logo"><img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxNCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS13aWR0aD0iMiIgZmlsbD0ibm9uZSIvPjxwYXRoIGQ9Ik0xNiA4VjI0TTggMTZIMjQiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==" alt="peekr"/></div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Overview</div>
+        <a class="ni" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
       </div>
-    </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Analyse</div>
+        <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
+        <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
+        <a class="ni active" href="peekr-brand-tracker.html"><span class="ni-ico">&#128269;</span>Brand Tracker<span class="nb">Pro</span></a>
+        <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Favorites</div>
+        <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+        <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Tools</div>
+        <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
+        <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Resources</div>
+        <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Conseils</a>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Account</div>
+        <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
+        <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
+      </div>
+      <div class="sb-bot">
+        <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+      </div>
+    </aside>
 
-    <div class="bt-brands-grid">
-      <!-- Brand Card 1 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo">VB</div>
-            <div class="bt-brand-details">
-              <h3>Velvet Bloom</h3>
-              <p class="bt-brand-domain">velvetbloom.com</p>
+    <!-- Main content -->
+    <div class="main">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="topbar-title">Brand Tracker</div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Tabs -->
+        <div class="tabs">
+          <button class="tab active" data-tab="search">Search & Profile</button>
+          <button class="tab" data-tab="compare">Compare Brands</button>
+          <button class="tab" data-tab="tracked">My Tracked Brands</button>
+        </div>
+
+        <!-- Search & Profile Tab -->
+        <div id="search-tab" class="tab-content">
+          <!-- Search Section -->
+          <div class="search-section">
+            <label class="search-label">Search any Shopify brand...</label>
+            <input
+              type="text"
+              id="searchInput"
+              class="search-input"
+              placeholder="Enter brand name or domain (e.g., 'gymshark.com')"
+            />
+            <div id="searchResults" class="search-results"></div>
+          </div>
+
+          <!-- Brand Profile Section -->
+          <div id="brandProfile" class="brand-profile hidden">
+            <div class="brand-header">
+              <div class="brand-name-section">
+                <div class="brand-name" id="profileName">—</div>
+                <a id="profileDomain" class="brand-domain" target="_blank">—</a>
+                <div class="brand-score" id="profileScore">—</div>
+                <div class="brand-meta">
+                  <span class="brand-country" id="profileCountry">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="brand-stats">
+              <div class="stat-item">
+                <div class="stat-label">Monthly Visits</div>
+                <div class="stat-value" id="statVisits">—</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Products Count</div>
+                <div class="stat-value" id="statProducts">—</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Shopify Plan</div>
+                <div class="stat-value" id="statPlan">—</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Theme</div>
+                <div class="stat-value" id="statTheme">—</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Store Age</div>
+                <div class="stat-value" id="statAge">—</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-label">Niche</div>
+                <div class="stat-value" id="statNiche">—</div>
+              </div>
+            </div>
+
+            <div class="brand-actions">
+              <button class="btn btn-primary" id="btnMeta">View on Meta Ad Library</button>
+              <button class="btn btn-secondary" id="btnVisit" target="_blank">Visit Store</button>
+              <button class="btn btn-track" id="btnTrack">Track This Brand</button>
             </div>
           </div>
-          <button class="bt-remove-btn">✕</button>
         </div>
 
-        <div class="bt-alert-badge positive">
-          🔔 Score +8
-        </div>
+        <!-- Compare Brands Tab -->
+        <div id="compare-tab" class="tab-content hidden">
+          <div class="compare-section">
+            <div class="compare-grid">
+              <div class="compare-input-group">
+                <label class="compare-label">Brand 1</label>
+                <input
+                  type="text"
+                  class="search-input"
+                  id="compare1Input"
+                  placeholder="Search first brand..."
+                />
+                <div id="compare1Results" class="search-results"></div>
+              </div>
+              <div class="compare-input-group">
+                <label class="compare-label">Brand 2</label>
+                <input
+                  type="text"
+                  class="search-input"
+                  id="compare2Input"
+                  placeholder="Search second brand..."
+                />
+                <div id="compare2Results" class="search-results"></div>
+              </div>
+            </div>
 
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 45%"></div>
-          <div class="bt-sparkbar" style="height: 52%"></div>
-          <div class="bt-sparkbar" style="height: 48%"></div>
-          <div class="bt-sparkbar" style="height: 61%"></div>
-          <div class="bt-sparkbar" style="height: 58%"></div>
-          <div class="bt-sparkbar" style="height: 67%"></div>
-          <div class="bt-sparkbar" style="height: 72%"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">78 <span class="bt-change up">↑12%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">245K <span class="bt-change up">↑8%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$45K <span class="bt-change up">↑15%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">24 <span class="bt-change up">↑3</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 2h ago</span>
-        </div>
-      </div>
-
-      <!-- Brand Card 2 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo" style="background: linear-gradient(135deg, #6b9ed9 0%, #8fb3e8 100%);">LE</div>
-            <div class="bt-brand-details">
-              <h3>Luxe Elegance</h3>
-              <p class="bt-brand-domain">luxelegance.com</p>
+            <div id="compareTableContainer" class="hidden">
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th id="compareName1">Brand 1</th>
+                    <th id="compareName2">Brand 2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Score</td>
+                    <td id="compareScore1">—</td>
+                    <td id="compareScore2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Monthly Traffic</td>
+                    <td id="compareTraffic1">—</td>
+                    <td id="compareTraffic2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Products</td>
+                    <td id="compareProducts1">—</td>
+                    <td id="compareProducts2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Shopify Plan</td>
+                    <td id="comparePlan1">—</td>
+                    <td id="comparePlan2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Theme</td>
+                    <td id="compareTheme1">—</td>
+                    <td id="compareTheme2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Store Age</td>
+                    <td id="compareAge1">—</td>
+                    <td id="compareAge2">—</td>
+                  </tr>
+                  <tr>
+                    <td>Country</td>
+                    <td id="compareCountry1">—</td>
+                    <td id="compareCountry2">—</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <button class="bt-remove-btn">✕</button>
         </div>
 
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 38%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 42%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 40%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 45%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 43%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 48%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 50%; background: linear-gradient(180deg, #6b9ed9 0%, #8fb3e8 100%);"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">72 <span class="bt-change down">↓2%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">189K <span class="bt-change down">↓1%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$38K <span class="bt-change down">↓5%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">18 <span class="bt-change down">↓1</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 1h ago</span>
-        </div>
-      </div>
-
-      <!-- Brand Card 3 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo" style="background: linear-gradient(135deg, #6b9e6b 0%, #8fc98f 100%);">NL</div>
-            <div class="bt-brand-details">
-              <h3>Nature Live</h3>
-              <p class="bt-brand-domain">naturelive.com</p>
+        <!-- Tracked Brands Tab -->
+        <div id="tracked-tab" class="tab-content hidden">
+          <div class="tracked-section">
+            <h2 class="section-title">My Tracked Brands</h2>
+            <div id="trackedGrid" class="tracked-grid">
+              <div class="empty-state">
+                <div class="empty-state-icon">&#128269;</div>
+                <div class="empty-state-text">No tracked brands yet. Start tracking brands from the Search & Profile tab!</div>
+              </div>
             </div>
-          </div>
-          <button class="bt-remove-btn">✕</button>
-        </div>
-
-        <div class="bt-alert-badge positive">
-          🔔 Ads +12
-        </div>
-
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 35%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 41%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 38%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 48%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 52%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 58%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-          <div class="bt-sparkbar" style="height: 65%; background: linear-gradient(180deg, #6b9e6b 0%, #8fc98f 100%);"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">85 <span class="bt-change up">↑18%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">312K <span class="bt-change up">↑22%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$52K <span class="bt-change up">↑19%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">32 <span class="bt-change up">↑12</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 45m ago</span>
-        </div>
-      </div>
-
-      <!-- Brand Card 4 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo" style="background: linear-gradient(135deg, #d4a06b 0%, #e8b896 100%);">TP</div>
-            <div class="bt-brand-details">
-              <h3>Tech Pulse</h3>
-              <p class="bt-brand-domain">techpulse.io</p>
-            </div>
-          </div>
-          <button class="bt-remove-btn">✕</button>
-        </div>
-
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 52%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 48%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 55%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 50%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 49%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 51%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-          <div class="bt-sparkbar" style="height: 53%; background: linear-gradient(180deg, #d4a06b 0%, #e8b896 100%);"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">68 <span class="bt-change down">↓4%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">156K <span class="bt-change down">↓3%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$28K <span class="bt-change up">↑2%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">14 <span class="bt-change down">↓2</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 3h ago</span>
-        </div>
-      </div>
-
-      <!-- Brand Card 5 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo" style="background: linear-gradient(135deg, #b76b9e 0%, #d896c8 100%);">EH</div>
-            <div class="bt-brand-details">
-              <h3>Ethic Home</h3>
-              <p class="bt-brand-domain">ethichome.shop</p>
-            </div>
-          </div>
-          <button class="bt-remove-btn">✕</button>
-        </div>
-
-        <div class="bt-alert-badge positive">
-          🔔 Revenue +24%
-        </div>
-
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 42%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 48%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 55%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 62%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 68%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 75%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 82%; background: linear-gradient(180deg, #b76b9e 0%, #d896c8 100%);"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">81 <span class="bt-change up">↑11%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">278K <span class="bt-change up">↑19%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$64K <span class="bt-change up">↑24%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">28 <span class="bt-change up">↑8</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 30m ago</span>
-        </div>
-      </div>
-
-      <!-- Brand Card 6 -->
-      <div class="bt-brand-card">
-        <div class="bt-card-header">
-          <div class="bt-brand-info">
-            <div class="bt-logo" style="background: linear-gradient(135deg, #6b8ed9 0%, #8fa8e8 100%);">FC</div>
-            <div class="bt-brand-details">
-              <h3>Fresh Craft</h3>
-              <p class="bt-brand-domain">freshcraft.co</p>
-            </div>
-          </div>
-          <button class="bt-remove-btn">✕</button>
-        </div>
-
-        <div class="bt-sparkline">
-          <div class="bt-sparkbar" style="height: 45%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 43%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 42%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 44%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 46%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 45%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-          <div class="bt-sparkbar" style="height: 47%; background: linear-gradient(180deg, #6b8ed9 0%, #8fa8e8 100%);"></div>
-        </div>
-
-        <div class="bt-metrics">
-          <div class="bt-metric">
-            <span class="bt-metric-label">Score</span>
-            <span class="bt-metric-value">74 <span class="bt-change down">↓1%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Monthly Visits</span>
-            <span class="bt-metric-value">198K <span class="bt-change down">↓2%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Revenue Est.</span>
-            <span class="bt-metric-value">$35K <span class="bt-change down">↓3%</span></span>
-          </div>
-          <div class="bt-metric">
-            <span class="bt-metric-label">Live Ads</span>
-            <span class="bt-metric-value">21 <span class="bt-change down">↓1</span></span>
-          </div>
-        </div>
-
-        <div class="bt-card-footer">
-          <span class="bt-timestamp">⏱ Last checked: 58m ago</span>
-        </div>
-      </div>
-    </div>
-
-    <h2 class="bt-section-title">Alert History</h2>
-
-    <div class="bt-alerts-list">
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">🎯</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Velvet Bloom ads jumped +40%</p>
-            <p class="bt-alert-time">2 hours ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">📈</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Nature Live entered top 5 in niche</p>
-            <p class="bt-alert-time">4 hours ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">💰</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Ethic Home revenue milestone: $60K+</p>
-            <p class="bt-alert-time">6 hours ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">⚠️</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Tech Pulse score dropped 5 points</p>
-            <p class="bt-alert-time">8 hours ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">🎯</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Fresh Craft launched new ad campaign</p>
-            <p class="bt-alert-time">12 hours ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">📊</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Luxe Elegance visits stabilized</p>
-            <p class="bt-alert-time">1 day ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">🚀</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Velvet Bloom crossed 240K monthly visits</p>
-            <p class="bt-alert-time">1 day ago</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bt-alert-item">
-        <div class="bt-alert-content">
-          <div class="bt-alert-icon">📈</div>
-          <div class="bt-alert-text">
-            <p class="bt-alert-message">Nature Live trending score up 18%</p>
-            <p class="bt-alert-time">2 days ago</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-</div>
-
   <script>
-    // Auth protection
-    (async () => {
-      const session = await Peekr.requireAuth();
-      if (!session) return;
-      const plan = await Peekr.getUserPlan();
-      window._userPlan = plan;
-      if (plan === 'free') { Peekr.showPageLock('Brand Tracker', 'Starter'); return; }
-    })();
+    // Supabase config
+    const _SB = 'https://vsyceexjsitliwaasdhd.supabase.co';
+    const _AK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDY4NzMsImV4cCI6MjA1ODQyMjg3M30.1FiWG8gKL50dUqqA_fKOPT5-NfUVpx3sVxflKr-ouPY';
+
+    // State
+    let trackedBrands = [];
+    let selectedBrand = null;
+    let compareBrand1 = null;
+    let compareBrand2 = null;
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+        tab.classList.add('active');
+        document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+      });
+    });
+
+    // Search shops in Supabase
+    async function searchShops(query) {
+      if (!query || query.length < 2) return [];
+      try {
+        const response = await fetch(
+          `${_SB}/rest/v1/shops?select=*&or=(domain.ilike.*${encodeURIComponent(query)}*,name.ilike.*${encodeURIComponent(query)}*)&order=score.desc&limit=10`,
+          {
+            headers: {
+              'apikey': _AK,
+              'Authorization': `Bearer ${_AK}`
+            }
+          }
+        );
+        if (!response.ok) return [];
+        const data = await response.json();
+        return data || [];
+      } catch (e) {
+        console.error('Search error:', e);
+        return [];
+      }
+    }
+
+    // Render search results
+    function renderSearchResults(results, containerId, callback) {
+      const container = document.getElementById(containerId);
+      if (results.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+      container.innerHTML = results.map(shop => `
+        <div class="search-result-card" data-shop='${JSON.stringify(shop)}'>
+          <div class="search-result-name">${shop.name || 'Unknown'}</div>
+          <div class="search-result-domain">${shop.domain || '—'}</div>
+        </div>
+      `).join('');
+      container.querySelectorAll('.search-result-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const shop = JSON.parse(card.dataset.shop);
+          callback(shop);
+        });
+      });
+    }
+
+    // Display brand profile
+    function displayBrandProfile(shop) {
+      selectedBrand = shop;
+      document.getElementById('brandProfile').classList.remove('hidden');
+      document.getElementById('profileName').textContent = shop.name || '—';
+      document.getElementById('profileDomain').textContent = shop.domain || '—';
+      document.getElementById('profileDomain').href = `https://${shop.domain}`;
+      document.getElementById('profileScore').textContent = `Score: ${shop.score || '—'}`;
+      document.getElementById('profileCountry').textContent = shop.country || '—';
+      document.getElementById('statVisits').textContent = shop.monthly_visits ? shop.monthly_visits.toLocaleString() : '—';
+      document.getElementById('statProducts').textContent = shop.product_count || '—';
+      document.getElementById('statPlan').textContent = shop.shopify_plan || '—';
+      document.getElementById('statTheme').textContent = shop.theme || '—';
+      document.getElementById('statAge').textContent = shop.store_age || '—';
+      document.getElementById('statNiche').textContent = shop.niche || '—';
+
+      // Update tracked button
+      const isTracked = trackedBrands.some(b => b.domain === shop.domain);
+      const btnTrack = document.getElementById('btnTrack');
+      btnTrack.textContent = isTracked ? '&#10003; Tracked' : 'Track This Brand';
+      btnTrack.classList.toggle('tracked', isTracked);
+      btnTrack.onclick = () => toggleTrackBrand(shop);
+
+      // Visit button
+      document.getElementById('btnVisit').href = `https://${shop.domain}`;
+
+      // Meta Ad Library button
+      document.getElementById('btnMeta').onclick = () => {
+        window.open(`https://www.facebook.com/ads/library/?ad_type=all&country=ALL&q=${encodeURIComponent(shop.domain)}`, '_blank');
+      };
+
+      document.getElementById('searchResults').innerHTML = '';
+    }
+
+    // Track/untrack brand
+    function toggleTrackBrand(shop) {
+      const idx = trackedBrands.findIndex(b => b.domain === shop.domain);
+      if (idx >= 0) {
+        trackedBrands.splice(idx, 1);
+      } else {
+        trackedBrands.push(shop);
+      }
+      displayBrandProfile(selectedBrand);
+      renderTrackedBrands();
+    }
+
+    // Render tracked brands
+    function renderTrackedBrands() {
+      const grid = document.getElementById('trackedGrid');
+      if (trackedBrands.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><div class="empty-state-icon">&#128269;</div><div class="empty-state-text">No tracked brands yet. Start tracking brands from the Search & Profile tab!</div></div>`;
+        return;
+      }
+      grid.innerHTML = trackedBrands.map(shop => `
+        <div class="tracked-card">
+          <div class="tracked-card-name">${shop.name || '—'}</div>
+          <div class="tracked-card-stat">
+            <span>Score</span>
+            <span class="tracked-card-stat-value">${shop.score || '—'}</span>
+          </div>
+          <div class="tracked-card-stat">
+            <span>Traffic</span>
+            <span class="tracked-card-stat-value">${shop.monthly_visits ? (shop.monthly_visits / 1000).toFixed(0) + 'K' : '—'}</span>
+          </div>
+          <div class="tracked-card-stat">
+            <span>Products</span>
+            <span class="tracked-card-stat-value">${shop.product_count || '—'}</span>
+          </div>
+          <button class="btn btn-secondary" style="width: 100%; margin-top: 12px;" onclick="window.open('https://${shop.domain}', '_blank')">Visit</button>
+        </div>
+      `).join('');
+    }
+
+    // Compare mode setup
+    let compareResults1 = [];
+    let compareResults2 = [];
+
+    document.getElementById('compare1Input').addEventListener('input', async (e) => {
+      const results = await searchShops(e.target.value);
+      compareResults1 = results;
+      renderSearchResults(results, 'compare1Results', (shop) => {
+        compareBrand1 = shop;
+        document.getElementById('compare1Input').value = shop.name;
+        document.getElementById('compare1Results').innerHTML = '';
+        updateCompareTable();
+      });
+    });
+
+    document.getElementById('compare2Input').addEventListener('input', async (e) => {
+      const results = await searchShops(e.target.value);
+      compareResults2 = results;
+      renderSearchResults(results, 'compare2Results', (shop) => {
+        compareBrand2 = shop;
+        document.getElementById('compare2Input').value = shop.name;
+        document.getElementById('compare2Results').innerHTML = '';
+        updateCompareTable();
+      });
+    });
+
+    function updateCompareTable() {
+      const container = document.getElementById('compareTableContainer');
+      if (!compareBrand1 || !compareBrand2) {
+        container.classList.add('hidden');
+        return;
+      }
+      container.classList.remove('hidden');
+      document.getElementById('compareName1').textContent = compareBrand1.name || 'Brand 1';
+      document.getElementById('compareName2').textContent = compareBrand2.name || 'Brand 2';
+      document.getElementById('compareScore1').textContent = compareBrand1.score || '—';
+      document.getElementById('compareScore2').textContent = compareBrand2.score || '—';
+      document.getElementById('compareTraffic1').textContent = compareBrand1.monthly_visits ? compareBrand1.monthly_visits.toLocaleString() : '—';
+      document.getElementById('compareTraffic2').textContent = compareBrand2.monthly_visits ? compareBrand2.monthly_visits.toLocaleString() : '—';
+      document.getElementById('compareProducts1').textContent = compareBrand1.product_count || '—';
+      document.getElementById('compareProducts2').textContent = compareBrand2.product_count || '—';
+      document.getElementById('comparePlan1').textContent = compareBrand1.shopify_plan || '—';
+      document.getElementById('comparePlan2').textContent = compareBrand2.shopify_plan || '—';
+      document.getElementById('compareTheme1').textContent = compareBrand1.theme || '—';
+      document.getElementById('compareTheme2').textContent = compareBrand2.theme || '—';
+      document.getElementById('compareAge1').textContent = compareBrand1.store_age || '—';
+      document.getElementById('compareAge2').textContent = compareBrand2.store_age || '—';
+      document.getElementById('compareCountry1').textContent = compareBrand1.country || '—';
+      document.getElementById('compareCountry2').textContent = compareBrand2.country || '—';
+    }
+
+    // Search input debounce
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', async (e) => {
+      clearTimeout(searchTimeout);
+      const query = e.target.value;
+      if (query.length < 2) {
+        document.getElementById('searchResults').innerHTML = '';
+        return;
+      }
+      searchTimeout = setTimeout(async () => {
+        const results = await searchShops(query);
+        renderSearchResults(results, 'searchResults', displayBrandProfile);
+      }, 300);
+    });
   </script>
 </body>
 </html>

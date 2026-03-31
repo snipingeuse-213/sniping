@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blog & Tips - Peekr</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Figtree',sans-serif;bg:#f0ece6;color:#333}
+.ctn{display:flex;min-h:100vh}.sb{w:220px;bg:#1a0a0f;pos:fixed;h:100vh;ofy:auto;p:20px 0}.sb-logo{color:#fff;font:700 24px 'Clash Display';p:0 20px 30px;display:block}
+.nav{list-style:0}.nav li a{d:block;p:12px 20px;c:#999;txt-dec:none;font:500 14px 'Figtree';trans:all .2s}
+.nav li a:hover{c:#e8799a}.nav li.active a{c:#e8799a;bg:rgba(232,121,154,.1)}
+.main{ml:220px;flex:1}.topbar{bg:#f0ece6;p:20px 40px;b:1px solid #e8e4dd}
+.top-ttl{f:700 20px 'Clash Display'}
+.hero{p:40px;txt-align:c}.hero-h{f:700 36px 'Clash Display';mb:12px;c:#1a0a0f}
+.hero-s{f:400 16px;c:#666;mb:30px}
+.fltr{d:flex;gap:8px;jc:c;flw:wrap;mb:30px;p:0 20px}
+.chip{p:8px 16px;b:1px solid #ddd;bg:#fff;br:20px;c:#666;f:500 13px;cur:pointer;trans:all .2s}
+.chip:hover,.chip.active{bg:#e8799a;c:#fff;b-c:#e8799a}
+.src{d:flex;jc:c;mb:30px}.src inp{w:300px;p:10px 15px;b:1px solid #ddd;br:6px;f:14px}
+.grd{d:grid;grc:3;gap:20px;p:0 40px 40px;mb:40px}
+@media(max-w:1024px){.grd{grc:2}}@media(max-w:640px){.grd{grc:1}.sb{w:100%;h:auto;pos:rel}.main{ml:0}}
+.card{bg:#fff;br:8px;ov:hidden;trans:all .2s;cur:pointer}.card:hover{shd:0 4px 12px rgba(0,0,0,.1);trf:translateY(-2px)}
+.card-bar{h:4px;bg:linear-gradient(90deg,#e8799a,#d85a7b)}.card-bd{p:20px}.badge{d:inline-block;p:4px 12px;bg:#e8799a;c:#fff;f:500 11px;br:4px;mb:12px}
+.card-h{f:700 16px 'Clash Display';mb:10px;lh:1.3}.card-ex{f:400 13px #888;lh:1.4;mb:15px;d:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;ov:hidden}
+.card-meta{d:flex;jc:space-between;ai:center;f:500 12px;c:#999}.cta{c:#e8799a;txt-dec:none;cur:pointer}
+.nws{bg:#1a0a0f;c:#fff;p:40px;txt-align:c;mt:40px}.nws-h{f:700 20px 'Clash Display';mb:15px}
+.nws-inp{d:flex;jc:c;gap:10px;flw:wrap}.nws-inp inp{p:10px 15px;w:280px;b:none;br:4px;f:14px}
+.nws-btn{p:10px 24px;bg:#e8799a;c:#fff;b:none;br:4px;f:500 14px;cur:pointer;trans:all .2s}
+.nws-btn:hover{bg:#d85a7b}
+</style>
+</head>
+<body>
+<aside class="sb">
+<span class="sb-logo">peekr.</span>
+<ul class="nav">
+<li><a href="peekr-dashboard.html">Dashboard</a></li>
+<li><a href="peekr-dashboard.html">Trending Shops</a></li>
+<li><a href="peekr-trending-ads.html">Trending Ads</a></li>
+<li><a href="peekr-brand-tracker.html">Brand Tracker</a></li>
+<li><a href="peekr-best-trends.html">Best Trends</a></li>
+<li class="active"><a href="peekr-blog.html">Blog & Tips</a></li>
+<li><a href="#saved-ads">Saved Ads</a></li>
+<li><a href="#saved-shops">Saved Shops</a></li>
+<li><a href="#duel">Duel Mode</a></li>
+<li><a href="#export">Export</a></li>
+<li><a href="#upgrade">Upgrade</a></li>
+<li><a href="#affiliate">Affiliate</a></li>
+</ul>
+</aside>
+
+<div class="main">
+<div class="topbar">
+<div class="top-ttl">Blog & Tips</div>
+</div>
+
+<div class="hero">
+<h1 class="hero-h">Ecom Intelligence Hub</h1>
+<p class="hero-s">Master ecommerce with data-driven insights, winning strategies, and proven scaling tactics</p>
+</div>
+
+<div class="fltr">
+<button class="chip active" data-cat="all">All</button>
+<button class="chip" data-cat="strategy">Strategy</button>
+<button class="chip" data-cat="advertising">Advertising</button>
+<button class="chip" data-cat="product">Product</button>
+<button class="chip" data-cat="scaling">Scaling</button>
+<button class="chip" data-cat="tools">Tools</button>
+</div>
+
+<div class="src">
+<input type="text" id="search" placeholder="Search articles...">
+</div>
+
+<div class="grd" id="grid">
+<div class="card" data-cat="strategy">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Strategy</span>
+<h3 class="card-h">How to Find Winning Products in 2026</h3>
+<p class="card-ex">Discover proven methods to identify high-demand products before your competitors. Learn the data signals that predict winners.</p>
+<div class="card-meta"><span>5 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+
+<div class="card" data-cat="advertising">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Advertising</span>
+<h3 class="card-h">Meta Ads Spy: The Complete Guide</h3>
+<p class="card-ex">Master the art of analyzing competitor Facebook and Meta ads. Find winning creatives and steal market share with smart intelligence.</p>
+<div class="card-meta"><span>7 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+
+<div class="card" data-cat="strategy">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Strategy</span>
+<h3 class="card-h">Shopify Store Analysis: What Top Sellers Do Differently</h3>
+<p class="card-ex">Reverse-engineer successful stores. Analyze product selection, pricing, marketing, and conversion tactics of industry leaders.</p>
+<div class="card-meta"><span>6 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+
+<div class="card" data-cat="scaling">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Scaling</span>
+<h3 class="card-h">Scaling Your Store from $1K to $10K/Month</h3>
+<p class="card-ex">Step-by-step playbook for sustainable growth. Optimize ad spend, expand product lines, and build repeatable systems.</p>
+<div class="card-meta"><span>8 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+
+<div class="card" data-cat="advertising">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Advertising</span>
+<h3 class="card-h">TikTok Ads vs Meta Ads: Where to Spend Your Budget</h3>
+<p class="card-ex">Compare platform performance, audience reach, and ROI. Make data-backed decisions on where to allocate your ad budget.</p>
+<div class="card-meta"><span>6 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+
+<div class="card" data-cat="tools">
+<div class="card-bar"></div>
+<div class="card-bd">
+<span class="badge">Tools</span>
+<h3 class="card-h">Essential Ecom Tools Every Seller Needs</h3>
+<p class="card-ex">Curated toolkit for modern ecommerce entrepreneurs. From analytics to fulfillment, discover the best platforms and apps.</p>
+<div class="card-meta"><span>5 min read</span><a href="#" class="cta">Read More</a></div>
+</div>
+</div>
+</div>
+
+<section class="nws">
+<h2 class="nws-h">Subscribe to Our Newsletter</h2>
+<p style="f:400 14px;mb:20px">Get weekly insights on trending products, winning ads, and scaling strategies delivered to your inbox.</p>
+<div class="nws-inp">
+<input type="email" placeholder="your@email.com" id="email">
+<button class="nws-btn" onclick="subscribe()">Subscribe</button>
+</div>
+</section>
+</div>
+
+<script>
+const chps=document.querySelectorAll('.chip'),grid=document.getElementById('grid'),cds=grid.querySelectorAll('.card'),srch=document.getElementById('search');
+function flt(){const act=document.querySelector('.chip.active').dataset.cat,q=srch.value.toLowerCase();
+cds.forEach(c=>{const cat=c.dataset.cat,txt=c.textContent.toLowerCase(),show=(cat===act||act==='all')&&txt.includes(q);c.style.display=show?'block':'none'})}
+chps.forEach(c=>c.addEventListener('click',e=>{document.querySelector('.chip.active').classList.remove('active');e.target.classList.add('active');flt()}));
+srch.addEventListener('input',flt);
+function subscribe(){const em=document.getElementById('email').value;if(em){alert('Thanks for subscribing: '+em);document.getElementById('email').value=''}}
+</script>
+</body>
+</html>
