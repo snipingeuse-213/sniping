@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop Analytics - Peekr</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f0ece6;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--cream:#f0ece6;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
+
+/* Sidebar */
+.sb{width:220px;flex-shrink:0;background:var(--dark);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:20;}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb-logo img{height:32px;}
+.sb-sec{padding:10px 0 2px;}
+.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
+.ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--pink);border-radius:0 3px 3px 0;}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
+.nb{margin-left:auto;background:var(--pink);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,255,255,0.12);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
+.up{font-size:10px;color:var(--pink);font-weight:700;}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#fff;}
+
+/* Topbar */
+.topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;background:#fff;border-bottom:1px solid var(--border);}
+.back-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;border:1px solid var(--border);background:var(--card);transition:all .15s;text-decoration:none;}
+.back-btn:hover{border-color:var(--pink);color:var(--pink);}
+.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;}
+
+/* Content */
+.content{flex:1;overflow-y:auto;padding:24px;background:var(--bg);}
+
+/* Shop Header */
+.shop-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:24px;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px;padding:24px;}
+.shop-thumb{width:120px;height:80px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#f5f0eb;border:1px solid var(--border);}
+.shop-thumb img{width:100%;height:100%;object-fit:cover;}
+.shop-thumb-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:var(--pink);background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.04));}
+.shop-info{flex:1;min-width:0;}
+.shop-name{font-family:'Clash Display',sans-serif;font-size:26px;font-weight:700;margin-bottom:4px;}
+.shop-domain{color:var(--pink);font-size:14px;font-weight:600;text-decoration:none;}
+.shop-domain:hover{text-decoration:underline;}
+.shop-meta{display:flex;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap;}
+.shop-tag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid;}
+.shop-actions{display:flex;gap:8px;margin-top:12px;}
+.shop-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text1);transition:all .15s;text-decoration:none;display:flex;align-items:center;gap:6px;}
+.shop-btn:hover{border-color:var(--pink);color:var(--pink);}
+.shop-btn.primary{background:var(--pink);color:#fff;border-color:var(--pink);}
+.shop-btn.primary:hover{background:var(--pink-dark);}
+
+/* Score Badge */
+.score-badge{width:72px;height:72px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-size:24px;font-weight:800;border:3px solid;}
+.score-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7;}
+
+/* KPI Grid */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:24px;}
+.kpi{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.kpi-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.kpi-value{font-size:22px;font-weight:800;color:var(--text1);}
+.kpi-sub{font-size:11px;color:var(--text2);margin-top:2px;}
+
+/* Sections */
+.section{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
+.section-title{font-family:'Clash Display',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-title .ico{font-size:16px;}
+
+/* Traffic Chart */
+.chart-container{height:180px;display:flex;align-items:flex-end;gap:6px;padding-top:10px;}
+.chart-bar{flex:1;border-radius:6px 6px 0 0;transition:all .3s;min-width:12px;position:relative;cursor:default;}
+.chart-bar:hover{opacity:0.8;}
+.chart-bar .tooltip{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;font-size:10px;padding:3px 8px;border-radius:6px;white-space:nowrap;margin-bottom:4px;}
+.chart-bar:hover .tooltip{display:block;}
+.chart-labels{display:flex;gap:6px;margin-top:6px;}
+.chart-labels span{flex:1;text-align:center;font-size:9px;color:var(--text3);font-weight:600;}
+
+/* Tags */
+.tags{display:flex;flex-wrap:wrap;gap:6px;}
+.tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1px solid;}
+.tag.app{background:rgba(144,120,200,0.08);color:#7c5cbf;border-color:rgba(144,120,200,0.2);}
+.tag.pixel{background:rgba(232,121,154,0.07);color:var(--pink-dark);border-color:rgba(232,121,154,0.2);}
+.tag.strat{background:rgba(82,200,122,0.08);color:#2a9e54;border-color:rgba(82,200,122,0.2);}
+.tag.niche{background:rgba(232,121,154,0.08);color:var(--pink);border-color:rgba(232,121,154,0.2);}
+
+/* Details Grid */
+.details-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.detail-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(240,236,230,0.5);border-radius:8px;}
+.detail-item .label{font-size:12px;color:var(--text2);}
+.detail-item .value{font-size:13px;font-weight:700;}
+
+/* Two Column */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:900px){.two-col{grid-template-columns:1fr;}}
+
+/* Loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:300px;gap:12px;color:var(--text3);}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--pink);border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Flag */
+.flag-img{width:20px;height:14px;border-radius:2px;object-fit:cover;vertical-align:middle;}
+
+/* Ad card */
+.ad-card{background:rgba(240,236,230,0.5);border-radius:10px;padding:14px;border:1px solid var(--border);}
+.ad-card-title{font-size:12px;font-weight:700;margin-bottom:6px;}
+.ad-card-body{font-size:12px;color:var(--text2);line-height:1.5;}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sb">
+  <div class="sb-logo">
+    <a href="peekr-landing.html" style="text-decoration:none;font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;">peekr<span style="color:#e8799a;">.</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-dashboard.html"><div class="ni-ico">&#128202;</div>Dashboard</a>
+    <a class="ni" href="peekr-blog.html"><div class="ni-ico">&#128218;</div>Blog &amp; Tips</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Analyse</div>
+    <a class="ni" href="peekr-dashboard.html"><div class="ni-ico">&#127978;</div>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><div class="ni-ico">&#128293;</div>Trending Ads</a>
+    <a class="ni" href="peekr-brand-tracker.html"><div class="ni-ico">&#128269;</div>Brand Tracker <span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-best-trends.html"><div class="ni-ico">&#128640;</div>Best Trends <span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><div class="ni-ico">&#128190;</div>Saved Items</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-duel.html"><div class="ni-ico">&#9876;</div>Duel Mode</a>
+    <a class="ni" href="peekr-export.html"><div class="ni-ico">&#128230;</div>Export <span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><div class="ni-ico">&#128142;</div>Upgrade <span class="nb">&#128293;</span></a>
+    <a class="ni" href="peekr-affiliate.html"><div class="ni-ico">&#129305;</div>Affiliate</a>
+    <a class="ni" href="peekr-community.html"><div class="ni-ico">&#128172;</div>Community</a>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <a class="back-btn" href="peekr-dashboard.html">&#8592; Back</a>
+    <div class="tb-title" id="page-title">Shop Analytics</div>
+  </div>
+
+  <div class="content" id="content">
+    <div class="loading" id="loader">
+      <div class="spinner"></div>
+      <div>Loading shop data...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+
+const params=new URLSearchParams(window.location.search);
+const domain=params.get('domain');
+
+if(!domain){
+  document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128269;</div><div style="font-size:16px;font-weight:700;">No shop selected</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
+}else{
+  loadShop(domain);
+}
+
+async function loadShop(d){
+  try{
+    const url=_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*';
+    const res=await fetch(url,{headers:{'apikey':_AK,'Accept':'application/json'}});
+    const data=await res.json();
+    if(!data||data.length===0){
+      document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128533;</div><div style="font-size:16px;font-weight:700;">Shop not found</div><div style="color:var(--text2);">'+d+' is not in our database yet.</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
+      return;
+    }
+    renderShop(data[0]);
+  }catch(e){
+    document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#9888;&#65039;</div><div style="font-size:16px;font-weight:700;">Error loading shop</div><div style="color:var(--text2);">'+e.message+'</div></div>';
+  }
+}
+
+function renderShop(s){
+  document.title=s.name+' - Peekr Analytics';
+  document.getElementById('page-title').textContent=s.name||s.domain;
+
+  const score=s.score||0;
+  const tier=score>=80?'hot':score>=60?'rising':score>=40?'watch':'cold';
+  const tierColors={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
+  const tierLabels={hot:'Hot',rising:'Rising',watch:'Watch',cold:'Cold'};
+  const tierBg={hot:'rgba(232,121,154,0.08)',rising:'rgba(246,160,90,0.08)',watch:'rgba(230,184,58,0.08)',cold:'rgba(184,168,176,0.08)'};
+  const c=tierColors[tier];
+
+  const visits=s.monthly_visits||0;
+  const revMin=s.revenue_min||0;
+  const revMax=s.revenue_max||0;
+  const revenue=revMax>0?'$'+fmtV(revMin)+' - $'+fmtV(revMax):'N/A';
+  const ads=s.live_ads||0;
+  const products=s.products_count||0;
+  const apps=s.apps||[];
+  const pixels=s.ad_platforms||[];
+  const strats=s.strategies||[];
+  const theme=s.theme||'Unknown';
+  const currency=s.currency||'N/A';
+  const country=s.country||'';
+  const created=s.created_date||'N/A';
+  const plan=s.shopify_plan||'N/A';
+  const lang=s.language||'N/A';
+  const traffic=s.traffic_trend||[];
+  const estSales=s.estimated_sales||0;
+  const estSalesY=s.estimated_sales_yearly||0;
+  const aov=s.avg_price_usd||0;
+  const shipsTo=s.ships_to||[];
+  const niche=s.niche||'General';
+
+  const init=(n)=>{const p=n.split(/[\s.-]+/);return(p[0]?p[0][0]:'')+(p[1]?p[1][0]:'');};
+  const mx=Math.max(...traffic,1);
+  const age=created!=='N/A'?getAge(created):'N/A';
+
+  document.getElementById('content').innerHTML=`
+    <!-- Shop Header -->
+    <div class="shop-header">
+      <div class="shop-thumb">
+        <img src="https://image.thum.io/get/width/400/crop/200/https://${s.domain}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" loading="lazy"/>
+        <div class="shop-thumb-fb" style="display:none;">${init(s.name||s.domain)}</div>
+      </div>
+      <div class="shop-info">
+        <div class="shop-name">${s.name||s.domain}</div>
+        <a class="shop-domain" href="https://${s.domain}" target="_blank" rel="noopener">${s.domain} &#8599;</a>
+        <div class="shop-meta">
+          <span class="shop-tag" style="background:${tierBg[tier]};color:${c};border-color:${c}44;">${tierLabels[tier]} Store</span>
+          <span class="tag niche">${niche}</span>
+          ${country?`<img class="flag-img" src="https://flagcdn.com/w40/${country.toLowerCase()}.png" alt="${country}"/>`:''}
+          <span style="font-size:12px;color:var(--text2);">Created ${created}</span>
+          ${age!=='N/A'?`<span style="font-size:12px;color:var(--text3);">(${age})</span>`:''}
+        </div>
+        <div class="shop-actions">
+          <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank" rel="noopener">
+            &#128269; Spy ${ads} Ads on Meta
+          </a>
+          <a class="shop-btn" href="https://${s.domain}" target="_blank" rel="noopener">&#127760; Visit Store</a>
+          <button class="shop-btn" onclick="saveShop('${s.domain}')">&#128190; Save Shop</button>
+        </div>
+      </div>
+      <div class="score-badge" style="color:${c};border-color:${c};">
+        ${score}
+        <div class="score-label">Score</div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">&#128200; Monthly Traffic</div>
+        <div class="kpi-value">${fmtV(visits)}</div>
+        <div class="kpi-sub">Estimated monthly visits</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">&#128176; Revenue Estimate</div>
+        <div class="kpi-value">${revenue}</div>
+        <div class="kpi-sub">Monthly revenue range</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">&#128226; Live Ads</div>
+        <div class="kpi-value" style="color:${ads>20?'var(--pink)':'inherit'}">${ads}</div>
+        <div class="kpi-sub">Active Meta ads</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">&#128722; Products</div>
+        <div class="kpi-value">${products.toLocaleString()}</div>
+        <div class="kpi-sub">Products in catalog</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">&#128184; Est. Sales / mo</div>
+        <div class="kpi-value">${estSales?fmtV(estSales):'N/A'}</div>
+        <div class="kpi-sub">${estSalesY?'~'+fmtV(estSalesY)+'/year':'—'}</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">&#128181; Avg. Order Value</div>
+        <div class="kpi-value">${aov?'$'+aov:'N/A'}</div>
+        <div class="kpi-sub">Average product price</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left Column -->
+      <div>
+        <!-- Traffic Chart -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128200;</span> Traffic Trend (12 weeks)</div>
+          <div class="chart-container">
+            ${traffic.length?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*160,6)}px;background:linear-gradient(180deg,${c},${c}88);opacity:${0.3+(i/traffic.length)*0.7};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;">No traffic data yet</div>'}
+          </div>
+          ${traffic.length?`<div class="chart-labels">${traffic.map((_,i)=>`<span>W${i+1}</span>`).join('')}</div>`:''}
+        </div>
+
+        <!-- Apps -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128268;</span> Apps Installed (${apps.length})</div>
+          ${apps.length?`<div class="tags">${apps.map(a=>`<span class="tag app">${a}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No apps detected</div>'}
+        </div>
+
+        <!-- Strategies -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#127919;</span> Growth Strategies</div>
+          ${strats.length?`<div class="tags">${strats.map(s=>`<span class="tag strat">${s}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No strategies detected</div>'}
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <!-- Store Details -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
+          <div class="details-grid">
+            <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
+            <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
+            <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
+            <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
+            <div class="detail-item"><span class="label">Country</span><span class="value">${country?country.toUpperCase():'N/A'} ${country?`<img class="flag-img" src="https://flagcdn.com/w40/${country.toLowerCase()}.png" style="margin-left:4px;"/>`:''}</span></div>
+            <div class="detail-item"><span class="label">Created</span><span class="value">${created}</span></div>
+            <div class="detail-item"><span class="label">Age</span><span class="value">${age}</span></div>
+            <div class="detail-item"><span class="label">Score</span><span class="value" style="color:${c};font-weight:800;">${score}/100</span></div>
+          </div>
+        </div>
+
+        <!-- Tracking Pixels -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128225;</span> Tracking Pixels</div>
+          ${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel">${p}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No tracking pixels detected</div>'}
+        </div>
+
+        <!-- Ships To -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#127758;</span> Ships To</div>
+          ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,20).map(c2=>`<span class="tag" style="background:rgba(100,140,200,0.08);color:#4a7ec0;border-color:rgba(100,140,200,0.2);">${c2.toUpperCase()} <img class="flag-img" src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="margin-left:2px;width:14px;height:10px;"/></span>`).join('')}${shipsTo.length>20?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-20} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info</div>'}
+        </div>
+
+        <!-- Meta Ad Library Link -->
+        <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
+          <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+            ${ads>0?`This store has <strong style="color:var(--pink);">${ads} active ads</strong> running on Meta (Facebook/Instagram).`:'No active Meta ads detected for this store.'}
+          </p>
+          <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank" rel="noopener" style="display:inline-flex;">
+            &#128269; View All Ads on Meta Library
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function fmtV(n){
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(n>=1e4?0:1)+'K';
+  return n.toString();
+}
+
+function getAge(dateStr){
+  const d=new Date(dateStr);
+  const now=new Date();
+  const months=Math.round((now-d)/(30.44*24*60*60*1000));
+  if(months<1)return 'New';
+  if(months<12)return months+'mo';
+  const y=Math.floor(months/12);
+  const m=months%12;
+  return y+'y'+(m>0?' '+m+'mo':'');
+}
+
+async function saveShop(domain){
+  const userId='00000000-0000-0000-0000-000000000000';
+  try{
+    const res=await fetch(_SB+'/rest/v1/saved_shops',{
+      method:'POST',
+      headers:{'apikey':_AK,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({user_id:userId,shop_domain:domain})
+    });
+    if(res.ok||res.status===201)alert('Shop saved!');
+    else if(res.status===409||res.status===23505)alert('Already saved!');
+    else alert('Could not save. Try again.');
+  }catch(e){alert('Error saving shop.');}
+}
+</script>
+</body>
+</html>
