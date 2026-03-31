@@ -233,7 +233,7 @@ body{
     <div class="tb-title">Trending Ads</div>
     <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">🔍</span><input type="text" placeholder="Search shops or ads..." id="searchInput" oninput="applyFilters();renderCards()"/></div>
     <div class="tb-r">
-      <div class="cnt"><b id="totalCount">0</b> shops with ads</div>
+      <div class="cnt"><b id="totalCount">0</b> live ads</div>
     </div>
   </div>
 
@@ -261,9 +261,7 @@ body{
       </select>
       <select id="sortFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
         <option value="score">Sort: Score</option>
-        <option value="ads">Sort: Live Ads</option>
-        <option value="revenue">Sort: Revenue</option>
-        <option value="visits">Sort: Visits</option>
+        <option value="ads">Sort: Longest Running</option>
         <option value="newest">Sort: Newest</option>
       </select>
     </div>
@@ -275,10 +273,10 @@ body{
     <div class="hero">
       <div class="hero-text" style="flex:1">
         <h2>Discover Winning Ads</h2>
-        <p>Browse top-performing Shopify stores and spy their live Meta ads. Every card links directly to the Meta Ad Library.</p>
+        <p>Real Meta ads from Shopify stores, fetched live from the Ad Library. See what's running right now.</p>
         <div class="hero-stats">
-          <div class="hs"><div class="hs-val" id="heroShops">0</div><div class="hs-lbl">Shops Tracked</div></div>
-          <div class="hs"><div class="hs-val">Meta</div><div class="hs-lbl">Ad Library</div></div>
+          <div class="hs"><div class="hs-val" id="heroAds">0</div><div class="hs-lbl">Ads Tracked</div></div>
+          <div class="hs"><div class="hs-val" id="heroShops">0</div><div class="hs-lbl">Shops Scanned</div></div>
           <div class="hs"><div class="hs-val">Live</div><div class="hs-lbl">Real-time Data</div></div>
         </div>
       </div>
@@ -293,7 +291,7 @@ body{
     <!-- EMPTY -->
     <div id="emptyState" class="empty" style="display:none">
       <div style="font-size:40px;margin-bottom:12px;opacity:.4">🔍</div>
-      <div style="font-size:14px;font-weight:600">No shops match your filters</div>
+      <div style="font-size:14px;font-weight:600">No ads match your filters</div>
     </div>
   </div>
 </div>
@@ -301,139 +299,24 @@ body{
 <script>
 const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+let allAds=[];let filtered=[];let scoreFilter='all';
+function daysSince(d){if(!d)return 0;return Math.max(1,Math.floor((Date.now()-new Date(d))/(1000*60*60*24)));}
+function scoreColor(s){if(s>=80)return{bg:'linear-gradient(135deg,#e8799a,#d4607a)'};if(s>=40)return{bg:'linear-gradient(135deg,#f4a7b9,#e8799a)'};return{bg:'linear-gradient(135deg,#ccc,#999)'};}
+function platformIcons(p){if(!p||!p.length)return'';const i={facebook:'📘',instagram:'📸',audience_network:'🌐',messenger:'💬'};return p.map(x=>i[x]||'📱').join(' ');}
+async function fetchAds(){try{const r=await fetch(`${SUPABASE_URL}/rest/v1/ads?select=*&status=eq.active&order=first_seen_at.desc&limit=300`,{headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}});if(!r.ok)throw new Error('API '+r.status);allAds=await r.json();const pages=[...new Set(allAds.map(a=>a.page_name).filter(Boolean))].sort();const nSel=document.getElementById('nicheFilter');nSel.innerHTML='<option value="">All Advertisers</option>';pages.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;nSel.appendChild(o);});const shops=[...new Set(allAds.map(a=>a.shop_domain).filter(Boolean))].sort();const cSel=document.getElementById('countryFilter');cSel.innerHTML='<option value="">All Shops</option>';shops.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;cSel.appendChild(o);});document.getElementById('heroAds').textContent=allAds.length.toLocaleString();const uShops=new Set(allAds.map(a=>a.shop_domain).filter(Boolean));document.getElementById('heroShops').textContent=uShops.size.toLocaleString();applyFilters();renderCards();}catch(e){console.error(e);document.getElementById('loadingState').innerHTML='<div style="color:#d4607a">Failed to load: '+e.message+'</div>';}}
+function applyFilters(){const search=document.getElementById('searchInput').value.toLowerCase();const shop=document.getElementById('countryFilter').value;const page=document.getElementById('nicheFilter').value;const sort=document.getElementById('sortFilter').value;filtered=allAds.filter(a=>{if(scoreFilter==='80'&&(a.engagement_score||0)<80)return false;if(scoreFilter==='60'&&((a.engagement_score||0)<60||(a.engagement_score||0)>=80))return false;if(shop&&a.shop_domain!==shop)return false;if(page&&a.page_name!==page)return false;if(search){const m=(a.page_name||'').toLowerCase().includes(search)||(a.shop_domain||'').toLowerCase().includes(search)||(a.ad_creative_body||'').toLowerCase().includes(search);if(!m)return false;}return true;});filtered.sort((a,b)=>{if(sort==='ads')return daysSince(a.ad_delivery_start_time)-daysSince(b.ad_delivery_start_time);if(sort==='newest')return new Date(b.first_seen_at)-new Date(a.first_seen_at);return(b.engagement_score||0)-(a.engagement_score||0);});document.getElementById('totalCount').textContent=filtered.length;}
+function renderCards(){const grid=document.getElementById('cardsGrid');const loading=document.getElementById('loadingState');const empty=document.getElementById('emptyState');loading.style.display='none';if(filtered.length===0){grid.style.display='none';empty.style.display='flex';return;}grid.style.display='grid';empty.style.display='none';grid.innerHTML=filtered.map(a=>{const score=a.engagement_score||10;const sc=scoreColor(score);const days=daysSince(a.ad_delivery_start_time);const body=(a.ad_creative_body||'No ad copy available').substring(0,140);const thumbUrl=a.shop_domain?'https://image.thum.io/get/width/400/crop/200/https://'+a.shop_domain:'';const snapshotUrl=a.ad_snapshot_url||'#';const platforms=a.publisher_platforms||[];return '<div class="ad-card"><div class="ad-thumb">'+(thumbUrl?'<img src="'+thumbUrl+'" alt="'+(a.page_name||a.shop_domain)+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/>':'')+'<div class="ad-thumb-fb" style="'+(thumbUrl?'display:none':'')+'">'+(a.page_name||'AD').substring(0,2).toUpperCase()+'</div><div class="ad-score" style="background:'+sc.bg+'">'+days+'d</div></div><div class="ad-body"><div class="ad-name">'+platformIcons(platforms)+' '+(a.page_name||'Unknown Advertiser')+'</div><div class="ad-domain">'+(a.shop_domain||'—')+'</div><div class="ad-meta">'+platforms.map(p=>'<span class="ad-tag">'+p+'</span>').join('')+(a.ad_delivery_start_time?'<span class="ad-tag">Since '+new Date(a.ad_delivery_start_time).toLocaleDateString('en',{month:'short',day:'numeric'})+'</span>':'')+'</div><div style="font-size:12px;color:rgba(26,10,15,0.55);line-height:1.5;margin-bottom:14px;min-height:54px;">'+body+((a.ad_creative_body||'').length>140?'...':'')+'</div><div class="ad-stats"><div><div class="ad-stat-val" style="color:#e8799a;font-weight:900;">'+days+'d</div><div class="ad-stat-lbl">Running</div></div><div><div class="ad-stat-val">'+platforms.length+'</div><div class="ad-stat-lbl">Platforms</div></div><div><div class="ad-stat-val">'+score+'</div><div class="ad-stat-lbl">Score</div></div></div><a href="'+snapshotUrl+'" target="_blank" class="ad-btn">👁 View Ad Snapshot</a><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q='+encodeURIComponent(a.shop_domain||'')+'" target="_blank" class="ad-btn-sec">🔍 All Ads from this Shop</a></div></div>';}).join('');}
 
-const FLAGS = {US:'🇺🇸',GB:'🇬🇧',CA:'🇨🇦',AU:'🇦🇺',DE:'🇩🇪',FR:'🇫🇷',IT:'🇮🇹',ES:'🇪🇸',NL:'🇳🇱',SE:'🇸🇪',JP:'🇯🇵',CN:'🇨🇳',IN:'🇮🇳',BR:'🇧🇷',MX:'🇲🇽',SG:'🇸🇬',HK:'🇭🇰',NZ:'🇳🇿',ZA:'🇿🇦',KR:'🇰🇷'};
-
-let allShops = [];
-let filtered = [];
-let scoreFilter = 'all';
-
-function fmt(n){if(!n||n===0)return '—';if(n>=1e6)return (n/1e6).toFixed(1)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'K';return n.toString();}
-
-function scoreColor(s){
-  if(s>=80) return {bg:'linear-gradient(135deg,#e8799a,#d4607a)',border:'#d4607a'};
-  if(s>=60) return {bg:'linear-gradient(135deg,#f4a7b9,#e8799a)',border:'#e8799a'};
-  return {bg:'linear-gradient(135deg,#ccc,#999)',border:'#999'};
-}
-
-async function fetchShops(){
-  try{
-    // Fetch top shops by score (with ads potential)
-    const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/shops?select=domain,name,country,niche,score,monthly_visits,estimated_sales,live_ads,created_date,theme,shopify_plan,products_count&score=gte.55&order=score.desc&limit=500`,
-      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
-    );
-    if(!r.ok) throw new Error(`API ${r.status}`);
-    allShops = await r.json();
-
-    // Populate filters
-    const countries = [...new Set(allShops.map(s=>s.country).filter(Boolean))].sort();
-    const niches = [...new Set(allShops.map(s=>s.niche).filter(Boolean))].sort();
-    const cSel = document.getElementById('countryFilter');
-    countries.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=`${FLAGS[c]||'🌐'} ${c}`;cSel.appendChild(o);});
-    const nSel = document.getElementById('nicheFilter');
-    niches.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;nSel.appendChild(o);});
-
-    document.getElementById('heroShops').textContent = allShops.length.toLocaleString();
-    applyFilters();
-    renderCards();
-  } catch(e){
-    console.error(e);
-    document.getElementById('loadingState').innerHTML = '<div style="color:#d4607a">Failed to load: '+e.message+'</div>';
-  }
-}
-
-function applyFilters(){
-  const search = document.getElementById('searchInput').value.toLowerCase();
-  const country = document.getElementById('countryFilter').value;
-  const niche = document.getElementById('nicheFilter').value;
-  const sort = document.getElementById('sortFilter').value;
-
-  filtered = allShops.filter(s=>{
-    if(scoreFilter==='80' && s.score<80) return false;
-    if(scoreFilter==='60' && (s.score<60||s.score>=80)) return false;
-    if(country && s.country!==country) return false;
-    if(niche && s.niche!==niche) return false;
-    if(search){
-      const m = (s.name||'').toLowerCase().includes(search) || (s.domain||'').toLowerCase().includes(search) || (s.niche||'').toLowerCase().includes(search);
-      if(!m) return false;
+    function setScore(val) {
+      document.getElementById('minScore').value = val;
+      applyFilters();
     }
-    return true;
-  });
+    function togglePlatform(btn) {
+      btn.classList.toggle('active');
+      applyFilters();
+    }
+    document.addEventListener('DOMContentLoaded', fetchAds);
+  </script>
 
-  filtered.sort((a,b)=>{
-    if(sort==='visits') return (b.monthly_visits||0)-(a.monthly_visits||0);
-    if(sort==='newest') return new Date(b.created_date)-new Date(a.created_date);
-    if(sort==='ads') return (b.live_ads||0)-(a.live_ads||0);
-    if(sort==='revenue') return (b.estimated_sales||0)-(a.estimated_sales||0);
-    return (b.score||0)-(a.score||0);
-  });
-
-  document.getElementById('totalCount').textContent = filtered.length;
-}
-
-function renderCards(){
-  const grid = document.getElementById('cardsGrid');
-  const loading = document.getElementById('loadingState');
-  const empty = document.getElementById('emptyState');
-
-  loading.style.display='none';
-
-  if(filtered.length===0){
-    grid.style.display='none';
-    empty.style.display='flex';
-    return;
-  }
-
-  grid.style.display='grid';
-  empty.style.display='none';
-
-  grid.innerHTML = filtered.map(s=>{
-    const sc = scoreColor(s.score||0);
-    const metaUrl = `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(s.domain)}`;
-    const thumbUrl = `https://image.thum.io/get/width/400/crop/200/https://${s.domain}`;
-    const age = s.created_date ? Math.floor((Date.now()-new Date(s.created_date))/(1000*60*60*24)) : null;
-
-    return `<div class="ad-card">
-      <div class="ad-thumb">
-        <img src="${thumbUrl}" alt="${s.name||s.domain}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-        <div class="ad-thumb-fb" style="display:none">${(s.name||s.domain||'').substring(0,2).toUpperCase()}</div>
-        <div class="ad-score" style="background:${sc.bg}">${Math.round(s.score||0)}</div>
-      </div>
-      <div class="ad-body">
-        <div class="ad-name">${FLAGS[s.country]||'🌐'} ${s.name||s.domain}</div>
-        <div class="ad-domain">${s.domain}</div>
-        <div class="ad-meta">
-          ${s.niche?`<span class="ad-tag">${s.niche}</span>`:''}
-          ${s.shopify_plan?`<span class="ad-tag">${s.shopify_plan}</span>`:''}
-          ${s.country?`<span class="ad-tag">${s.country}</span>`:''}
-        </div>
-        <div class="ad-stats">
-          <div><div class="ad-stat-val">${fmt(s.monthly_visits)}</div><div class="ad-stat-lbl">Monthly Visits</div></div>
-          <div><div class="ad-stat-val" style="${(s.live_ads||0)>0?'color:#e8799a;font-weight:900;':''}">${s.live_ads||0}</div><div class="ad-stat-lbl">Live Ads</div></div>
-          <div><div class="ad-stat-val">${fmt(s.estimated_sales)}</div><div class="ad-stat-lbl">Est. Revenue</div></div>
-          ${age!==null?`<div><div class="ad-stat-val">${age}d</div><div class="ad-stat-lbl">Age</div></div>`:''}
-        </div>
-        <a href="${metaUrl}" target="_blank" class="ad-btn">🔍 Spy Ads on Meta</a>
-        <a href="https://${s.domain}" target="_blank" class="ad-btn-sec">Visit Store</a>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function setScore(el){
-  document.querySelectorAll('[data-score]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  scoreFilter = el.dataset.score;
-  applyFilters();
-  renderCards();
-}
-
-function togglePlatform(el){
-  if(el.dataset.platform!=='meta'){return;}
-}
-
-document.addEventListener('DOMContentLoaded',fetchShops);
-</script>
 </body>
 </html>
