@@ -1113,7 +1113,7 @@ function re(){
 
   tb.innerHTML=pageShops.map(s=>{
     const c=TC[s.t]||'#aaa',ac=s.ad>30?'#e8799a':s.ad>10?'#f6a05a':s.ad>0?'#e6b83a':'#b8a8b0';
-    return`<tr onclick="om(${s.id})">
+    return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')">
       <td><div class="si2">
         <div class="sthumb">
           <img src="https://image.thum.io/get/width/400/crop/200/https://${s.d}"
