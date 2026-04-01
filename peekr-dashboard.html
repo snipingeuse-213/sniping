@@ -432,7 +432,7 @@ window._supabaseShops = [];
 // Fetch helper — single request, no retries
 async function sbFetch(url) {
   try {
-    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=exact' } });
+    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=planned' } });
     if (!r.ok) return { data: [], count: 0 };
     const count = parseInt(r.headers.get('content-range')?.split('/')[1] || '0');
     return { data: await r.json(), count };
@@ -447,11 +447,11 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
   const sortMap = { sc:'score', v:'monthly_visits', rv:'revenue_min', ad:'live_ads', es:'estimated_sales', aov:'avg_price_usd', us:'estimated_sales' };
   const sField = sortMap[sortField] || 'score';
   const sDir = sortDir === 'asc' ? 'asc' : 'desc';
-  url += '&order='+sField+'.'+sDir+'&limit='+pageSize+'&offset='+offset;
+  url += '&order='+sField+'.'+sDir+'.nullslast'+'&limit='+pageSize+'&offset='+offset;
   // Apply server-side filters
   if (filterParams) url += filterParams;
   try {
-    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=exact' } });
+    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=planned' } });
     if (!r.ok) return { data: [], count: 0 };
     const count = parseInt(r.headers.get('content-range')?.split('/')[1] || '0');
     return { data: await r.json(), count };
@@ -466,8 +466,8 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=eq.total_count&select=value', { headers: { 'apikey': _AK } });
       if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
-    // Step 1: fetch first 1000 shops (no count=exact needed)
-    const result = await sbFetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc&limit=1000');
+    // Step 1: fetch first 1000 shops (no count=planned needed)
+    const result = await sbFetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000');
     if (!window._totalShopCount) window._totalShopCount = result.count || result.data.length;
     const seen = new Set();
     let allShops = [];
@@ -477,8 +477,8 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       console.log('[Peekr] Loaded ' + allShops.length + ' shops, total in DB: ' + window._totalShopCount);
     }
     // Step 2: background load more pages sequentially (up to 10K for fast local filtering)
-    for (const off of [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000]) {
-      const page = await sbFetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc&limit=1000&offset='+off);
+    for (const off of [1000, 2000]) {
+      const page = await sbFetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000&offset='+off);
       if (!page.data || page.data.length === 0) break;
       for (const s of page.data) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
       window._supabaseShops = allShops;
