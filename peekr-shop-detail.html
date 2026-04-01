@@ -219,19 +219,21 @@ function renderShop(s){
   const revenue=revMax>0?'$'+fmtV(revMin)+' - $'+fmtV(revMax):'N/A';
   const ads=s.live_ads||0;
   const products=s.products_count||0;
-  const apps=s.apps||[];
+  const rawApps=s.apps||[];
+  const apps=rawApps.map(a=>{if(typeof a==='object'&&a!==null)return{name:a.name||a.title||'Unknown',icon:a.icon_url||a.icon||'',rating:a.average_rating||a.rating||0};if(typeof a==='string'){try{const p=JSON.parse(a);return{name:p.name||'Unknown',icon:p.icon_url||'',rating:p.average_rating||0};}catch(e){return{name:a,icon:'',rating:0};}}return{name:String(a),icon:'',rating:0};});
   const pixels=s.ad_platforms||[];
   const strats=s.strategies||[];
   const theme=s.theme||'Unknown';
   const currency=s.currency||'N/A';
   const country=s.country||'';
-  const created=s.created_date||'N/A';
+  const created=(s.created_date||'N/A').replace('T00:00:00','');
   const plan=s.shopify_plan||'N/A';
   const lang=s.language||'N/A';
-  const traffic=s.traffic_trend||[];
+  const rawTraffic=s.traffic_trend||[];
+  const traffic=rawTraffic.map(v=>typeof v==='object'?(v.visits||v.value||v.count||0):Number(v)||0);
   const estSales=s.estimated_sales||0;
   const estSalesY=s.estimated_sales_yearly||0;
-  const aov=s.avg_price_usd||0;
+  const aov=s.avg_price_usd?(s.avg_price_usd/100):0;
   const shipsTo=s.ships_to||[];
   const niche=s.niche||'General';
 
@@ -300,7 +302,114 @@ function renderShop(s){
       </div>
       <div class="kpi">
         <div class="kpi-label">&#128181; Avg. Order Value</div>
-        <div class="kpi-value">${aov?'$'+aov:'N/A'}</div>
+        <div class="kpi-value">${aov?'</div>
+        <div class="kpi-sub">Average product price</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <!-- Left Column -->
+      <div>
+        <!-- Traffic Chart -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128200;</span> Traffic Trend (12 weeks)</div>
+          <div class="chart-container">
+            ${traffic.length?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*160,6)}px;background:linear-gradient(180deg,${c},${c}88);opacity:${0.3+(i/traffic.length)*0.7};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;">No traffic data yet</div>'}
+          </div>
+          ${traffic.length?`<div class="chart-labels">${traffic.map((_,i)=>`<span>W${i+1}</span>`).join('')}</div>`:''}
+        </div>
+
+        <!-- Apps -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128268;</span> Apps Installed (${apps.length})</div>
+          ${apps.length?`<div class="tags">${apps.map(a=>`<span class="tag app" style="display:inline-flex;align-items:center;gap:5px;">${a.icon?`<img src="${a.icon}" style="width:16px;height:16px;border-radius:3px;" onerror="this.style.display='none'"/>`:''}<span>${a.name}</span>${a.rating?`<span style="font-size:9px;opacity:.6;">★${Number(a.rating).toFixed(1)}</span>`:''}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No apps detected</div>'}
+        </div>
+
+        <!-- Strategies -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#127919;</span> Growth Strategies</div>
+          ${strats.length?`<div class="tags">${strats.map(s=>`<span class="tag strat">${s}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No strategies detected</div>'}
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <!-- Store Details -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
+          <div class="details-grid">
+            <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
+            <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
+            <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
+            <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
+            <div class="detail-item"><span class="label">Country</span><span class="value">${country?country.toUpperCase():'N/A'} ${country?`<img class="flag-img" src="https://flagcdn.com/w40/${country.toLowerCase()}.png" style="margin-left:4px;"/>`:''}</span></div>
+            <div class="detail-item"><span class="label">Created</span><span class="value">${created}</span></div>
+            <div class="detail-item"><span class="label">Age</span><span class="value">${age}</span></div>
+            <div class="detail-item"><span class="label">Score</span><span class="value" style="color:${c};font-weight:800;">${score}/100</span></div>
+          </div>
+        </div>
+
+        <!-- Tracking Pixels -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#128225;</span> Tracking Pixels</div>
+          ${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel">${p}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No tracking pixels detected</div>'}
+        </div>
+
+        <!-- Ships To -->
+        <div class="section">
+          <div class="section-title"><span class="ico">&#127758;</span> Ships To</div>
+          ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,20).map(c2=>`<span class="tag" style="background:rgba(100,140,200,0.08);color:#4a7ec0;border-color:rgba(100,140,200,0.2);">${c2.toUpperCase()} <img class="flag-img" src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="margin-left:2px;width:14px;height:10px;"/></span>`).join('')}${shipsTo.length>20?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-20} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info</div>'}
+        </div>
+
+        <!-- Meta Ad Library Link -->
+        <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
+          <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
+          <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+            ${ads>0?`This store has <strong style="color:var(--pink);">${ads} active ads</strong> running on Meta (Facebook/Instagram).`:'No active Meta ads detected for this store.'}
+          </p>
+          <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank" rel="noopener" style="display:inline-flex;">
+            &#128269; View All Ads on Meta Library
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function fmtV(n){
+  if(n>=1e6)return(n/1e6).toFixed(1)+'M';
+  if(n>=1e3)return(n/1e3).toFixed(n>=1e4?0:1)+'K';
+  return n.toString();
+}
+
+function getAge(dateStr){
+  const d=new Date(dateStr);
+  const now=new Date();
+  const months=Math.round((now-d)/(30.44*24*60*60*1000));
+  if(months<1)return 'New';
+  if(months<12)return months+'mo';
+  const y=Math.floor(months/12);
+  const m=months%12;
+  return y+'y'+(m>0?' '+m+'mo':'');
+}
+
+async function saveShop(domain){
+  const userId='00000000-0000-0000-0000-000000000000';
+  try{
+    const res=await fetch(_SB+'/rest/v1/saved_shops',{
+      method:'POST',
+      headers:{'apikey':_AK,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({user_id:userId,shop_domain:domain})
+    });
+    if(res.ok||res.status===201)alert('Shop saved!');
+    else if(res.status===409||res.status===23505)alert('Already saved!');
+    else alert('Could not save. Try again.');
+  }catch(e){alert('Error saving shop.');}
+}
+</script>
+</body>
+</html>
++aov.toFixed(2):'N/A'}</div>
         <div class="kpi-sub">Average product price</div>
       </div>
     </div>
