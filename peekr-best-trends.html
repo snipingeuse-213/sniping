@@ -573,10 +573,10 @@
             <div class="topbar-title">Best Trends</div>
             <div class="topbar-controls">
                 <div class="time-period-filter">
-                    <button class="filter-btn active" data-period="30">Last 30 days</button>
+                    <button class="filter-btn" data-period="30">Last 30 days</button>
                     <button class="filter-btn" data-period="90">Last 90 days</button>
                     <button class="filter-btn" data-period="180">Last 6 months</button>
-                    <button class="filter-btn" data-period="all">All time</button>
+                    <button class="filter-btn active" data-period="all">All time</button>
                 </div>
             </div>
         </div>
@@ -668,23 +668,24 @@
         }
 
         // Filter shops by time period
-        function filterAndRender() {
-            const period = document.querySelector('.filter-btn.active').dataset.period;
-            const cutoffDate = period === 'all' ? null : getDaysAgo(parseInt(period));
+        function filterAndRender(days) {
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      if (event && event.target) event.target.classList.add('active');
+      let filtered = allShops;
+      if (days && days < 9999) {
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - days);
+        filtered = allShops.filter(s => new Date(s.created_date) >= cutoff);
+      }
+      if (!filtered.length) filtered = allShops; // fallback to all if filter empty
+      const niches = getNicheAggregates(filtered);
+      renderNiches(niches);
+      renderCharts(niches);
+      const countries = getCountryAggregates(filtered);
+      renderCountries(countries);
+    }
 
-            filteredShops = allShops.filter(shop => {
-                const matchesPeriod = !cutoffDate || (shop.created_date && shop.created_date >= cutoffDate);
-                const matchesCountry = !selectedCountry || shop.country === selectedCountry;
-                return matchesPeriod && matchesCountry;
-            });
-
-            renderNiches();
-            renderCharts();
-            renderCountries();
-        }
-
-        // Aggregate shops by niche
-        function getNicheAggregates() {
+    function getNicheAggregates() {
             const nicheMap = {};
 
             filteredShops.forEach(shop => {
@@ -753,7 +754,7 @@
             empty.style.display = 'none';
             grid.style.display = 'grid';
 
-            grid.innerHTML = niches.map((niche, idx) => {
+            grid.innerHTML = niches.slice(0,12).map((niche, idx) => {
                 const trend = getTrendIndicator(niche.shops);
                 const scoreClass = getScoreBadgeClass(niche.avgScore);
 
