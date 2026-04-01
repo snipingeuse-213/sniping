@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="Peekr — Free e-commerce tools: LTV calculator, profit margins, breakeven ROAS, ad copy generator and more."/>
+<meta name="theme-color" content="#0a0a0f"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<title>Peekr — Free E-commerce Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Figtree',sans-serif;
+  background:#0a0a0f;
+  color:#e8e0f0;
+  display:flex;
+  height:100vh;
+}
+
+/* ── NEON PINK VARS ── */
+:root{
+  --neon:#ff2d78;
+  --neon-soft:#ff5c9a;
+  --neon-glow:rgba(255,45,120,0.35);
+  --neon-glow2:rgba(255,45,120,0.15);
+  --dark1:#0a0a0f;
+  --dark2:#0f0f18;
+  --dark3:#14141f;
+  --dark4:#1a1a28;
+  --dark5:#22222f;
+  --text1:#f0e8f8;
+  --text2:rgba(240,232,248,0.65);
+  --text3:rgba(240,232,248,0.35);
+  --border:rgba(255,45,120,0.12);
+  --border2:rgba(255,45,120,0.06);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,45,120,0.4)}
+
+/* ── SIDEBAR ── */
+.sb{
+  width:220px;flex-shrink:0;
+  position:relative;z-index:20;
+  background:#1a0a0f;
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb-sec{padding:10px 0 2px;}
+.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
+.ni.active{color:var(--neon-soft);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon);border-radius:0 3px 3px 0;}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);}
+.nb{margin-left:auto;background:var(--neon);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,255,255,0.12);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon-soft));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
+.up{font-size:10px;color:var(--neon-soft);font-weight:700;}
+
+/* ── MAIN CONTENT ── */
+.main{
+  flex:1;overflow-y:auto;overflow-x:hidden;
+  padding:48px 56px;
+  background:var(--dark1);
+  min-width:0;
+}
+
+.top-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,45,120,0.1);
+  border:1px solid rgba(255,45,120,0.2);
+  color:var(--neon-soft);
+  padding:6px 16px;border-radius:20px;
+  font-size:12px;font-weight:700;
+  margin-bottom:20px;letter-spacing:.02em;
+}
+
+.page-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:42px;font-weight:700;
+  color:#fff;margin-bottom:10px;letter-spacing:-.02em;
+}
+.page-title span{color:var(--neon);}
+.page-subtitle{
+  font-size:15px;color:var(--text2);
+  margin-bottom:48px;max-width:600px;line-height:1.6;
+}
+
+.tools-section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.section-icon{font-size:28px;}
+.section-title{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.section-subtitle{font-size:13px;color:var(--text3);margin-bottom:24px;}
+
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+
+.card{
+  background:var(--dark3);border:1px solid var(--border2);
+  border-radius:14px;padding:24px;transition:all .2s;
+  display:flex;flex-direction:column;position:relative;
+}
+.card:hover{border-color:rgba(255,45,120,0.2);box-shadow:0 4px 24px rgba(255,45,120,0.08),0 0 40px rgba(255,45,120,0.03);transform:translateY(-2px);}
+.card.coming-soon{opacity:.5;pointer-events:none;}
+.card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.card-badge{font-size:9px;font-weight:800;padding:3px 10px;border-radius:20px;background:var(--neon);color:#fff;letter-spacing:.04em;box-shadow:0 0 12px var(--neon-glow);}
+.card-badge.soon{background:rgba(255,255,255,0.08);color:var(--text3);box-shadow:none;}
+.card-title{font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:6px;}
+.card-desc{font-size:13px;color:var(--text2);margin-bottom:14px;flex-grow:1;line-height:1.5;}
+.card-features{list-style:none;margin-bottom:18px;font-size:12px;}
+.card-features li{padding:5px 0;color:var(--text2);padding-left:22px;position:relative;}
+.card-features li::before{content:"✓";position:absolute;left:0;color:var(--neon-soft);font-weight:700;}
+
+.card-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;
+  font-family:'Figtree',sans-serif;cursor:pointer;transition:all .15s;border:none;
+  background:linear-gradient(135deg,var(--neon),#cc1a5e);color:#fff;
+  box-shadow:0 2px 16px var(--neon-glow),0 0 40px rgba(255,45,120,0.1);
+  align-self:flex-start;
+}
+.card-btn:hover{box-shadow:0 4px 24px var(--neon-glow),0 0 60px rgba(255,45,120,0.15);transform:translateY(-1px);}
+
+/* ── MODAL ── */
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
+.modal.active{display:flex;align-items:center;justify-content:center;}
+.modal-content{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 80px rgba(255,45,120,0.08);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.modal-title{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;}
+.modal-close{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);width:32px;height:32px;border-radius:8px;font-size:16px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.modal-close:hover{background:rgba(255,45,120,0.1);color:var(--neon-soft);border-color:rgba(255,45,120,0.2);}
+
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-weight:700;margin-bottom:6px;color:var(--text2);font-size:13px;}
+.form-input,.form-select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Figtree',sans-serif;background:var(--dark4);color:var(--text1);transition:border-color .2s;}
+.form-input:focus,.form-select:focus{outline:none;border-color:var(--neon-soft);box-shadow:0 0 0 3px rgba(255,45,120,0.1);}
+.form-input::placeholder{color:var(--text3);}
+.form-select option{background:var(--dark4);color:var(--text1);}
+.form-submit{width:100%;margin-top:16px;padding:12px;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Figtree',sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--neon),#cc1a5e);color:#fff;box-shadow:0 2px 16px var(--neon-glow);transition:all .15s;}
+.form-submit:hover{box-shadow:0 4px 24px var(--neon-glow);transform:translateY(-1px);}
+
+.result-box{background:rgba(255,45,120,0.06);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;display:none;}
+.result-box.active{display:block;}
+.result-item{margin-bottom:14px;}
+.result-item:last-child{margin-bottom:0;}
+.result-label{font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:700;margin-bottom:3px;letter-spacing:.05em;}
+.result-value{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--neon);}
+
+@media(max-width:1024px){.sb{width:180px;}.main{padding:32px;}.page-title{font-size:32px;}}
+@media(max-width:768px){.sb{display:none;}.main{padding:24px;}.page-title{font-size:26px;}.cards-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav class="sb">
+  <div class="sb-logo">
+    <svg width="100" height="32" viewBox="0 0 100 32">
+      <text x="0" y="24" font-family="Clash Display,sans-serif" font-weight="700" font-size="22" fill="#ff5c9a">Peek</text>
+      <text x="52" y="24" font-family="Clash Display,sans-serif" font-weight="700" font-size="22" fill="#ffffff">r</text>
+      <circle cx="67" cy="15" r="4.5" fill="#ff2d78" opacity=".9"/>
+    </svg>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Main</div>
+    <a class="ni" href="peekr-dashboard.html"><div class="ni-ico">&#128202;</div>Dashboard</a>
+    <a class="ni" href="peekr-trending-ads.html"><div class="ni-ico">&#128293;</div>Trending Ads</a>
+    <a class="ni" href="peekr-community.html"><div class="ni-ico">&#128172;</div>Community</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-brand-tracker.html"><div class="ni-ico">&#128269;</div>Brand Tracker</a>
+    <a class="ni" href="peekr-duel.html"><div class="ni-ico">&#9876;&#65039;</div>Duel Mode</a>
+    <a class="ni active" href="peekr-tools.html"><div class="ni-ico">&#129518;</div>Free Tools <span class="nb">11</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><div class="ni-ico">&#128142;</div>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><div class="ni-ico">&#129309;</div>Affiliate</a>
+  </div>
+  <div class="sb-bot">
+    <div class="uc">
+      <div class="ua">?</div>
+      <div>
+        <div class="un">Guest</div>
+        <div class="up">Free</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="top-badge">🎁 100% Free • No Sign Up Required</div>
+  <h1 class="page-title">Free E-commerce <span>Tools</span></h1>
+  <p class="page-subtitle">Essential tools for Shopify stores, dropshipping, and DTC brands. Calculate profitability, optimize ads, and analyze competitors.</p>
+
+  <div class="tools-section">
+    <div class="section-header"><span class="section-icon">&#128202;</span><h2 class="section-title">Business Calculators</h2></div>
+    <p class="section-subtitle">Calculate profitability, LTV, and unit economics</p>
+    <div class="cards-grid">
+      <div class="card"><div class="card-header"><h3 class="card-title">LTV Calculator</h3><span class="card-badge">POPULAR</span></div><p class="card-desc">Calculate customer lifetime value to determine your max acquisition cost and optimize retention strategy.</p><ul class="card-features"><li>Calculate lifetime value</li><li>Optimize CAC</li><li>Plan retention strategy</li></ul><button class="card-btn" onclick="openModal('ltv-modal')">Use Tool &#8594;</button></div>
+      <div class="card"><h3 class="card-title">Profit Margin Calculator</h3><p class="card-desc">Calculate your profit margins and optimize pricing strategies for maximum profitability.</p><ul class="card-features"><li>Calculate net margins</li><li>Optimize pricing strategy</li><li>Compare products</li></ul><button class="card-btn" onclick="openModal('margin-modal')">Use Tool &#8594;</button></div>
+      <div class="card"><h3 class="card-title">Breakeven ROAS Calculator</h3><p class="card-desc">Find your exact breakeven ROAS to scale ads profitably without burning cash.</p><ul class="card-features"><li>Calculate breakeven point</li><li>Optimize ad spend</li><li>Scale profitably</li></ul><button class="card-btn" onclick="openModal('roas-modal')">Use Tool &#8594;</button></div>
+      <div class="card"><h3 class="card-title">Cashflow Calculator</h3><p class="card-desc">Forecast your cash runway and burn rate to avoid running out of money.</p><ul class="card-features"><li>Forecast cash runway</li><li>Calculate burn rate</li><li>Plan for growth</li></ul><button class="card-btn" onclick="openModal('cashflow-modal')">Use Tool &#8594;</button></div>
+      <div class="card"><h3 class="card-title">Amazon Revenue Calculator</h3><p class="card-desc">Estimate revenue for any Amazon product to validate product ideas before launching.</p><ul class="card-features"><li>Estimate product revenue</li><li>Validate product ideas</li><li>Analyze competition</li></ul><button class="card-btn" onclick="openModal('amazon-modal')">Use Tool &#8594;</button></div>
+    </div>
+  </div>
+
+  <div class="tools-section">
+    <div class="section-header"><span class="section-icon">&#127912;</span><h2 class="section-title">Creative Tools</h2></div>
+    <p class="section-subtitle">Generate and preview your marketing assets</p>
+    <div class="cards-grid">
+      <div class="card"><h3 class="card-title">Ad Copy Generator</h3><p class="card-desc">Generate high-converting ad copy for Facebook, Instagram, and TikTok campaigns.</p><ul class="card-features"><li>Multiple platforms</li><li>A/B test variations</li><li>Conversion-optimized</li></ul><button class="card-btn" onclick="openModal('adcopy-modal')">Use Tool &#8594;</button></div>
+      <div class="card"><h3 class="card-title">Facebook Comments Simulator</h3><p class="card-desc">Preview how comments and social proof will look on your ads before launching campaigns.</p><ul class="card-features"><li>Realistic mockups</li><li>Multiple languages</li><li>Export as images</li></ul><button class="card-btn" onclick="openModal('fbcomments-modal')">Use Tool &#8594;</button></div>
+    </div>
+  </div>
+
+  <div class="tools-section">
+    <div class="section-header"><span class="section-icon">&#128270;</span><h2 class="section-title">Analysis Tools</h2></div>
+    <p class="section-subtitle">Spy on competitors and find winning strategies</p>
+    <div class="cards-grid">
+      <div class="card"><h3 class="card-title">Store Analyzer</h3><p class="card-desc">Deep-dive into any Shopify store's strategy, apps, theme, and estimated revenue.</p><ul class="card-features"><li>Check 856K+ Shopify stores</li><li>Revenue & traffic estimates</li><li>Growth trends & insights</li></ul><button class="card-btn" onclick="openModal('store-analyzer-modal')">Use Tool &#8594;</button></div>
+      <div class="card coming-soon"><div class="card-header"><h3 class="card-title">Competitor Ad Spy</h3><span class="card-badge soon">SOON</span></div><p class="card-desc">We're working on this tool. Stay tuned for updates.</p></div>
+      <div class="card coming-soon"><div class="card-header"><h3 class="card-title">Winning Product Finder</h3><span class="card-badge soon">SOON</span></div><p class="card-desc">We're working on this tool. Stay tuned for updates.</p></div>
+      <div class="card coming-soon"><div class="card-header"><h3 class="card-title">Niche Profitability Checker</h3><span class="card-badge soon">SOON</span></div><p class="card-desc">We're working on this tool. Stay tuned for updates.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div id="ltv-modal" class="modal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">LTV Calculator</h2><button class="modal-close" onclick="closeMod...
