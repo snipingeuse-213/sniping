@@ -833,10 +833,13 @@
 
 
     // Search shops from Supabase
-    async function searchShops(q) {
-      if (!q || q.length < 2) { document.getElementById('searchResults').innerHTML = ''; return; }
-      sbGet('shops', 'select=id,domain,name,score,country,monthly_visits,products_count,shopify_plan,theme,niche,created_at&or=(domain.ilike.*' + encodeURIComponent(q) + '*,name.ilike.*' + encodeURIComponent(q) + '*)&limit=10&order=monthly_visits.desc.nullslast')
-        .then(data => { if (Array.isArray(data)) renderSearchResults(data, 'searchResults'); else renderSearchResults([], 'searchResults'); });
+    async function searchShops(q, containerId) {
+      containerId = containerId || 'searchResults';
+      if (!q || q.length < 2) { document.getElementById(containerId).innerHTML = ''; return []; }
+      const data = await sbGet('shops', 'select=id,domain,name,score,country,monthly_visits,products_count,shopify_plan,theme,niche,created_at&or=(domain.ilike.*' + encodeURIComponent(q) + '*,name.ilike.*' + encodeURIComponent(q) + '*)&limit=10&order=monthly_visits.desc.nullslast');
+      const results = Array.isArray(data) ? data : [];
+      renderSearchResults(results, containerId);
+      return results;
     }
 
     // Render search results dropdown
@@ -854,9 +857,10 @@
     // Display brand profile
     function displayBrandProfile(shop) {
       const p = document.getElementById('brandProfile');
+      p.classList.remove('hidden');
       p.style.display = 'block';
-      document.getElementById('profileName').textContent = shop.n || shop.d;
-      document.getElementById('profileDomain').textContent = shop.d || '';
+      document.getElementById('profileName').textContent = shop.name || shop.domain || shop.n || shop.d;
+      document.getElementById('profileDomain').textContent = shop.domain || shop.d || '';
       document.getElementById('profileScore').textContent = shop.score || '-';
       document.getElementById('profileCountry').textContent = shop.country || '-';
       document.getElementById('statVisits').textContent = fmt(shop.monthly_visits);
@@ -866,13 +870,14 @@
       const age = shop.created_at ? Math.floor((Date.now() - new Date(shop.created_at).getTime()) / (365.25*24*60*60*1000)) + 'y' : '-';
       document.getElementById('statAge').textContent = age;
       document.getElementById('statNiche').textContent = shop.niche || '-';
+      const shopDomain = shop.domain || shop.d;
       const metaBtn = document.getElementById('btnMeta');
-      if (metaBtn) metaBtn.onclick = () => window.open('https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(shop.d), '_blank');
+      if (metaBtn) metaBtn.onclick = () => window.open('https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(shopDomain), '_blank');
       const visitBtn = document.getElementById('btnVisit');
-      if (visitBtn) visitBtn.onclick = () => window.open('https://' + shop.d, '_blank');
+      if (visitBtn) visitBtn.onclick = () => window.open('https://' + shopDomain, '_blank');
       const trackBtn = document.getElementById('btnTrack');
       if (trackBtn) {
-        const isTracked = trackedBrands.some(b => b.d === shop.d);
+        const isTracked = trackedBrands.some(b => b.d === shopDomain);
         trackBtn.textContent = isTracked ? 'Untrack' : 'Track Brand';
         trackBtn.onclick = () => toggleTrackBrand(shop);
       }
@@ -880,12 +885,14 @@
 
     // Toggle tracking
     function toggleTrackBrand(shop) {
-      const idx = trackedBrands.findIndex(b => b.d === shop.d);
+      const sd = shop.domain || shop.d;
+      const sn = shop.name || shop.n || sd;
+      const idx = trackedBrands.findIndex(b => b.d === sd);
       if (idx >= 0) trackedBrands.splice(idx, 1);
-      else trackedBrands.push({ id: shop.id, d: shop.d, n: shop.n || shop.d, score: shop.score, country: shop.country, monthly_visits: shop.monthly_visits, products_count: shop.products_count, plan: shop.shopify_plan, theme: shop.theme, niche: shop.niche, created_at: shop.created_at });
+      else trackedBrands.push({ id: shop.id, d: sd, n: sn, score: shop.score, country: shop.country, monthly_visits: shop.monthly_visits, products_count: shop.products_count, plan: shop.shopify_plan, theme: shop.theme, niche: shop.niche, created_at: shop.created_at });
       localStorage.setItem('peekr_tracked', JSON.stringify(trackedBrands));
       const trackBtn = document.getElementById('btnTrack');
-      const isTracked = trackedBrands.some(b => b.d === shop.d);
+      const isTracked = trackedBrands.some(b => b.d === sd);
       trackBtn.textContent = isTracked ? 'Untrack' : 'Track Brand';
     }
 
@@ -940,9 +947,8 @@
     document.getElementById('searchInput').addEventListener('input', function() {
       clearTimeout(searchTimeout);
       const q = this.value;
-      searchTimeout = setTimeout(async () => {
-        const results = await searchShops(q);
-        renderSearchResults(results, 'searchResults');
+      searchTimeout = setTimeout(() => {
+        searchShops(q);
       }, 350);
     });
 
@@ -951,7 +957,7 @@
       const item = e.target.closest('.sr-item');
       if (!item) return;
       const domain = item.dataset.domain;
-      const data = await sbGet('shops', 'select=*&d=eq.' + encodeURIComponent(domain) + '&limit=1');
+      const data = await sbGet('shops', 'select=*&domain=eq.' + encodeURIComponent(domain) + '&limit=1');
       if (data && data[0]) displayBrandProfile(data[0]);
     });
 
@@ -963,9 +969,8 @@
       input.addEventListener('input', function() {
         clearTimeout(cTimeout);
         const q = this.value;
-        cTimeout = setTimeout(async () => {
-          const results = await searchShops(q);
-          renderSearchResults(results, 'compare' + slot + 'Results');
+        cTimeout = setTimeout(() => {
+          searchShops(q, 'compare' + slot + 'Results');
         }, 350);
       });
       const container = document.getElementById('compare' + slot + 'Results');
@@ -973,7 +978,7 @@
         const item = e.target.closest('.sr-item');
         if (!item) return;
         const domain = item.dataset.domain;
-        const data = await sbGet('shops', 'select=*&d=eq.' + encodeURIComponent(domain) + '&limit=1');
+        const data = await sbGet('shops', 'select=*&domain=eq.' + encodeURIComponent(domain) + '&limit=1');
         if (data && data[0]) { fillCompare(slot, data[0]); input.value = data[0].n || data[0].d; container.innerHTML = ''; }
       });
     });
