@@ -671,18 +671,16 @@
         function filterAndRender(days) {
       document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
       if (event && event.target) event.target.classList.add('active');
-      let filtered = allShops;
+      filteredShops = allShops;
       if (days && days < 9999) {
         const cutoff = new Date();
         cutoff.setDate(cutoff.getDate() - days);
-        filtered = allShops.filter(s => new Date(s.created_date) >= cutoff);
+        filteredShops = allShops.filter(s => new Date(s.created_date) >= cutoff);
       }
-      if (!filtered.length) filtered = allShops; // fallback to all if filter empty
-      const niches = getNicheAggregates(filtered);
-      renderNiches(niches);
-      renderCharts(niches);
-      const countries = getCountryAggregates(filtered);
-      renderCountries(countries);
+      if (!filteredShops.length) filteredShops = allShops;
+      renderNiches();
+      renderCharts();
+      renderCountries();
     }
 
     function getNicheAggregates() {
