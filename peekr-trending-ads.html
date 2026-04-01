@@ -260,7 +260,7 @@ body{
         <option value="">All Niches</option>
       </select>
       <select id="sortFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
-        <option value="score">Sort: Score</option>
+        <option value="score">Sort: Trending</option>
         <option value="newest">Sort: Newest</option>
         <option value="ads">Sort: Longest Running</option>
       </select>
@@ -375,11 +375,24 @@ function applyFilters(){
     if(sort==='ads') return daysSince(a.ad_delivery_start_time)-daysSince(b.ad_delivery_start_time);
     if(sort==='newest') return new Date(b.first_seen_at)-new Date(a.first_seen_at);
     if(sort==='revenue') return daysSince(a.ad_delivery_start_time)-daysSince(b.ad_delivery_start_time);
-    if(sort==='visits') return (b.engagement_score||0)-(a.engagement_score||0);
-    return (b.engagement_score||0)-(a.engagement_score||0);
+    if(sort==='visits'){const aR=Math.max(1,Math.floor((Date.now()-new Date(a.ad_delivery_start_time||Date.now()))/864e5));const bR=Math.max(1,Math.floor((Date.now()-new Date(b.ad_delivery_start_time||Date.now()))/864e5));return (bR*(b.publisher_platforms||[]).length)-(aR*(a.publisher_platforms||[]).length);}
+    // Default: composite trending score (running days × platforms)
+      const aRun = Math.max(1,Math.floor((Date.now()-new Date(a.ad_delivery_start_time||Date.now()))/864e5));
+      const bRun = Math.max(1,Math.floor((Date.now()-new Date(b.ad_delivery_start_time||Date.now()))/864e5));
+      const aScore = aRun * (a.publisher_platforms||[]).length;
+      const bScore = bRun * (b.publisher_platforms||[]).length;
+      return bScore - aScore;
   });
 
-  document.getElementById('totalCount').textContent = filtered.length;
+  // Deduplicate: best ad per advertiser (already sorted by score)
+    const seen = new Map();
+    filtered = filtered.filter(a => {
+      const key = a.page_name || a.shop_domain || a.meta_ad_id;
+      if (seen.has(key)) return false;
+      seen.set(key, true);
+      return true;
+    });
+    document.getElementById('totalCount').textContent = filtered.length;
 }
 
 function renderCards(){
@@ -427,7 +440,7 @@ function renderCards(){
         <div class="ad-stats">
           <div><div class="ad-stat-val" style="color:#e8799a;font-weight:900;">${days}d</div><div class="ad-stat-lbl">Running</div></div>
           <div><div class="ad-stat-val">${platforms.length}</div><div class="ad-stat-lbl">Platforms</div></div>
-          <div><div class="ad-stat-val">${score}</div><div class="ad-stat-lbl">Score</div></div>
+          <div><div class="ad-stat-val">${days * platforms.length}</div><div class="ad-stat-lbl">Trend</div></div>
         </div>
         <a href="${snapshotUrl}" target="_blank" class="ad-btn">&#128065; View Ad Snapshot</a>
         <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(a.shop_domain||'')}" target="_blank" class="ad-btn-sec">&#128269; All Ads from this Shop</a>
