@@ -804,205 +804,185 @@
     // Supabase config
     const _SB = 'https://vsyceexjsitliwaasdhd.supabase.co';
     const _AK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI4NDY4NzMsImV4cCI6MjA1ODQyMjg3M30.1FiWG8gKL50dUqqA_fKOPT5-NfUVpx3sVxflKr-ouPY';
-
     // State
-    let trackedBrands = [];
-    let selectedBrand = null;
-    let compareBrand1 = null;
-    let compareBrand2 = null;
+    let trackedBrands = JSON.parse(localStorage.getItem('peekr_tracked') || '[]');
 
-    // Tab switching
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const tabName = tab.dataset.tab;
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
-        tab.classList.add('active');
-        document.getElementById(`${tabName}-tab`).classList.remove('hidden');
-      });
-    });
-
-    // Search shops in Supabase
-    async function searchShops(query) {
-      if (!query || query.length < 2) return [];
-      try {
-        const response = await fetch(
-          `${_SB}/rest/v1/shops?select=*&or=(domain.ilike.*${encodeURIComponent(query)}*,name.ilike.*${encodeURIComponent(query)}*)&order=score.desc&limit=10`,
-          {
-            headers: {
-              'apikey': _AK,
-              'Authorization': `Bearer ${_AK}`
-            }
-          }
-        );
-        if (!response.ok) return [];
-        const data = await response.json();
-        return data || [];
-      } catch (e) {
-        console.error('Search error:', e);
-        return [];
-      }
+    // Helper: Supabase REST query
+    async function sbGet(table, params) {
+      const url = _SB + '/rest/v1/' + table + '?' + params;
+      const r = await fetch(url, { headers: { 'apikey': _AK, 'Authorization': 'Bearer ' + _AK } });
+      return r.json();
     }
 
-    // Render search results
-    function renderSearchResults(results, containerId, callback) {
-      const container = document.getElementById(containerId);
-      if (results.length === 0) {
-        container.innerHTML = '';
-        return;
-      }
-      container.innerHTML = results.map(shop => `
-        <div class="search-result-card" data-shop='${JSON.stringify(shop)}'>
-          <div class="search-result-name">${shop.name || 'Unknown'}</div>
-          <div class="search-result-domain">${shop.domain || '—'}</div>
-        </div>
-      `).join('');
-      container.querySelectorAll('.search-result-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const shop = JSON.parse(card.dataset.shop);
-          callback(shop);
-        });
-      });
+    // Tab switching
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabName + '-tab').style.display = 'block';
+      event.target.classList.add('active');
+      if (tabName === 'tracked') renderTrackedBrands();
+    }
+
+    // Format numbers
+    function fmt(n) {
+      if (!n && n !== 0) return '-';
+      if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+      if (n >= 1e3) return (n/1e3).toFixed(1) + 'K';
+      return n.toString();
+    }
+
+
+    // Search shops from Supabase
+    async function searchShops(query) {
+      if (!query || query.trim().length < 2) return [];
+      const q = query.trim();
+      const data = await sbGet('shops', 'select=id,d,n,score,country,monthly_visits,product_count,plan,theme,niche,created_at&or=(d.ilike.*' + encodeURIComponent(q) + '*,n.ilike.*' + encodeURIComponent(q) + '*)&limit=10&order=monthly_visits.desc.nullslast');
+      return data || [];
+    }
+
+    // Render search results dropdown
+    function renderSearchResults(results, containerId) {
+      const c = document.getElementById(containerId);
+      if (!results.length) { c.innerHTML = '<div style="padding:16px;color:#888;">No shops found</div>'; return; }
+      c.innerHTML = results.map(s => '<div class="sr-item" style="padding:12px 16px;cursor:pointer;border-bottom:1px solid rgba(200,160,170,0.15);display:flex;justify-content:space-between;align-items:center;" onmouseover="this.style.background=\'rgba(232,121,154,0.08)\'" onmouseout="this.style.background=\'none\'" data-id="' + s.id + '" data-domain="' + (s.d||'') + '">' +
+        '<div><strong style="color:#1a0a0f;">' + (s.n || s.d) + '</strong><br><span style="font-size:12px;color:#888;">' + (s.d||'') + '</span></div>' +
+        '<div style="display:flex;gap:12px;align-items:center;">' +
+        '<span style="font-size:12px;color:#888;">' + (s.country||'') + '</span>' +
+        '<span style="background:#e8799a;color:#fff;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;">' + (s.score||'-') + '</span>' +
+        '</div></div>').join('');
     }
 
     // Display brand profile
     function displayBrandProfile(shop) {
-      selectedBrand = shop;
-      document.getElementById('brandProfile').classList.remove('hidden');
-      document.getElementById('profileName').textContent = shop.name || '—';
-      document.getElementById('profileDomain').textContent = shop.domain || '—';
-      document.getElementById('profileDomain').href = `https://${shop.domain}`;
-      document.getElementById('profileScore').textContent = `Score: ${shop.score || '—'}`;
-      document.getElementById('profileCountry').textContent = shop.country || '—';
-      document.getElementById('statVisits').textContent = shop.monthly_visits ? shop.monthly_visits.toLocaleString() : '—';
-      document.getElementById('statProducts').textContent = shop.product_count || '—';
-      document.getElementById('statPlan').textContent = shop.shopify_plan || '—';
-      document.getElementById('statTheme').textContent = shop.theme || '—';
-      document.getElementById('statAge').textContent = shop.store_age || '—';
-      document.getElementById('statNiche').textContent = shop.niche || '—';
-
-      // Update tracked button
-      const isTracked = trackedBrands.some(b => b.domain === shop.domain);
-      const btnTrack = document.getElementById('btnTrack');
-      btnTrack.textContent = isTracked ? '&#10003; Tracked' : 'Track This Brand';
-      btnTrack.classList.toggle('tracked', isTracked);
-      btnTrack.onclick = () => toggleTrackBrand(shop);
-
-      // Visit button
-      document.getElementById('btnVisit').href = `https://${shop.domain}`;
-
-      // Meta Ad Library button
-      document.getElementById('btnMeta').onclick = () => {
-        window.open(`https://www.facebook.com/ads/library/?ad_type=all&country=ALL&q=${encodeURIComponent(shop.domain)}`, '_blank');
-      };
-
-      document.getElementById('searchResults').innerHTML = '';
-    }
-
-    // Track/untrack brand
-    function toggleTrackBrand(shop) {
-      const idx = trackedBrands.findIndex(b => b.domain === shop.domain);
-      if (idx >= 0) {
-        trackedBrands.splice(idx, 1);
-      } else {
-        trackedBrands.push(shop);
+      const p = document.getElementById('brandProfile');
+      p.style.display = 'block';
+      document.getElementById('profileName').textContent = shop.n || shop.d;
+      document.getElementById('profileDomain').textContent = shop.d || '';
+      document.getElementById('profileScore').textContent = shop.score || '-';
+      document.getElementById('profileCountry').textContent = shop.country || '-';
+      document.getElementById('statVisits').textContent = fmt(shop.monthly_visits);
+      document.getElementById('statProducts').textContent = fmt(shop.product_count);
+      document.getElementById('statPlan').textContent = shop.plan || '-';
+      document.getElementById('statTheme').textContent = shop.theme || '-';
+      const age = shop.created_at ? Math.floor((Date.now() - new Date(shop.created_at).getTime()) / (365.25*24*60*60*1000)) + 'y' : '-';
+      document.getElementById('statAge').textContent = age;
+      document.getElementById('statNiche').textContent = shop.niche || '-';
+      const metaBtn = document.getElementById('btnMeta');
+      if (metaBtn) metaBtn.onclick = () => window.open('https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=' + encodeURIComponent(shop.d), '_blank');
+      const visitBtn = document.getElementById('btnVisit');
+      if (visitBtn) visitBtn.onclick = () => window.open('https://' + shop.d, '_blank');
+      const trackBtn = document.getElementById('btnTrack');
+      if (trackBtn) {
+        const isTracked = trackedBrands.some(b => b.d === shop.d);
+        trackBtn.textContent = isTracked ? 'Untrack' : 'Track Brand';
+        trackBtn.onclick = () => toggleTrackBrand(shop);
       }
-      displayBrandProfile(selectedBrand);
-      renderTrackedBrands();
     }
 
-    // Render tracked brands
+    // Toggle tracking
+    function toggleTrackBrand(shop) {
+      const idx = trackedBrands.findIndex(b => b.d === shop.d);
+      if (idx >= 0) trackedBrands.splice(idx, 1);
+      else trackedBrands.push({ id: shop.id, d: shop.d, n: shop.n || shop.d, score: shop.score, country: shop.country, monthly_visits: shop.monthly_visits, product_count: shop.product_count, plan: shop.plan, theme: shop.theme, niche: shop.niche, created_at: shop.created_at });
+      localStorage.setItem('peekr_tracked', JSON.stringify(trackedBrands));
+      const trackBtn = document.getElementById('btnTrack');
+      const isTracked = trackedBrands.some(b => b.d === shop.d);
+      trackBtn.textContent = isTracked ? 'Untrack' : 'Track Brand';
+    }
+
+    // Render tracked brands grid
     function renderTrackedBrands() {
       const grid = document.getElementById('trackedGrid');
-      if (trackedBrands.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><div class="empty-state-icon">&#128269;</div><div class="empty-state-text">No tracked brands yet. Start tracking brands from the Search & Profile tab!</div></div>`;
-        return;
-      }
-      grid.innerHTML = trackedBrands.map(shop => `
-        <div class="tracked-card">
-          <div class="tracked-card-name">${shop.name || '—'}</div>
-          <div class="tracked-card-stat">
-            <span>Score</span>
-            <span class="tracked-card-stat-value">${shop.score || '—'}</span>
-          </div>
-          <div class="tracked-card-stat">
-            <span>Traffic</span>
-            <span class="tracked-card-stat-value">${shop.monthly_visits ? (shop.monthly_visits / 1000).toFixed(0) + 'K' : '—'}</span>
-          </div>
-          <div class="tracked-card-stat">
-            <span>Products</span>
-            <span class="tracked-card-stat-value">${shop.product_count || '—'}</span>
-          </div>
-          <button class="btn btn-secondary" style="width: 100%; margin-top: 12px;" onclick="window.open('https://${shop.domain}', '_blank')">Visit</button>
-        </div>
-      `).join('');
+      if (!trackedBrands.length) { grid.innerHTML = '<div style="padding:32px;text-align:center;color:#888;">No tracked brands yet. Search for a shop and click Track Brand.</div>'; return; }
+      grid.innerHTML = trackedBrands.map(b => '<div style="background:rgba(255,255,255,0.85);border:1px solid rgba(200,160,170,0.18);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:8px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;"><strong style="font-size:15px;color:#1a0a0f;">' + (b.n||b.d) + '</strong><span style="background:#e8799a;color:#fff;padding:2px 8px;border-radius:10px;font-size:12px;font-weight:600;">' + (b.score||'-') + '</span></div>' +
+        '<div style="font-size:12px;color:#888;">' + (b.d||'') + '</div>' +
+        '<div style="display:flex;gap:12px;font-size:12px;color:#666;margin-top:4px;">' +
+        '<span>Visits: ' + fmt(b.monthly_visits) + '</span>' +
+        '<span>Products: ' + fmt(b.product_count) + '</span>' +
+        '<span>' + (b.country||'') + '</span></div>' +
+        '<div style="display:flex;gap:8px;margin-top:8px;">' +
+        '<button onclick="window.location.href=\'peekr-shop-detail.html?domain=\'+encodeURIComponent(\'' + b.d + '\')" style="flex:1;padding:6px;border:1px solid #e8799a;border-radius:8px;background:none;color:#e8799a;cursor:pointer;font-size:12px;">View Details</button>' +
+        '<button onclick="trackedBrands=trackedBrands.filter(x=>x.d!==\'' + b.d + '\');localStorage.setItem(\'peekr_tracked\',JSON.stringify(trackedBrands));renderTrackedBrands();" style="flex:1;padding:6px;border:1px solid #ccc;border-radius:8px;background:none;color:#888;cursor:pointer;font-size:12px;">Remove</button>' +
+        '</div></div>').join('');
     }
 
-    // Compare mode setup
-    let compareResults1 = [];
-    let compareResults2 = [];
+    // Compare brands
+    async function fillCompare(slot, shop) {
+      document.getElementById('compareName' + slot).textContent = shop.n || shop.d;
+      document.getElementById('compareScore' + slot).textContent = shop.score || '-';
+      document.getElementById('compareTraffic' + slot).textContent = fmt(shop.monthly_visits);
+      document.getElementById('compareProducts' + slot).textContent = fmt(shop.product_count);
+      document.getElementById('comparePlan' + slot).textContent = shop.plan || '-';
+      document.getElementById('compareTheme' + slot).textContent = shop.theme || '-';
+      const age = shop.created_at ? Math.floor((Date.now() - new Date(shop.created_at).getTime()) / (365.25*24*60*60*1000)) + 'y' : '-';
+      document.getElementById('compareAge' + slot).textContent = age;
+      document.getElementById('compareCountry' + slot).textContent = shop.country || '-';
+      document.getElementById('compareTableContainer').style.display = 'block';
+    }
 
-    document.getElementById('compare1Input').addEventListener('input', async (e) => {
-      const results = await searchShops(e.target.value);
-      compareResults1 = results;
-      renderSearchResults(results, 'compare1Results', (shop) => {
-        compareBrand1 = shop;
-        document.getElementById('compare1Input').value = shop.name;
-        document.getElementById('compare1Results').innerHTML = '';
-        updateCompareTable();
+    // === EVENT WIRING ===
+    // Tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const tabName = this.dataset.tab || this.textContent.trim().toLowerCase().replace(/ .*/,'');
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const tabs = { 'search': 'search-tab', 'compare': 'compare-tab', 'my': 'tracked-tab' };
+        const key = Object.keys(tabs).find(k => tabName.includes(k)) || 'search';
+        document.getElementById(tabs[key]).style.display = 'block';
+        if (key === 'my') renderTrackedBrands();
       });
     });
 
-    document.getElementById('compare2Input').addEventListener('input', async (e) => {
-      const results = await searchShops(e.target.value);
-      compareResults2 = results;
-      renderSearchResults(results, 'compare2Results', (shop) => {
-        compareBrand2 = shop;
-        document.getElementById('compare2Input').value = shop.name;
-        document.getElementById('compare2Results').innerHTML = '';
-        updateCompareTable();
-      });
-    });
-
-    function updateCompareTable() {
-      const container = document.getElementById('compareTableContainer');
-      if (!compareBrand1 || !compareBrand2) {
-        container.classList.add('hidden');
-        return;
-      }
-      container.classList.remove('hidden');
-      document.getElementById('compareName1').textContent = compareBrand1.name || 'Brand 1';
-      document.getElementById('compareName2').textContent = compareBrand2.name || 'Brand 2';
-      document.getElementById('compareScore1').textContent = compareBrand1.score || '—';
-      document.getElementById('compareScore2').textContent = compareBrand2.score || '—';
-      document.getElementById('compareTraffic1').textContent = compareBrand1.monthly_visits ? compareBrand1.monthly_visits.toLocaleString() : '—';
-      document.getElementById('compareTraffic2').textContent = compareBrand2.monthly_visits ? compareBrand2.monthly_visits.toLocaleString() : '—';
-      document.getElementById('compareProducts1').textContent = compareBrand1.product_count || '—';
-      document.getElementById('compareProducts2').textContent = compareBrand2.product_count || '—';
-      document.getElementById('comparePlan1').textContent = compareBrand1.shopify_plan || '—';
-      document.getElementById('comparePlan2').textContent = compareBrand2.shopify_plan || '—';
-      document.getElementById('compareTheme1').textContent = compareBrand1.theme || '—';
-      document.getElementById('compareTheme2').textContent = compareBrand2.theme || '—';
-      document.getElementById('compareAge1').textContent = compareBrand1.store_age || '—';
-      document.getElementById('compareAge2').textContent = compareBrand2.store_age || '—';
-      document.getElementById('compareCountry1').textContent = compareBrand1.country || '—';
-      document.getElementById('compareCountry2').textContent = compareBrand2.country || '—';
-    }
-
-    // Search input debounce
+    // Search input - main search
     let searchTimeout;
-    document.getElementById('searchInput').addEventListener('input', async (e) => {
+    document.getElementById('searchInput').addEventListener('input', function() {
       clearTimeout(searchTimeout);
-      const query = e.target.value;
-      if (query.length < 2) {
-        document.getElementById('searchResults').innerHTML = '';
-        return;
-      }
+      const q = this.value;
       searchTimeout = setTimeout(async () => {
-        const results = await searchShops(query);
-        renderSearchResults(results, 'searchResults', displayBrandProfile);
-      }, 300);
+        const results = await searchShops(q);
+        renderSearchResults(results, 'searchResults');
+      }, 350);
     });
-  </script>
+
+    // Click on search result -> show profile
+    document.getElementById('searchResults').addEventListener('click', async function(e) {
+      const item = e.target.closest('.sr-item');
+      if (!item) return;
+      const domain = item.dataset.domain;
+      const data = await sbGet('shops', 'select=*&d=eq.' + encodeURIComponent(domain) + '&limit=1');
+      if (data && data[0]) displayBrandProfile(data[0]);
+    });
+
+    // Compare search inputs
+    ['1','2'].forEach(slot => {
+      let cTimeout;
+      const input = document.getElementById('compare' + slot + 'Input');
+      if (!input) return;
+      input.addEventListener('input', function() {
+        clearTimeout(cTimeout);
+        const q = this.value;
+        cTimeout = setTimeout(async () => {
+          const results = await searchShops(q);
+          renderSearchResults(results, 'compare' + slot + 'Results');
+        }, 350);
+      });
+      const container = document.getElementById('compare' + slot + 'Results');
+      if (container) container.addEventListener('click', async function(e) {
+        const item = e.target.closest('.sr-item');
+        if (!item) return;
+        const domain = item.dataset.domain;
+        const data = await sbGet('shops', 'select=*&d=eq.' + encodeURIComponent(domain) + '&limit=1');
+        if (data && data[0]) { fillCompare(slot, data[0]); input.value = data[0].n || data[0].d; container.innerHTML = ''; }
+      });
+    });
+
+    // Init: show search tab, render tracked
+    document.getElementById('search-tab').style.display = 'block';
+    document.getElementById('compare-tab').style.display = 'none';
+    document.getElementById('tracked-tab').style.display = 'none';
+</script>
 </body>
 </html>
