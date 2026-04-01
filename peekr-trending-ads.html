@@ -468,12 +468,12 @@ async function saveAd(evt, metaAdId, shopDomain, pageName, btn){
         ad_snapshot_url:ad.ad_snapshot_url||''
       })
     });
-    if(r.status===409||r.status===23505){btn.textContent='&#10003; Already Saved';btn.style.color='#2a9e54';return;}
+    if(r.status===409||r.status===23505){btn.textContent='✓ Already Saved';btn.style.color='#2a9e54';return;}
     if(!r.ok) throw new Error('Save failed');
-    btn.textContent='&#10003; Saved!';btn.style.color='#2a9e54';btn.style.borderColor='rgba(42,158,84,0.3)';
+    btn.textContent='✓ Saved!';btn.style.color='#2a9e54';btn.style.borderColor='rgba(42,158,84,0.3)';
   }catch(e){
     console.error(e);btn.textContent='&#128190; Save Ad';btn.disabled=false;
-    if(e.message.includes('duplicate')||e.message.includes('409')){btn.textContent='&#10003; Already Saved';btn.style.color='#2a9e54';}
+    if(e.message.includes('duplicate')||e.message.includes('409')){btn.textContent='✓ Already Saved';btn.style.color='#2a9e54';}
     else alert('Save failed: '+e.message);
   }
 }
