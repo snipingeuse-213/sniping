@@ -1,317 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peekr Pricing</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f8f9fa;
-            color: #1a1a1a;
-        }
-        .pricing-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-        .pricing-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .pricing-header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        .pricing-header p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .toggle-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        .toggle {
-            display: inline-flex;
-            background: #e0e0e0;
-            border-radius: 20px;
-            padding: 4px;
-        }
-        .toggle-option {
-            padding: 8px 20px;
-            cursor: pointer;
-            border-radius: 18px;
-            transition: all 0.3s;
-        }
-        .toggle-option.active {
-            background: #2563eb;
-            color: white;
-        }
-        .savings-badge {
-            background: #22c55e;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        .pricing-card {
-            background: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .pricing-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-        }
-        .pricing-card.featured {
-            border: 2px solid #2563eb;
-            transform: scale(1.05);
-        }
-        .pricing-card.featured .most-popular {
-            display: block;
-            background: #2563eb;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .most-popular {
-            display: none;
-        }
-        .plan-name {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .plan-price {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        .plan-price span {
-            font-size: 18px;
-            color: #666;
-        }
-        .plan-period {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 20px;
-        }
-        .plan-description {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .plan-button {
-            width: 100%;
-            padding: 12px 20px;
-            border: 1px solid #2563eb;
-            background: white;
-            color: #2563eb;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 20px;
-        }
-        .plan-button:hover {
-            background: #2563eb;
-            color: white;
-        }
-        .pricing-card.featured .plan-button {
-            background: #2563eb;
-            color: white;
-        }
-        .pricing-card.featured .plan-button:hover {
-            background: #1d4ed8;
-        }
-        .plan-features {
-            list-style: none;
-        }
-        .plan-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 14px;
-        }
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-        .plan-features li:before {
-            content: "\2713  ";
-            color: #22c55e;
-            font-weight: 600;
-            margin-right: 8px;
-        }
-        .faq-section {
-            background: white;
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .faq-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .faq-item {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 20px;
-        }
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-        .faq-question {
-            font-weight: 600;
-            cursor: pointer;
-            padding: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .faq-question:hover {
-            color: #2563eb;
-        }
-        .faq-answer {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-            display: none;
-            padding: 10px 0;
-        }
-        .faq-answer.active {
-            display: block;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peekr Pricing</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Figtree',sans-serif;
+  background:#f0ece6;
+  color:#1a0a0f;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6;
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(200,150,170,0.3);border-radius:4px}
+.panel-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 32px;
+  border-bottom:1px solid rgba(200,180,170,0.12);
+  position:relative;z-index:2;
+  max-width:1200px;margin:0 auto;
+}
+.panel-nav-links{display:flex;gap:28px;list-style:none;}
+.panel-nav-links a{font-size:13px;font-weight:600;color:rgba(26,10,15,0.55);text-decoration:none;transition:color .15s;}
+.panel-nav-links a:hover{color:#1a0a0f;}
+.panel-nav-links a.active{color:#1a0a0f;}
+.panel-nav-cta{
+  background:#1a0a0f;color:white;
+  padding:8px 20px;border-radius:100px;
+  font-size:13px;font-weight:700;text-decoration:none;
+  transition:all .2s;
+}
+.panel-nav-cta:hover{background:#e8799a;}
+.pricing-hero{
+  text-align:center;
+  padding:70px 20px 40px;
+  position:relative;z-index:1;
+}
+.pricing-hero h1{
+  font-size:52px;font-weight:800;
+  letter-spacing:-1.5px;
+  line-height:1.1;
+  margin-bottom:14px;
+}
+.pricing-hero h1 span{
+  background:linear-gradient(135deg,#e8799a,#c05a7a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.pricing-hero p{
+  font-size:17px;color:rgba(26,10,15,0.5);
+  max-width:440px;margin:0 auto 32px;
+}
+.toggle-wrap{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(200,180,170,0.2);
+  border-radius:100px;padding:4px;
+}
+.toggle-btn{
+  padding:8px 22px;border-radius:100px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .25s;border:none;background:transparent;
+  color:rgba(26,10,15,0.45);
+}
+.toggle-btn.active{
+  background:#1a0a0f;color:white;
+  box-shadow:0 2px 8px rgba(26,10,15,0.15);
+}
+.save-badge{
+  display:inline-block;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  color:white;padding:4px 10px;border-radius:100px;
+  font-size:11px;font-weight:700;margin-left:6px;
+  vertical-align:middle;
+}
+.pricing-section{
+  max-width:1100px;margin:0 auto;
+  padding:0 20px 60px;
+  position:relative;z-index:1;
+}
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:18px;
+  margin-top:44px;
+}
+@media(max-width:1024px){
+  .pricing-grid{grid-template-columns:repeat(2, 1fr);}
+}
+@media(max-width:600px){
+  .pricing-grid{grid-template-columns:1fr;}
+}
+.card{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(200,180,170,0.15);
+  border-radius:16px;
+  padding:28px 24px 32px;
+  display:flex;flex-direction:column;
+  transition:transform .25s, box-shadow .25s;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 32px rgba(26,10,15,0.08);
+}
+.card.featured{
+  border:2px solid #e8799a;
+  background:rgba(255,255,255,0.85);
+}
+.card-badge{
+  position:absolute;top:-13px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#e8799a,#c05a7a);
+  color:white;padding:5px 16px;border-radius:100px;
+  font-size:11px;font-weight:700;letter-spacing:0.5px;
+  white-space:nowrap;
+}
+.card-plan{
+  font-size:14px;font-weight:700;
+  color:rgba(26,10,15,0.45);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:8px;margin-top:6px;
+}
+.card.featured .card-plan{margin-top:14px;}
+.card-price{
+  font-size:44px;font-weight:800;
+  letter-spacing:-1px;
+  margin-bottom:2px;
+}
+.card-price span{
+  font-size:15px;font-weight:500;color:rgba(26,10,15,0.4);
+}
+.card-desc{
+  font-size:13px;color:rgba(26,10,15,0.45);
+  margin-bottom:20px;
+}
+.card-btn{
+  width:100%;padding:12px 16px;
+  border-radius:10px;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;border:none;
+  margin-bottom:22px;
+}
+.card-btn.outline{
+  background:transparent;
+  border:1.5px solid rgba(26,10,15,0.15);
+  color:#1a0a0f;
+}
+.card-btn.outline:hover{
+  border-color:#1a0a0f;background:rgba(26,10,15,0.03);
+}
+.card-btn.primary{
+  background:#1a0a0f;color:white;
+}
+.card-btn.primary:hover{
+  background:#e8799a;
+}
+.card-btn.pink{
+  background:linear-gradient(135deg,#e8799a,#c05a7a);
+  color:white;
+}
+.card-btn.pink:hover{
+  opacity:0.9;transform:scale(1.02);
+}
+.features{list-style:none;flex:1;}
+.features li{
+  padding:9px 0;font-size:13px;font-weight:500;
+  color:rgba(26,10,15,0.7);
+  border-bottom:1px solid rgba(200,180,170,0.12);
+  display:flex;align-items:center;gap:8px;
+}
+.features li:last-child{border-bottom:none;}
+.features li::before{
+  content:'\2713';
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(34,197,94,0.12);color:#16a34a;
+  font-size:11px;font-weight:700;flex-shrink:0;
+}
+.faq-section{
+  max-width:700px;margin:0 auto;
+  padding:0 20px 80px;
+  position:relative;z-index:1;
+}
+.faq-title{
+  font-size:32px;font-weight:800;
+  text-align:center;margin-bottom:32px;
+  letter-spacing:-0.5px;
+}
+.faq-item{
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(200,180,170,0.12);
+  border-radius:12px;
+  margin-bottom:10px;
+  overflow:hidden;
+}
+.faq-q{
+  padding:16px 20px;font-size:14px;font-weight:600;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+  transition:color .15s;
+}
+.faq-q:hover{color:#e8799a;}
+.faq-q span{
+  font-size:18px;transition:transform .25s;
+  color:rgba(26,10,15,0.3);
+}
+.faq-a{
+  padding:0 20px;max-height:0;overflow:hidden;
+  transition:max-height .3s ease, padding .3s ease;
+  font-size:13px;line-height:1.7;color:rgba(26,10,15,0.55);
+}
+.faq-item.open .faq-a{
+  max-height:200px;padding:0 20px 16px;
+}
+.faq-item.open .faq-q span{
+  transform:rotate(45deg);
+}
+.footer{
+  text-align:center;
+  padding:32px 20px;
+  border-top:1px solid rgba(200,180,170,0.12);
+  position:relative;z-index:1;
+}
+.footer p{
+  font-size:12px;color:rgba(26,10,15,0.35);font-weight:500;
+}
+.footer a{
+  color:rgba(26,10,15,0.5);text-decoration:none;
+  transition:color .15s;
+}
+.footer a:hover{color:#e8799a;}
+</style>
 </head>
 <body>
-    <div class="pricing-container">
-        <div class="pricing-header">
-            <h1>Simple, Transparent Pricing</h1>
-            <p>Choose the perfect plan for your business needs</p>
 
-            <div class="toggle-container">
-                <span>Monthly</span>
-                <div class="toggle">
-                    <div class="toggle-option active">Monthly</div>
-                    <div class="toggle-option">Yearly</div>
-                </div>
-                <span>Yearly<br><span class="savings-badge">Save 30%</span></span>
-            </div>
-        </div>
+<nav class="panel-nav">
+  <a href="peekr-landing.html"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" style="height:34px;width:auto;" alt="peekr"/></a>
+  <ul class="panel-nav-links">
+    <li><a href="peekr-landing.html">Home</a></li>
+    <li><a href="peekr-landing.html#features">Features</a></li>
+    <li><a href="peekr-pricing.html" class="active">Pricing</a></li>
+    <li><a href="peekr-affiliate.html" style="color:#e8799a;font-weight:700;">Affiliate</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <a href="login.html" style="font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);text-decoration:none;">Login</a>
+    <a href="signup.html" class="panel-nav-cta">Start now</a>
+  </div>
+</nav>
 
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <div class="plan-name">Free</div>
-                <div class="plan-price">$0<span>/month</span></div>
-                <div class="plan-description">Perfect for getting started</div>
-                <button class="plan-button">Get Started</button>
-                <ul class="plan-features">
-                    <li>Up to 100 shops</li>
-                    <li>Basic analytics</li>
-                    <li>Community support</li>
-                </ul>
-            </div>
+<div class="pricing-hero">
+  <h1>Simple, <span>transparent</span> pricing</h1>
+  <p>Pick the plan that fits your business. Upgrade or downgrade anytime.</p>
+  <div class="toggle-wrap">
+    <button class="toggle-btn active" onclick="setPlan('monthly')">Monthly</button>
+    <button class="toggle-btn" onclick="setPlan('yearly')">Yearly <span class="save-badge">-30%</span></button>
+  </div>
+</div>
 
-            <div class="pricing-card">
-                <div class="plan-name">Starter</div>
-                <div class="plan-price">$29<span>/month</span></div>
-                <div class="plan-description">For growing businesses</div>
-                <button class="plan-button">Start Free Trial</button>
-                <ul class="plan-features">
-                    <li>Up to 1,000 shops</li>
-                    <li>Advanced analytics</li>
-                    <li>Email support</li>
-                    <li>Custom dashboards</li>
-                </ul>
-            </div>
+<div class="pricing-section">
+  <div class="pricing-grid">
 
-            <div class="pricing-card featured">
-                <div class="most-popular">MOST POPULAR</div>
-                <div class="plan-name">Pro</div>
-                <div class="plan-price">$79<span>/month</span></div>
-                <div class="plan-description">For professional users</div>
-                <button class="plan-button">Start Free Trial</button>
-                <ul class="plan-features">
-                    <li>Unlimited shops</li>
-                    <li>AI-powered insights</li>
-                    <li>Priority support</li>
-                    <li>Custom integrations</li>
-                    <li>API access</li>
-                </ul>
-            </div>
-
-            <div class="pricing-card">
-                <div class="plan-name">Agency</div>
-                <div class="plan-price">$199<span>/month</span></div>
-                <div class="plan-description">For agencies & teams</div>
-                <button class="plan-button">Contact Sales</button>
-                <ul class="plan-features">
-                    <li>Everything in Pro</li>
-                    <li>Multi-user accounts</li>
-                    <li>White-label options</li>
-                    <li>Dedicated account manager</li>
-                    <li>Custom SLA</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="faq-section">
-            <div class="faq-title">Frequently Asked Questions</div>
-
-            <div class="faq-item">
-                <div class="faq-question">Can I upgrade or downgrade anytime? <span>+</span></div>
-                <div class="faq-answer">Yes, you can change your plan anytime. Changes take effect at the next billing cycle.</div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">Do you offer refunds? <span>+</span></div>
-                <div class="faq-answer">We offer a 30-day money-back guarantee if you're not satisfied with your plan.</div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">What payment methods do you accept? <span>+</span></div>
-                <div class="faq-answer">We accept all major credit cards, PayPal, and wire transfers for agency plans.</div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">Is there a free trial? <span>+</span></div>
-                <div class="faq-answer">Yes, all paid plans include a 14-day free trial. No credit card required.</div>
-            </div>
-        </div>
+    <div class="card">
+      <div class="card-plan">Free</div>
+      <div class="card-price" data-m="0" data-y="0">$0<span>/mo</span></div>
+      <div class="card-desc">Perfect to get started</div>
+      <button class="card-btn outline" onclick="location.href='signup.html'">Get Started</button>
+      <ul class="features">
+        <li>Up to 100 shops</li>
+        <li>Basic analytics</li>
+        <li>Community support</li>
+      </ul>
     </div>
 
-    <script>
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const answer = this.nextElementSibling;
-                answer.classList.toggle('active');
-                this.querySelector('span').textContent = answer.classList.contains('active') ? '−' : '+';
-            });
-        });
-    </script>
+    <div class="card">
+      <div class="card-plan">Starter</div>
+      <div class="card-price" data-m="29" data-y="20">$29<span>/mo</span></div>
+      <div class="card-desc">For growing businesses</div>
+      <button class="card-btn primary" onclick="location.href='signup.html'">Start Free Trial</button>
+      <ul class="features">
+        <li>Up to 1,000 shops</li>
+        <li>Advanced analytics</li>
+        <li>Email support</li>
+        <li>Custom dashboards</li>
+      </ul>
+    </div>
+
+    <div class="card featured">
+      <div class="card-badge">MOST POPULAR</div>
+      <div class="card-plan">Pro</div>
+      <div class="card-price" data-m="79" data-y="55">$79<span>/mo</span></div>
+      <div class="card-desc">For professional users</div>
+      <button class="card-btn pink" onclick="location.href='signup.html'">Start Free Trial</button>
+      <ul class="features">
+        <li>Unlimited shops</li>
+        <li>AI-powered insights</li>
+        <li>Priority support</li>
+        <li>Custom integrations</li>
+        <li>API access</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-plan">Agency</div>
+      <div class="card-price" data-m="199" data-y="139">$199<span>/mo</span></div>
+      <div class="card-desc">For agencies & teams</div>
+      <button class="card-btn outline" onclick="location.href='mailto:hello@peekr.io'">Contact Sales</button>
+      <ul class="features">
+        <li>Everything in Pro</li>
+        <li>Multi-user accounts</li>
+        <li>White-label options</li>
+        <li>Dedicated account manager</li>
+        <li>Custom SLA</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="faq-section">
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I upgrade or downgrade anytime? <span>+</span></div>
+    <div class="faq-a">Yes, you can change your plan anytime. Changes take effect at the next billing cycle. No penalties.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do you offer refunds? <span>+</span></div>
+    <div class="faq-a">We offer a 30-day money-back guarantee if you're not satisfied with your plan.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What payment methods do you accept? <span>+</span></div>
+    <div class="faq-a">We accept all major credit cards and PayPal. Wire transfers available for Agency plans.</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is there a free trial? <span>+</span></div>
+    <div class="faq-a">Yes, all paid plans include a 14-day free trial. No credit card required.</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>
+    <a href="peekr-terms.html">Terms</a> &nbsp;&middot;&nbsp;
+    <a href="peekr-blog.html">Blog</a> &nbsp;&middot;&nbsp;
+    <a href="peekr-affiliate.html">Affiliate</a> &nbsp;&middot;&nbsp;
+    <a href="mailto:hello@peekr.io">Contact</a>
+  </p>
+  <p style="margin-top:8px;">&copy; 2026 Peekr. All rights reserved.</p>
+</footer>
+
+<script>
+let currentPlan = 'monthly';
+function setPlan(plan) {
+  currentPlan = plan;
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.toggle-btn' + (plan === 'monthly' ? ':first-child' : ':last-child')).classList.add('active');
+  document.querySelectorAll('.card-price').forEach(el => {
+    const m = el.dataset.m;
+    const y = el.dataset.y;
+    const price = plan === 'monthly' ? m : y;
+    el.innerHTML = '$' + price + '<span>/mo</span>';
+  });
+}
+</script>
 </body>
 </html>
