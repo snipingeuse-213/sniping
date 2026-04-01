@@ -835,8 +835,8 @@
     // Search shops from Supabase
     async function searchShops(q) {
       if (!q || q.length < 2) { document.getElementById('searchResults').innerHTML = ''; return; }
-      sbGet('shops', 'select=id,domain,name,score,country,monthly_visits,product_count,plan,theme,niche,created_at&or=(domain.ilike.*' + encodeURIComponent(q) + '*,name.ilike.*' + encodeURIComponent(q) + '*)&limit=10&order=monthly_visits.desc.nullslast')
-        .then(data => { if (Array.isArray(data)) renderSearchResults(data); else renderSearchResults([]); });
+      sbGet('shops', 'select=id,domain,name,score,country,monthly_visits,products_count,shopify_plan,theme,niche,created_at&or=(domain.ilike.*' + encodeURIComponent(q) + '*,name.ilike.*' + encodeURIComponent(q) + '*)&limit=10&order=monthly_visits.desc.nullslast')
+        .then(data => { if (Array.isArray(data)) renderSearchResults(data, 'searchResults'); else renderSearchResults([], 'searchResults'); });
     }
 
     // Render search results dropdown
@@ -860,8 +860,8 @@
       document.getElementById('profileScore').textContent = shop.score || '-';
       document.getElementById('profileCountry').textContent = shop.country || '-';
       document.getElementById('statVisits').textContent = fmt(shop.monthly_visits);
-      document.getElementById('statProducts').textContent = fmt(shop.product_count);
-      document.getElementById('statPlan').textContent = shop.plan || '-';
+      document.getElementById('statProducts').textContent = fmt(shop.products_count);
+      document.getElementById('statPlan').textContent = shop.shopify_plan || '-';
       document.getElementById('statTheme').textContent = shop.theme || '-';
       const age = shop.created_at ? Math.floor((Date.now() - new Date(shop.created_at).getTime()) / (365.25*24*60*60*1000)) + 'y' : '-';
       document.getElementById('statAge').textContent = age;
@@ -882,7 +882,7 @@
     function toggleTrackBrand(shop) {
       const idx = trackedBrands.findIndex(b => b.d === shop.d);
       if (idx >= 0) trackedBrands.splice(idx, 1);
-      else trackedBrands.push({ id: shop.id, d: shop.d, n: shop.n || shop.d, score: shop.score, country: shop.country, monthly_visits: shop.monthly_visits, product_count: shop.product_count, plan: shop.plan, theme: shop.theme, niche: shop.niche, created_at: shop.created_at });
+      else trackedBrands.push({ id: shop.id, d: shop.d, n: shop.n || shop.d, score: shop.score, country: shop.country, monthly_visits: shop.monthly_visits, products_count: shop.products_count, plan: shop.shopify_plan, theme: shop.theme, niche: shop.niche, created_at: shop.created_at });
       localStorage.setItem('peekr_tracked', JSON.stringify(trackedBrands));
       const trackBtn = document.getElementById('btnTrack');
       const isTracked = trackedBrands.some(b => b.d === shop.d);
@@ -898,7 +898,7 @@
         '<div style="font-size:12px;color:#888;">' + (b.d||'') + '</div>' +
         '<div style="display:flex;gap:12px;font-size:12px;color:#666;margin-top:4px;">' +
         '<span>Visits: ' + fmt(b.monthly_visits) + '</span>' +
-        '<span>Products: ' + fmt(b.product_count) + '</span>' +
+        '<span>Products: ' + fmt(b.products_count) + '</span>' +
         '<span>' + (b.country||'') + '</span></div>' +
         '<div style="display:flex;gap:8px;margin-top:8px;">' +
         '<button onclick="window.location.href=\'peekr-shop-detail.html?domain=\'+encodeURIComponent(\'' + b.d + '\')" style="flex:1;padding:6px;border:1px solid #e8799a;border-radius:8px;background:none;color:#e8799a;cursor:pointer;font-size:12px;">View Details</button>' +
@@ -911,8 +911,8 @@
       document.getElementById('compareName' + slot).textContent = shop.n || shop.d;
       document.getElementById('compareScore' + slot).textContent = shop.score || '-';
       document.getElementById('compareTraffic' + slot).textContent = fmt(shop.monthly_visits);
-      document.getElementById('compareProducts' + slot).textContent = fmt(shop.product_count);
-      document.getElementById('comparePlan' + slot).textContent = shop.plan || '-';
+      document.getElementById('compareProducts' + slot).textContent = fmt(shop.products_count);
+      document.getElementById('comparePlan' + slot).textContent = shop.shopify_plan || '-';
       document.getElementById('compareTheme' + slot).textContent = shop.theme || '-';
       const age = shop.created_at ? Math.floor((Date.now() - new Date(shop.created_at).getTime()) / (365.25*24*60*60*1000)) + 'y' : '-';
       document.getElementById('compareAge' + slot).textContent = age;
