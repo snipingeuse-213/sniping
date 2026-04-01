@@ -535,7 +535,16 @@ function waitForShops(){
 }
 waitForShops();
 // Backup: also try on DOMContentLoaded in case everything else fails
-// DOMContentLoaded backup disabled - single fetch only
+document.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    if(!window._supabaseShops||window._supabaseShops.length===0){
+      console.log('[Peekr] DOMContentLoaded backup fetch...');
+      directFetchShops().then(()=>{
+        if(window._supabaseShops&&window._supabaseShops.length>0&&D.length===0){
+          D=window._supabaseShops.map(mapShop);
+          re();
+        }
+      });
     }
   },500);
 });
