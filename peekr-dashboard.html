@@ -396,6 +396,9 @@ td{padding:11px 14px;vertical-align:middle;}
       <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
     </div>
+    <div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
+      <button id="reset-btn" onclick="resetAllFilters()" style="background:rgba(232,121,154,0.15);color:#e8799a;border:1px solid #e8799a;border-radius:20px;padding:5px 14px;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s">Reset all filters</button>
+    </div>
   </div>
 
   <div class="tw">
@@ -643,7 +646,7 @@ function getCountries(){
 
 // Toggle dropdown
 function tf(e){
-  const name=e.textContent.trim().replace(/\s*▾\s*$/,'');
+  const name=e.textContent.trim().replace(/\s*[▾×✕]\s*$/,'').trim();
   const ddId='fb-dd-'+name.replace(/\s+/g,'-');
   const existing=document.getElementById(ddId);
 
@@ -871,6 +874,24 @@ async function applyDateFilter(){
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
 }
 
+function resetAllFilters(){
+  filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null,date2:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
+  window._dateFilteredShops=null;
+  sortCol=null;sortDir='asc';
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  currentPage=0;
+  re();
+}
+
+function hasActiveFilters(){
+  if(filters.Traffic||filters['Ads Count']||filters['Ads Growth']||filters['Est. Sales']||filters['AOV']||filters['Units Sold'])return true;
+  if(filters['Creation Date']&&filters['Creation Date'].mode)return true;
+  if(filters.Category.length||filters.Products.length||filters.Apps.length||filters.Theme.length||filters.Language.length||filters.Currency.length)return true;
+  if(filters['Shop Origin'].length||filters['Visitor Country'].length||filters['Shopify Plan'].length)return true;
+  return false;
+}
+
 // Toggle sort option
 function toggleSort(sortName,dir){
   filters[sortName]=dir;
@@ -883,7 +904,7 @@ function clearFilter(filterName){
   else if(filterName==='Ads Count')filters['Ads Count']=null;
   else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
   else if(filterName==='Est. Sales')filters['Est. Sales']=null;
-  else if(filterName==='Creation Date'){filters['Creation Date']={mode:null,date:null};window._dateFilteredShops=null;}
+  else if(filterName==='Creation Date'){filters['Creation Date']={mode:null,date:null,date2:null};window._dateFilteredShops=null;}
   else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
   const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
@@ -1031,7 +1052,7 @@ function re(){
     shops=[...shops,...apiFiltered];
   }
   // Show total DB count (not just loaded count) — but use actual count when server-side filter is active
-  const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode&&filters['Creation Date'].mode.startsWith('last')&&window._dateFilteredShops;
+  const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode;
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
   const totalLabel=_apiResults.length>0?`<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from 7.5M catalog</span>`:
@@ -1039,10 +1060,10 @@ function re(){
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
-    const name=btn.textContent.replace(/\s*[▾×]\s*$/,'').trim();
+    const name=btn.textContent.replace(/\s*[▾×✕]\s*$/,'').trim();
     if(name==='Creation Date'){
       if(cdfActive){
-        btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null};window._dateFilteredShops=null;re();">×</span>';
+        btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null,date2:null};window._dateFilteredShops=null;re();">×</span>';
         btn.style.background='rgba(232,121,154,0.15)';btn.style.borderColor='#e8799a';
       }else{
         btn.innerHTML='Creation Date <span class="fc">▾</span>';
@@ -1050,6 +1071,9 @@ function re(){
       }
     }
   });
+  // Show/hide reset all filters button
+  const rb=document.getElementById('reset-bar');
+  if(rb)rb.style.display=hasActiveFilters()?'flex':'none';
   const tb=document.getElementById('tb'),em=document.getElementById('em');
   if(!shops.length&&!_apiSearching){tb.innerHTML='';em.style.display='flex';return;}
   if(!shops.length&&_apiSearching){tb.innerHTML='';em.style.display='flex';em.querySelector('div:last-child').textContent='Searching 7.5M shops…';return;}
