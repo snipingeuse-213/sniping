@@ -321,7 +321,7 @@ function platformIcons(platforms){
 async function fetchAds(){
   try{
     const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/ads?select=*&status=eq.active&order=first_seen_at.desc&limit=300`,
+      `${SUPABASE_URL}/rest/v1/ads?select=*&order=engagement_score.desc.nullslast,first_seen_at.desc&limit=1000`,
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
     );
     if(!r.ok) throw new Error(`API ${r.status}`);
@@ -403,14 +403,17 @@ function renderCards(){
     const sc = scoreColor(score);
     const days = daysSince(a.ad_delivery_start_time);
     const body = (a.ad_creative_body||'No ad copy available').substring(0,140);
-    const thumbUrl = a.shop_domain ? `https://image.thum.io/get/width/400/crop/200/https://${a.shop_domain}` : '';
+    const logoUrl = a.shop_domain ? `https://logo.clearbit.com/${a.shop_domain}` : '';
     const snapshotUrl = a.ad_snapshot_url || '#';
     const platforms = a.publisher_platforms || [];
+    const initials = (a.page_name||'AD').substring(0,2).toUpperCase();
+    const bgColors = ['#e8799a','#7c5cbf','#2563eb','#059669','#d97706','#dc2626','#7c3aed','#0891b2'];
+    const bgColor = bgColors[Math.abs((a.page_name||'').length + (a.shop_domain||'').length) % bgColors.length];
 
     return `<div class="ad-card">
-      <div class="ad-thumb">
-        ${thumbUrl ? `<img src="${thumbUrl}" alt="${a.page_name||a.shop_domain}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>` : ''}
-        <div class="ad-thumb-fb" style="${thumbUrl?'display:none':''}">${(a.page_name||'AD').substring(0,2).toUpperCase()}</div>
+      <div class="ad-thumb" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,${bgColor}22,${bgColor}11);">
+        ${logoUrl ? `<img src="${logoUrl}" alt="${a.page_name||a.shop_domain}" style="width:48px;height:48px;border-radius:10px;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,0.08);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>` : ''}
+        <div class="ad-thumb-fb" style="${logoUrl?'display:none':'display:flex'};font-size:24px;font-weight:900;color:${bgColor};opacity:0.6;">${initials}</div>
         <div class="ad-score" style="background:${sc.bg}">${days}d</div>
       </div>
       <div class="ad-body">
