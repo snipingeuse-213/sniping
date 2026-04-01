@@ -420,14 +420,12 @@ function renderCards(){
     const logoUrl = a.shop_domain ? `https://logo.clearbit.com/${a.shop_domain}` : '';
     const snapshotUrl = a.ad_snapshot_url || '#';
     const platforms = a.publisher_platforms || [];
-    const initials = (a.page_name||'AD').substring(0,2).toUpperCase();
-    const bgColors = ['#e8799a','#7c5cbf','#2563eb','#059669','#d97706','#dc2626','#7c3aed','#0891b2'];
-    const bgColor = bgColors[Math.abs((a.page_name||'').length + (a.shop_domain||'').length) % bgColors.length];
+    const previewText = (a.ad_creative_body||'View this ad on Meta').substring(0,120) + ((a.ad_creative_body||'').length>120?'...':'');
 
     return `<div class="ad-card">
-      <div class="ad-thumbadient(135deg,${bgColor}22,${bgColor}11);">
-        ${logoUrl ? `<img src="${logoUrl}" alt="${a.page_name||a.shop_domain}" onerror="this.style.display=\'none\'">` : \`<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:8px;flex-shrink:0">${(a.page_name||a.shop_domain||"?")[0].toUpperCase()}</div>\`}
-              <div class="ad-thumb-fb">${(a.ad_creative_body||"View this ad on Meta").substring(0,120)}${(a.ad_creative_body||"").length>120?"...":""}</div>
+      <div class="ad-thumb">
+        ${logoUrl ? `<img src="${logoUrl}" alt="${a.page_name||a.shop_domain}" onerror="this.style.display='none'"/>` : `<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:8px;flex-shrink:0">${(a.page_name||a.shop_domain||'?')[0].toUpperCase()}</div>`}
+        <div class="ad-thumb-text">${previewText}</div>
         <div class="ad-score" style="background:${sc.bg}">${days}d</div>
       </div>
       <div class="ad-body">
