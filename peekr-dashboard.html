@@ -510,7 +510,7 @@ function mapShop(s,i){return{
 // Direct fetch fallback — single sequential query (uses global _SB, _AK, _COLS)
 async function directFetchShops(){
   try{
-    const r=await fetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc&limit=1000',{headers:{'apikey':_AK}});
+    const r=await fetch(_SB+'/rest/v1/shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000',{headers:{'apikey':_AK,'Prefer':'count=planned'}});
     if(r.ok){const shops=await r.json();if(shops.length>0){window._supabaseShops=shops;console.log('[Peekr] Fallback loaded '+shops.length+' shops');}}
   }catch(e){console.error('[Peekr] Fallback fetch failed:',e);}
 }
@@ -845,7 +845,7 @@ async function applyDateFilter(){
       let offset=0;
       const pageSize=1000;
       while(true){
-        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc&limit='+pageSize+'&offset='+offset;
+        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc.nullslast&limit='+pageSize+'&offset='+offset;
         const res=await sbFetch(url);
         if(!res.data||res.data.length===0)break;
         allResults=allResults.concat(res.data);
