@@ -470,7 +470,7 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
     // Step 1: fetch first 1000 shops (no count=planned needed)
-    const result = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=50');
+    const result = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000');
     if (!window._totalShopCount) window._totalShopCount = result.count || result.data.length;
     const seen = new Set();
     let allShops = [];
@@ -482,7 +482,7 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
     }
     // Step 2: background load more pages sequentially (up to 10K for fast local filtering)
     for (const off of []) {
-      const page = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=50&offset='+off);
+      const page = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000&offset='+off);
       if (!page.data || page.data.length === 0) break;
       for (const s of page.data) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
       window._supabaseShops = allShops;
@@ -514,7 +514,7 @@ function mapShop(s,i){return{
 // Direct fetch fallback — single sequential query (uses global _SB, _AK, _COLS)
 async function directFetchShops(){
   try{
-    const r=await fetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=50',{headers:{'apikey':_AK,'Prefer':'count=planned'}});
+    const r=await fetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000',{headers:{'apikey':_AK,'Prefer':'count=planned'}});
     if(r.ok){const shops=await r.json();if(shops.length>0){window._supabaseShops=shops;console.log('[Peekr] Fallback loaded '+shops.length+' shops');}}
   }catch(e){console.error('[Peekr] Fallback fetch failed:',e);}
 }
