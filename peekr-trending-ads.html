@@ -120,11 +120,11 @@ body{
   transform:translateY(-2px);
 }
 .ad-thumb{
-  width:100%;height:160px;
+  width:100%;height:200px;
   background:#f0ece6;
   position:relative;overflow:hidden;
 }
-.ad-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.ad-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;}
 .ad-thumb-fb{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:rgba(26,10,15,0.2);letter-spacing:.05em;}
 .ad-score{
   position:absolute;top:10px;right:10px;
@@ -416,7 +416,7 @@ function renderCards(){
     const sc = scoreColor(score);
     const days = daysSince(a.ad_delivery_start_time);
     const body = (a.ad_creative_body||'No ad copy available').substring(0,140);
-    const logoUrl = a.shop_domain ? `https://logo.clearbit.com/${a.shop_domain}` : '';
+    const thumbUrl = a.ad_snapshot_url ? `https://image.thum.io/get/width/400/crop/400/${a.ad_snapshot_url}` : (a.shop_domain ? `https://image.thum.io/get/width/400/crop/400/https://${a.shop_domain}` : '');
     const snapshotUrl = a.ad_snapshot_url || '#';
     const platforms = a.publisher_platforms || [];
     const initials = (a.page_name||'AD').substring(0,2).toUpperCase();
@@ -424,9 +424,9 @@ function renderCards(){
     const bgColor = bgColors[Math.abs((a.page_name||'').length + (a.shop_domain||'').length) % bgColors.length];
 
     return `<div class="ad-card">
-      <div class="ad-thumb" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,${bgColor}22,${bgColor}11);">
-        ${logoUrl ? `<img src="${logoUrl}" alt="${a.page_name||a.shop_domain}" style="width:48px;height:48px;border-radius:10px;object-fit:contain;box-shadow:0 2px 8px rgba(0,0,0,0.08);" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>` : ''}
-        <div class="ad-thumb-fb" style="${logoUrl?'display:none':'display:flex'};font-size:24px;font-weight:900;color:${bgColor};opacity:0.6;">${initials}</div>
+      <div class="ad-thumbadient(135deg,${bgColor}22,${bgColor}11);">
+        ${thumbUrl ? `<img src="${thumbUrl}" alt="${a.page_name||a.shop_domain}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>` : ''}
+        <div class="ad-thumb-fb" style="${thumbUrl?'display:none':'display:flex'};font-size:24px;font-weight:900;color:${bgColor};opacity:0.6;">${initials}</div>
         <div class="ad-score" style="background:${sc.bg}">${days}d</div>
       </div>
       <div class="ad-body">
