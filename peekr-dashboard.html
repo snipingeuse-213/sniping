@@ -435,7 +435,7 @@ window._supabaseShops = [];
 // Fetch helper — single request, no retries
 async function sbFetch(url) {
   try {
-    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=planned' } });
+    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=exact' } });
     if (!r.ok) return { data: [], count: 0 };
     const count = parseInt(r.headers.get('content-range')?.split('/')[1] || '0');
     return { data: await r.json(), count };
@@ -450,11 +450,11 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
   const sortMap = { sc:'score', v:'monthly_visits', rv:'revenue_min', ad:'live_ads', es:'estimated_sales', aov:'avg_price_usd', us:'estimated_sales' };
   const sField = sortMap[sortField] || 'score';
   const sDir = sortDir === 'asc' ? 'asc' : 'desc';
-  url += '&order='+sField+'.'+sDir+'.nullslast'+'&limit='+pageSize+'&offset='+offset;
+  url += '&order='+sField+'.'+sDir+'&limit='+pageSize+'&offset='+offset;
   // Apply server-side filters
   if (filterParams) url += filterParams;
   try {
-    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=planned' } });
+    const r = await fetch(url, { headers: { 'apikey': _AK, 'Prefer': 'count=exact' } });
     if (!r.ok) return { data: [], count: 0 };
     const count = parseInt(r.headers.get('content-range')?.split('/')[1] || '0');
     return { data: await r.json(), count };
@@ -469,8 +469,8 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=eq.total_count&select=value', { headers: { 'apikey': _AK } });
       if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
-    // Step 1: fetch first 1000 shops (no count=planned needed)
-    const result = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000');
+    // Step 1: fetch first 1000 shops (no count=exact needed)
+    const result = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc&limit=1000');
     if (!window._totalShopCount) window._totalShopCount = result.count || result.data.length;
     const seen = new Set();
     let allShops = [];
@@ -478,11 +478,16 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
     if (allShops.length > 0) {
       window._supabaseShops = allShops;
       console.log('[Peekr] Loaded ' + allShops.length + ' shops, total in DB: ' + window._totalShopCount);
-      if (typeof mapShop === 'function') { D = allShops.map(mapShop); if (typeof re === 'function') re(); console.log('[Peekr] Rendered ' + D.length + ' shops from IIFE'); }
+      // Directly populate D and render — don't rely on waitForShops polling
+      if (typeof mapShop === 'function') {
+        D = allShops.map(mapShop);
+        if (typeof re === 'function') re();
+        console.log('[Peekr] Rendered ' + D.length + ' shops from IIFE');
+      }
     }
     // Step 2: background load more pages sequentially (up to 10K for fast local filtering)
-    for (const off of []) {
-      const page = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000&offset='+off);
+    for (const off of [1000, 2000, 3000, 4000]) {
+      const page = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc&limit=1000&offset='+off);
       if (!page.data || page.data.length === 0) break;
       for (const s of page.data) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
       window._supabaseShops = allShops;
@@ -514,7 +519,7 @@ function mapShop(s,i){return{
 // Direct fetch fallback — single sequential query (uses global _SB, _AK, _COLS)
 async function directFetchShops(){
   try{
-    const r=await fetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc.nullslast&limit=1000',{headers:{'apikey':_AK,'Prefer':'count=planned'}});
+    const r=await fetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc&limit=1000',{headers:{'apikey':_AK}});
     if(r.ok){const shops=await r.json();if(shops.length>0){window._supabaseShops=shops;console.log('[Peekr] Fallback loaded '+shops.length+' shops');}}
   }catch(e){console.error('[Peekr] Fallback fetch failed:',e);}
 }
@@ -526,7 +531,7 @@ function waitForShops(){
     console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
     re();
   } else if(_waitAttempts++<50){
-// setTimeout disabled - single fetch only
+    setTimeout(waitForShops, 200);
   } else {
     console.log('[Peekr] IIFE timeout, triggering direct fetch...');
     directFetchShops().then(()=>{
@@ -849,7 +854,7 @@ async function applyDateFilter(){
       let offset=0;
       const pageSize=1000;
       while(true){
-        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc.nullslast&limit='+pageSize+'&offset='+offset;
+        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoff+'&order=score.desc&limit='+pageSize+'&offset='+offset;
         const res=await sbFetch(url);
         if(!res.data||res.data.length===0)break;
         allResults=allResults.concat(res.data);
@@ -1061,7 +1066,7 @@ function re(){
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
-    const name=btn.textContent.replace(/\s*[▾×✕]\s*$/,'').trim();
+    const name=btn.textContent.replace(/\s*[▾×]\s*$/,'').trim();
     if(name==='Creation Date'){
       if(cdfActive){
         btn.innerHTML='Creation Date <span class="fc" style="color:#e8799a;cursor:pointer" onclick="event.stopPropagation();filters[\'Creation Date\']={mode:null,date:null,date2:null};window._dateFilteredShops=null;re();">×</span>';
@@ -1138,7 +1143,7 @@ function re(){
 
   tb.innerHTML=pageShops.map(s=>{
     const c=TC[s.t]||'#aaa',ac=s.ad>30?'#e8799a':s.ad>10?'#f6a05a':s.ad>0?'#e6b83a':'#b8a8b0';
-    return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')">
+    return`<tr onclick="om(${s.id})">
       <td><div class="si2">
         <div class="sthumb">
           <img src="https://image.thum.io/get/width/400/crop/200/https://${s.d}"
@@ -1170,7 +1175,7 @@ function re(){
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       </a></td>
       <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov.toFixed(2):'—'}</div></td>
       <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
@@ -1198,279 +1203,7 @@ function om(id){
       <div class="stb"><div class="stl">Apps count</div><div class="stv">${s.ap.length}</div></div>
     </div>
     <div class="msts" style="margin-top:8px;">
-      <div class="stb"><div class="stl">AOV</div><div class="stv">${s.aov?'</div></div>
-      <div class="stb"><div class="stl">Est. Units Sold</div><div class="stv" style="${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'N/A'}</div></div>
-    </div>
-    <div class="msec"><div class="mst2">Traffic Trend (12 weeks)</div>
-      <div class="mcht">${s.tr.map((v,i)=>`<div class="chb" style="height:${Math.max((v/mx)*64,4)}px;background:${c};opacity:${.25+(i/s.tr.length)*.75};border-radius:4px 4px 0 0;"></div>`).join('')}</div>
-    </div>
-    <div class="msec"><div class="mst2">Growth Strategy</div><div class="tgl">${s.st.map(x=>`<span class="tg" style="background:${TB[s.t]};color:${c};border-color:${c}30;">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Apps Installed (${s.ap.length})</div><div class="tgl">${s.ap.map(x=>`<span class="tg" style="background:rgba(184,154,223,.08);color:#9171c8;border-color:rgba(184,154,223,.25);">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Tracking Pixels</div><div class="tgl">${s.px.length?s.px.map(x=>`<span class="tg" style="background:rgba(232,121,154,.07);color:var(--pink-dark);border-color:rgba(232,121,154,.2);">${x}</span>`).join(''):'<span style="font-size:12px;color:var(--text3)">No pixels detected</span>'}</div></div>
-    <div class="msec"><div class="mst2">Store Details</div>
-      <div class="dg">
-        <div class="di">Theme <strong>${s.th}</strong></div>
-        <div class="di">Currency <strong>${s.cu}</strong></div>
-        <div class="di">Products <strong>${s.p}</strong></div>
-        <div class="di">Market <strong>${s.c.toUpperCase()} ${s.c2?s.c2.toUpperCase():''}</strong></div>
-        <div class="di">Created <strong>${s.cr}</strong></div>
-        <div class="di">Age <strong>${s.ag}</strong></div>
-        <div class="di">Est. Sales <strong>${s.es?fmtV(s.es):'N/A'}</strong></div>
-      </div>
-    </div>
-    <a class="mml" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" style="display:flex;align-items:center;gap:8px;justify-content:center;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Spy ${s.ad>0?s.ad+' active ':''}ads on Meta Ad Library
-    </a>`;
-  document.getElementById('mo').classList.add('open');
-}
-function cm(e){if(e.target===document.getElementById('mo'))cd();}
-function cd(){document.getElementById('mo').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){cd();document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));}});
-document.addEventListener('click',e=>{if(!e.target.closest('.fb')&&!e.target.closest('.fb-dropdown')){document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));}});
-document.querySelectorAll('thead th').forEach(th=>{
-  if(th.textContent.includes('Monthly Visits')||th.textContent.includes('Revenue Est.')||th.textContent.includes('Live Ads')||th.textContent.includes('Score')){
-    th.style.cursor='pointer';
-    th.addEventListener('click',function(e){
-      const colMap={'Monthly Visits':'v','Revenue Est.':'rv','Live Ads':'ad','Score':'sc'};
-      for(let [text,col] of Object.entries(colMap)){if(this.textContent.includes(text)){sortBy(col);break;}}
-    });
-  }
-});
-re();
-
-// Freemium restrictions
-const _origRe = re;
-re = function() {
-  _origRe();
-  applyDashboardFreemium();
-};
-async function applyDashboardFreemium() {
-  const plan = window._userPlan || await Peekr.getUserPlan();
-  if (plan !== 'free') return;
-  Peekr.injectFreemiumStyles();
-  const rows = document.querySelectorAll('#tb tr');
-  rows.forEach((row, i) => {
-    const tds = row.querySelectorAll('td');
-    if (i >= 5) {
-      // Blur entire row + lock badge
-      Peekr.lockTableRow(row, i);
-      row.style.cursor = 'default';
-      row.onclick = null;
-      row.setAttribute('onclick', "window.location.href='peekr-pricing.html'");
-    } else {
-      // Visible row but blur sensitive columns: visits(3), revenue(4), ads(5)
-      if (tds[3]) tds[3].classList.add('pkr-sensitive');
-      if (tds[4]) tds[4].classList.add('pkr-sensitive');
-      if (tds[5]) tds[5].classList.add('pkr-sensitive');
-    }
-  });
-}
-applyDashboardFreemium();
-</script>
-</body>
-</html>
-+s.aov.toFixed(2):'—'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
-      <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
-    </tr>`;
-  }).join('');
-}
-
-function om(id){
-  const s=D.find(x=>x.id===id);if(!s)return;
-  const c=TC[s.t]||'#aaa',mx=Math.max(...s.tr);
-  document.getElementById('mh').innerHTML=`
-    <div class="mico" style="background:linear-gradient(135deg,${c}20,${c}08);">${init(s.n)}</div>
-    <div style="flex:1;min-width:0;">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <div class="msn">${s.n}</div>
-        <span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:${TB[s.t]};color:${c};border:1px solid ${c}44;">${TL[s.t]}</span>
-      </div>
-      <a class="mdom" href="https://${s.d}" target="_blank" rel="noopener" style="color:var(--pink);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
-    </div>
-    <div class="mcl" onclick="cd()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>`;
-  document.getElementById('mb').innerHTML=`
-    <div class="msts">
-      <div class="stb"><div class="stl">Traffic / mo</div><div class="stv">${s.vf}</div></div>
-      <div class="stb"><div class="stl">Revenue Est.</div><div class="stv" style="font-size:12px;padding-top:5px;">${s.r}</div></div>
-      <div class="stb"><div class="stl">Live Ads</div><div class="stv" style="color:${c};">${s.ad}</div></div>
-      <div class="stb"><div class="stl">Apps count</div><div class="stv">${s.ap.length}</div></div>
-    </div>
-    <div class="msts" style="margin-top:8px;">
-      <div class="stb"><div class="stl">AOV</div><div class="stv">${s.aov?'$'+s.aov:'N/A'}</div></div>
-      <div class="stb"><div class="stl">Est. Units Sold</div><div class="stv" style="${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'N/A'}</div></div>
-    </div>
-    <div class="msec"><div class="mst2">Traffic Trend (12 weeks)</div>
-      <div class="mcht">${s.tr.map((v,i)=>`<div class="chb" style="height:${Math.max((v/mx)*64,4)}px;background:${c};opacity:${.25+(i/s.tr.length)*.75};border-radius:4px 4px 0 0;"></div>`).join('')}</div>
-    </div>
-    <div class="msec"><div class="mst2">Growth Strategy</div><div class="tgl">${s.st.map(x=>`<span class="tg" style="background:${TB[s.t]};color:${c};border-color:${c}30;">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Apps Installed (${s.ap.length})</div><div class="tgl">${s.ap.map(x=>`<span class="tg" style="background:rgba(184,154,223,.08);color:#9171c8;border-color:rgba(184,154,223,.25);">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Tracking Pixels</div><div class="tgl">${s.px.length?s.px.map(x=>`<span class="tg" style="background:rgba(232,121,154,.07);color:var(--pink-dark);border-color:rgba(232,121,154,.2);">${x}</span>`).join(''):'<span style="font-size:12px;color:var(--text3)">No pixels detected</span>'}</div></div>
-    <div class="msec"><div class="mst2">Store Details</div>
-      <div class="dg">
-        <div class="di">Theme <strong>${s.th}</strong></div>
-        <div class="di">Currency <strong>${s.cu}</strong></div>
-        <div class="di">Products <strong>${s.p}</strong></div>
-        <div class="di">Market <strong>${s.c.toUpperCase()} ${s.c2?s.c2.toUpperCase():''}</strong></div>
-        <div class="di">Created <strong>${s.cr}</strong></div>
-        <div class="di">Age <strong>${s.ag}</strong></div>
-        <div class="di">Est. Sales <strong>${s.es?fmtV(s.es):'N/A'}</strong></div>
-      </div>
-    </div>
-    <a class="mml" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" style="display:flex;align-items:center;gap:8px;justify-content:center;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Spy ${s.ad>0?s.ad+' active ':''}ads on Meta Ad Library
-    </a>`;
-  document.getElementById('mo').classList.add('open');
-}
-function cm(e){if(e.target===document.getElementById('mo'))cd();}
-function cd(){document.getElementById('mo').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){cd();document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));}});
-document.addEventListener('click',e=>{if(!e.target.closest('.fb')&&!e.target.closest('.fb-dropdown')){document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));}});
-document.querySelectorAll('thead th').forEach(th=>{
-  if(th.textContent.includes('Monthly Visits')||th.textContent.includes('Revenue Est.')||th.textContent.includes('Live Ads')||th.textContent.includes('Score')){
-    th.style.cursor='pointer';
-    th.addEventListener('click',function(e){
-      const colMap={'Monthly Visits':'v','Revenue Est.':'rv','Live Ads':'ad','Score':'sc'};
-      for(let [text,col] of Object.entries(colMap)){if(this.textContent.includes(text)){sortBy(col);break;}}
-    });
-  }
-});
-re();
-
-// Freemium restrictions
-const _origRe = re;
-re = function() {
-  _origRe();
-  applyDashboardFreemium();
-};
-async function applyDashboardFreemium() {
-  const plan = window._userPlan || await Peekr.getUserPlan();
-  if (plan !== 'free') return;
-  Peekr.injectFreemiumStyles();
-  const rows = document.querySelectorAll('#tb tr');
-  rows.forEach((row, i) => {
-    const tds = row.querySelectorAll('td');
-    if (i >= 5) {
-      // Blur entire row + lock badge
-      Peekr.lockTableRow(row, i);
-      row.style.cursor = 'default';
-      row.onclick = null;
-      row.setAttribute('onclick', "window.location.href='peekr-pricing.html'");
-    } else {
-      // Visible row but blur sensitive columns: visits(3), revenue(4), ads(5)
-      if (tds[3]) tds[3].classList.add('pkr-sensitive');
-      if (tds[4]) tds[4].classList.add('pkr-sensitive');
-      if (tds[5]) tds[5].classList.add('pkr-sensitive');
-    }
-  });
-}
-applyDashboardFreemium();
-</script>
-</body>
-</html>
-+s.aov.toFixed(2):'N/A'}</div></div>
-      <div class="stb"><div class="stl">Est. Units Sold</div><div class="stv" style="${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'N/A'}</div></div>
-    </div>
-    <div class="msec"><div class="mst2">Traffic Trend (12 weeks)</div>
-      <div class="mcht">${s.tr.map((v,i)=>`<div class="chb" style="height:${Math.max((v/mx)*64,4)}px;background:${c};opacity:${.25+(i/s.tr.length)*.75};border-radius:4px 4px 0 0;"></div>`).join('')}</div>
-    </div>
-    <div class="msec"><div class="mst2">Growth Strategy</div><div class="tgl">${s.st.map(x=>`<span class="tg" style="background:${TB[s.t]};color:${c};border-color:${c}30;">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Apps Installed (${s.ap.length})</div><div class="tgl">${s.ap.map(x=>`<span class="tg" style="background:rgba(184,154,223,.08);color:#9171c8;border-color:rgba(184,154,223,.25);">${x}</span>`).join('')}</div></div>
-    <div class="msec"><div class="mst2">Tracking Pixels</div><div class="tgl">${s.px.length?s.px.map(x=>`<span class="tg" style="background:rgba(232,121,154,.07);color:var(--pink-dark);border-color:rgba(232,121,154,.2);">${x}</span>`).join(''):'<span style="font-size:12px;color:var(--text3)">No pixels detected</span>'}</div></div>
-    <div class="msec"><div class="mst2">Store Details</div>
-      <div class="dg">
-        <div class="di">Theme <strong>${s.th}</strong></div>
-        <div class="di">Currency <strong>${s.cu}</strong></div>
-        <div class="di">Products <strong>${s.p}</strong></div>
-        <div class="di">Market <strong>${s.c.toUpperCase()} ${s.c2?s.c2.toUpperCase():''}</strong></div>
-        <div class="di">Created <strong>${s.cr}</strong></div>
-        <div class="di">Age <strong>${s.ag}</strong></div>
-        <div class="di">Est. Sales <strong>${s.es?fmtV(s.es):'N/A'}</strong></div>
-      </div>
-    </div>
-    <a class="mml" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" style="display:flex;align-items:center;gap:8px;justify-content:center;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      Spy ${s.ad>0?s.ad+' active ':''}ads on Meta Ad Library
-    </a>`;
-  document.getElementById('mo').classList.add('open');
-}
-function cm(e){if(e.target===document.getElementById('mo'))cd();}
-function cd(){document.getElementById('mo').classList.remove('open');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){cd();document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));}});
-document.addEventListener('click',e=>{if(!e.target.closest('.fb')&&!e.target.closest('.fb-dropdown')){document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.classList.remove('open'));document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));}});
-document.querySelectorAll('thead th').forEach(th=>{
-  if(th.textContent.includes('Monthly Visits')||th.textContent.includes('Revenue Est.')||th.textContent.includes('Live Ads')||th.textContent.includes('Score')){
-    th.style.cursor='pointer';
-    th.addEventListener('click',function(e){
-      const colMap={'Monthly Visits':'v','Revenue Est.':'rv','Live Ads':'ad','Score':'sc'};
-      for(let [text,col] of Object.entries(colMap)){if(this.textContent.includes(text)){sortBy(col);break;}}
-    });
-  }
-});
-re();
-
-// Freemium restrictions
-const _origRe = re;
-re = function() {
-  _origRe();
-  applyDashboardFreemium();
-};
-async function applyDashboardFreemium() {
-  const plan = window._userPlan || await Peekr.getUserPlan();
-  if (plan !== 'free') return;
-  Peekr.injectFreemiumStyles();
-  const rows = document.querySelectorAll('#tb tr');
-  rows.forEach((row, i) => {
-    const tds = row.querySelectorAll('td');
-    if (i >= 5) {
-      // Blur entire row + lock badge
-      Peekr.lockTableRow(row, i);
-      row.style.cursor = 'default';
-      row.onclick = null;
-      row.setAttribute('onclick', "window.location.href='peekr-pricing.html'");
-    } else {
-      // Visible row but blur sensitive columns: visits(3), revenue(4), ads(5)
-      if (tds[3]) tds[3].classList.add('pkr-sensitive');
-      if (tds[4]) tds[4].classList.add('pkr-sensitive');
-      if (tds[5]) tds[5].classList.add('pkr-sensitive');
-    }
-  });
-}
-applyDashboardFreemium();
-</script>
-</body>
-</html>
-+s.aov.toFixed(2):'—'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
-      <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
-    </tr>`;
-  }).join('');
-}
-
-function om(id){
-  const s=D.find(x=>x.id===id);if(!s)return;
-  const c=TC[s.t]||'#aaa',mx=Math.max(...s.tr);
-  document.getElementById('mh').innerHTML=`
-    <div class="mico" style="background:linear-gradient(135deg,${c}20,${c}08);">${init(s.n)}</div>
-    <div style="flex:1;min-width:0;">
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <div class="msn">${s.n}</div>
-        <span style="font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:${TB[s.t]};color:${c};border:1px solid ${c}44;">${TL[s.t]}</span>
-      </div>
-      <a class="mdom" href="https://${s.d}" target="_blank" rel="noopener" style="color:var(--pink);text-decoration:none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
-    </div>
-    <div class="mcl" onclick="cd()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>`;
-  document.getElementById('mb').innerHTML=`
-    <div class="msts">
-      <div class="stb"><div class="stl">Traffic / mo</div><div class="stv">${s.vf}</div></div>
-      <div class="stb"><div class="stl">Revenue Est.</div><div class="stv" style="font-size:12px;padding-top:5px;">${s.r}</div></div>
-      <div class="stb"><div class="stl">Live Ads</div><div class="stv" style="color:${c};">${s.ad}</div></div>
-      <div class="stb"><div class="stl">Apps count</div><div class="stv">${s.ap.length}</div></div>
-    </div>
-    <div class="msts" style="margin-top:8px;">
-      <div class="stb"><div class="stl">AOV</div><div class="stv">${s.aov?'$'+s.aov:'N/A'}</div></div>
+      <div class="stb"><div class="stl">AOV</div><div class="stv">${s.aov?'$'+s.aov.toFixed(2):'N/A'}</div></div>
       <div class="stb"><div class="stl">Est. Units Sold</div><div class="stv" style="${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'N/A'}</div></div>
     </div>
     <div class="msec"><div class="mst2">Traffic Trend (12 weeks)</div>
