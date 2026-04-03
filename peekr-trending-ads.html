@@ -126,7 +126,7 @@ body{
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;
 }
 .ad-thumb img{width:40px;height:40px;border-radius:50%;object-fit:contain;background:rgba(255,255,255,0.95);padding:3px;margin-bottom:8px;flex-shrink:0;}
-.ad-thumb-fb{color:rgba(255,255,255,0.75);font-size:12px;line-height:1.55;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;max-width:100%;font-weight:400;}
+.ad-thumb-text{color:rgba(255,255,255,0.75);font-size:12px;line-height:1.55;text-align:center;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;max-width:100%;}
 .ad-score{
   position:absolute;top:10px;right:10px;
   width:38px;height:38px;border-radius:50%;
@@ -203,7 +203,6 @@ body{
   </div>
   <div class="sb-sec"><div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
-    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analyse</div>
     <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
@@ -214,6 +213,12 @@ body{
   <div class="sb-sec"><div class="sb-lbl">Favorites</div>
     <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
     <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Community</div>
+    <a class="ni" href="https://discord.gg/peekr" target="_blank"><span class="ni-ico">&#128172;</span>Discord<span class="nb">New</span></a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Tools</div>
     <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
@@ -261,7 +266,7 @@ body{
         <option value="">All Niches</option>
       </select>
       <select id="sortFilter" onchange="applyFilters();renderCards()" style="padding:5px 10px;border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-family:'Figtree',sans-serif;font-size:12px;background:#fff;color:#1a0a0f;margin-left:8px;">
-        <option value="score">Sort: Trending</option>
+        <option value="score">Sort: Score</option>
         <option value="newest">Sort: Newest</option>
         <option value="ads">Sort: Longest Running</option>
       </select>
@@ -322,7 +327,7 @@ function platformIcons(platforms){
 async function fetchAds(){
   try{
     const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/ads?select=*&order=engagement_score.desc.nullslast,first_seen_at.desc&limit=1000`,
+      `${SUPABASE_URL}/rest/v1/ads?select=*&status=eq.active&order=first_seen_at.desc&limit=300`,
       {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
     );
     if(!r.ok) throw new Error(`API ${r.status}`);
@@ -376,24 +381,11 @@ function applyFilters(){
     if(sort==='ads') return daysSince(a.ad_delivery_start_time)-daysSince(b.ad_delivery_start_time);
     if(sort==='newest') return new Date(b.first_seen_at)-new Date(a.first_seen_at);
     if(sort==='revenue') return daysSince(a.ad_delivery_start_time)-daysSince(b.ad_delivery_start_time);
-    if(sort==='visits'){const aR=Math.max(1,Math.floor((Date.now()-new Date(a.ad_delivery_start_time||Date.now()))/864e5));const bR=Math.max(1,Math.floor((Date.now()-new Date(b.ad_delivery_start_time||Date.now()))/864e5));return (bR*(b.publisher_platforms||[]).length)-(aR*(a.publisher_platforms||[]).length);}
-    // Default: composite trending score (running days × platforms)
-      const aRun = Math.max(1,Math.floor((Date.now()-new Date(a.ad_delivery_start_time||Date.now()))/864e5));
-      const bRun = Math.max(1,Math.floor((Date.now()-new Date(b.ad_delivery_start_time||Date.now()))/864e5));
-      const aScore = aRun * (a.publisher_platforms||[]).length;
-      const bScore = bRun * (b.publisher_platforms||[]).length;
-      return bScore - aScore;
+    if(sort==='visits') return (b.engagement_score||0)-(a.engagement_score||0);
+    return (b.engagement_score||0)-(a.engagement_score||0);
   });
 
-  // Deduplicate: best ad per advertiser (already sorted by score)
-    const seen = new Map();
-    filtered = filtered.filter(a => {
-      const key = a.page_name || a.shop_domain || a.meta_ad_id;
-      if (seen.has(key)) return false;
-      seen.set(key, true);
-      return true;
-    });
-    document.getElementById('totalCount').textContent = filtered.length;
+  document.getElementById('totalCount').textContent = filtered.length;
 }
 
 function renderCards(){
@@ -439,7 +431,7 @@ function renderCards(){
         <div class="ad-stats">
           <div><div class="ad-stat-val" style="color:#e8799a;font-weight:900;">${days}d</div><div class="ad-stat-lbl">Running</div></div>
           <div><div class="ad-stat-val">${platforms.length}</div><div class="ad-stat-lbl">Platforms</div></div>
-          <div><div class="ad-stat-val">${days * platforms.length}</div><div class="ad-stat-lbl">Trend</div></div>
+          <div><div class="ad-stat-val">${score}</div><div class="ad-stat-lbl">Score</div></div>
         </div>
         <a href="${snapshotUrl}" target="_blank" class="ad-btn">&#128065; View Ad Snapshot</a>
         <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(a.shop_domain||'')}" target="_blank" class="ad-btn-sec">&#128269; All Ads from this Shop</a>
@@ -483,12 +475,12 @@ async function saveAd(evt, metaAdId, shopDomain, pageName, btn){
         ad_snapshot_url:ad.ad_snapshot_url||''
       })
     });
-    if(r.status===409||r.status===23505){btn.textContent='✓ Already Saved';btn.style.color='#2a9e54';return;}
+    if(r.status===409||r.status===23505){btn.textContent='&#10003; Already Saved';btn.style.color='#2a9e54';return;}
     if(!r.ok) throw new Error('Save failed');
-    btn.textContent='✓ Saved!';btn.style.color='#2a9e54';btn.style.borderColor='rgba(42,158,84,0.3)';
+    btn.textContent='&#10003; Saved!';btn.style.color='#2a9e54';btn.style.borderColor='rgba(42,158,84,0.3)';
   }catch(e){
     console.error(e);btn.textContent='&#128190; Save Ad';btn.disabled=false;
-    if(e.message.includes('duplicate')||e.message.includes('409')){btn.textContent='✓ Already Saved';btn.style.color='#2a9e54';}
+    if(e.message.includes('duplicate')||e.message.includes('409')){btn.textContent='&#10003; Already Saved';btn.style.color='#2a9e54';}
     else alert('Save failed: '+e.message);
   }
 }
