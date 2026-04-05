@@ -3,6 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Peekr Dashboard â Your ecom intelligence command center. Track stores, ads, and competitors in real time.">
+    <title>Peekr â Dashboard Overview</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Figtree',sans-serif;background:#f0ece6;color:#1a0a0f;min-height:100vh}
+        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-thumb{background:rgba(200,150,170,0.3);border-radius:4px}
+        .container{display:flex;min-height:100vh;position:relative;z-index:1}
+
+        /* Sidebar */
+        .sb{width:220px;flex-shrink:0;position:relative;z-index:20;background:#1a0a0f;border-right:none;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;}
+        .sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+        .sb-logo img{height:32px;width:auto;}
+        .sb-sec{padding:10px 0 2px;}
+        .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
+        .ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+        .ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
+        .ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
+        .ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
+        .ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+        .ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
+        .nb{margin-left:auto;background:#e8799a;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
+        .nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
+        .sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
+        .uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+        .uc:hover{background:rgba(255,255,255,0.12);}
+        .ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+        .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
+        .up{font-size:10px;color:#e8799a;font-weight:700;}
+
+        /* Main */
+        .main{flex:1;display:flex;flex-direction:column;overflow-y:auto}
+        .topbar{
+            background:rgba(255,252,248,0.5);
+            backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+            border-bottom:1.5px solid rgba(255,255,255,0.7);
+            padding:20px 32px;display:flex;justify-content:space-between;align-items:center;
+        }
+        .topbar-left h1{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em}
+        .topbar-left p{font-size:13px;color:rgba(26,10,15,0.4);margin-top:2px;font-weight:500}
+        .topbar-right{display:flex;align-items:center;gap:14px}
+        .topbar-btn{
+            background:#1a0a0f;color:white;padding:9px 20px;border-radius:100px;
+            font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;
+        }
+        .topbar-btn:hover{background:#e8799a}
+        .avatar{
+            width:34px;height:34px;border-radius:50%;
+            background:linear-gradient(135deg,#f4a7b9,#e8799a);
+            display:flex;align-items:center;justify-content:center;
+            font-size:13px;font-weight:800;color:white;cursor:pointer;
+        }
+
+        /* Content */
+        .content{flex:1;padding:28px 32px}
+
+        /* Welcome card */
+        .welcome{
+            background:linear-gradient(135deg,#f4a7b9 0%,#e8799a 40%,#d4607a 100%);
+            border-radius:24px;padding:36px 40px;color:white;
+            position:relative;overflow:hidden;margin-bottom:24px;
+        }
+        .welcome::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='170' cy='40' r='100' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='1'/%3E%3Ccircle cx='170' cy='40' r='60' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3C/svg%3E") right top no-repeat;pointer-events:none}
+        .welcome h2{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;margin-bottom:8px}
+        .welcome p{font-size:14px;opacity:.8;line-height:1.6;max-width:480px}
+
+        /* KPI grid */
+        .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+        .kpi{
+            background:rgba(255,252,248,0.6);
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border-radius:20px;border:1.5px solid rgba(255,255,255,0.85);
+            padding:24px;
+            box-shadow:0 4px 16px rgba(160,100,120,0.06),inset 0 1.5px 0 rgba(255,255,255,0.95);
+            transition:transform .2s;
+        }
+        .kpi:hover{transform:translateY(-2px)}
+        .kpi-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.35);margin-bottom:10px}
+        .kpi-val{font-family:'Clash Display',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f}
+        .kpi-val span{font-size:13px;font-weight:600;color:#e8799a;margin-left:6px}
+        .kpi-sub{font-size:12px;color:rgba(26,10,15,0.4);margin-top:4px;font-weight:500}
+
+        /* Two-column bottom */
+        .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .card{
+            background:rgba(255,252,248,0.6);
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border-radius:20px;border:1.5px solid rgba(255,255,255,0.85);
+            padding:28px;
+            box-shadow:0 4px 16px rgba(160,100,120,0.06),inset 0 1.5px 0 rgba(255,255,255,0.95);
+        }
+        .card-title{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em}
+        .card-title span{color:#e8799a}
+
+        /* Table */
+        table{width:100%;border-collapse:collapse}
+        th{text-align:left;padding:10px 12px;border-bottom:1.5px solid rgba(200,180,170,0.15);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(26,10,15,0.35)}
+        td{padding:10px 12px;border-bottom:1px solid rgba(200,180,170,0.08);font-size:13px;font-weight:500}
+        tr:hover td{background:rgba(232,121,154,0.03)}
+        .score-badge{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
+        .score-high{background:rgba(232,121,154,0.12);color:#d4607a}
+        .score-med{background:rgba(200,180,160,0.15);color:rgba(26,10,15,0.5)}
+
+        /* Activity feed */
+        .activity{display:flex;flex-direction:column;gap:14px}
+        .activity-item{display:flex;gap:12px;align-items:flex-start}
+        .activity-dot{width:8px;height:8px;border-radius:50%;background:#e8799a;margin-top:5px;flex-shrink:0}
+        .activity-dot.gray{background:rgba(26,10,15,0.15)}
+        .activity-text{font-size:13px;color:rgba(26,10,15,0.65);line-height:1.5;font-weight:500}
+        .activity-text strong{color:#1a0a0f;font-weight:700}
+        .activity-time{font-size:11px;color:rgba(26,10,15,0.3);margin-top:2px;font-weight:500}
+
+        @media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.bottom-grid{grid-template-columns:1fr}}
+        @media(max-width:768px){.sb{display:none}.kpi-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sb">
+          <div class="sb-logo">
+            <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rASJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MDU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyOSAyOC4yODEyNSAtNDEuNTYyOSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMjkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyOSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Overview</div>
+            <a class="ni active" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Analyse</div>
+            <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
+            <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
+            <a class="ni" href="peekr-brand-tracker.html"><span class="ni-ico">&#128269;</span>Brand Tracker<span class="nb">Pro</span></a>
+            <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Favorites</div>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Community</div>
+            <a class="ni" href="https://discord.gg/peekr" target="_blank"><span class="ni-ico">&#128172;</span>Discord<span class="nb">New</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Resources</div>
+            <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog &amp; Tips</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Tools</div>
+            <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
+            <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Account</div>
+            <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
+            <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
+          </div>
+          <div class="sb-bot">
+            <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+          </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <h1>Command Center</h1>
+                    <p>Your ecom intelligence overview</p>
+                </div>
+                <div class="topbar-right">
+                    <a href="#" class="topbar-btn">Upgrade to Pro</a>
+                    <div class="avatar">LR</div>
+                </div>
+            </div>
+
+            <div class="content">
+                <!-- Welcome banner -->
+                <div class="welcome">
+                    <h2>Welcome back. Here's what's happening.</h2>
+                    <p>Your dashboard is tracking 850K+ stores in real time. New winning products and trending stores are being detected every minute.</p>
+                </div>
+
+                <!-- KPI cards -->
+                <div class="kpi-grid">
+                    <div class="kpi">
+                        <div class="kpi-label">Stores Tracked</div>
+                        <div class="kpi-val">854,291</div>
+                        <div class="kpi-sub">+3,247 added today</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">Active Ads Monitored</div>
+                        <div class="kpi-val">2.4M<span>+12%</span></div>
+                        <div class="kpi-sub">Across Meta, TikTok & Google</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">Avg Store Score</div>
+                        <div class="kpi-val">71.4</div>
+                        <div class="kpi-sub">Based on 15+ quality signals</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">Top Trending Niche</div>
+                        <div class="kpi-val" style="font-size:26px">Beauty & Wellness</div>
+                        <div class="kpi-sub">+34% growth this week</div>
+                    </div>
+                </div>
+
+                <!-- Bottom grid -->
+                <div class="bottom-grid">
+                    <div class="card">
+                        <div class="card-title">Top Performing <span>Stores</span></div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Store</th>
+                                    <th>Niche</th>
+                                    <th>Active Ads</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:700">Luxury Cosmetics Co</td>
+                                    <td>Beauty</td>
+                                    <td>156</td>
+                                    <td><span class="score-badge score-high">94.2</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:700">TechGear Store</td>
+                                    <td>Electronics</td>
+                                    <td>243</td>
+                                    <td><span class="score-badge score-high">89.7</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:700">Fashion Forward</td>
+                                    <td>Apparel</td>
+                                    <td>198</td>
+                                    <td><span class="score-badge score-high">87.3</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:700">HomeVibe Studio</td>
+                                    <td>Home & Garden</td>
+                                    <td>89</td>
+                                    <td><span class="score-badge score-med">76.1</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:700">PetLux Supply</td>
+                                    <td>Pets</td>
+                                    <td>112</td>
+                                    <td><span class="score-badge score-med">74.8</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-title">Live <span>Activity</span></div>
+                        <div class="activity">
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <div>
+                                    <div class="activity-text"><strong>327 new stores</strong> detected in the last hour</div>
+                                    <div class="activity-time">Just now</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot"></div>
+                                <div>
+                                    <div class="activity-text"><strong>Beauty niche</strong> spiking â 12 new high-score stores today</div>
+                                    <div class="activity-time">14 min ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot gray"></div>
+                                <div>
+                                    <div class="activity-text"><strong>TikTok ad volume</strong> up 18% across tracked stores</div>
+                                    <div class="activity-time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot gray"></div>
+                                <div>
+                                    <div class="activity-text"><strong>New trending product</strong> detected in Electronics niche</div>
+                                    <div class="activity-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-dot gray"></div>
+                                <div>
+                                    <div class="activity-text"><strong>France region</strong> â 89 new stores added overnight</div>
+                                    <div class="activity-time">5 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peekr - Dashboard Overview</title>
     <style>
         * {
