@@ -584,7 +584,14 @@
                 <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
             </div>
             <div class="sb-sec"><div class="sb-lbl">Favorites</div>
-                <a class="ni active" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Items</a>
+                <a class="ni active" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+                <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+            </div>
+            <div class="sb-sec"><div class="sb-lbl">Community</div>
+                <a class="ni" href="https://discord.gg/peekr" target="_blank"><span class="ni-ico">&#128172;</span>Discord<span class="nb">New</span></a>
+            </div>
+            <div class="sb-sec"><div class="sb-lbl">Resources</div>
+                <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog &amp; Tips</a>
             </div>
             <div class="sb-sec"><div class="sb-lbl">Tools</div>
                 <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
@@ -657,7 +664,7 @@
                     `${SUPABASE_URL}/rest/v1/saved_ads?select=*`,
                     {
                         headers: {
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'apikey': SUPABASE_ANON_KEY,
                             'Content-Type': 'application/json',
                         }
                     }
@@ -727,7 +734,7 @@
                     `${SUPABASE_URL}/rest/v1/saved_shops?select=*`,
                     {
                         headers: {
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'apikey': SUPABASE_ANON_KEY,
                             'Content-Type': 'application/json',
                         }
                     }
@@ -758,7 +765,7 @@
                             `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(shop.shop_domain)}&select=*`,
                             {
                                 headers: {
-                                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                                    'apikey': SUPABASE_ANON_KEY,
                                     'Content-Type': 'application/json',
                                 }
                             }
@@ -837,7 +844,7 @@
                     {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'apikey': SUPABASE_ANON_KEY,
                             'Content-Type': 'application/json',
                         }
                     }
@@ -862,7 +869,7 @@
                     {
                         method: 'DELETE',
                         headers: {
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                            'apikey': SUPABASE_ANON_KEY,
                             'Content-Type': 'application/json',
                         }
                     }
