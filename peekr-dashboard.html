@@ -1160,7 +1160,7 @@ function re(){
             ${s.sc>=75?'<span class="prbg">PRO</span>':''}
             <img class="flag-img" src="https://flagcdn.com/w40/${s.c}.png" alt="${s.c}"/>${s.c2?`<img class="flag-img" src="https://flagcdn.com/w40/${s.c2}.png" alt="${s.c2}"/>`:'' }
           </div>
-          <a href="https://${s.d}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="sdomain" style="color:var(--pink);text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
+          <a href="https://${s.d}" target="_blank" rel="noopener" class="sdomain" style="color:var(--pink);text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'" onclick="event.stopPropagation();">${s.d}</a>
           <div class="sage">${s.cr} · ${s.ag}</div>
         </div>
       </div></td>
@@ -1228,6 +1228,10 @@ function om(id){
     <a class="mml" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" style="display:flex;align-items:center;gap:8px;justify-content:center;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       Spy ${s.ad>0?s.ad+' active ':''}ads on Meta Ad Library
+    </a>
+    <a href="peekr-shop-detail.html?domain=${s.d}" class="mml" style="display:flex;align-items:center;gap:8px;justify-content:center;background:var(--pink);color:#fff;border-color:var(--pink);margin-top:6px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      View Full Analytics
     </a>`;
   document.getElementById('mo').classList.add('open');
 }

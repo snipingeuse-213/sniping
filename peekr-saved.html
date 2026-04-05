@@ -591,7 +591,7 @@
                 <a class="ni" href="https://discord.gg/peekr" target="_blank"><span class="ni-ico">&#128172;</span>Discord<span class="nb">New</span></a>
             </div>
             <div class="sb-sec"><div class="sb-lbl">Resources</div>
-                <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog &amp; Tips</a>
+                <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
             </div>
             <div class="sb-sec"><div class="sb-lbl">Tools</div>
                 <a class="ni" href="peekr-duel.html"><span class="ni-ico">&#9876;&#65039;</span>Duel Mode</a>
@@ -602,7 +602,7 @@
                 <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
             </div>
             <div class="sb-bot">
-                <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+                <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
             </div>
         </aside>
 
@@ -665,24 +665,23 @@
                     {
                         headers: {
                             'apikey': SUPABASE_ANON_KEY,
-                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
                         }
                     }
                 );
 
-                if (!response.ok) throw new Error('Failed to fetch saved ads');
+                if (!response.ok) {
+                    // Table might not exist yet — show empty state instead of error
+                    savedAds = [];
+                    renderSavedAds();
+                    return;
+                }
                 savedAds = await response.json();
                 renderSavedAds();
             } catch (error) {
                 console.error('Error loading saved ads:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">&#9888;&#65039;</div>
-                        <div class="empty-title">Error Loading Ads</div>
-                        <div class="empty-text">We couldn't load your saved ads. Please try again.</div>
-                        <button onclick="location.reload()" class="cta-btn cta-btn-primary">Reload</button>
-                    </div>
-                `;
+                savedAds = [];
+                renderSavedAds();
             }
         }
 
@@ -735,25 +734,23 @@
                     {
                         headers: {
                             'apikey': SUPABASE_ANON_KEY,
-                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
                         }
                     }
                 );
 
-                if (!response.ok) throw new Error('Failed to fetch saved shops');
+                if (!response.ok) {
+                    savedShops = [];
+                    renderSavedShops();
+                    return;
+                }
                 savedShops = await response.json();
                 await enrichShopsData();
                 renderSavedShops();
             } catch (error) {
                 console.error('Error loading saved shops:', error);
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">&#9888;&#65039;</div>
-                        <div class="empty-title">Error Loading Shops</div>
-                        <div class="empty-text">We couldn't load your saved shops. Please try again.</div>
-                        <button onclick="location.reload()" class="cta-btn cta-btn-primary">Reload</button>
-                    </div>
-                `;
+                savedShops = [];
+                renderSavedShops();
             }
         }
 
