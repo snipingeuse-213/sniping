@@ -447,48 +447,33 @@ td{padding:11px 14px;vertical-align:middle;}
       <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
       <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
     </div>
-    <div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
-    <div class="fr">
-      <span class="fl">RANGES</span>
-      <div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;">
-        <span style="font-size:11px;font-weight:700;color:rgba(26,10,15,0.45);">Score</span>
-        <input id="rf-score-min" type="number" min="0" max="1000" placeholder="Min" style="width:52px;padding:3px 5px;border:1px solid rgba(200,160,170,0.2);border-radius:5px;font-size:11px;outline:none;font-family:Figtree,sans-serif;" onchange="applyRangeFilters()"/>
-        <span style="font-size:10px;color:rgba(26,10,15,0.3);">-</span>
-        <input id="rf-score-max" type="number" min="0" max="1000" placeholder="Max" style="width:52px;padding:3px 5px;border:1px solid rgba(200,160,170,0.2);border-radius:5px;font-size:11px;outline:none;font-family:Figtree,sans-serif;" onchange="applyRangeFilters()"/>
+        <div class="fr"><span class="fl">Ranges</span>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
+        Score <input id="scoreMin" type="number" min="0" max="100" placeholder="Min" style="width:52px;padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb" onchange="applyRangeFilters()">
+        <span>-</span>
+        <input id="scoreMax" type="number" min="0" max="100" placeholder="Max" style="width:52px;padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb" onchange="applyRangeFilters()">
       </div>
-      <div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;">
-        <span style="font-size:11px;font-weight:700;color:rgba(26,10,15,0.45);">Traffic</span>
-        <select id="rf-traffic" style="padding:3px 5px;border:1px solid rgba(200,160,170,0.2);border-radius:5px;font-size:11px;outline:none;font-family:Figtree,sans-serif;color:#1a0a0f;" onchange="applyRangeFilters()">
-          <option value="">All</option>
-          <option value="0-1000">0 - 1K</option>
-          <option value="1000-10000">1K - 10K</option>
-          <option value="10000-50000">10K - 50K</option>
-          <option value="50000-200000">50K - 200K</option>
-          <option value="200000-99999999">200K+</option>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
+        Traffic
+        <select id="trafficRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
+          <option value="">All</option><option value="0-10000">0 - 10K</option><option value="10000-50000">10K - 50K</option><option value="50000-200000">50K - 200K</option><option value="200000-1000000">200K - 1M</option><option value="1000000-99999999">1M+</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;">
-        <span style="font-size:11px;font-weight:700;color:rgba(26,10,15,0.45);">Revenue</span>
-        <select id="rf-revenue" style="padding:3px 5px;border:1px solid rgba(200,160,170,0.2);border-radius:5px;font-size:11px;outline:none;font-family:Figtree,sans-serif;color:#1a0a0f;" onchange="applyRangeFilters()">
-          <option value="">All</option>
-          <option value="0-10000">$0 - $10K</option>
-          <option value="10000-100000">$10K - $100K</option>
-          <option value="100000-1000000">$100K - $1M</option>
-          <option value="1000000-99999999">$1M+</option>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
+        Revenue
+        <select id="revenueRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
+          <option value="">All</option><option value="0-10000">$0 - $10K</option><option value="10000-100000">$10K - $100K</option><option value="100000-1000000">$100K - $1M</option><option value="1000000-10000000">$1M - $10M</option><option value="10000000-99999999">$10M+</option>
         </select>
       </div>
-      <div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;">
-        <span style="font-size:11px;font-weight:700;color:rgba(26,10,15,0.45);">Products</span>
-        <select id="rf-products" style="padding:3px 5px;border:1px solid rgba(200,160,170,0.2);border-radius:5px;font-size:11px;outline:none;font-family:Figtree,sans-serif;color:#1a0a0f;" onchange="applyRangeFilters()">
-          <option value="">All</option>
-          <option value="1-10">1 - 10</option>
-          <option value="11-50">11 - 50</option>
-          <option value="51-200">51 - 200</option>
-          <option value="201-1000">201 - 1K</option>
-          <option value="1000-99999">1K+</option>
+      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
+        Products
+        <select id="productsRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
+          <option value="">All</option><option value="1-50">1 - 50</option><option value="50-200">50 - 200</option><option value="200-1000">200 - 1K</option><option value="1000-5000">1K - 5K</option><option value="5000-999999">5K+</option>
         </select>
       </div>
     </div>
+<div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
+    
       <button id="reset-btn" onclick="resetAllFilters()" style="background:rgba(232,121,154,0.15);color:#e8799a;border:1px solid #e8799a;border-radius:20px;padding:5px 14px;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s">Reset all filters</button>
     </div>
   </div>
