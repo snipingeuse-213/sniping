@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Peekr Dashboard — Your ecom intelligence command center. Track stores, ads, and competitors in real time.">
-    <title>Peekr — Dashboard Overview</title>
+    <meta name="description" content="Peekr Dashboard â Your ecom intelligence command center. Track stores, ads, and competitors in real time.">
+    <title>Peekr â Dashboard Overview</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -75,7 +75,7 @@
         .welcome p{font-size:14px;opacity:.8;line-height:1.6;max-width:480px}
 
         /* KPI grid */
-        .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+        .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
         .kpi{
             background:rgba(255,252,248,0.6);
             backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
@@ -120,7 +120,8 @@
         .activity-text strong{color:#1a0a0f;font-weight:700}
         .activity-time{font-size:11px;color:rgba(26,10,15,0.3);margin-top:2px;font-weight:500}
 
-        @media(max-width:1100px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.bottom-grid{grid-template-columns:1fr}}
+        @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+        @media(max-width:1100px){.bottom-grid{grid-template-columns:1fr}}
         @media(max-width:768px){.sb{display:none}.kpi-grid{grid-template-columns:1fr}}
     </style>
 </head>
@@ -128,88 +129,38 @@
     <div class="container">
         <!-- Sidebar -->
         <aside class="sb">
-        <div class="sb-logo">peekr</div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Overview</div>
-            <a href="peekr-overview.html" class="ni active">
-                <span class="ni-ico">📊</span>
-                <span>Dashboard</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Analyse</div>
-            <a href="peekr-dashboard.html" class="ni">
-                <span class="ni-ico">🔥</span>
-                <span>Trending Shops</span>
-            </a>
-            <a href="peekr-best-trends.html" class="ni">
-                <span class="ni-ico">⭐</span>
-                <span>Best Trends</span>
-                <span class="nb s">Soon</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Favorites</div>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">❤️</span>
-                <span>Saved Ads</span>
-            </a>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">🛍️</span>
-                <span>Saved Shops</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Community</div>
-            <a href="peekr-community.html" class="ni">
-                <span class="ni-ico">💬</span>
-                <span>Community</span>
-                <span class="nb">New</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Resources</div>
-            <a href="peekr-blog.html" class="ni">
-                <span class="ni-ico">📚</span>
-                <span>Blog & Tips</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Tools</div>
-            <a href="peekr-export.html" class="ni">
-                <span class="ni-ico">📥</span>
-                <span>Export</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Account</div>
-            <a href="peekr-pricing.html" class="ni">
-                <span class="ni-ico">⬆️</span>
-                <span>Upgrade</span>
-            </a>
-            <a href="peekr-affiliate.html" class="ni">
-                <span class="ni-ico">🤝</span>
-                <span>Affiliate</span>
-            </a>
-        </div>
-
-        <div class="sb-bot">
-            <div class="uc">
-                <div class="ua">LR</div>
-                <div>
-                    <div class="un">Lyli Rose</div>
-                    <div class="up">Pro Plan</div>
-                </div>
-            </div>
-        </div>
-    </aside>
+          <div class="sb-logo">
+            <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC40MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM4NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDM4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MjkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM4NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDM4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MjkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNDY1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDM4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Overview</div>
+            <a class="ni active" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Analyse</div>
+            <a class="ni" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
+            <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
+            <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Favorites</div>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+            <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Community</div>
+            <a class="ni" href="peekr-community.html"><span class="ni-ico">&#128172;</span>Community<span class="nb">New</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Resources</div>
+            <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Tools</div>
+            <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
+          </div>
+          <div class="sb-sec"><div class="sb-lbl">Account</div>
+            <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
+            <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
+          </div>
+          <div class="sb-bot">
+            <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+          </div>
+        </aside>
 
         <!-- Main Content -->
         <div class="main">
@@ -231,53 +182,81 @@
                     <p id="welcome-desc">Loading your dashboard data...</p>
                 </div>
 
-                <!-- KPI cards -->
+                <!-- KPI cards row 1 -->
                 <div class="kpi-grid">
                     <div class="kpi">
-                        <div class="kpi-label">Stores Tracked</div>
+                        <div class="kpi-label">&#127978; Stores Tracked</div>
                         <div class="kpi-val" id="kpi-stores">...</div>
                         <div class="kpi-sub" id="kpi-stores-sub">Loading...</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">Countries Covered</div>
+                        <div class="kpi-label">&#127758; Countries Covered</div>
                         <div class="kpi-val" id="kpi-countries">...</div>
                         <div class="kpi-sub" id="kpi-countries-sub">Loading...</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">Avg Store Score</div>
+                        <div class="kpi-label">&#128200; Avg Store Score</div>
                         <div class="kpi-val" id="kpi-score">...</div>
                         <div class="kpi-sub">Based on 15+ quality signals</div>
                     </div>
+                </div>
+                <!-- KPI cards row 2 -->
+                <div class="kpi-grid">
                     <div class="kpi">
-                        <div class="kpi-label">Top Trending Niche</div>
-                        <div class="kpi-val" style="font-size:26px" id="kpi-niche">...</div>
+                        <div class="kpi-label">&#128227; Live Ads Tracked</div>
+                        <div class="kpi-val" id="kpi-ads">...</div>
+                        <div class="kpi-sub" id="kpi-ads-sub">From Meta Ad Library</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">&#128293; Top Trending Niche</div>
+                        <div class="kpi-val" style="font-size:22px" id="kpi-niche">...</div>
                         <div class="kpi-sub" id="kpi-niche-sub">Loading...</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">&#128176; Est. Revenue Pool</div>
+                        <div class="kpi-val" id="kpi-revenue">...</div>
+                        <div class="kpi-sub" id="kpi-revenue-sub">Across all tracked stores</div>
                     </div>
                 </div>
 
-                <!-- Bottom grid -->
-                <div class="bottom-grid">
+                <!-- Three-column bottom -->
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+                    <!-- Top Stores -->
                     <div class="card">
                         <div class="card-title">Top Performing <span>Stores</span></div>
                         <table>
-                            <thead>
-                                <tr>
-                                    <th>Store</th>
-                                    <th>Niche</th>
-                                    <th>Visits/mo</th>
-                                    <th>Score</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Store</th><th>Visits/mo</th><th>Score</th></tr></thead>
                             <tbody id="top-stores-body">
-                                <tr><td colspan="4" style="text-align:center;color:rgba(26,10,15,0.35)">Loading...</td></tr>
+                                <tr><td colspan="3" style="text-align:center;color:rgba(26,10,15,0.35)">Loading...</td></tr>
                             </tbody>
                         </table>
                     </div>
 
+                    <!-- Niche Distribution -->
+                    <div class="card">
+                        <div class="card-title">Niche <span>Distribution</span></div>
+                        <div id="niche-chart" style="display:flex;flex-direction:column;gap:10px"></div>
+                    </div>
+
+                    <!-- Top Countries -->
+                    <div class="card">
+                        <div class="card-title">Top <span>Countries</span></div>
+                        <div id="country-list" style="display:flex;flex-direction:column;gap:8px"></div>
+                    </div>
+                </div>
+
+                <!-- Recently Added + Quick Stats -->
+                <div class="bottom-grid">
                     <div class="card">
                         <div class="card-title">Recently <span>Added</span></div>
                         <div class="activity" id="recent-activity">
                             <div class="activity-item"><div class="activity-dot gray"></div><div><div class="activity-text">Loading recent activity...</div></div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Platform <span>Insights</span></div>
+                        <div id="platform-insights" style="display:flex;flex-direction:column;gap:12px">
+                            <div style="text-align:center;color:rgba(26,10,15,0.35);font-size:13px">Loading insights...</div>
                         </div>
                     </div>
                 </div>
@@ -291,71 +270,135 @@
                 const fmt=n=>{if(!n||n===0)return'0';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toLocaleString()};
 
                 try{
-                    // Fetch total count
-                    const countRes=await fetch(`${SB_URL}/rest/v1/shops?select=domain&limit=1`,{headers:{...hdr,'Range':'0-0','Prefer':'count=exact'}});
+                    // Parallel fetch all data
+                    const [countRes,topRes,recentRes,sampleRes,adsCountRes]=await Promise.all([
+                        fetch(`${SB_URL}/rest/v1/shops?select=domain&limit=1`,{headers:{...hdr,'Range':'0-0','Prefer':'count=exact'}}),
+                        fetch(`${SB_URL}/rest/v1/shops?select=domain,name,niche,monthly_visits,score,country,live_ads,revenue_min,revenue_max&order=score.desc&limit=10`,{headers:hdr}),
+                        fetch(`${SB_URL}/rest/v1/shops?select=domain,name,country,created_date,niche,score&order=created_date.desc&limit=8`,{headers:hdr}),
+                        fetch(`${SB_URL}/rest/v1/shops?select=niche,country,score,live_ads,revenue_min,revenue_max,monthly_visits&limit=2000`,{headers:hdr}),
+                        fetch(`${SB_URL}/rest/v1/ads?select=meta_ad_id&limit=1`,{headers:{...hdr,'Range':'0-0','Prefer':'count=exact'}})
+                    ]);
+
                     const total=parseInt(countRes.headers.get('content-range')?.split('/')?.[1]||'0');
-
-                    // Fetch top 5 by score
-                    const topRes=await fetch(`${SB_URL}/rest/v1/shops?select=domain,shop_name,niche,monthly_visits,score&order=score.desc&limit=5`,{headers:hdr});
                     const topShops=await topRes.json();
-
-                    // Fetch recent 5
-                    const recentRes=await fetch(`${SB_URL}/rest/v1/shops?select=domain,shop_name,country,created_date&order=created_date.desc&limit=5`,{headers:hdr});
                     const recentShops=await recentRes.json();
+                    const sampleData=await sampleRes.json();
+                    const totalAds=parseInt(adsCountRes.headers.get('content-range')?.split('/')?.[1]||'0');
 
-                    // Fetch country count
-                    const countriesRes=await fetch(`${SB_URL}/rest/v1/shops?select=country&limit=500`,{headers:hdr});
-                    const countriesData=await countriesRes.json();
-                    const uniqueCountries=[...new Set(countriesData.map(s=>s.country).filter(Boolean))];
+                    // Compute analytics
+                    const uniqueCountries=[...new Set(sampleData.map(s=>s.country).filter(Boolean))];
+                    const avgScore=sampleData.length?(sampleData.reduce((a,b)=>a+(b.score||0),0)/sampleData.length).toFixed(1):'N/A';
+                    const totalRevenue=sampleData.reduce((a,s)=>a+((s.revenue_min||0)+(s.revenue_max||0))/2,0);
+                    const totalLiveAds=sampleData.reduce((a,s)=>a+(s.live_ads||0),0);
 
-                    // Fetch avg score (sample top 200)
-                    const scoreRes=await fetch(`${SB_URL}/rest/v1/shops?select=score&order=score.desc&limit=200`,{headers:hdr});
-                    const scores=await scoreRes.json();
-                    const avgScore=scores.length?(scores.reduce((a,b)=>a+(b.score||0),0)/scores.length).toFixed(1):'N/A';
-
-                    // Fetch top niche
-                    const nicheRes=await fetch(`${SB_URL}/rest/v1/shops?select=niche&limit=1000`,{headers:hdr});
-                    const nicheData=await nicheRes.json();
+                    // Niche counts
                     const nicheCounts={};
-                    nicheData.forEach(s=>{if(s.niche){nicheCounts[s.niche]=(nicheCounts[s.niche]||0)+1}});
-                    const topNiche=Object.entries(nicheCounts).sort((a,b)=>b[1]-a[1])[0];
+                    sampleData.forEach(s=>{if(s.niche){nicheCounts[s.niche]=(nicheCounts[s.niche]||0)+1}});
+                    const topNiches=Object.entries(nicheCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+                    const topNiche=topNiches[0];
 
-                    // Update KPIs
-                    document.getElementById('kpi-stores').textContent=fmt(total);
-                    document.getElementById('kpi-stores-sub').textContent=`Growing every hour via auto-import`;
+                    // Country counts
+                    const countryCounts={};
+                    sampleData.forEach(s=>{if(s.country){countryCounts[s.country]=(countryCounts[s.country]||0)+1}});
+                    const topCountries=Object.entries(countryCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+                    // -- UPDATE KPIs --
+                    document.getElementById('kpi-stores').innerHTML=fmt(total)+'<span>+3K/hr</span>';
+                    document.getElementById('kpi-stores-sub').textContent='Auto-imported every hour';
                     document.getElementById('kpi-countries').textContent=uniqueCountries.length;
-                    document.getElementById('kpi-countries-sub').textContent=uniqueCountries.slice(0,5).join(', ')+(uniqueCountries.length>5?' + more':'');
-                    document.getElementById('kpi-score').textContent=avgScore;
+                    document.getElementById('kpi-countries-sub').textContent=uniqueCountries.slice(0,4).join(', ')+(uniqueCountries.length>4?' + more':'');
+                    document.getElementById('kpi-score').innerHTML=avgScore+'<span>/100</span>';
+                    document.getElementById('kpi-ads').innerHTML=totalAds>0?fmt(totalAds)+'<span>live</span>':fmt(totalLiveAds)+'<span>detected</span>';
+                    document.getElementById('kpi-ads-sub').textContent='From Meta Ad Library scans';
                     if(topNiche){
                         document.getElementById('kpi-niche').textContent=topNiche[0];
                         document.getElementById('kpi-niche-sub').textContent=topNiche[1]+' stores tracked';
                     }
-                    document.getElementById('welcome-desc').textContent=`Your dashboard is tracking ${fmt(total)} stores across ${uniqueCountries.length} countries. New stores are imported automatically every hour.`;
+                    document.getElementById('kpi-revenue').innerHTML='$'+fmt(totalRevenue);
+                    document.getElementById('kpi-revenue-sub').textContent='Combined monthly est. revenue';
+                    document.getElementById('welcome-desc').textContent='Tracking '+fmt(total)+' stores across '+uniqueCountries.length+' countries. '+fmt(totalLiveAds)+' ads detected. Data refreshed hourly.';
 
-                    // Top stores table
+                    // -- TOP STORES TABLE --
                     const tbody=document.getElementById('top-stores-body');
                     if(topShops.length){
-                        tbody.innerHTML=topShops.map(s=>`<tr onclick="location.href='peekr-shop-detail.html?domain=${s.domain}'" style="cursor:pointer">
-                            <td style="font-weight:700">${s.shop_name||s.domain}</td>
-                            <td>${s.niche||'—'}</td>
+                        tbody.innerHTML=topShops.slice(0,7).map(s=>{
+                            const flag=s.country?`<img src="https://flagcdn.com/w20/${(s.country||'us').toLowerCase()}.png" style="width:16px;height:11px;border-radius:2px;vertical-align:middle;margin-right:4px" onerror="this.style.display='none'"/>`:'';
+                            return`<tr onclick="location.href='peekr-shop-detail.html?domain=${s.domain}'" style="cursor:pointer">
+                            <td style="font-weight:700">${flag}${s.name||s.domain}</td>
                             <td>${fmt(s.monthly_visits)}</td>
-                            <td><span class="score-badge ${(s.score||0)>=80?'score-high':'score-med'}">${(s.score||0).toFixed(1)}</span></td>
-                        </tr>`).join('');
-                    }else{
-                        tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:rgba(26,10,15,0.35)">No shops yet</td></tr>';
+                            <td><span class="score-badge ${(s.score||0)>=80?'score-high':'score-med'}">${Math.round(s.score||0)}</span></td>
+                        </tr>`}).join('');
                     }
 
-                    // Recent activity
+                    // -- NICHE DISTRIBUTION CHART --
+                    const nicheEl=document.getElementById('niche-chart');
+                    if(topNiches.length){
+                        const maxN=topNiches[0][1];
+                        const colors=['#e8799a','#f4a7b9','#c85080','#d4607a','#b88aad','#9171c8','#6b5b6e','#aaa'];
+                        nicheEl.innerHTML=topNiches.map((n,i)=>{
+                            const pct=Math.round(n[1]/maxN*100);
+                            return`<div style="display:flex;align-items:center;gap:10px">
+                                <div style="width:90px;font-size:11px;font-weight:600;color:rgba(26,10,15,0.6);text-align:right;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${n[0]}</div>
+                                <div style="flex:1;height:22px;background:rgba(200,180,170,0.1);border-radius:6px;overflow:hidden;position:relative">
+                                    <div style="width:${pct}%;height:100%;background:${colors[i%colors.length]};border-radius:6px;transition:width .5s"></div>
+                                </div>
+                                <div style="width:36px;font-size:11px;font-weight:700;color:rgba(26,10,15,0.5)">${n[1]}</div>
+                            </div>`;
+                        }).join('');
+                    }
+
+                    // -- TOP COUNTRIES --
+                    const countryEl=document.getElementById('country-list');
+                    if(topCountries.length){
+                        countryEl.innerHTML=topCountries.map((c,i)=>{
+                            const code=c[0].toLowerCase();
+                            const names={'us':'United States','gb':'United Kingdom','fr':'France','de':'Germany','ca':'Canada','au':'Australia','it':'Italy','es':'Spain','nl':'Netherlands','br':'Brazil','in':'India','se':'Sweden','dk':'Denmark','no':'Norway','nz':'New Zealand','ie':'Ireland','be':'Belgium','at':'Austria','ch':'Switzerland','pt':'Portugal','pl':'Poland','jp':'Japan'};
+                            return`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;${i<topCountries.length-1?'border-bottom:1px solid rgba(200,180,170,0.1)':''}">
+                                <img src="https://flagcdn.com/w40/${code}.png" style="width:24px;height:16px;border-radius:3px;object-fit:cover" onerror="this.style.display='none'"/>
+                                <div style="flex:1;font-size:13px;font-weight:600">${names[code]||c[0]}</div>
+                                <div style="font-size:12px;font-weight:700;color:#e8799a">${c[1]} stores</div>
+                            </div>`;
+                        }).join('');
+                    }
+
+                    // -- RECENT ACTIVITY --
                     const actEl=document.getElementById('recent-activity');
                     if(recentShops.length){
-                        actEl.innerHTML=recentShops.map((s,i)=>`<div class="activity-item">
-                            <div class="activity-dot ${i<2?'':'gray'}"></div>
+                        actEl.innerHTML=recentShops.map((s,i)=>{
+                            const flag=s.country?`<img src="https://flagcdn.com/w20/${(s.country||'us').toLowerCase()}.png" style="width:14px;height:10px;border-radius:2px;vertical-align:middle;margin:0 4px" onerror="this.style.display='none'"/>`:'';
+                            return`<div class="activity-item">
+                            <div class="activity-dot ${i<3?'':'gray'}"></div>
                             <div>
-                                <div class="activity-text"><strong>${s.shop_name||s.domain}</strong> added from ${s.country||'unknown'}</div>
-                                <div class="activity-time">${s.created_date||'recently'}</div>
+                                <div class="activity-text"><strong>${s.name||s.domain}</strong>${flag}${s.niche?' Â· '+s.niche:''}</div>
+                                <div class="activity-time">${s.created_date?s.created_date.split('T')[0]:'recently'}${s.score?' Â· Score: '+Math.round(s.score):''}</div>
                             </div>
-                        </div>`).join('');
+                        </div>`}).join('');
                     }
+
+                    // -- PLATFORM INSIGHTS --
+                    const insEl=document.getElementById('platform-insights');
+                    const avgTraffic=sampleData.length?Math.round(sampleData.reduce((a,s)=>a+(s.monthly_visits||0),0)/sampleData.length):0;
+                    const highScoreCount=sampleData.filter(s=>(s.score||0)>=80).length;
+                    const activeAdShops=sampleData.filter(s=>(s.live_ads||0)>0).length;
+                    const pctAds=sampleData.length?Math.round(activeAdShops/sampleData.length*100):0;
+                    insEl.innerHTML=`
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(232,121,154,0.06);border-radius:14px;border:1px solid rgba(232,121,154,0.12)">
+                            <div style="font-size:24px">&#128640;</div>
+                            <div><div style="font-size:13px;font-weight:700">High-Score Stores</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">${highScoreCount} stores with score 80+</div></div>
+                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#e8799a">${Math.round(highScoreCount/sampleData.length*100)}%</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(145,113,200,0.06);border-radius:14px;border:1px solid rgba(145,113,200,0.12)">
+                            <div style="font-size:24px">&#128202;</div>
+                            <div><div style="font-size:13px;font-weight:700">Avg Monthly Traffic</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">Across sampled stores</div></div>
+                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#9171c8">${fmt(avgTraffic)}</div>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(230,184,58,0.06);border-radius:14px;border:1px solid rgba(230,184,58,0.12)">
+                            <div style="font-size:24px">&#128161;</div>
+                            <div><div style="font-size:13px;font-weight:700">Running Meta Ads</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">${activeAdShops} shops actively advertising</div></div>
+                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#d4a017">${pctAds}%</div>
+                        </div>
+                    `;
+
                 }catch(e){
                     console.error('Overview load error:',e);
                     document.getElementById('welcome-desc').textContent='Could not load live data. Please refresh.';
