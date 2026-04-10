@@ -425,13 +425,13 @@ function renderCards(){
     const platforms = a.publisher_platforms || [];
     const metaId = a.meta_ad_id||'';
     const metaLibUrl = metaId ? `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id=${metaId}` : '#';
-    const snapshotUrl = a.ad_snapshot_url || '';
     const reach = a.eu_total_reach ? fmtNum(a.eu_total_reach) : '';
     const spend = a.spend_upper ? '$'+fmtNum(a.spend_upper) : '';
+    const thumbUrl = metaId ? 'https://image.thum.io/get/width/600/crop/400/noanimate/https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId : '';
 
     return `<div class="ad-card" onclick="window.open('${metaLibUrl}','_blank')" style="cursor:pointer">
       <div class="ad-thumb" style="position:relative;min-height:220px;overflow:hidden;background:#1a0a0f;">
-        ${snapshotUrl ? `<iframe src="${snapshotUrl}" style="position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;transform:scale(0.75);transform-origin:top left;width:133%;height:133%;" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>` : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;text-align:center;"><div style="font-size:32px;margin-bottom:8px;opacity:0.4;">&#128247;</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">${body.substring(0,80)}...</div></div>`}
+        ${thumbUrl ? `<img src="${thumbUrl}" alt="${(a.page_name||'Ad').replace(/"/g,'')}" style="width:100%;height:100%;object-fit:cover;object-position:center;" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div style="display:none;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;text-align:center;position:absolute;inset:0;"><div style="font-size:32px;margin-bottom:8px;opacity:0.4;">&#128247;</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">${body.substring(0,80)}...</div></div>` : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;text-align:center;"><div style="font-size:32px;margin-bottom:8px;opacity:0.4;">&#128247;</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">${body.substring(0,80)}...</div></div>`}
         <div class="ad-score" style="background:${sc.bg}">${score.toFixed?score.toFixed(0):score}</div>
       </div>
       <div class="ad-body">
