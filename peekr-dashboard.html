@@ -1413,7 +1413,7 @@ async function runAC(term){
 document.addEventListener('click',e=>{if(!e.target.closest('.sbox')&&!e.target.closest('#ac-drop'))document.getElementById('ac-drop').style.display='none';});
 
 // --- Range Filters ---
-let _rangeFilters = {scoreMin:null,scoreMax:null,trafficMin:null,trafficMax:null,revenueMin:null,revenueMax:null,productsMin:null,productsMax:null};
+var _rangeFilters = {scoreMin:null,scoreMax:null,trafficMin:null,trafficMax:null,revenueMin:null,revenueMax:null,productsMin:null,productsMax:null};
 
 function applyRangeFilters(){
   const sm=document.getElementById('rf-score-min');
