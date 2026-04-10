@@ -1351,8 +1351,8 @@ function re(){
         </div>
       </div></td>
       <td>
-        <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:4px;align-items:center;min-width:120px;">
-          ${[0,1,2].map(()=>`<div style="width:42px;height:42px;border-radius:8px;background:#f5f0ec;flex-shrink:0;"></div>`).join('')}
+        <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:5px;align-items:center;min-width:140px;">
+          ${[0,1,2].map(()=>`<div style="width:46px;height:46px;border-radius:8px;background:#f5f0ec;flex-shrink:0;"></div>`).join('')}
         </div>
         <div class="pct">${s.p} total</div>
       </td>
@@ -1392,7 +1392,7 @@ function loadProductImages(){
       .then(data=>{
         const imgs=(data.products||[]).slice(0,3).map(p=>{
           const img=p.images&&p.images[0]?p.images[0].src:'';
-          return img?img.replace(/\.([a-z]+)\?/,'_100x100.$1?'):'';
+          return img?img.replace(/\.([a-z]+)\?/,'_200x200.$1?'):'';
         }).filter(Boolean);
         _prodCache[domain]=imgs;
         renderProdImgs(el,imgs);
@@ -1405,8 +1405,8 @@ function loadProductImages(){
 }
 function renderProdImgs(el,imgs){
   if(imgs.length===0)return;
-  el.innerHTML=imgs.map(src=>`<img src="${src}" style="width:42px;height:42px;border-radius:8px;object-fit:cover;background:#f5f0ec;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'"/>`).join('')+
-    (imgs.length<3?`<div style="width:42px;height:42px;border-radius:8px;background:#f5f0ec;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#b8a8b0;">+</div>`:'');
+  el.innerHTML=imgs.map(src=>`<img src="${src}" style="width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f5f0ec;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'"/>`).join('')+
+    (imgs.length<3?`<div style="width:46px;height:46px;border-radius:8px;background:#f5f0ec;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#b8a8b0;">+</div>`:'');
 }
 
 function om(id){
