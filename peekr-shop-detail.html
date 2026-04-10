@@ -275,8 +275,9 @@ function renderShop(s){
   const currency=s.currency||'N/A';
   const plan=s.shopify_plan||'N/A';
   const theme=s.theme||'Unknown';
-  const pixels=s.ad_platforms||s.technologies?.filter(t=>/(pixel|analytics|tag manager|ads|snap|tiktok|taboola|pinterest)/i.test(t))||[];
-  const techs=s.technologies||[];
+  const rawTechs=(s.technologies||[]).map(t=>{if(typeof t==='object'&&t!==null)return t.name||JSON.stringify(t);if(typeof t==='string'){try{const p=JSON.parse(t);return p.name||t;}catch(e){return t;}}return String(t);});
+  const pixels=s.ad_platforms||rawTechs.filter(t=>/(pixel|analytics|tag manager|ads|snap|tiktok|taboola|pinterest)/i.test(t))||[];
+  const techs=rawTechs;
   const rawApps=s.apps||[];
   const apps=rawApps.map(a=>{if(typeof a==='object')return{name:a.name||'Unknown',icon:a.icon_url||''};if(typeof a==='string'){try{const p=JSON.parse(a);return{name:p.name||'Unknown',icon:p.icon_url||''};}catch(e){return{name:a,icon:''};}}return{name:String(a),icon:''};});
   const strats=s.strategies||[];
@@ -741,33 +742,48 @@ async function loadTrustpilot(domain){
   const tpStars=document.getElementById('tp-stars');
   const tpLink=document.getElementById('tp-link');
   if(!tpRating) return;
+  const cleanDomain=domain.replace(/^www\./,'');
   try{
-    // Try fetching Trustpilot widget data via their public JSON endpoint
-    const cleanDomain=domain.replace(/^www\./,'');
-    const resp=await fetch('https://widget.trustpilot.com/trustbox-data/53aa8807dec7e10d38f59f32?businessUnitId=find&locale=en-US&reviewLanguages=all&hostname='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000)});
+    // Try Trustpilot business unit find API
+    const resp=await fetch('https://www.trustpilot.com/api/categoriespages/'+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000),headers:{'Accept':'application/json'}});
     if(resp.ok){
       const d=await resp.json();
-      if(d&&d.businessEntity){
-        const r=d.businessEntity.trustScore||0;
-        const n=d.businessEntity.numberOfReviews||0;
-        const stars=d.businessEntity.stars||0;
+      if(d&&d.trustScore!==undefined){
+        const r=d.trustScore||0;
+        const n=d.numberOfReviews||0;
+        const stars=d.stars||Math.round(r);
         tpRating.textContent=r.toFixed(1);
         tpCount.textContent='('+n.toLocaleString()+' reviews)';
-        tpStars.innerHTML=Array.from({length:5},(_,i)=>{
-          const fill=i<Math.floor(stars)?'#00b67a':i<stars?'#73cf11':'#dcdce6';
-          return '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="'+fill+'"/></svg>';
-        }).join('');
-        if(d.businessEntity.id){
-          tpLink.href='https://www.trustpilot.com/review/'+cleanDomain;
-        }
+        renderTpStars(tpStars,stars);
         return;
       }
     }
   }catch(e){}
-  // Fallback: just show link without rating
-  tpRating.textContent='--';
-  tpCount.textContent='View on Trustpilot for reviews';
+  // Fallback: try widget endpoint
+  try{
+    const resp2=await fetch('https://widget.trustpilot.com/trustbox-data/53aa8807dec7e10d38f59f32?businessUnitId=find&locale=en-US&hostname='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000)});
+    if(resp2.ok){
+      const d2=await resp2.json();
+      if(d2&&d2.businessEntity){
+        const r=d2.businessEntity.trustScore||0;
+        const n=d2.businessEntity.numberOfReviews||0;
+        tpRating.textContent=r.toFixed(1);
+        tpCount.textContent='('+n.toLocaleString()+' reviews)';
+        renderTpStars(tpStars,d2.businessEntity.stars||Math.round(r));
+        return;
+      }
+    }
+  }catch(e){}
+  // Show link-only fallback
+  tpRating.textContent='N/A';
+  tpCount.textContent='Check reviews on Trustpilot';
   tpStars.innerHTML='';
+}
+function renderTpStars(el,stars){
+  el.innerHTML=Array.from({length:5},(_,i)=>{
+    const fill=i<Math.floor(stars)?'#00b67a':i<stars?'#73cf11':'#dcdce6';
+    return '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="'+fill+'"/></svg>';
+  }).join('');
 }
 
 // --- Product Images ---
