@@ -800,29 +800,16 @@ async function scanPixels(domain){
   if(!container) return;
   const cleanDomain=domain.replace(/^www\./,'');
   try{
-    const resp=await fetch('https://'+cleanDomain,{
-      mode:'cors',
-      signal:AbortSignal.timeout(8000),
-      headers:{'Accept':'text/html'}
-    }).catch(()=>null);
-    // CORS will block most stores, so use our proxy approach
-    // Fallback: try fetching through a simple proxy endpoint
-    let html='';
-    try{
-      const proxyResp=await fetch('/api/scan-pixels?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(12000)});
-      if(proxyResp.ok){
-        const data=await proxyResp.json();
-        if(data&&data.pixels&&data.pixels.length>0){
-          container.innerHTML='<div class="tags">'+data.pixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div><div style="margin-top:6px;font-size:10px;color:var(--text3);">Detected via live page scan</div>';
-          return;
-        }
+    const proxyResp=await fetch('/api/scan-pixels?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(15000)});
+    if(proxyResp.ok){
+      const data=await proxyResp.json();
+      if(data&&data.pixels&&data.pixels.length>0){
+        container.innerHTML='<div class="tags">'+data.pixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div><div style="margin-top:6px;font-size:10px;color:var(--text3);">Detected via live page scan</div>';
+        return;
       }
-    }catch(e){}
-    // If no proxy available or no pixels found
-    if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
-  }catch(e){
-    if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
-  }
+    }
+  }catch(e){console.log('Pixel scan error:',e.message);}
+  if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
 }
 
 // --- Product Images ---
