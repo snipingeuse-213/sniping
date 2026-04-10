@@ -1351,7 +1351,9 @@ function re(){
         </div>
       </div></td>
       <td>
-        <div class="pc">${[0,1,2].map(i=>`<div class="pt" style="opacity:${1-i*.3};background:linear-gradient(135deg,${c}12,transparent);">${s.p>i*10?''+(Math.max(1,s.p-i*10)):'—'}</div>`).join('')}</div>
+        <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:4px;align-items:center;min-width:120px;">
+          ${[0,1,2].map(()=>`<div style="width:42px;height:42px;border-radius:8px;background:#f5f0ec;flex-shrink:0;"></div>`).join('')}
+        </div>
         <div class="pct">${s.p} total</div>
       </td>
       <td><span class="tag-niche">${s.ni}</span></td>
@@ -1371,6 +1373,40 @@ function re(){
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
   }).join('');
+
+  // Lazy-load product images from Shopify /products.json
+  loadProductImages();
+}
+
+const _prodCache={};
+function loadProductImages(){
+  document.querySelectorAll('.prod-imgs[data-domain]').forEach(el=>{
+    const domain=el.dataset.domain;
+    if(!domain)return;
+    if(_prodCache[domain]){
+      renderProdImgs(el,_prodCache[domain]);
+      return;
+    }
+    fetch(`https://${domain}/products.json?limit=4&fields=images,title`,{signal:AbortSignal.timeout(5000)})
+      .then(r=>r.ok?r.json():Promise.reject())
+      .then(data=>{
+        const imgs=(data.products||[]).slice(0,3).map(p=>{
+          const img=p.images&&p.images[0]?p.images[0].src:'';
+          return img?img.replace(/\.([a-z]+)\?/,'_100x100.$1?'):'';
+        }).filter(Boolean);
+        _prodCache[domain]=imgs;
+        renderProdImgs(el,imgs);
+      })
+      .catch(()=>{
+        _prodCache[domain]=[];
+        // Keep placeholder boxes on error
+      });
+  });
+}
+function renderProdImgs(el,imgs){
+  if(imgs.length===0)return;
+  el.innerHTML=imgs.map(src=>`<img src="${src}" style="width:42px;height:42px;border-radius:8px;object-fit:cover;background:#f5f0ec;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'"/>`).join('')+
+    (imgs.length<3?`<div style="width:42px;height:42px;border-radius:8px;background:#f5f0ec;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#b8a8b0;">+</div>`:'');
 }
 
 function om(id){
