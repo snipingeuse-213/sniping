@@ -427,6 +427,30 @@ function renderShop(s){
             ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,25).map(c2=>`<span class="tag ship">${c2.toUpperCase()} <img src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="width:14px;height:10px;border-radius:1px;"/></span>`).join('')}${shipsTo.length>25?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-25} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info available</div>'}
           </div>
 
+          <!-- Trustpilot -->
+          <div class="section" id="trustpilot-section" style="background:linear-gradient(135deg,rgba(0,182,122,0.04),rgba(0,182,122,0.01));border-color:rgba(0,182,122,0.15);">
+            <div class="section-title"><span class="ico">&#11088;</span> Trustpilot</div>
+            <div id="trustpilot-content" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#00b67a"/></svg>
+                <span id="tp-rating" style="font-size:20px;font-weight:800;color:#00b67a;">--</span>
+                <span id="tp-count" style="font-size:12px;color:var(--text2);font-weight:600;"></span>
+              </div>
+              <div id="tp-stars" style="display:flex;gap:2px;"></div>
+              <a id="tp-link" class="shop-btn" href="https://www.trustpilot.com/review/${s.domain}" target="_blank" style="margin-left:auto;">
+                View on Trustpilot &#8599;
+              </a>
+            </div>
+          </div>
+
+          <!-- Product Catalog -->
+          <div class="section">
+            <div class="section-title"><span class="ico">&#128722;</span> Product Catalog <span style="font-family:Figtree;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;" id="prod-subtitle">Loading...</span></div>
+            <div id="product-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;">
+              ${[0,1,2,3,4,5].map(()=>'<div style="aspect-ratio:1;border-radius:10px;background:#f5f0eb;"></div>').join('')}
+            </div>
+          </div>
+
           <!-- Meta Ads Link -->
           <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
             <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
@@ -481,6 +505,10 @@ function renderShop(s){
   loadSimilarShops(s);
   // Load meta ads
   loadMetaAds(s.domain, (s.name && s.name !== s.domain) ? s.name : (s.title || s.domain));
+  // Load Trustpilot
+  loadTrustpilot(s.domain);
+  // Load product images
+  loadProducts(s.domain);
 }
 
 // --- Tab Switching ---
@@ -704,6 +732,77 @@ function getAge(dateStr){
   const y=Math.floor(months/12);
   const m=months%12;
   return y+'y'+(m>0?' '+m+'mo':'');
+}
+
+// --- Trustpilot ---
+async function loadTrustpilot(domain){
+  const tpRating=document.getElementById('tp-rating');
+  const tpCount=document.getElementById('tp-count');
+  const tpStars=document.getElementById('tp-stars');
+  const tpLink=document.getElementById('tp-link');
+  if(!tpRating) return;
+  try{
+    // Try fetching Trustpilot widget data via their public JSON endpoint
+    const cleanDomain=domain.replace(/^www\./,'');
+    const resp=await fetch('https://widget.trustpilot.com/trustbox-data/53aa8807dec7e10d38f59f32?businessUnitId=find&locale=en-US&reviewLanguages=all&hostname='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000)});
+    if(resp.ok){
+      const d=await resp.json();
+      if(d&&d.businessEntity){
+        const r=d.businessEntity.trustScore||0;
+        const n=d.businessEntity.numberOfReviews||0;
+        const stars=d.businessEntity.stars||0;
+        tpRating.textContent=r.toFixed(1);
+        tpCount.textContent='('+n.toLocaleString()+' reviews)';
+        tpStars.innerHTML=Array.from({length:5},(_,i)=>{
+          const fill=i<Math.floor(stars)?'#00b67a':i<stars?'#73cf11':'#dcdce6';
+          return '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="'+fill+'"/></svg>';
+        }).join('');
+        if(d.businessEntity.id){
+          tpLink.href='https://www.trustpilot.com/review/'+cleanDomain;
+        }
+        return;
+      }
+    }
+  }catch(e){}
+  // Fallback: just show link without rating
+  tpRating.textContent='--';
+  tpCount.textContent='View on Trustpilot for reviews';
+  tpStars.innerHTML='';
+}
+
+// --- Product Images ---
+async function loadProducts(domain){
+  const gallery=document.getElementById('product-gallery');
+  const subtitle=document.getElementById('prod-subtitle');
+  if(!gallery) return;
+  try{
+    const resp=await fetch('https://'+domain+'/products.json?limit=12&fields=images,title,variants',{signal:AbortSignal.timeout(8000)});
+    if(!resp.ok) throw new Error('Not available');
+    const data=await resp.json();
+    const products=(data.products||[]).slice(0,12);
+    if(products.length===0){
+      gallery.innerHTML='<div style="grid-column:1/-1;color:var(--text3);font-size:13px;padding:10px;">No products found via public catalog.</div>';
+      subtitle.textContent='';
+      return;
+    }
+    subtitle.textContent=products.length+' products shown';
+    gallery.innerHTML=products.map(p=>{
+      const img=p.images&&p.images[0]?p.images[0].src.replace(/\.([a-z]+)\?/,'_400x400.$1?'):'';
+      const title=p.title||'Product';
+      const price=p.variants&&p.variants[0]?p.variants[0].price:'';
+      return `<div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#fff;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('https://${domain}','_blank')">
+        ${img?`<div style="aspect-ratio:1;overflow:hidden;background:#f5f0eb;"><img src="${img}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text3);\\'>&#128722;</div>'"/></div>`
+            :'<div style="aspect-ratio:1;background:#f5f0eb;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text3);">&#128722;</div>'}
+        <div style="padding:8px 10px;">
+          <div style="font-size:11px;font-weight:600;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${title}</div>
+          ${price?`<div style="font-size:12px;font-weight:700;color:var(--pink);margin-top:2px;">$${price}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    gallery.innerHTML='<div style="grid-column:1/-1;color:var(--text3);font-size:13px;padding:10px;">Product catalog not publicly available for this store.</div>';
+    subtitle.textContent='';
+  }
 }
 
 async function saveShop(domain){
