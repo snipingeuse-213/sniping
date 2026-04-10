@@ -20,21 +20,21 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
 
-// E-commerce niches to search
+// E-commerce niches to search (FR + EN mix for EU coverage)
 const SEARCH_TERMS = [
-  'beauty', 'skincare', 'fashion', 'clothing', 'jewelry',
-  'fitness', 'supplement', 'wellness', 'home decor', 'furniture',
-  'pet', 'baby', 'tech gadget', 'phone case', 'kitchen',
-  'outdoor', 'travel', 'yoga', 'hair care', 'makeup',
-  'shoes', 'sneakers', 'watch', 'sunglasses', 'bag',
-  'coffee', 'tea', 'food', 'organic', 'vegan',
-  'gaming', 'LED', 'smart home', 'cleaning', 'garden',
-  'candle', 'perfume', 'fragrance', 'kids toys', 'education',
-  'car accessories', 'bike', 'running', 'pilates', 'massage',
-  'sleep', 'mattress', 'protein', 'weight loss', 'dental'
+  'parfum', 'musc intime', 'skincare', 'beauté', 'maquillage',
+  'soins visage', 'crème hydratante', 'sérum anti-âge', 'mode femme', 'robe',
+  'bijoux', 'collier', 'bracelet', 'fitness', 'complément alimentaire',
+  'protéine', 'yoga', 'cheveux', 'soin capillaire', 'décoration',
+  'meuble', 'cuisine', 'gadget', 'coque téléphone', 'montre',
+  'lunettes', 'sac à main', 'café', 'thé', 'bio',
+  'vegan', 'gaming', 'LED', 'maison connectée', 'jardin',
+  'bougie', 'chaussures', 'sneakers', 'perte de poids', 'sommeil',
+  'massage', 'bébé', 'jouet enfant', 'voiture accessoire', 'running',
+  'pilates', 'dental', 'weight loss', 'beauty', 'fashion'
 ];
 
-const COUNTRIES = ['FR', 'DE', 'GB', 'ES', 'IT', 'NL', 'BE', 'AT', 'PT', 'SE'];
+const COUNTRIES = ['FR', 'DE', 'GB', 'ES', 'IT'];
 
 const FIELDS = [
   'id', 'page_name', 'page_id',
@@ -141,7 +141,7 @@ function isWorthTracking(ad) {
   if (!ad.ad_delivery_start_time) return false;
   const startDate = new Date(ad.ad_delivery_start_time);
   const daysSinceStart = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-  if (daysSinceStart < 7) return false;
+  if (daysSinceStart < 3) return false;
   if ((ad.eu_total_reach || 0) < 50 && (ad.impressions_upper || 0) < 100) return false;
   return true;
 }
