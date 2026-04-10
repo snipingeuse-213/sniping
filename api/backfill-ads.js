@@ -346,6 +346,139 @@ async function actionEnrichStoreleads(req, res) {
   });
 }
 
+// ACTION: full-enrich — Fetch top shops from Store Leads with ALL fields and do full PATCH
+// This updates traffic_trend, visitor_countries, technologies, ad_platforms, etc.
+async function actionFullEnrich(req, res) {
+  const STORELEADS_KEY = '0828c887-79f6-45b0-5ea9-e3427cb4';
+  const batchSize = Math.min(parseInt(req.query.batch) || 50, 50);
+  const offset = parseInt(req.query.offset) || 0;
+  const country = req.query.country || 'US';
+  const sort = req.query.sort || 'estimated_visits';
+  const startTime = Date.now();
+  let updated = 0;
+  const samples = [];
+
+  let slUrl = `https://storeleads.app/json/api/v1/all/domain?p=shopify&ds=active&sort=-${sort}&limit=${batchSize}&offset=${offset}&c=${country}`;
+
+  const slResp = await fetch(slUrl, {
+    headers: { 'Authorization': `Token ${STORELEADS_KEY}` },
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!slResp.ok) {
+    return res.status(500).json({ error: `Store Leads: ${slResp.status}`, body: await slResp.text() });
+  }
+
+  const slData = await slResp.json();
+  const domains = slData.domains || [];
+
+  function detectNiche(categories) {
+    const cats = (categories || '').toLowerCase();
+    if (cats.includes('beauty') || cats.includes('cosmetic') || cats.includes('skincare')) return 'Beauty';
+    if (cats.includes('fashion') || cats.includes('apparel') || cats.includes('clothing')) return 'Fashion';
+    if (cats.includes('health') || cats.includes('wellness') || cats.includes('fitness')) return 'Health';
+    if (cats.includes('food') || cats.includes('drink') || cats.includes('grocery')) return 'Food & Drink';
+    if (cats.includes('tech') || cats.includes('electronic')) return 'Tech';
+    if (cats.includes('home') || cats.includes('furniture') || cats.includes('decor')) return 'Home & Living';
+    if (cats.includes('pet') || cats.includes('animal')) return 'Pets';
+    if (cats.includes('sport') || cats.includes('outdoor')) return 'Sports';
+    if (cats.includes('jewel') || cats.includes('watch') || cats.includes('accessor')) return 'Jewelry';
+    return 'General';
+  }
+
+  const PARALLEL = 10;
+  for (let i = 0; i < domains.length; i += PARALLEL) {
+    const batch = domains.slice(i, i + PARALLEL);
+    if (Date.now() - startTime > 50000) break;
+
+    const promises = batch.map(async (d) => {
+      try {
+        const techs = (d.technologies || []).map(t => typeof t === 'string' ? t : JSON.stringify(t));
+        const result = countAdTechs(techs);
+        let liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
+        if (liveAds === 0) liveAds = result.count;
+
+        const catStr = Array.isArray(d.categories) ? d.categories.join(',') : '';
+        const visits = d.estimated_visits || 0;
+        const sales = d.estimated_sales || 0;
+        const rank = d.platform_rank || 999999;
+        const prods = d.product_count || 0;
+        const appCount = Array.isArray(d.apps) ? d.apps.length : 0;
+
+        // Build full update body with ALL fields
+        const body = {
+          live_ads: liveAds,
+          ad_platforms: result.adPlatforms.length > 0 ? result.adPlatforms : (d.ad_platforms || []),
+          technologies: techs,
+          visitor_countries: d.visitor_countries || [],
+          traffic_trend: d.traffic_trend || [],
+          monthly_visits: visits,
+          estimated_sales: sales,
+          estimated_sales_yearly: d.estimated_sales_yearly || 0,
+          products_count: prods,
+          platform_rank: rank,
+          global_rank: d.rank,
+          rank_percentile: d.rank_percentile,
+          avg_price_usd: d.avg_price_usd,
+          monthly_app_spend: d.monthly_app_spend,
+          employee_count: d.employee_count,
+          apps: Array.isArray(d.apps) ? d.apps : [],
+          categories: Array.isArray(d.categories) ? d.categories : [],
+          niche: detectNiche(catStr),
+          ships_to: d.ships_to_countries || [],
+          strategies: d.strategies || [],
+          description: d.description,
+          city: d.city,
+          region: d.region,
+          icon: d.icon,
+          theme: d.theme?.name || d.theme || null,
+          currency: d.currency_code || null,
+          language: d.language_code || null,
+          shopify_plan: d.plan || null,
+          storeleads_updated_at: d.last_updated_at,
+          last_scraped: new Date().toISOString()
+        };
+
+        const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(d.name)}`;
+        const resp = await fetch(url, {
+          method: 'PATCH',
+          headers: HEADERS,
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(5000)
+        });
+
+        if (resp.ok) {
+          const hasTraffic = (d.traffic_trend || []).length > 0;
+          const hasVisitors = (d.visitor_countries || []).length > 0;
+          samples.push({
+            domain: d.name,
+            live_ads: liveAds,
+            traffic: hasTraffic ? `${(d.traffic_trend || []).length} pts` : 'none',
+            visitors: hasVisitors ? `${(d.visitor_countries || []).length} countries` : 'none',
+            techs: techs.length
+          });
+          return 'updated';
+        }
+        return 'error';
+      } catch (e) {
+        return 'error';
+      }
+    });
+
+    const results = await Promise.allSettled(promises);
+    for (const r of results) {
+      if (r.status === 'fulfilled' && r.value === 'updated') updated++;
+    }
+  }
+
+  return res.status(200).json({
+    success: true, checked: domains.length, updated,
+    nextOffset: offset + batchSize,
+    elapsed_ms: Date.now() - startTime,
+    samples: samples.slice(0, 20)
+  });
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const action = req.query.action || 'scan';
@@ -357,7 +490,8 @@ module.exports = async function handler(req, res) {
       case 'revert': return await actionRevert(req, res);
       case 'stats': return await actionStats(req, res);
       case 'enrich': return await actionEnrichStoreleads(req, res);
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich'] });
+      case 'full-enrich': return await actionFullEnrich(req, res);
+      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich'] });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });
