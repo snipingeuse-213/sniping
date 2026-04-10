@@ -410,7 +410,7 @@ function renderShop(s){
           <div class="section">
             <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
             <div class="details-grid">
-              <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
+              <div class="detail-item"><span class="label">Theme</span><span class="value">${(()=>{try{const t=typeof theme==="string"?JSON.parse(theme):theme;return t&&t.name?(t.name+(t.style?" ("+t.style+")":"")):"N/A"}catch(e){return theme||"N/A"}})()}</span></div>
               <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
               <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
               <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
