@@ -240,7 +240,13 @@ async function sbFetch(url){
 
 async function loadShop(d){
   try{
-    const data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*');
+    // Try exact domain first
+    let data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*');
+    // If not found, try with/without www prefix
+    if(!data||data.length===0){
+      const alt=d.startsWith('www.')?d.replace('www.',''):'www.'+d;
+      data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(alt)+'&select=*');
+    }
     if(!data||data.length===0){
       document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128533;</div><div style="font-size:16px;font-weight:700;">Shop not found</div><div style="color:var(--text2);">'+d+' is not in our database yet.</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
       return;
@@ -278,7 +284,7 @@ function renderShop(s){
   const parsedTechs=(s.technologies||[]).map(t=>{if(typeof t==='object'&&t!==null)return t;if(typeof t==='string'){try{return JSON.parse(t);}catch(e){return{name:t};}}return{name:String(t)};});
   const rawTechs=parsedTechs.map(t=>t.name||'');
   // Extract pixels/ad platforms: use ad_platforms if non-empty, otherwise detect from technologies
-  const detectedPixels=parsedTechs.filter(t=>{const n=(t.name||'').toLowerCase();const cats=(t.categories||[]).join(' ').toLowerCase();return /advertising|ad network|ad exchange|retargeting|remarketing|ad server/.test(cats)||/pixel|facebook ads|meta ads|google ads|tiktok ads|snapchat ads|pinterest ads|bing ads|microsoft ads|criteo|adroll|taboola|outbrain|amazon ads|doubleclick|adsense|adwords|facebook conversions api|applovin|blotout|linkedin ads|twitter ads/i.test(n);}).map(t=>t.name);
+  const detectedPixels=parsedTechs.filter(t=>{const n=(t.name||'').toLowerCase();const cats=(t.categories||[]).join(' ').toLowerCase();return /advertising|ad network|ad exchange|retargeting|remarketing|ad server|analytics|tag management/.test(cats)||/pixel|facebook ads|meta ads|meta pixel|google ads|google analytics|google tag manager|google adwords|tiktok ads|snapchat ads|pinterest ads|bing ads|microsoft advertising|microsoft ads|criteo|adroll|taboola|outbrain|amazon ads|doubleclick|adsense|adwords|facebook conversions|applovin|blotout|linkedin ads|twitter ads|snap pixel|hotjar|clarity|dynamic yield|klaviyo|attentive|postscript|yotpo|privy|omnisend|mailchimp|hubspot/i.test(n);}).map(t=>t.name);
   const pixels=(s.ad_platforms&&s.ad_platforms.length>0)?s.ad_platforms:detectedPixels;
   const techs=rawTechs.filter(t=>!pixels.includes(t));
   const rawApps=s.apps||[];
@@ -394,7 +400,7 @@ function renderShop(s){
           <!-- Pixels & Ad Platforms -->
           <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.04),rgba(232,121,154,0.01));border-color:rgba(232,121,154,0.12);">
             <div class="section-title"><span class="ico">&#128225;</span> Pixels & Ad Platforms</div>
-            ${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;margin-bottom:8px;">No ad platforms detected</div>'}
+            <div id="pixels-container">${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div>`:`<div style="color:var(--text3);font-size:12px;"><span id="pixel-scan-status">&#128269; Scanning store for tracking pixels...</span></div>`}</div>
           </div>
 
           <!-- Other Technologies -->
@@ -526,6 +532,8 @@ function renderShop(s){
   loadTrustpilot(s.domain);
   // Load product images
   loadProducts(s.domain);
+  // Live pixel scan if no pixels detected from DB
+  if(!pixels.length) scanPixels(s.domain);
 }
 
 // --- Tab Switching ---
@@ -783,6 +791,38 @@ function renderTpStars(el,stars){
     const fill=i<Math.floor(stars)?'#00b67a':i<stars?'#73cf11':'#dcdce6';
     return '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="'+fill+'"/></svg>';
   }).join('');
+}
+
+// --- Live Pixel Scanner ---
+async function scanPixels(domain){
+  const container=document.getElementById('pixels-container');
+  const statusEl=document.getElementById('pixel-scan-status');
+  if(!container) return;
+  const cleanDomain=domain.replace(/^www\./,'');
+  try{
+    const resp=await fetch('https://'+cleanDomain,{
+      mode:'cors',
+      signal:AbortSignal.timeout(8000),
+      headers:{'Accept':'text/html'}
+    }).catch(()=>null);
+    // CORS will block most stores, so use our proxy approach
+    // Fallback: try fetching through a simple proxy endpoint
+    let html='';
+    try{
+      const proxyResp=await fetch('/api/scan-pixels?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(12000)});
+      if(proxyResp.ok){
+        const data=await proxyResp.json();
+        if(data&&data.pixels&&data.pixels.length>0){
+          container.innerHTML='<div class="tags">'+data.pixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div><div style="margin-top:6px;font-size:10px;color:var(--text3);">Detected via live page scan</div>';
+          return;
+        }
+      }
+    }catch(e){}
+    // If no proxy available or no pixels found
+    if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
+  }catch(e){
+    if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
+  }
 }
 
 // --- Product Images ---
