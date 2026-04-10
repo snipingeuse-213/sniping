@@ -21,8 +21,8 @@ module.exports = async function handler(req, res) {
   const details = [];
 
   try {
-    // Fetch from Store Leads with ad data
-    const slUrl = `https://storeleads.app/json/api/v1/all/domain?p=shopify&ds=active&sort=${sort}&limit=${batchSize}&offset=${offset}&c=${country}`;
+    // Fetch from Store Leads with ad data (sort descending by traffic = biggest shops first)
+    const slUrl = `https://storeleads.app/json/api/v1/all/domain?p=shopify&ds=active&sort=-${sort}&limit=${batchSize}&offset=${offset}&c=${country}`;
 
     const slResp = await fetch(slUrl, {
       headers: { 'Authorization': `Token ${STORELEADS_KEY}` },
@@ -44,14 +44,17 @@ module.exports = async function handler(req, res) {
       if (liveAds > 0) withAds++;
       details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits });
 
+      // IMPORTANT: Every key must be present in every object (PGRST102)
+      // Use null for missing values, never undefined
+      const score = calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0);
       return {
-        domain: d.name,
-        name: d.merchant_name || d.title || d.name,
-        title: d.title,
-        merchant_name: d.merchant_name,
+        domain: d.name || null,
+        name: d.merchant_name || d.title || d.name || null,
+        title: d.title || null,
+        merchant_name: d.merchant_name || null,
         niche: detectNiche(Array.isArray(d.categories) ? d.categories.join(',') : ''),
-        score: calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0),
-        trend_tag: getTrendTag(calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0)),
+        score: score,
+        trend_tag: getTrendTag(score),
         country: d.country_code || country,
         live_ads: liveAds,
         ad_platforms: Array.isArray(adPlatforms) ? adPlatforms : [],
@@ -59,19 +62,19 @@ module.exports = async function handler(req, res) {
         estimated_sales_yearly: d.estimated_sales_yearly || 0,
         monthly_visits: d.estimated_visits || 0,
         products_count: d.product_count || 0,
-        platform_rank: d.platform_rank,
-        global_rank: d.rank,
-        rank_percentile: d.rank_percentile,
-        avg_price_usd: d.avg_price_usd,
-        monthly_app_spend: d.monthly_app_spend,
-        employee_count: d.employee_count,
-        vendor_count: d.vendor_count,
-        variant_count: d.variant_count,
+        platform_rank: d.platform_rank || null,
+        global_rank: d.rank || null,
+        rank_percentile: d.rank_percentile || null,
+        avg_price_usd: d.avg_price_usd || null,
+        monthly_app_spend: d.monthly_app_spend || null,
+        employee_count: d.employee_count || null,
+        vendor_count: d.vendor_count || null,
+        variant_count: d.variant_count || null,
         apps: Array.isArray(d.apps) ? d.apps : [],
         technologies: Array.isArray(d.technologies) ? d.technologies : [],
         categories: Array.isArray(d.categories) ? d.categories : [],
         created_date: d.created_at ? d.created_at.split('T')[0] : null,
-        theme: d.theme?.name || d.theme || null,
+        theme: (d.theme && d.theme.name) ? d.theme.name : (typeof d.theme === 'string' ? d.theme : null),
         currency: d.currency_code || null,
         language: d.language_code || null,
         shopify_plan: d.plan || null,
@@ -79,11 +82,11 @@ module.exports = async function handler(req, res) {
         traffic_trend: d.traffic_trend || [],
         visitor_countries: d.visitor_countries || [],
         strategies: d.strategies || [],
-        description: d.description,
-        city: d.city,
-        region: d.region,
-        icon: d.icon,
-        storeleads_updated_at: d.last_updated_at,
+        description: d.description || null,
+        city: d.city || null,
+        region: d.region || null,
+        icon: d.icon || null,
+        storeleads_updated_at: d.last_updated_at || null,
         last_scraped: new Date().toISOString()
       };
     });
