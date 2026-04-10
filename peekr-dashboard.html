@@ -124,10 +124,30 @@ body{
 .fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
 .fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
+.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
 .fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
 .fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
+.fb.has-value{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
 .fc{font-size:8px;opacity:.35;}
+/* Filter tabs */
+.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:4px;padding:0 2px;}
+.fhdr-label{font-size:12px;font-weight:700;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.06em;}
+.ftab{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(200,160,170,0.18);background:rgba(255,255,255,0.7);color:rgba(26,10,15,0.5);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
+.ftab:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;}
+.ftab.active{background:#1a0a0f;color:#fff;border-color:#1a0a0f;}
+.ftab .ftab-ico{font-size:13px;}
+.fsort{display:flex;align-items:center;gap:8px;margin-top:2px;padding:0 2px;}
+.fsort-label{font-size:11px;color:rgba(26,10,15,0.35);display:flex;align-items:center;gap:4px;}
+/* Min/Max popover inside dropdown */
+.fb-range{padding:12px;min-width:220px;}
+.fb-range-label{font-size:12px;font-weight:700;color:#1a0a0f;margin-bottom:8px;}
+.fb-range-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.fb-range-row label{font-size:11px;color:rgba(26,10,15,0.4);min-width:28px;}
+.fb-range-row input{width:90px;padding:6px 8px;border:1px solid #e0d6e3;border-radius:8px;font-size:12px;background:#faf8fb;font-family:'Figtree',sans-serif;color:#1a0a0f;}
+.fb-range-row input:focus{outline:none;border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.1);}
+.fb-range-apply{display:flex;justify-content:flex-end;margin-top:4px;}
+.fb-range-apply button{padding:5px 16px;background:#1a0a0f;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Figtree',sans-serif;transition:all .15s;}
+.fb-range-apply button:hover{background:#e8799a;}
 
 /* ── DROPDOWN FILTERS ── */
 .fb-dropdown{
@@ -319,94 +339,43 @@ td{padding:11px 14px;vertical-align:middle;}
 
 <!-- SIDEBAR -->
 <aside class="sb">
-        <div class="sb-logo">peekr</div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Overview</div>
-            <a href="peekr-overview.html" class="ni">
-                <span class="ni-ico">📊</span>
-                <span>Dashboard</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Analyse</div>
-            <a href="peekr-dashboard.html" class="ni active">
-                <span class="ni-ico">🔥</span>
-                <span>Trending Shops</span>
-            </a>
-            <a href="peekr-best-trends.html" class="ni">
-                <span class="ni-ico">⭐</span>
-                <span>Best Trends</span>
-                <span class="nb s">Soon</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Favorites</div>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">❤️</span>
-                <span>Saved Ads</span>
-            </a>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">🛍️</span>
-                <span>Saved Shops</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Community</div>
-            <a href="peekr-community.html" class="ni">
-                <span class="ni-ico">💬</span>
-                <span>Community</span>
-                <span class="nb">New</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Resources</div>
-            <a href="peekr-blog.html" class="ni">
-                <span class="ni-ico">📚</span>
-                <span>Blog & Tips</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Tools</div>
-            <a href="peekr-export.html" class="ni">
-                <span class="ni-ico">📥</span>
-                <span>Export</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Account</div>
-            <a href="peekr-pricing.html" class="ni">
-                <span class="ni-ico">⬆️</span>
-                <span>Upgrade</span>
-            </a>
-            <a href="peekr-affiliate.html" class="ni">
-                <span class="ni-ico">🤝</span>
-                <span>Affiliate</span>
-            </a>
-        </div>
-
-        <div class="sb-bot">
-            <div class="uc">
-                <div class="ua">LR</div>
-                <div>
-                    <div class="un">Lyli Rose</div>
-                    <div class="up">Pro Plan</div>
-                </div>
-            </div>
-        </div>
-    </aside>
+  <div class="sb-logo">
+    <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Analyse</div>
+    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Community</div>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico">&#128172;</span>Community<span class="nb">New</span></a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec"><div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
+  </div>
+  <div class="sb-bot">
+    <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+  </div>
+</aside>
 
 <div class="main">
   <div class="topbar">
     <div class="tb-title">Trending Shops</div>
-    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops…" id="si" oninput="showAC(this.value)"/></div>
-    <div id="ac-drop" style="display:none;position:absolute;top:46px;left:0;right:0;max-width:420px;background:#fff;border:1px solid rgba(200,160,170,0.25);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);max-height:340px;overflow-y:auto;z-index:200;padding:6px;"></div>
+    <div class="sbox" style="position:relative;"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops, keywords…" id="si" oninput="fs()" onfocus="showAC()" autocomplete="off"/><div id="ac-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:0 0 12px 12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:380px;overflow-y:auto;z-index:100;"></div></div>
     <div class="tb-r">
       <div class="lpill"><div class="ldot"></div>Live</div>
       <div class="cnt" id="cnt"><b>—</b> Shops</div>
@@ -425,55 +394,49 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 
   <div class="fw">
-    <div class="fr"><span class="fl">Performance</span>
-      <div class="fb" onclick="tf(this)">Traffic <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Count <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">AOV <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Units Sold <span class="fc">▾</span></div>
+    <!-- FILTERS header + tabs -->
+    <div class="fhdr">
+      <span class="fhdr-label">Filters</span>
+      <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico">&#127978;</span> Shops</button>
+      <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico">&#128202;</span> Ads</button>
     </div>
-    <div class="fr"><span class="fl">Shop</span>
-      <div class="fb" onclick="tf(this)">Category <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Products <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Apps <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Theme <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Language <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Currency <span class="fc">▾</span></div>
-    </div>
-    <div class="fr"><span class="fl">Business</span>
-      <div class="fb" onclick="tf(this)">Creation Date <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">▾</span></div>
-      <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">▾</span></div>
-    </div>
-        <div class="fr"><span class="fl">Ranges</span>
-      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
-        Score <input id="scoreMin" type="number" min="0" max="100" placeholder="Min" style="width:52px;padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb" onchange="applyRangeFilters()">
-        <span>-</span>
-        <input id="scoreMax" type="number" min="0" max="100" placeholder="Max" style="width:52px;padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb" onchange="applyRangeFilters()">
+    <!-- SHOPS filter group -->
+    <div id="fgroup-shops">
+      <div class="fr" style="flex-wrap:wrap;gap:6px">
+        <div class="fb" onclick="tf(this)">Traffic <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Products <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Category <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Creation Date <span class="fc">&#9662;</span></div>
       </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
-        Traffic
-        <select id="trafficRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
-          <option value="">All</option><option value="0-10000">0 - 10K</option><option value="10000-50000">10K - 50K</option><option value="50000-200000">50K - 200K</option><option value="200000-1000000">200K - 1M</option><option value="1000000-99999999">1M+</option>
-        </select>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
-        Revenue
-        <select id="revenueRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
-          <option value="">All</option><option value="0-10000">$0 - $10K</option><option value="10000-100000">$10K - $100K</option><option value="100000-1000000">$100K - $1M</option><option value="1000000-10000000">$1M - $10M</option><option value="10000000-99999999">$10M+</option>
-        </select>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#6b5b6e">
-        Products
-        <select id="productsRange" style="padding:3px 6px;border:1px solid #e0d6e3;border-radius:8px;font-size:11px;background:#faf8fb;color:#1a0a0f" onchange="applyRangeFilters()">
-          <option value="">All</option><option value="1-50">1 - 50</option><option value="50-200">50 - 200</option><option value="200-1000">200 - 1K</option><option value="1000-5000">1K - 5K</option><option value="5000-999999">5K+</option>
-        </select>
+      <div class="fr" style="flex-wrap:wrap;gap:6px">
+        <div class="fb" onclick="tf(this)">Language <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Currency <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Theme <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Apps <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">&#9662;</span></div>
       </div>
     </div>
-<div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
-    
+    <!-- ADS filter group -->
+    <div id="fgroup-ads" style="display:none">
+      <div class="fr" style="flex-wrap:wrap;gap:6px">
+        <div class="fb" onclick="tf(this)">Live Ads <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Revenue <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">AOV <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Units Sold <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)">Score <span class="fc">&#9662;</span></div>
+      </div>
+    </div>
+    <!-- Sort row -->
+    <div class="fsort">
+      <span class="fsort-label">&#8595;</span>
+      <div class="fb" onclick="tf(this)">Relevance <span class="fc">&#9662;</span></div>
+    </div>
+    <!-- Reset bar -->
+    <div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
       <button id="reset-btn" onclick="resetAllFilters()" style="background:rgba(232,121,154,0.15);color:#e8799a;border:1px solid #e8799a;border-radius:20px;padding:5px 14px;font-size:11px;cursor:pointer;font-weight:600;transition:all .2s">Reset all filters</button>
     </div>
   </div>
@@ -644,6 +607,7 @@ let seg='all',q='',sortCol=null,sortDir='asc';
 let currentPage=0, pageSize=50;
 let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
 let activeDropdown=null;
+var _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0};
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
 function ss(e,s){document.querySelectorAll('.sg').forEach(b=>b.classList.remove('active'));e.classList.add('active');seg=s;currentPage=0;filters['Creation Date']={mode:null,date:null};window._dateFilteredShops=null;re();}
@@ -873,20 +837,45 @@ function createDropdown(filterName,btn){
     });
   }
   else if(filterName==='Traffic'){
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='desc'?'checked':''} onchange="toggleSort('Traffic','desc')"><label>Most Traffic</label></div>`;
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="traffic" ${filters.Traffic==='asc'?'checked':''} onchange="toggleSort('Traffic','asc')"><label>Least Traffic</label></div>`;
+    html=`<div class="fb-range"><div class="fb-range-label">Visitors</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-trafficMin" min="0" placeholder="0" value="${_rangeFilters.trafficMin||''}"></div>
+      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-trafficMax" min="0" placeholder="10,000,000" value="${_rangeFilters.trafficMax<Infinity?_rangeFilters.trafficMax:''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('traffic')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('traffic')">Clear</div></div>`;
   }
-  else if(filterName==='Ads Count'){
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='desc'?'checked':''} onchange="toggleSort('Ads Count','desc')"><label>Most Ads</label></div>`;
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="ads" ${filters['Ads Count']==='asc'?'checked':''} onchange="toggleSort('Ads Count','asc')"><label>Fewest Ads</label></div>`;
+  else if(filterName==='Products'){
+    html=`<div class="fb-range"><div class="fb-range-label">Product Count</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-productsMin" min="0" placeholder="0" value="${_rangeFilters.productsMin||''}"></div>
+      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-productsMax" min="0" placeholder="100,000" value="${_rangeFilters.productsMax<Infinity?_rangeFilters.productsMax:''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('products')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('products')">Clear</div></div>`;
   }
-  else if(filterName==='Ads Growth %'){
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='desc'?'checked':''} onchange="toggleSort('Ads Growth','desc')"><label>Highest Growth</label></div>`;
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='asc'?'checked':''} onchange="toggleSort('Ads Growth','asc')"><label>Lowest Growth</label></div>`;
+  else if(filterName==='Live Ads'){
+    html=`<div class="fb-range"><div class="fb-range-label">Live Ads</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-adsMin" min="0" placeholder="0" value="${_rangeFilters.adsMin||''}"></div>
+      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-adsMax" min="0" placeholder="10,000" value="${_rangeFilters.adsMax<Infinity?_rangeFilters.adsMax:''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('ads')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('ads')">Clear</div></div>`;
+  }
+  else if(filterName==='Revenue'){
+    html=`<div class="fb-range"><div class="fb-range-label">Revenue Est.</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-revenueMin" min="0" placeholder="0" value="${_rangeFilters.revenueMin||''}"></div>
+      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-revenueMax" min="0" placeholder="10,000,000" value="${_rangeFilters.revenueMax<Infinity?_rangeFilters.revenueMax:''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('revenue')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('revenue')">Clear</div></div>`;
+  }
+  else if(filterName==='Score'){
+    html=`<div class="fb-range"><div class="fb-range-label">Peekr Score</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-scoreMin" min="0" max="100" placeholder="0" value="${_rangeFilters.scoreMin||''}"></div>
+      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-scoreMax" min="0" max="100" placeholder="100" value="${_rangeFilters.scoreMax<Infinity?_rangeFilters.scoreMax:''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('score')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('score')">Clear</div></div>`;
   }
   else if(filterName==='Est. Sales'){
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='desc'?'checked':''} onchange="toggleSort('Est. Sales','desc')"><label>Highest Sales</label></div>`;
-    html+=`<div class="fb-dropdown-item"><input type="radio" name="estsales" ${filters['Est. Sales']==='asc'?'checked':''} onchange="toggleSort('Est. Sales','asc')"><label>Lowest Sales</label></div>`;
+    html=`<div class="fb-range"><div class="fb-range-label">Est. Sales</div>
+      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-salesMin" min="0" placeholder="0" value="${_rangeFilters.salesMin||''}"></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('sales')">Apply</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('sales')">Clear</div></div>`;
   }
   else if(filterName==='AOV'){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="aov" ${filters['AOV']==='desc'?'checked':''} onchange="toggleSort('AOV','desc')"><label>Highest AOV</label></div>`;
@@ -895,6 +884,19 @@ function createDropdown(filterName,btn){
   else if(filterName==='Units Sold'){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="unitssold" ${filters['Units Sold']==='desc'?'checked':''} onchange="toggleSort('Units Sold','desc')"><label>Most Units</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="unitssold" ${filters['Units Sold']==='asc'?'checked':''} onchange="toggleSort('Units Sold','asc')"><label>Fewest Units</label></div>`;
+  }
+  else if(filterName==='Ads Growth %'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='desc'?'checked':''} onchange="toggleSort('Ads Growth','desc')"><label>Highest Growth</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="adsgrowth" ${filters['Ads Growth']==='asc'?'checked':''} onchange="toggleSort('Ads Growth','asc')"><label>Lowest Growth</label></div>`;
+  }
+  else if(filterName==='Relevance'){
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${!sortCol?'checked':''} onchange="setSortMode(null)"><label>Relevance (Score)</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='v'?'checked':''} onchange="setSortMode('v')"><label>Most Traffic</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='ad'?'checked':''} onchange="setSortMode('ad')"><label>Most Ads</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='rv'?'checked':''} onchange="setSortMode('rv')"><label>Highest Revenue</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='es'?'checked':''} onchange="setSortMode('es')"><label>Highest Sales</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='p'?'checked':''} onchange="setSortMode('p')"><label>Most Products</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='cr_new'?'checked':''} onchange="setSortMode('cr_new')"><label>Newest Shops</label></div>`;
   }
 
   if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;}
@@ -960,13 +962,10 @@ async function applyDateFilter(){
 function resetAllFilters(){
   filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null,date2:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
   window._dateFilteredShops=null;
+  _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0};
   sortCol=null;sortDir='asc';
   document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
-  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
-    // Reset range filters
-  if(typeof _rangeFilters!=='undefined')_rangeFilters={scoreMin:null,scoreMax:null,trafficMin:null,trafficMax:null,revenueMin:null,revenueMax:null,productsMin:null,productsMax:null};
-  ['rf-score-min','rf-score-max'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
-  ['rf-traffic','rf-revenue','rf-products'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  document.querySelectorAll('.fb').forEach(b=>{b.classList.remove('active');b.classList.remove('has-value');});
   currentPage=0;
   re();
 }
@@ -976,6 +975,7 @@ function hasActiveFilters(){
   if(filters['Creation Date']&&filters['Creation Date'].mode)return true;
   if(filters.Category.length||filters.Products.length||filters.Apps.length||filters.Theme.length||filters.Language.length||filters.Currency.length)return true;
   if(filters['Shop Origin'].length||filters['Visitor Country'].length||filters['Shopify Plan'].length)return true;
+  if(_rangeFilters&&(_rangeFilters.scoreMin>0||_rangeFilters.scoreMax<Infinity||_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity||_rangeFilters.revenueMin>0||_rangeFilters.revenueMax<Infinity||_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity||_rangeFilters.adsMin>0||_rangeFilters.adsMax<Infinity||_rangeFilters.salesMin>0))return true;
   return false;
 }
 
@@ -998,6 +998,98 @@ function clearFilter(filterName){
   const dd=document.getElementById(ddId);
   if(dd)dd.remove();
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+}
+
+// Apply range filters from inputs (legacy — kept for backward compat)
+function applyRangeFilters(){currentPage=0;re();}
+
+// Switch filter tabs (Shops / Ads)
+function switchFilterTab(tab){
+  document.getElementById('fgroup-shops').style.display=tab==='shops'?'':'none';
+  document.getElementById('fgroup-ads').style.display=tab==='ads'?'':'none';
+  document.getElementById('ftab-shops').classList.toggle('active',tab==='shops');
+  document.getElementById('ftab-ads').classList.toggle('active',tab==='ads');
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+}
+
+// Apply range from dropdown popover
+function applyRangeFromDropdown(type){
+  if(type==='traffic'){
+    const mn=document.getElementById('rf-trafficMin');
+    const mx=document.getElementById('rf-trafficMax');
+    _rangeFilters.trafficMin=mn&&mn.value?Number(mn.value):0;
+    _rangeFilters.trafficMax=mx&&mx.value?Number(mx.value):Infinity;
+  }else if(type==='products'){
+    const mn=document.getElementById('rf-productsMin');
+    const mx=document.getElementById('rf-productsMax');
+    _rangeFilters.productsMin=mn&&mn.value?Number(mn.value):0;
+    _rangeFilters.productsMax=mx&&mx.value?Number(mx.value):Infinity;
+  }else if(type==='ads'){
+    const mn=document.getElementById('rf-adsMin');
+    const mx=document.getElementById('rf-adsMax');
+    _rangeFilters.adsMin=mn&&mn.value?Number(mn.value):0;
+    _rangeFilters.adsMax=mx&&mx.value?Number(mx.value):Infinity;
+  }else if(type==='revenue'){
+    const mn=document.getElementById('rf-revenueMin');
+    const mx=document.getElementById('rf-revenueMax');
+    _rangeFilters.revenueMin=mn&&mn.value?Number(mn.value):0;
+    _rangeFilters.revenueMax=mx&&mx.value?Number(mx.value):Infinity;
+  }else if(type==='score'){
+    const mn=document.getElementById('rf-scoreMin');
+    const mx=document.getElementById('rf-scoreMax');
+    _rangeFilters.scoreMin=mn&&mn.value?Number(mn.value):0;
+    _rangeFilters.scoreMax=mx&&mx.value?Number(mx.value):Infinity;
+  }else if(type==='sales'){
+    const mn=document.getElementById('rf-salesMin');
+    _rangeFilters.salesMin=mn&&mn.value?Number(mn.value):0;
+  }
+  // Close dropdown and mark pill
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  updateFilterPillStates();
+  currentPage=0;re();
+}
+
+// Clear a range filter
+function clearRangeFilter(type){
+  if(type==='traffic'){_rangeFilters.trafficMin=0;_rangeFilters.trafficMax=Infinity;}
+  else if(type==='products'){_rangeFilters.productsMin=0;_rangeFilters.productsMax=Infinity;}
+  else if(type==='ads'){_rangeFilters.adsMin=0;_rangeFilters.adsMax=Infinity;}
+  else if(type==='revenue'){_rangeFilters.revenueMin=0;_rangeFilters.revenueMax=Infinity;}
+  else if(type==='score'){_rangeFilters.scoreMin=0;_rangeFilters.scoreMax=Infinity;}
+  else if(type==='sales'){_rangeFilters.salesMin=0;}
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  updateFilterPillStates();
+  currentPage=0;re();
+}
+
+// Set sort mode from Relevance dropdown
+function setSortMode(col){
+  if(col==='cr_new'){sortCol='cr';sortDir='desc';}
+  else if(col){sortCol=col;sortDir='desc';}
+  else{sortCol=null;sortDir='asc';}
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  currentPage=0;re();
+}
+
+// Update pill visual state to show which have values
+function updateFilterPillStates(){
+  document.querySelectorAll('.fb').forEach(btn=>{
+    const name=btn.textContent.trim().replace(/[▾×✕]/g,'').trim();
+    let hasVal=false;
+    if(name==='Traffic')hasVal=_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity;
+    else if(name==='Products')hasVal=_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity;
+    else if(name==='Live Ads')hasVal=_rangeFilters.adsMin>0||_rangeFilters.adsMax<Infinity;
+    else if(name==='Revenue')hasVal=_rangeFilters.revenueMin>0||_rangeFilters.revenueMax<Infinity;
+    else if(name==='Score')hasVal=_rangeFilters.scoreMin>0||_rangeFilters.scoreMax<Infinity;
+    else if(name==='Est. Sales')hasVal=_rangeFilters.salesMin>0;
+    else if(filters[name]&&Array.isArray(filters[name]))hasVal=filters[name].length>0;
+    else if(name==='Creation Date')hasVal=filters['Creation Date']&&filters['Creation Date'].mode;
+    btn.classList.toggle('has-value',hasVal);
+  });
 }
 
 // Sort by column
@@ -1085,15 +1177,18 @@ function gd(){
   if(filters['Shopify Plan'].length>0)s=s.filter(x=>filters['Shopify Plan'].includes(x.sp));
 
   // Range filters (Score, Traffic, Revenue, Products)
-  if(typeof _rangeFilters!=='undefined'){
-    if(_rangeFilters.scoreMin!==null)s=s.filter(x=>x.sc>=_rangeFilters.scoreMin);
-    if(_rangeFilters.scoreMax!==null)s=s.filter(x=>x.sc<=_rangeFilters.scoreMax);
-    if(_rangeFilters.trafficMin!==null)s=s.filter(x=>x.v>=_rangeFilters.trafficMin);
-    if(_rangeFilters.trafficMax!==null)s=s.filter(x=>x.v<=_rangeFilters.trafficMax);
-    if(_rangeFilters.revenueMin!==null)s=s.filter(x=>x.es>=_rangeFilters.revenueMin);
-    if(_rangeFilters.revenueMax!==null)s=s.filter(x=>x.es<=_rangeFilters.revenueMax);
-    if(_rangeFilters.productsMin!==null)s=s.filter(x=>x.p>=_rangeFilters.productsMin);
-    if(_rangeFilters.productsMax!==null)s=s.filter(x=>x.p<=_rangeFilters.productsMax);
+  if(_rangeFilters){
+    if(_rangeFilters.scoreMin>0)s=s.filter(x=>x.sc>=_rangeFilters.scoreMin);
+    if(_rangeFilters.scoreMax<Infinity)s=s.filter(x=>x.sc<=_rangeFilters.scoreMax);
+    if(_rangeFilters.trafficMin>0)s=s.filter(x=>x.v>=_rangeFilters.trafficMin);
+    if(_rangeFilters.trafficMax<Infinity)s=s.filter(x=>x.v<=_rangeFilters.trafficMax);
+    if(_rangeFilters.revenueMin>0)s=s.filter(x=>x.rv>=_rangeFilters.revenueMin);
+    if(_rangeFilters.revenueMax<Infinity)s=s.filter(x=>x.rv<=_rangeFilters.revenueMax);
+    if(_rangeFilters.productsMin>0)s=s.filter(x=>x.p>=_rangeFilters.productsMin);
+    if(_rangeFilters.productsMax<Infinity)s=s.filter(x=>x.p<=_rangeFilters.productsMax);
+    if(_rangeFilters.adsMin>0)s=s.filter(x=>x.ad>=_rangeFilters.adsMin);
+    if(_rangeFilters.adsMax<Infinity)s=s.filter(x=>x.ad<=_rangeFilters.adsMax);
+    if(_rangeFilters.salesMin>0)s=s.filter(x=>x.es>=_rangeFilters.salesMin);
   }
 
   // Column sorting
@@ -1268,7 +1363,7 @@ function re(){
           <span style="color:${ac};font-weight:800;">${s.ad}</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </div>
-        ${s.ad>0?'<div style="display:flex;gap:2px;"><img src="https://flagcdn.com/w20/'+s.c+'.png" style="width:16px;height:11px;border-radius:2px;opacity:0.7" onerror="this.style.display=\\'none\\'"/></div>':''}
+        ${s.ad>0?'<div style="display:flex;gap:2px;"><img src="https://flagcdn.com/w20/'+s.c+'.png" style="width:16px;height:11px;border-radius:2px;opacity:0.7" onerror="this.style.display=\'none\'"/></div>':''}
       </a></td>
       <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
       <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov.toFixed(2):'—'}</div></td>
@@ -1374,59 +1469,50 @@ async function applyDashboardFreemium() {
 applyDashboardFreemium();
 
 // --- Autocomplete ---
-let _acTimer;
-function showAC(val){
-  clearTimeout(_acTimer);
-  const drop=document.getElementById('ac-drop');
-  if(!val||val.length<2){drop.style.display='none';fs();return;}
-  _acTimer=setTimeout(()=>runAC(val),250);
+let _acTimer=null;
+function showAC(){
+  const v=document.getElementById('si').value.trim();
+  if(v.length>=2) runAC(v);
 }
-async function runAC(term){
-  const drop=document.getElementById('ac-drop');
-  try{
-    const r=await fetch(_SB+'/rest/v1/shops?select=domain,name,title,country,score,icon,niche&or=(domain.ilike.*'+encodeURIComponent(term)+'*,name.ilike.*'+encodeURIComponent(term)+'*,title.ilike.*'+encodeURIComponent(term)+'*)&order=score.desc&limit=8',{headers:{'apikey':_AK}});
-    const data=await r.json();
-    if(!data||!data.length){drop.style.display='none';fs();return;}
-    drop.innerHTML=data.map(s=>{
-      const init=(n)=>{const p=(n||'').split(/[\s.-]+/);return(p[0]?p[0][0]:'')+(p[1]?p[1][0]:'');};
-      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background=\'rgba(232,121,154,0.06)\'" onmouseout="this.style.background=\'transparent\'" onclick="window.location.href=\'peekr-shop-detail.html?domain=\'+encodeURIComponent(\''+s.domain+'\')">'+
-        '<div style="width:32px;height:32px;border-radius:8px;background:rgba(245,240,235,0.8);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">'+(s.icon?'<img src="'+s.icon+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'<span style=font-size:11px;font-weight:800;color:rgba(26,10,15,0.35)>'+init(s.name||s.domain)+'</span>\'"/>':'<span style="font-size:11px;font-weight:800;color:rgba(26,10,15,0.35)">'+init(s.name||s.domain)+'</span>')+'</div>'+
-        '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;color:#1a0a0f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(s.title||s.name||s.domain)+'</div><div style="font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;">'+s.domain+'</div></div>'+
-        (s.score?'<div style="font-size:12px;font-weight:800;color:#e8799a;">'+s.score+'</div>':'')+
-      '</div>';
-    }).join('');
-    drop.style.display='block';
-  }catch(e){drop.style.display='none';}
-}
-document.addEventListener('click',e=>{if(!e.target.closest('.sbox')&&!e.target.closest('#ac-drop'))document.getElementById('ac-drop').style.display='none';});
-
-// --- Range Filters ---
-var _rangeFilters = {scoreMin:null,scoreMax:null,trafficMin:null,trafficMax:null,revenueMin:null,revenueMax:null,productsMin:null,productsMax:null};
-
-function applyRangeFilters(){
-  const sm=document.getElementById('rf-score-min');
-  const sx=document.getElementById('rf-score-max');
-  _rangeFilters.scoreMin=sm&&sm.value?+sm.value:null;
-  _rangeFilters.scoreMax=sx&&sx.value?+sx.value:null;
-
-  const tr=document.getElementById('rf-traffic');
-  if(tr&&tr.value){const p=tr.value.split('-');_rangeFilters.trafficMin=+p[0];_rangeFilters.trafficMax=+p[1];}
-  else{_rangeFilters.trafficMin=null;_rangeFilters.trafficMax=null;}
-
-  const rv=document.getElementById('rf-revenue');
-  if(rv&&rv.value){const p=rv.value.split('-');_rangeFilters.revenueMin=+p[0];_rangeFilters.revenueMax=+p[1];}
-  else{_rangeFilters.revenueMin=null;_rangeFilters.revenueMax=null;}
-
-  const pr=document.getElementById('rf-products');
-  if(pr&&pr.value){const p=pr.value.split('-');_rangeFilters.productsMin=+p[0];_rangeFilters.productsMax=+p[1];}
-  else{_rangeFilters.productsMin=null;_rangeFilters.productsMax=null;}
-
+function fs(){
+  q=document.getElementById('si').value.toLowerCase();
+  _apiResults=[];_apiSearching=false;
   currentPage=0;
   re();
+  clearTimeout(_searchTimer);
+  clearTimeout(_acTimer);
+  if(q.length>=2){
+    _acTimer=setTimeout(()=>runAC(q),200);
+    const localHits=D.filter(x=>x.n.toLowerCase().includes(q)||x.d.includes(q)||x.ni.toLowerCase().includes(q));
+    if(localHits.length<5){
+      _searchTimer=setTimeout(()=>liveSearch(q),400);
+    }
+  }else{
+    document.getElementById('ac-drop').style.display='none';
+  }
 }
-
-// Patch the existing re() filter logic to include range filters
-const _origApply=typeof applyAllFilters==='function'?applyAllFilters:null;
+function runAC(term){
+  const drop=document.getElementById('ac-drop');
+  const hits=D.filter(x=>x.n.toLowerCase().includes(term)||x.d.includes(term)||x.ni.toLowerCase().includes(term)).slice(0,8);
+  if(!hits.length){drop.style.display='none';return;}
+  drop.style.display='block';
+  drop.innerHTML=`<div style="padding:6px 12px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;">Shops</div>`+
+    hits.map(s=>`<a href="peekr-shop-detail.html?domain=${encodeURIComponent(s.d)}" style="display:flex;align-items:center;gap:10px;padding:8px 14px;text-decoration:none;color:inherit;transition:background .1s;cursor:pointer;" onmouseover="this.style.background='rgba(232,121,154,0.06)'" onmouseout="this.style.background='transparent'">
+      <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--pink);flex-shrink:0;overflow:hidden;">
+        ${s.ico?`<img src="${s.ico}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentElement.textContent='${(s.n||'?')[0].toUpperCase()}'"/>`:(s.n||'?')[0].toUpperCase()}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.n}</div>
+        <div style="font-size:11px;color:var(--pink);font-weight:600;">${s.d}</div>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;"><img src="https://flagcdn.com/w20/${s.c}.png" style="width:14px;height:10px;border-radius:1px;vertical-align:middle;margin-right:4px;"/>${s.ni}</span>
+      <span style="font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;">&#128200; ${s.vf||fmtV(s.v)}</span>
+      ${s.ad>0?`<span style="font-size:10px;font-weight:700;background:rgba(232,121,154,0.1);color:var(--pink);padding:2px 6px;border-radius:8px;">&#128226; ${s.ad}</span>`:''}
+    </a>`).join('')+
+    `<div style="padding:8px 14px;border-top:1px solid var(--border);"><span style="font-size:11px;color:var(--text3);">Press Enter to search all shops</span></div>`;
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.sbox'))document.getElementById('ac-drop').style.display='none';});
 </script>
+<script src="peekr-enhanced-filters.js"></script>
 </body>
 </html>
