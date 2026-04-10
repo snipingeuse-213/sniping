@@ -39,10 +39,24 @@ module.exports = async function handler(req, res) {
 
     // Transform all domains to shop format
     const shops = domains.map(d => {
-      const liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
+      let liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
+
+      // If Store Leads doesn't provide ad counts, estimate from ad technologies
+      // Technologies with "Advertising" category = shop is running ads
+      if (liveAds === 0 && Array.isArray(d.technologies)) {
+        const adTechs = d.technologies.filter(t => {
+          if (typeof t === 'object' && t !== null && Array.isArray(t.categories)) {
+            return t.categories.some(c => /advertising|ad network|retargeting/i.test(c));
+          }
+          return false;
+        });
+        // Each ad technology suggests active advertising
+        if (adTechs.length > 0) liveAds = adTechs.length;
+      }
+
       const adPlatforms = d.ad_platforms || d.advertising || [];
       if (liveAds > 0) withAds++;
-      details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits });
+      details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits, adTechCount: liveAds });
 
       // IMPORTANT: Every key must be present in every object (PGRST102)
       // Use null for missing values, never undefined
