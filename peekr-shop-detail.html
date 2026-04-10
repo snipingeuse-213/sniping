@@ -480,7 +480,7 @@ function renderShop(s){
   // Load similar shops
   loadSimilarShops(s);
   // Load meta ads
-  loadMetaAds(s.domain);
+  loadMetaAds(s.domain, s.name || s.title || s.domain);
 }
 
 // --- Tab Switching ---
@@ -547,72 +547,130 @@ function renderSimilar(container, shops){
 }
 
 // --- Meta Ads ---
-async function loadMetaAds(domainName){
+async function loadMetaAds(domainName, shopName){
   const container=document.getElementById('meta-ads');
   try{
-    // Try fetching from Meta Ads Library via our Supabase proxy or directly show a visual placeholder
-    // For now, we show a rich placeholder with link to Meta Library
-    // In production, this would call the Meta Ads Library API
-    const adCount=parseInt(document.getElementById('ads-count')?.textContent)||0;
+    // Build search: match by shop_domain OR page_name containing shop name
+    const cleanName=(shopName||domainName).replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i,'').replace(/[-_]/g,' ');
+    const searchTerms=[domainName];
+    if(cleanName&&cleanName.length>2) searchTerms.push(cleanName);
+
+    // Query Supabase ads table - search by page_name or shop_domain
+    let ads=[];
+    // Try exact domain match first
+    const byDomain=await sbFetch(_SB+'/rest/v1/ads?shop_domain=eq.'+encodeURIComponent(domainName)+'&select=*&order=peekr_score.desc&limit=50');
+    if(byDomain&&byDomain.length>0&&!byDomain.error){
+      ads=byDomain;
+    }else{
+      // Fuzzy match by page_name containing the clean shop name
+      const byName=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(cleanName)+'*&select=*&order=peekr_score.desc&limit=50');
+      if(byName&&byName.length>0&&!byName.error) ads=byName;
+    }
+
+    // Also try searching ad body for the domain
+    if(ads.length===0){
+      const byBody=await sbFetch(_SB+'/rest/v1/ads?ad_creative_body=ilike.*'+encodeURIComponent(domainName)+'*&select=*&order=peekr_score.desc&limit=50');
+      if(byBody&&byBody.length>0&&!byBody.error) ads=byBody;
+    }
+
+    const adCount=ads.length;
+    document.getElementById('ads-count').textContent=adCount;
 
     if(adCount>0){
       container.innerHTML=`
         <div style="grid-column:1/-1;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-            <span class="ad-status active">&#128994; ${adCount} Active Ads</span>
-            <span style="font-size:12px;color:var(--text3);">Data from Meta Ads Library</span>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+            <span class="ad-status active">&#128994; ${adCount} Live Ads Found</span>
+            <span style="font-size:12px;color:var(--text3);">Matched from Meta Ad Library data</span>
+            <div style="margin-left:auto;display:flex;gap:8px;">
+              <button class="shop-btn" onclick="sortAds('score')" style="font-size:11px;padding:4px 12px;" id="sort-score">&#127942; Top Score</button>
+              <button class="shop-btn" onclick="sortAds('reach')" style="font-size:11px;padding:4px 12px;" id="sort-reach">&#128200; Top Reach</button>
+              <button class="shop-btn" onclick="sortAds('recent')" style="font-size:11px;padding:4px 12px;" id="sort-recent">&#128197; Most Recent</button>
+            </div>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
-            ${generateAdPlaceholders(domainName, adCount)}
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="ads-grid">
+            ${renderAdCards(ads)}
           </div>
           <div style="text-align:center;margin-top:20px;">
             <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
-              &#128269; View All ${adCount} Ads on Meta Library &#8599;
+              &#128269; View All on Meta Library &#8599;
             </a>
           </div>
         </div>`;
+      window.__shopAds=ads;
     }else{
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
-          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Active Ads Detected</div>
-          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This shop doesn't currently have active Meta ads, or we haven't indexed them yet.</div>
-          <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
-            &#128269; Check Meta Ad Library &#8599;
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Indexed Ads Found</div>
+          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">We haven\'t matched any Meta ads to this shop yet. Check the Meta Ad Library directly.</div>
+          <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
+            &#128269; Search Meta Ad Library &#8599;
           </a>
         </div>`;
     }
-
-    // Update tab count
-    document.getElementById('ads-count').textContent=adCount||'0';
   }catch(e){
-    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data.</div>';
+    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data: '+e.message+'</div>';
   }
 }
 
-function generateAdPlaceholders(domain, count){
-  const n=Math.min(count, 6);
-  let html='';
-  for(let i=0;i<n;i++){
-    html+=`
-    <div class="ad-card">
-      <div class="ad-card-media">
-        <img src="https://image.thum.io/get/width/600/crop/600/https://${domain}"
-             onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
-      </div>
-      <div class="ad-card-body">
-        <div class="ad-card-page">${domain}</div>
-        <div class="ad-card-text" style="color:var(--text3);font-style:italic;">Ad creative #${i+1} â View on Meta Library for full details</div>
-        <div class="ad-card-footer">
-          <span class="ad-status active">&#128994; Active</span>
-          <a class="ad-card-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domain)}" target="_blank">View Ad &#8599;</a>
+function sortAds(mode){
+  if(!window.__shopAds) return;
+  const ads=[...window.__shopAds];
+  if(mode==='score') ads.sort((a,b)=>(b.peekr_score||0)-(a.peekr_score||0));
+  else if(mode==='reach') ads.sort((a,b)=>(b.eu_total_reach||0)-(a.eu_total_reach||0));
+  else if(mode==='recent') ads.sort((a,b)=>new Date(b.ad_delivery_start_time||0)-new Date(a.ad_delivery_start_time||0));
+  document.querySelectorAll('[id^="sort-"]').forEach(b=>b.style.background='');
+  const btn=document.getElementById('sort-'+mode);
+  if(btn) btn.style.background='rgba(232,121,154,0.15)';
+  document.getElementById('ads-grid').innerHTML=renderAdCards(ads);
+}
+
+function renderAdCards(ads){
+  return ads.map((a,i)=>{
+    const days=a.ad_delivery_start_time?Math.floor((Date.now()-new Date(a.ad_delivery_start_time))/(86400000)):0;
+    const score=a.peekr_score?Number(a.peekr_score).toFixed(1):'-';
+    const reach=a.eu_total_reach?fmtV(a.eu_total_reach):'N/A';
+    const spend=a.spend_upper?('$'+fmtV(a.spend_upper)):'';
+    const body=(a.ad_creative_body||'No ad copy available').substring(0,180);
+    const platforms=(a.publisher_platforms||[]).map(p=>{
+      if(p==='facebook') return '\u{1F1EB}';
+      if(p==='instagram') return '\u{1F4F7}';
+      if(p==='messenger') return '\u{1F4AC}';
+      return '';
+    }).join(' ');
+    const startDate=a.ad_delivery_start_time||'';
+    const metaId=a.meta_ad_id||'';
+    const snapshotUrl=metaId?'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId:'#';
+
+    return `
+    <div class="ad-card" style="border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('${snapshotUrl}','_blank')">
+      <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:13px;font-weight:700;color:var(--pink);">#${i+1}</span>
+            <span style="font-size:13px;font-weight:700;">${a.page_name||'Unknown'}</span>
+          </div>
+          <span style="background:${Number(score)>=70?'rgba(34,197,94,0.1)':Number(score)>=40?'rgba(246,160,90,0.1)':'rgba(180,160,170,0.1)'};color:${Number(score)>=70?'var(--green)':Number(score)>=40?'var(--orange)':'var(--text3)'};font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px;">&#9733; ${score}</span>
         </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2);flex-wrap:wrap;">
+          <span>&#128994; ${days}d running</span>
+          <span style="color:var(--text3);">&#8226;</span>
+          <span>&#128200; ${reach} reach</span>
+          ${spend?'<span style="color:var(--text3);">&#8226;</span><span>&#128176; '+spend+'</span>':''}
+        </div>
+        ${startDate?'<div style="font-size:10px;color:var(--text3);margin-top:4px;">Since '+startDate+' - Today</div>':''}
+      </div>
+      <div style="padding:14px 16px;">
+        <div style="font-size:12.5px;line-height:1.5;color:var(--text1);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${body.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}${body.length>=180?'...':''}</div>
+      </div>
+      <div style="padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);">
+        <span class="ad-status active" style="font-size:10px;">&#128994; Active</span>
+        <a style="font-size:11px;font-weight:700;color:var(--pink);text-decoration:none;" href="${snapshotUrl}" target="_blank" onclick="event.stopPropagation();">View on Meta &#8599;</a>
       </div>
     </div>`;
-  }
-  return html;
+  }).join('');
 }
-
 // --- Helpers ---
 function fmtV(n){
   if(!n)return '0';
