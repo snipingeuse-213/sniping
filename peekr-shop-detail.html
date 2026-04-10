@@ -653,7 +653,8 @@ function renderAdCards(ads){
     const metaId=a.meta_ad_id||'';
     const snapshotUrl=metaId?'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId:'#';
 
-    const thumbUrl=metaId?'https://image.thum.io/get/width/600/crop/400/noanimate/https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId:'';
+    const brandInit=(a.page_name||'?')[0].toUpperCase();
+    const hue=Math.abs([...((a.page_name||'Ad')).split('')].reduce((h,c)=>((h<<5)-h)+c.charCodeAt(0),0))%360;
     return `
     <div class="ad-card" style="border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('${snapshotUrl}','_blank')">
       <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);">
@@ -672,7 +673,10 @@ function renderAdCards(ads){
         </div>
         ${startDate?'<div style="font-size:10px;color:var(--text3);margin-top:4px;">Since '+startDate+' - Today</div>':''}
       </div>
-      ${thumbUrl?`<div style="position:relative;height:280px;overflow:hidden;background:#f9f5f0;border-bottom:1px solid var(--border);"><img src="${thumbUrl}" alt="Ad preview" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>`:''}
+      <div style="background:linear-gradient(135deg,hsl(${hue},45%,92%),hsl(${(hue+40)%360},35%,85%));padding:24px 16px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);">
+        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,hsl(${hue},50%,55%),hsl(${(hue+40)%360},45%,45%));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;box-shadow:0 4px 12px hsla(${hue},50%,40%,0.3);">${brandInit}</div>
+        <div style="font-size:12px;color:hsl(${hue},25%,45%);text-align:center;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body.substring(0,120)}${body.length>120?'...':''}</div>
+      </div>
       <div style="padding:12px 16px;">
         <div style="font-size:12.5px;line-height:1.5;color:var(--text1);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}${body.length>=180?'...':''}</div>
       </div>
