@@ -310,6 +310,7 @@ let filtered = [];
 let scoreFilter = 'all';
 
 function daysSince(d){if(!d)return 0;return Math.max(1,Math.floor((Date.now()-new Date(d))/(1000*60*60*24)));}
+function fmtNum(n){if(!n)return '0';n=Number(n);if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toString();}
 
 function scoreColor(s){
   if(s>=80) return {bg:'linear-gradient(135deg,#e8799a,#d4607a)'};
@@ -325,12 +326,20 @@ function platformIcons(platforms){
 
 async function fetchAds(){
   try{
-    const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/ads?select=*&status=eq.active&order=first_seen_at.desc&limit=300`,
-      {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
-    );
-    if(!r.ok) throw new Error(`API ${r.status}`);
-    allAds = await r.json();
+    // Fetch ALL ads (paginated in batches of 1000)
+    let all=[], offset=0;
+    while(true){
+      const r = await fetch(
+        `${SUPABASE_URL}/rest/v1/ads?select=*&status=eq.active&order=peekr_score.desc,ad_delivery_start_time.desc&limit=1000&offset=${offset}`,
+        {headers:{'apikey':SUPABASE_ANON_KEY,'Authorization':`Bearer ${SUPABASE_ANON_KEY}`}}
+      );
+      if(!r.ok) throw new Error(`API ${r.status}`);
+      const batch = await r.json();
+      all = all.concat(batch);
+      if(batch.length < 1000) break;
+      offset += 1000;
+    }
+    allAds = all;
 
     // Populate page_name filter (reuse nicheFilter select)
     const pages = [...new Set(allAds.map(a=>a.page_name).filter(Boolean))].sort();
@@ -403,41 +412,56 @@ function renderCards(){
   grid.style.display='grid';
   empty.style.display='none';
 
-  grid.innerHTML = filtered.map(a=>{
-    const score = a.engagement_score||10;
+  // Pagination: show 50 at a time, load more on scroll
+  const PAGE_SIZE = 50;
+  const showCount = Math.min(filtered.length, (window._adsPage||1) * PAGE_SIZE);
+  const visible = filtered.slice(0, showCount);
+
+  grid.innerHTML = visible.map((a,i)=>{
+    const score = a.peekr_score||a.engagement_score||0;
     const sc = scoreColor(score);
     const days = daysSince(a.ad_delivery_start_time);
     const body = (a.ad_creative_body||'No ad copy available').substring(0,140);
-    const logoUrl = a.shop_domain ? `https://logo.clearbit.com/${a.shop_domain}` : '';
-    const snapshotUrl = a.ad_snapshot_url || '#';
     const platforms = a.publisher_platforms || [];
-    const previewText = (a.ad_creative_body||'View this ad on Meta').substring(0,120) + ((a.ad_creative_body||'').length>120?'...':'');
+    const metaId = a.meta_ad_id||'';
+    const metaLibUrl = metaId ? `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id=${metaId}` : '#';
+    const snapshotUrl = a.ad_snapshot_url || '';
+    const reach = a.eu_total_reach ? fmtNum(a.eu_total_reach) : '';
+    const spend = a.spend_upper ? '$'+fmtNum(a.spend_upper) : '';
 
-    return `<div class="ad-card">
-      <div class="ad-thumb">
-        ${logoUrl ? `<img src="${logoUrl}" alt="${a.page_name||a.shop_domain}" onerror="this.style.display='none'"/>` : `<div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:rgba(255,255,255,0.6);margin-bottom:8px;flex-shrink:0">${(a.page_name||a.shop_domain||'?')[0].toUpperCase()}</div>`}
-        <div class="ad-thumb-text">${previewText}</div>
-        <div class="ad-score" style="background:${sc.bg}">${days}d</div>
+    return `<div class="ad-card" onclick="window.open('${metaLibUrl}','_blank')" style="cursor:pointer">
+      <div class="ad-thumb" style="position:relative;min-height:220px;overflow:hidden;background:#1a0a0f;">
+        ${snapshotUrl ? `<iframe src="${snapshotUrl}" style="position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;transform:scale(0.75);transform-origin:top left;width:133%;height:133%;" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>` : `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px;text-align:center;"><div style="font-size:32px;margin-bottom:8px;opacity:0.4;">&#128247;</div><div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.4;">${body.substring(0,80)}...</div></div>`}
+        <div class="ad-score" style="background:${sc.bg}">${score.toFixed?score.toFixed(0):score}</div>
       </div>
       <div class="ad-body">
-        <div class="ad-name">${platformIcons(platforms)} ${a.page_name||'Unknown Advertiser'}</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <div class="ad-name" style="flex:1;">${platformIcons(platforms)} ${a.page_name||'Unknown'}</div>
+          <span style="font-size:10px;color:#888;white-space:nowrap;">#${i+1}</span>
+        </div>
         <div class="ad-domain">${a.shop_domain||'—'}</div>
         <div class="ad-meta">
+          <span class="ad-tag" style="background:rgba(34,197,94,0.1);color:#16a34a;">&#128994; ${days}d</span>
+          ${reach?`<span class="ad-tag">&#128200; ${reach}</span>`:''}
+          ${spend?`<span class="ad-tag">&#128176; ${spend}</span>`:''}
           ${platforms.map(p=>`<span class="ad-tag">${p}</span>`).join('')}
-          ${a.ad_delivery_start_time?`<span class="ad-tag">Since ${new Date(a.ad_delivery_start_time).toLocaleDateString('en',{month:'short',day:'numeric'})}</span>`:''}
         </div>
-        <div style="font-size:12px;color:rgba(26,10,15,0.55);line-height:1.5;margin-bottom:14px;min-height:54px;">${body}${(a.ad_creative_body||'').length>140?'...':''}</div>
+        <div style="font-size:12px;color:rgba(26,10,15,0.55);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body}${(a.ad_creative_body||'').length>140?'...':''}</div>
         <div class="ad-stats">
           <div><div class="ad-stat-val" style="color:#e8799a;font-weight:900;">${days}d</div><div class="ad-stat-lbl">Running</div></div>
-          <div><div class="ad-stat-val">${platforms.length}</div><div class="ad-stat-lbl">Platforms</div></div>
-          <div><div class="ad-stat-val">${score}</div><div class="ad-stat-lbl">Score</div></div>
+          <div><div class="ad-stat-val">${score.toFixed?score.toFixed(0):score}</div><div class="ad-stat-lbl">Peekr Score</div></div>
+          ${reach?`<div><div class="ad-stat-val">${reach}</div><div class="ad-stat-lbl">Reach</div></div>`:`<div><div class="ad-stat-val">${platforms.length}</div><div class="ad-stat-lbl">Platforms</div></div>`}
         </div>
-        <a href="${snapshotUrl}" target="_blank" class="ad-btn">&#128065; View Ad Snapshot</a>
-        <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(a.shop_domain||'')}" target="_blank" class="ad-btn-sec">&#128269; All Ads from this Shop</a>
-        <button class="ad-btn-sec" style="margin-top:6px;cursor:pointer;border:1px solid rgba(232,121,154,0.3);color:#e8799a;" onclick="saveAd(event,'${(a.meta_ad_id||'').replace(/'/g,"\\'")}','${(a.shop_domain||'').replace(/'/g,"\\'")}','${(a.page_name||'').replace(/'/g,"\\'")}',this)">&#128190; Save Ad</button>
+        <a href="${metaLibUrl}" target="_blank" class="ad-btn" onclick="event.stopPropagation()">&#128065; View on Meta</a>
+        <button class="ad-btn-sec" style="margin-top:6px;cursor:pointer;border:1px solid rgba(232,121,154,0.3);color:#e8799a;" onclick="event.stopPropagation();saveAd(event,'${(a.meta_ad_id||'').replace(/'/g,"\\'")}','${(a.shop_domain||'').replace(/'/g,"\\'")}','${(a.page_name||'').replace(/'/g,"\\'")}',this)">&#128190; Save Ad</button>
       </div>
     </div>`;
   }).join('');
+
+  // Show "Load More" if there are more ads
+  if(showCount < filtered.length){
+    grid.innerHTML += `<div style="grid-column:1/-1;text-align:center;padding:20px;"><button onclick="window._adsPage=(window._adsPage||1)+1;renderCards();" style="padding:10px 32px;border-radius:10px;border:2px solid #e8799a;background:none;color:#e8799a;font-weight:700;font-size:14px;cursor:pointer;">Load More (${filtered.length - showCount} remaining)</button></div>`;
+  }
 }
 
 function setScore(el){

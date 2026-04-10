@@ -653,6 +653,7 @@ function renderAdCards(ads){
     const metaId=a.meta_ad_id||'';
     const snapshotUrl=metaId?'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId:'#';
 
+    const snapUrl=a.ad_snapshot_url||'';
     return `
     <div class="ad-card" style="border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('${snapshotUrl}','_blank')">
       <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);">
@@ -671,8 +672,9 @@ function renderAdCards(ads){
         </div>
         ${startDate?'<div style="font-size:10px;color:var(--text3);margin-top:4px;">Since '+startDate+' - Today</div>':''}
       </div>
-      <div style="padding:14px 16px;">
-        <div style="font-size:12.5px;line-height:1.5;color:var(--text1);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;">${body.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}${body.length>=180?'...':''}</div>
+      ${snapUrl?`<div style="position:relative;height:280px;overflow:hidden;background:#f9f5f0;border-bottom:1px solid var(--border);"><iframe src="${snapUrl}" style="position:absolute;top:0;left:0;width:133%;height:133%;border:none;pointer-events:none;transform:scale(0.75);transform-origin:top left;" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe></div>`:''}
+      <div style="padding:12px 16px;">
+        <div style="font-size:12.5px;line-height:1.5;color:var(--text1);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}${body.length>=180?'...':''}</div>
       </div>
       <div style="padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);">
         <span class="ad-status active" style="font-size:10px;">&#128994; Active</span>
