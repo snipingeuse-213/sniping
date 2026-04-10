@@ -103,6 +103,9 @@ module.exports = async function handler(req, res) {
         updated++;
         if (liveAds > 0) withAds++;
         details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits });
+      } else {
+        const errText = await upResp.text();
+        details.push({ domain: d.name, error: `${upResp.status}: ${errText.slice(0, 200)}` });
       }
     }
 
@@ -114,7 +117,8 @@ module.exports = async function handler(req, res) {
       withAds,
       nextOffset: offset + batchSize,
       elapsed_ms: elapsed,
-      sample: details.slice(0, 10)
+      errors: details.filter(d => d.error).slice(0, 5),
+      sample: details.filter(d => !d.error).slice(0, 10)
     });
 
   } catch (error) {
