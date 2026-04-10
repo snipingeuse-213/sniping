@@ -21,8 +21,10 @@ module.exports = async function handler(req, res) {
   const details = [];
 
   try {
-    // Fetch from Store Leads with ad data (sort descending by traffic = biggest shops first)
-    const slUrl = `https://storeleads.app/json/api/v1/all/domain?p=shopify&ds=active&sort=-${sort}&limit=${batchSize}&offset=${offset}&c=${country}`;
+    // Fetch from Store Leads with ad data
+    const createdAfter = req.query.created_after || ''; // e.g. 2025-12-01
+    let slUrl = `https://storeleads.app/json/api/v1/all/domain?p=shopify&ds=active&sort=-${sort}&limit=${batchSize}&offset=${offset}&c=${country}`;
+    if (createdAfter) slUrl += `&cmin=${createdAfter}`;
 
     const slResp = await fetch(slUrl, {
       headers: { 'Authorization': `Token ${STORELEADS_KEY}` },
