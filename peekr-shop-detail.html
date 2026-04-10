@@ -284,7 +284,10 @@ function renderShop(s){
   const parsedTechs=(s.technologies||[]).map(t=>{if(typeof t==='object'&&t!==null)return t;if(typeof t==='string'){try{return JSON.parse(t);}catch(e){return{name:t};}}return{name:String(t)};});
   const rawTechs=parsedTechs.map(t=>t.name||'');
   // Extract pixels/ad platforms: use ad_platforms if non-empty, otherwise detect from technologies
-  const detectedPixels=parsedTechs.filter(t=>{const n=(t.name||'').toLowerCase();const cats=(t.categories||[]).join(' ').toLowerCase();return /advertising|ad network|ad exchange|retargeting|remarketing|ad server|analytics|tag management/.test(cats)||/pixel|facebook ads|meta ads|meta pixel|google ads|google analytics|google tag manager|google adwords|tiktok ads|snapchat ads|pinterest ads|bing ads|microsoft advertising|microsoft ads|criteo|adroll|taboola|outbrain|amazon ads|doubleclick|adsense|adwords|facebook conversions|applovin|blotout|linkedin ads|twitter ads|snap pixel|hotjar|clarity|dynamic yield|klaviyo|attentive|postscript|yotpo|privy|omnisend|mailchimp|hubspot/i.test(n);}).map(t=>t.name);
+  const PIXEL_NAMES={'google adsense':'Google Ads','google adwords':'Google Ads','google analytics':'Google Analytics','google tag manager':'Google Tag Manager','google remarketing':'Google Ads','google conversion tracking':'Google Ads','google ads conversion tracking':'Google Ads','google publisher tag':'Google Ads','facebook pixel':'Meta Pixel','facebook ads':'Meta Pixel','facebook signal':'Meta Pixel','facebook custom audiences':'Meta Pixel','meta pixel':'Meta Pixel','meta ads':'Meta Pixel','tiktok pixel':'TikTok Ads','tiktok ads':'TikTok Ads','snapchat ads':'Snap Pixel','snap pixel':'Snap Pixel','pinterest tag':'Pinterest Ads','pinterest ads':'Pinterest Ads','pinterest conversion tag':'Pinterest Ads','twitter ads':'Twitter Ads','twitter pixel':'Twitter Ads','linkedin ads':'LinkedIn Ads','linkedin insight':'LinkedIn Ads','linkedin insight tag':'LinkedIn Ads','microsoft advertising':'Microsoft Advertising','bing ads':'Microsoft Advertising','microsoft clarity':'Microsoft Clarity','criteo':'Criteo','adroll':'AdRoll','taboola':'Taboola','outbrain':'Outbrain','hotjar':'Hotjar','dynamic yield':'Dynamic Yield','doubleclick':'DoubleClick','amazon ads':'Amazon Ads','applovin':'AppLovin','blotout':'Blotout','klaviyo':'Klaviyo','attentive':'Attentive','postscript':'Postscript','yotpo':'Yotpo','privy':'Privy','omnisend':'Omnisend','mailchimp':'Mailchimp','hubspot':'HubSpot','impact':'Impact','partnerize':'Partnerize','rakuten advertising':'Rakuten Advertising','shareasale':'ShareASale','refersion':'Refersion','awin':'Awin','cj affiliate':'CJ Affiliate'};
+  const detectedPixelSet=new Set();
+  parsedTechs.forEach(t=>{const n=(t.name||'').toLowerCase();const cats=(t.categories||[]).join(' ').toLowerCase();if(/advertising|ad network|ad exchange|retargeting|remarketing|ad server|tag management/.test(cats)){const mapped=PIXEL_NAMES[n]||t.name;detectedPixelSet.add(mapped);}else if(/analytics/.test(cats)&&/google|facebook|meta|tiktok|snap|pinterest|twitter|linkedin|bing|microsoft|adobe|amplitude|mixpanel|segment|heap/i.test(n)){const mapped=PIXEL_NAMES[n]||t.name;detectedPixelSet.add(mapped);}else{for(const[key,val]of Object.entries(PIXEL_NAMES)){if(n.includes(key)){detectedPixelSet.add(val);break;}}}});
+  const detectedPixels=[...detectedPixelSet];
   const pixels=(s.ad_platforms&&s.ad_platforms.length>0)?s.ad_platforms:detectedPixels;
   const techs=rawTechs.filter(t=>!pixels.includes(t));
   const rawApps=s.apps||[];
@@ -400,7 +403,7 @@ function renderShop(s){
           <!-- Pixels & Ad Platforms -->
           <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.04),rgba(232,121,154,0.01));border-color:rgba(232,121,154,0.12);">
             <div class="section-title"><span class="ico">&#128225;</span> Pixels & Ad Platforms</div>
-            <div id="pixels-container">${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div>`:`<div style="color:var(--text3);font-size:12px;"><span id="pixel-scan-status">&#128269; Scanning store for tracking pixels...</span></div>`}</div>
+            <div id="pixels-container">${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div><div style="margin-top:6px;font-size:10px;color:var(--text3);"><span id="pixel-scan-status">&#128269; Scanning for more...</span></div>`:`<div style="color:var(--text3);font-size:12px;"><span id="pixel-scan-status">&#128269; Scanning store for tracking pixels...</span></div>`}</div>
           </div>
 
           <!-- Other Technologies -->
@@ -532,8 +535,8 @@ function renderShop(s){
   loadTrustpilot(s.domain);
   // Load product images
   loadProducts(s.domain);
-  // Live pixel scan if no pixels detected from DB
-  if(!pixels.length) scanPixels(s.domain);
+  // Always run live pixel scan to find additional pixels
+  scanPixels(s.domain, pixels);
 }
 
 // --- Tab Switching ---
@@ -743,6 +746,7 @@ function renderAdCards(ads){
 // --- Helpers ---
 function fmtV(n){
   if(!n)return '0';
+  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
   if(n>=1e6)return(n/1e6).toFixed(1)+'M';
   if(n>=1e3)return(n/1e3).toFixed(n>=1e4?0:1)+'K';
   return n.toLocaleString();
@@ -794,22 +798,28 @@ function renderTpStars(el,stars){
 }
 
 // --- Live Pixel Scanner ---
-async function scanPixels(domain){
+async function scanPixels(domain, existingPixels){
   const container=document.getElementById('pixels-container');
   const statusEl=document.getElementById('pixel-scan-status');
   if(!container) return;
+  const existing=new Set((existingPixels||[]).map(p=>p.toLowerCase()));
   const cleanDomain=domain.replace(/^www\./,'');
   try{
     const proxyResp=await fetch('/api/scan-pixels?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(15000)});
     if(proxyResp.ok){
       const data=await proxyResp.json();
       if(data&&data.pixels&&data.pixels.length>0){
-        container.innerHTML='<div class="tags">'+data.pixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div><div style="margin-top:6px;font-size:10px;color:var(--text3);">Detected via live page scan</div>';
-        return;
+        // Merge: add new pixels not already in existing set
+        const newPixels=data.pixels.filter(p=>!existing.has(p.toLowerCase()));
+        if(newPixels.length>0||!existingPixels||existingPixels.length===0){
+          const allPixels=[...(existingPixels||[]),...newPixels];
+          container.innerHTML='<div class="tags">'+allPixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div>'+(newPixels.length>0?'<div style="margin-top:6px;font-size:10px;color:var(--text3);">+'+newPixels.length+' detected via live scan</div>':'');
+          return;
+        }
       }
     }
   }catch(e){console.log('Pixel scan error:',e.message);}
-  if(statusEl) statusEl.innerHTML='No ad platforms detected from available data';
+  if(statusEl) statusEl.innerHTML='No additional ad platforms detected';
 }
 
 // --- Product Images ---

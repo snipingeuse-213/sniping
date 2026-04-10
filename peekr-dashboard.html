@@ -538,9 +538,9 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
 })();
 
 let D=[];
-function fmtV(v){if(!v)return'0';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
+function fmtV(v){if(!v)return'0';if(v>=1e9)return(v/1e9).toFixed(1)+'B';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
 function fmtR(min,max){
-  const f=v=>{if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
+  const f=v=>{if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
   return f(min)+' – '+f(max);
 }
 function calcAge(d){if(!d)return'N/A';const ms=Date.now()-new Date(d).getTime();const days=Math.floor(ms/864e5);if(days<7)return days+' days';if(days<60)return Math.round(days/7)+' weeks';if(days<365)return Math.round(days/30)+' months';return Math.round(days/365)+' years';}

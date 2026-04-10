@@ -89,13 +89,17 @@ module.exports = async function handler(req, res) {
       const scoreMatch = html.match(/(\d[.,]\d)\s*(?:out of|sur|von|di|de)\s*5/i)
         || html.match(/TrustScore[^0-9]{0,20}(\d[.,]\d)/i)
         || html.match(/ratingValue[^0-9]{0,10}(\d[.,]\d)/i);
-      const reviewMatch = html.match(/([\d,.\s]+)\s*(?:reviews?|avis|bewertungen|recensioni)/i);
+      const reviewMatch = html.match(/([\d,.\s]+)\s*(?:reviews?|avis|bewertungen|recensioni|opinions)/i)
+        || html.match(/reviewCount[^0-9]{0,10}([\d,]+)/i)
+        || html.match(/review-count[^0-9]{0,10}([\d,]+)/i)
+        || html.match(/"numberOfReviews"[^0-9]{0,5}([\d,]+)/i)
+        || html.match(/total[^0-9]{0,10}([\d,]+)\s*(?:reviews?|avis)/i);
       if (scoreMatch) {
         let score = parseFloat(scoreMatch[1].replace(',', '.')) || 0;
         // Sanity check: Trustpilot scores are 1.0-5.0
         if (score > 5) score = score / 10;
         if (score > 5) score = 0;
-        const reviews = reviewMatch ? parseInt(reviewMatch[1].replace(/[,.\s]/g, '')) : 0;
+        const reviews = reviewMatch ? parseInt(reviewMatch[1].replace(/[,.\s]/g, '')) || null : null;
         return res.status(200).json({
           domain,
           trustScore: score,
