@@ -480,7 +480,7 @@ function renderShop(s){
   // Load similar shops
   loadSimilarShops(s);
   // Load meta ads
-  loadMetaAds(s.domain, s.name || s.title || s.domain);
+  loadMetaAds(s.domain, (s.name && s.name !== s.domain) ? s.name : (s.title || s.domain));
 }
 
 // --- Tab Switching ---
