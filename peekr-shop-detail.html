@@ -282,6 +282,7 @@ function renderShop(s){
   const apps=rawApps.map(a=>{if(typeof a==='object')return{name:a.name||'Unknown',icon:a.icon_url||''};if(typeof a==='string'){try{const p=JSON.parse(a);return{name:p.name||'Unknown',icon:p.icon_url||''};}catch(e){return{name:a,icon:''};}}return{name:String(a),icon:''};});
   const strats=s.strategies||[];
   const shipsTo=s.ships_to||[];
+  const visitorCountries=(s.visitor_countries||[]).map(vc=>{if(typeof vc==='object')return{country:vc.country_code||vc.code||'',pct:vc.percentage||vc.pct||vc.share||0};if(typeof vc==='string'){try{const p=JSON.parse(vc);return{country:p.country_code||p.code||'',pct:p.percentage||p.pct||p.share||0};}catch(e){return{country:vc,pct:0};}}return null;}).filter(Boolean).sort((a,b)=>b.pct-a.pct);
   const rawTraffic=s.traffic_trend||[];
   const traffic=rawTraffic.map(v=>typeof v==='object'?(v.visits||v.value||0):Number(v)||0);
   const icon=s.icon||'';
@@ -387,10 +388,16 @@ function renderShop(s){
             ${traffic.length?`<div class="chart-labels">${traffic.map((_,i)=>`<span>W${i+1}</span>`).join('')}</div>`:''}
           </div>
 
-          <!-- Pixels & Technologies -->
+          <!-- Pixels & Ad Platforms -->
+          <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.04),rgba(232,121,154,0.01));border-color:rgba(232,121,154,0.12);">
+            <div class="section-title"><span class="ico">&#128225;</span> Pixels & Ad Platforms</div>
+            ${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;margin-bottom:8px;">No ad platforms detected</div>'}
+          </div>
+
+          <!-- Other Technologies -->
           <div class="section">
-            <div class="section-title"><span class="ico">&#128225;</span> Pixels & Technologies</div>
-            ${pixels.length||techs.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel">${p}</span>`).join('')}${techs.filter(t=>!pixels.includes(t)).slice(0,15).map(t=>`<span class="tag app">${t}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No technologies detected</div>'}
+            <div class="section-title"><span class="ico">&#9881;&#65039;</span> Technologies (${techs.length})</div>
+            ${techs.length?`<div class="tags">${techs.filter(t=>!pixels.includes(t)).slice(0,20).map(t=>`<span class="tag app">${t}</span>`).join('')}${techs.filter(t=>!pixels.includes(t)).length>20?`<span style="color:var(--text3);font-size:11px;">+${techs.filter(t=>!pixels.includes(t)).length-20} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No technologies detected</div>'}
           </div>
 
           <!-- Apps -->
@@ -422,9 +429,15 @@ function renderShop(s){
             </div>
           </div>
 
+          <!-- Visitor Countries -->
+          <div class="section" style="background:linear-gradient(135deg,rgba(99,102,241,0.04),rgba(99,102,241,0.01));border-color:rgba(99,102,241,0.12);">
+            <div class="section-title"><span class="ico">&#127758;</span> Visitor Countries</div>
+            ${visitorCountries.length?`<div style="display:flex;flex-wrap:wrap;gap:10px;">${visitorCountries.slice(0,10).map(vc=>`<div style="display:flex;align-items:center;gap:6px;background:var(--bg2);border-radius:8px;padding:6px 12px;"><img src="https://flagcdn.com/w20/${vc.country.toLowerCase()}.png" style="width:20px;height:14px;border-radius:2px;"/><span style="font-weight:700;font-size:13px;">${vc.country.toUpperCase()}</span><span style="color:var(--text3);font-size:12px;">${vc.pct>0?(vc.pct<1?vc.pct.toFixed(1):Math.round(vc.pct))+'%':''}</span></div>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No visitor data available</div>'}
+          </div>
+
           <!-- Ships To -->
           <div class="section">
-            <div class="section-title"><span class="ico">&#127758;</span> Ships To (${shipsTo.length} countries)</div>
+            <div class="section-title"><span class="ico">&#128230;</span> Ships To (${shipsTo.length} countries)</div>
             ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,25).map(c2=>`<span class="tag ship">${c2.toUpperCase()} <img src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="width:14px;height:10px;border-radius:1px;"/></span>`).join('')}${shipsTo.length>25?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-25} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info available</div>'}
           </div>
 
