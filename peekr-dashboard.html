@@ -405,7 +405,8 @@ td{padding:11px 14px;vertical-align:middle;}
 <div class="main">
   <div class="topbar">
     <div class="tb-title">Trending Shops</div>
-    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops…" id="si" oninput="fs()"/></div>
+    <div class="sbox"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops…" id="si" oninput="showAC(this.value)"/></div>
+    <div id="ac-drop" style="display:none;position:absolute;top:46px;left:0;right:0;max-width:420px;background:#fff;border:1px solid rgba(200,160,170,0.25);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.12);max-height:340px;overflow-y:auto;z-index:200;padding:6px;"></div>
     <div class="tb-r">
       <div class="lpill"><div class="ldot"></div>Live</div>
       <div class="cnt" id="cnt"><b>—</b> Shops</div>
@@ -1193,7 +1194,7 @@ function re(){
 
   tb.innerHTML=pageShops.map(s=>{
     const c=TC[s.t]||'#aaa',ac=s.ad>30?'#e8799a':s.ad>10?'#f6a05a':s.ad>0?'#e6b83a':'#b8a8b0';
-    return`<tr onclick="om(${s.id})">
+    return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')" style="cursor:pointer;">
       <td><div class="si2">
         <div class="sthumb">
           <img src="https://image.thum.io/get/width/400/crop/200/https://${s.d}"
@@ -1326,6 +1327,33 @@ async function applyDashboardFreemium() {
   });
 }
 applyDashboardFreemium();
+
+// --- Autocomplete ---
+let _acTimer;
+function showAC(val){
+  clearTimeout(_acTimer);
+  const drop=document.getElementById('ac-drop');
+  if(!val||val.length<2){drop.style.display='none';fs();return;}
+  _acTimer=setTimeout(()=>runAC(val),250);
+}
+async function runAC(term){
+  const drop=document.getElementById('ac-drop');
+  try{
+    const r=await fetch(_SB+'/rest/v1/shops?select=domain,name,title,country,score,icon,niche&or=(domain.ilike.*'+encodeURIComponent(term)+'*,name.ilike.*'+encodeURIComponent(term)+'*,title.ilike.*'+encodeURIComponent(term)+'*)&order=score.desc&limit=8',{headers:{'apikey':_AK}});
+    const data=await r.json();
+    if(!data||!data.length){drop.style.display='none';fs();return;}
+    drop.innerHTML=data.map(s=>{
+      const init=(n)=>{const p=(n||'').split(/[\s.-]+/);return(p[0]?p[0][0]:'')+(p[1]?p[1][0]:'');};
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;" onmouseover="this.style.background=\'rgba(232,121,154,0.06)\'" onmouseout="this.style.background=\'transparent\'" onclick="window.location.href=\'peekr-shop-detail.html?domain=\'+encodeURIComponent(\''+s.domain+'\')">'+
+        '<div style="width:32px;height:32px;border-radius:8px;background:rgba(245,240,235,0.8);border:1px solid rgba(200,160,170,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">'+(s.icon?'<img src="'+s.icon+'" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'<span style=font-size:11px;font-weight:800;color:rgba(26,10,15,0.35)>'+init(s.name||s.domain)+'</span>\'"/>':'<span style="font-size:11px;font-weight:800;color:rgba(26,10,15,0.35)">'+init(s.name||s.domain)+'</span>')+'</div>'+
+        '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;color:#1a0a0f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+(s.title||s.name||s.domain)+'</div><div style="font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;">'+s.domain+'</div></div>'+
+        (s.score?'<div style="font-size:12px;font-weight:800;color:#e8799a;">'+s.score+'</div>':'')+
+      '</div>';
+    }).join('');
+    drop.style.display='block';
+  }catch(e){drop.style.display='none';}
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.sbox')&&!e.target.closest('#ac-drop'))document.getElementById('ac-drop').style.display='none';});
 </script>
 </body>
 </html>
