@@ -550,24 +550,34 @@ function renderSimilar(container, shops){
 async function loadMetaAds(domainName, shopName){
   const container=document.getElementById('meta-ads');
   try{
-    // Build search: match by shop_domain OR page_name containing shop name
-    const cleanName=(shopName||domainName).replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i,'').replace(/[-_]/g,' ');
-    const searchTerms=[domainName];
-    if(cleanName&&cleanName.length>2) searchTerms.push(cleanName);
+    const rawName=shopName||domainName;
+    const domainBase=domainName.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org|co\.za|co\.il|com\.sg)$/i,'').replace(/[-_]/g,' ').trim();
+    const stopW=new Set(['the','and','shop','store','online','official','boutique','france','uk','eu','de','my','your','yours','pharmacy','collection','collections','natural','naturally','inc','ltd','llc','gmbh']);
+    const nameWords=rawName.split(/[\s\-_|]+/).filter(w=>w.length>2&&!stopW.has(w.toLowerCase()));
+    const domainWords=domainBase.split(/\s+/).filter(w=>w.length>2&&!stopW.has(w.toLowerCase()));
+    const allWords=[...new Set([...nameWords,...domainWords])];
 
-    // Query Supabase ads table - search by page_name or shop_domain
     let ads=[];
-    // Try exact domain match first
+    // 1. Exact shop_domain match
     const byDomain=await sbFetch(_SB+'/rest/v1/ads?shop_domain=eq.'+encodeURIComponent(domainName)+'&select=*&order=peekr_score.desc&limit=50');
-    if(byDomain&&byDomain.length>0&&!byDomain.error){
-      ads=byDomain;
-    }else{
-      // Fuzzy match by page_name containing the clean shop name
-      const byName=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(cleanName)+'*&select=*&order=peekr_score.desc&limit=50');
-      if(byName&&byName.length>0&&!byName.error) ads=byName;
+    if(byDomain&&byDomain.length>0&&!byDomain.error) ads=byDomain;
+
+    // 2. Try domain base in page_name (e.g. "cetaphil" from "cetaphil.com")
+    if(ads.length===0&&domainBase.length>2){
+      const byBase=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(domainBase)+'*&select=*&order=peekr_score.desc&limit=50');
+      if(byBase&&byBase.length>0&&!byBase.error) ads=byBase;
     }
 
-    // Also try searching ad body for the domain
+    // 3. Try each significant brand word from shop name
+    if(ads.length===0){
+      for(const w of allWords.slice(0,3)){
+        if(w.length<3) continue;
+        const byW=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(w)+'*&select=*&order=peekr_score.desc&limit=50');
+        if(byW&&byW.length>0&&!byW.error){ads=byW;break;}
+      }
+    }
+
+    // 4. Search ad body for the domain name
     if(ads.length===0){
       const byBody=await sbFetch(_SB+'/rest/v1/ads?ad_creative_body=ilike.*'+encodeURIComponent(domainName)+'*&select=*&order=peekr_score.desc&limit=50');
       if(byBody&&byBody.length>0&&!byBody.error) ads=byBody;
