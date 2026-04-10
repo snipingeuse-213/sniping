@@ -37,12 +37,22 @@ module.exports = async function handler(req, res) {
     const domains = slData.domains || [];
     checked = domains.length;
 
-    // Process each domain — update live_ads + any missing fields
-    for (const d of domains) {
+    // Transform all domains to shop format
+    const shops = domains.map(d => {
       const liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
       const adPlatforms = d.ad_platforms || d.advertising || [];
+      if (liveAds > 0) withAds++;
+      details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits });
 
-      const updateData = {
+      return {
+        domain: d.name,
+        name: d.merchant_name || d.title || d.name,
+        title: d.title,
+        merchant_name: d.merchant_name,
+        niche: detectNiche(Array.isArray(d.categories) ? d.categories.join(',') : ''),
+        score: calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0),
+        trend_tag: getTrendTag(calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0)),
+        country: d.country_code || country,
         live_ads: liveAds,
         ad_platforms: Array.isArray(adPlatforms) ? adPlatforms : [],
         estimated_sales: d.estimated_sales || 0,
@@ -76,37 +86,30 @@ module.exports = async function handler(req, res) {
         storeleads_updated_at: d.last_updated_at,
         last_scraped: new Date().toISOString()
       };
+    });
 
-      // Upsert — will update if domain exists, insert if not
-      const upResp = await fetch(`${SUPABASE_URL}/rest/v1/shops`, {
-        method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'resolution=merge-duplicates'
-        },
-        body: JSON.stringify({
-          domain: d.name,
-          name: d.merchant_name || d.title || d.name,
-          title: d.title,
-          merchant_name: d.merchant_name,
-          niche: detectNiche(Array.isArray(d.categories) ? d.categories.join(',') : ''),
-          score: calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0),
-          trend_tag: getTrendTag(calculateScore(d.estimated_visits || 0, d.estimated_sales || 0, d.platform_rank || 999999, d.product_count || 0, Array.isArray(d.apps) ? d.apps.length : 0)),
-          country: d.country_code || country,
-          ...updateData
-        })
+    // Batch upsert to Supabase (same pattern as scrape-shops.js)
+    const upResp = await fetch(`${SUPABASE_URL}/rest/v1/shops`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'resolution=merge-duplicates'
+      },
+      body: JSON.stringify(shops)
+    });
+
+    if (upResp.ok) {
+      updated = shops.length;
+    } else {
+      const errText = await upResp.text();
+      return res.status(200).json({
+        success: false,
+        error: `Supabase upsert: ${upResp.status} - ${errText.slice(0, 500)}`,
+        checked,
+        sample: details.slice(0, 5)
       });
-
-      if (upResp.ok) {
-        updated++;
-        if (liveAds > 0) withAds++;
-        details.push({ domain: d.name, live_ads: liveAds, visits: d.estimated_visits });
-      } else {
-        const errText = await upResp.text();
-        details.push({ domain: d.name, error: `${upResp.status}: ${errText.slice(0, 200)}` });
-      }
     }
 
     const elapsed = Date.now() - startTime;
@@ -117,8 +120,7 @@ module.exports = async function handler(req, res) {
       withAds,
       nextOffset: offset + batchSize,
       elapsed_ms: elapsed,
-      errors: details.filter(d => d.error).slice(0, 5),
-      sample: details.filter(d => !d.error).slice(0, 10)
+      sample: details.slice(0, 10)
     });
 
   } catch (error) {
