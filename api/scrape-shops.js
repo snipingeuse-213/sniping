@@ -83,6 +83,11 @@ async function fetchStoreLeads(country, sort, offset, category) {
       const score = calculateScore(visits, sales, rank, prods, appCount);
       const catStr = Array.isArray(d.categories) ? d.categories.join(',') : '';
 
+      // Extract live_ads from Store Leads (facebook_ad_count, ad_count, or facebook_ads)
+      const liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
+      // Extract ad_platforms
+      const adPlatforms = d.ad_platforms || d.advertising || [];
+
       return {
         domain: d.name,
         name: d.merchant_name || d.title || d.name,
@@ -94,15 +99,35 @@ async function fetchStoreLeads(country, sort, offset, category) {
         country,
         monthly_visits: visits,
         estimated_sales: sales,
+        estimated_sales_yearly: d.estimated_sales_yearly || 0,
         products_count: prods,
         platform_rank: rank,
+        global_rank: d.rank,
+        rank_percentile: d.rank_percentile,
+        avg_price_usd: d.avg_price_usd,
+        monthly_app_spend: d.monthly_app_spend,
+        employee_count: d.employee_count,
+        vendor_count: d.vendor_count,
+        variant_count: d.variant_count,
         categories: Array.isArray(d.categories) ? d.categories : [],
         apps: Array.isArray(d.apps) ? d.apps : [],
         technologies: Array.isArray(d.technologies) ? d.technologies : [],
+        ad_platforms: Array.isArray(adPlatforms) ? adPlatforms : [],
+        live_ads: liveAds,
+        created_date: d.created_at ? d.created_at.split('T')[0] : null,
+        theme: d.theme?.name || d.theme || null,
+        currency: d.currency_code || null,
+        language: d.language_code || null,
+        shopify_plan: d.plan || null,
+        ships_to: d.ships_to_countries || [],
+        traffic_trend: d.traffic_trend || [],
+        visitor_countries: d.visitor_countries || [],
+        strategies: d.strategies || [],
         description: d.description,
         city: d.city,
         region: d.region,
         icon: d.icon,
+        storeleads_updated_at: d.last_updated_at,
         last_scraped: new Date().toISOString()
       };
     });

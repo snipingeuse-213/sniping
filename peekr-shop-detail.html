@@ -744,37 +744,20 @@ async function loadTrustpilot(domain){
   if(!tpRating) return;
   const cleanDomain=domain.replace(/^www\./,'');
   try{
-    // Try Trustpilot business unit find API
-    const resp=await fetch('https://www.trustpilot.com/api/categoriespages/'+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000),headers:{'Accept':'application/json'}});
+    // Use our server-side proxy to bypass CORS
+    const resp=await fetch('/api/trustpilot?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(12000)});
     if(resp.ok){
       const d=await resp.json();
-      if(d&&d.trustScore!==undefined){
-        const r=d.trustScore||0;
-        const n=d.numberOfReviews||0;
-        const stars=d.stars||Math.round(r);
-        tpRating.textContent=r.toFixed(1);
-        tpCount.textContent='('+n.toLocaleString()+' reviews)';
-        renderTpStars(tpStars,stars);
+      if(d&&d.trustScore!==null&&d.trustScore!==undefined){
+        tpRating.textContent=Number(d.trustScore).toFixed(1);
+        tpRating.style.color=d.trustScore>=4?'#00b67a':d.trustScore>=3?'#73cf11':d.trustScore>=2?'#ffce00':'#ff3722';
+        tpCount.textContent=d.numberOfReviews?'('+Number(d.numberOfReviews).toLocaleString()+' reviews)':'';
+        renderTpStars(tpStars,d.stars||Math.round(d.trustScore));
         return;
       }
     }
-  }catch(e){}
-  // Fallback: try widget endpoint
-  try{
-    const resp2=await fetch('https://widget.trustpilot.com/trustbox-data/53aa8807dec7e10d38f59f32?businessUnitId=find&locale=en-US&hostname='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(5000)});
-    if(resp2.ok){
-      const d2=await resp2.json();
-      if(d2&&d2.businessEntity){
-        const r=d2.businessEntity.trustScore||0;
-        const n=d2.businessEntity.numberOfReviews||0;
-        tpRating.textContent=r.toFixed(1);
-        tpCount.textContent='('+n.toLocaleString()+' reviews)';
-        renderTpStars(tpStars,d2.businessEntity.stars||Math.round(r));
-        return;
-      }
-    }
-  }catch(e){}
-  // Show link-only fallback
+  }catch(e){console.log('Trustpilot proxy error:',e.message);}
+  // Fallback
   tpRating.textContent='N/A';
   tpCount.textContent='Check reviews on Trustpilot';
   tpStars.innerHTML='';
