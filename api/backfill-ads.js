@@ -91,8 +91,8 @@ module.exports = async function handler(req, res) {
       };
     });
 
-    // Batch upsert to Supabase (same pattern as scrape-shops.js)
-    const upResp = await fetch(`${SUPABASE_URL}/rest/v1/shops`, {
+    // Batch upsert to Supabase — on_conflict=domain for existing shops
+    const upResp = await fetch(`${SUPABASE_URL}/rest/v1/shops?on_conflict=domain`, {
       method: 'POST',
       headers: {
         'apikey': SUPABASE_KEY,
