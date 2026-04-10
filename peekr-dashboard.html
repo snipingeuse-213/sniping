@@ -1262,10 +1262,13 @@ function re(){
       <td><span class="tag-niche">${s.ni}</span></td>
       <td><div class="tv">${s.vf}</div><div class="spk">${spk(s.tr,c)}</div></td>
       <td><div class="rv">${s.r}</div></td>
-      <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;align-items:center;gap:6px;cursor:pointer;" title="Spy ads on Meta">
-        <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
-        <span style="color:${ac};font-weight:800;">${s.ad}</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;gap:3px;cursor:pointer;" title="Spy ads on Meta">
+        <div style="display:flex;align-items:center;gap:4px;">
+          <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
+          <span style="color:${ac};font-weight:800;">${s.ad}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </div>
+        ${s.ad>0?'<div style="display:flex;gap:2px;"><img src="https://flagcdn.com/w20/'+s.c+'.png" style="width:16px;height:11px;border-radius:2px;opacity:0.7" onerror="this.style.display=\\'none\\'"/></div>':''}
       </a></td>
       <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
       <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov.toFixed(2):'—'}</div></td>
