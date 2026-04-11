@@ -268,7 +268,7 @@ function renderShop(s){
   const c=TC[tier];
 
   const visits=s.monthly_visits||0;
-  const ads=s.live_ads||0;
+  const ads=s.live_ads||'...';
   const products=s.products_count||0;
   const estSales=s.estimated_sales||0;
   const estSalesY=s.estimated_sales_yearly||0;
@@ -371,7 +371,7 @@ function renderShop(s){
         </div>
         <div class="kpi">
           <div class="kpi-label">&#128226; Live Ads</div>
-          <div class="kpi-value" style="color:${ads>20?'var(--pink)':'inherit'}">${ads}</div>
+          <div class="kpi-value" id="live-ads-kpi" style="color:inherit">${ads}</div>
           <div class="kpi-sub">Active Meta ads</div>
         </div>
         <div class="kpi">
@@ -481,8 +481,8 @@ function renderShop(s){
           <!-- Meta Ads Link -->
           <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
             <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
-            <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
-              ${ads>0?`This store has <strong style="color:var(--pink);">${ads} active ads</strong> running on Meta.`:'No active Meta ads detected.'}
+            <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" id="meta-ads-intel">
+              <span style="color:var(--text3);">&#128269; Scanning Meta Ad Library...</span>
             </p>
             <div style="display:flex;gap:8px;">
               <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank">
@@ -603,60 +603,83 @@ function renderSimilar(container, shops){
   }).join('');
 }
 
-// --- Meta Ads ---
+// --- Meta Ads (Real-time from Meta Ad Library API) ---
 async function loadMetaAds(domainName, shopName){
   const container=document.getElementById('meta-ads');
-  try{
-    const rawName=shopName||domainName;
-    const domainBase=domainName.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org|co\.za|co\.il|com\.sg)$/i,'').replace(/[-_]/g,' ').trim();
-    const stopW=new Set(['the','and','shop','store','online','official','boutique','france','uk','eu','de','my','your','yours','pharmacy','collection','collections','natural','naturally','inc','ltd','llc','gmbh']);
-    const nameWords=rawName.split(/[\s\-_|]+/).filter(w=>w.length>2&&!stopW.has(w.toLowerCase()));
-    const domainWords=domainBase.split(/\s+/).filter(w=>w.length>2&&!stopW.has(w.toLowerCase()));
-    const allWords=[...new Set([...nameWords,...domainWords])];
+  const liveAdsKpi=document.getElementById('live-ads-kpi');
+  const adsCountBadge=document.getElementById('ads-count');
+  const intelBox=document.getElementById('meta-ads-intel');
 
-    let ads=[];
-    // 1. Exact shop_domain match
-    const byDomain=await sbFetch(_SB+'/rest/v1/ads?shop_domain=eq.'+encodeURIComponent(domainName)+'&select=*&order=peekr_score.desc&limit=50');
-    if(byDomain&&byDomain.length>0&&!byDomain.error) ads=byDomain;
-
-    // 2. Try domain base in page_name (e.g. "cetaphil" from "cetaphil.com")
-    if(ads.length===0&&domainBase.length>2){
-      const byBase=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(domainBase)+'*&select=*&order=peekr_score.desc&limit=50');
-      if(byBase&&byBase.length>0&&!byBase.error) ads=byBase;
+  function updateAdCount(count){
+    if(liveAdsKpi){liveAdsKpi.textContent=fmtV(count);liveAdsKpi.style.color=count>20?'var(--pink)':'inherit';}
+    if(adsCountBadge) adsCountBadge.textContent=count>0?fmtV(count):'0';
+    if(intelBox){
+      if(count>0) intelBox.innerHTML='This store has <strong style="color:var(--pink);">'+fmtV(count)+' active ads</strong> running on Meta.';
+      else intelBox.innerHTML='No active Meta ads detected.';
     }
+  }
 
-    // 3. Try each significant brand word from shop name
-    if(ads.length===0){
-      for(const w of allWords.slice(0,3)){
-        if(w.length<3) continue;
-        const byW=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(w)+'*&select=*&order=peekr_score.desc&limit=50');
-        if(byW&&byW.length>0&&!byW.error){ads=byW;break;}
+  try{
+    // 1. Try real-time Meta Ad Library API
+    const cleanDomain=domainName.replace(/^www\./,'');
+    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=50',{signal:AbortSignal.timeout(30000)});
+
+    if(resp.ok){
+      const data=await resp.json();
+      const total=data.total||data.count||0;
+      const ads=data.ads||[];
+
+      updateAdCount(total);
+
+      if(ads.length>0){
+        container.innerHTML=`
+          <div style="grid-column:1/-1;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+              <span class="ad-status active">&#128994; ${fmtV(total)} Live Ads</span>
+              <span style="font-size:12px;color:var(--text3);">Real-time from Meta Ad Library</span>
+              <div style="margin-left:auto;display:flex;gap:8px;">
+                <button class="shop-btn" onclick="sortMetaAds('reach')" style="font-size:11px;padding:4px 12px;" id="sort-reach">&#128200; Top Reach</button>
+                <button class="shop-btn" onclick="sortMetaAds('recent')" style="font-size:11px;padding:4px 12px;" id="sort-recent">&#128197; Most Recent</button>
+                <button class="shop-btn" onclick="sortMetaAds('spend')" style="font-size:11px;padding:4px 12px;" id="sort-spend">&#128176; Top Spend</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="ads-grid">
+              ${renderMetaAdCards(ads)}
+            </div>
+            ${total>ads.length?`<div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text3);">Showing ${ads.length} of ${fmtV(total)} active ads</div>`:''}
+            <div style="text-align:center;margin-top:12px;">
+              <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(cleanDomain)}" target="_blank" style="display:inline-flex;">
+                &#128269; View All on Meta Library &#8599;
+              </a>
+            </div>
+          </div>`;
+        window.__metaAds=ads;
+        return;
       }
     }
 
-    // 4. Search ad body for the domain name
-    if(ads.length===0){
-      const byBody=await sbFetch(_SB+'/rest/v1/ads?ad_creative_body=ilike.*'+encodeURIComponent(domainName)+'*&select=*&order=peekr_score.desc&limit=50');
-      if(byBody&&byBody.length>0&&!byBody.error) ads=byBody;
+    // 2. Fallback: search Supabase ads table
+    const rawName=shopName||domainName;
+    const domainBase=domainName.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org|co\.za|co\.il|com\.sg)$/i,'').replace(/[-_]/g,' ').trim();
+    let sbAds=[];
+    const byDomain=await sbFetch(_SB+'/rest/v1/ads?shop_domain=eq.'+encodeURIComponent(domainName)+'&select=*&order=peekr_score.desc&limit=50');
+    if(byDomain&&byDomain.length>0&&!byDomain.error) sbAds=byDomain;
+    if(sbAds.length===0&&domainBase.length>2){
+      const byBase=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(domainBase)+'*&select=*&order=peekr_score.desc&limit=50');
+      if(byBase&&byBase.length>0&&!byBase.error) sbAds=byBase;
     }
 
-    const adCount=ads.length;
-    document.getElementById('ads-count').textContent=adCount;
+    updateAdCount(sbAds.length);
 
-    if(adCount>0){
+    if(sbAds.length>0){
       container.innerHTML=`
         <div style="grid-column:1/-1;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-            <span class="ad-status active">&#128994; ${adCount} Live Ads Found</span>
-            <span style="font-size:12px;color:var(--text3);">Matched from Meta Ad Library data</span>
-            <div style="margin-left:auto;display:flex;gap:8px;">
-              <button class="shop-btn" onclick="sortAds('score')" style="font-size:11px;padding:4px 12px;" id="sort-score">&#127942; Top Score</button>
-              <button class="shop-btn" onclick="sortAds('reach')" style="font-size:11px;padding:4px 12px;" id="sort-reach">&#128200; Top Reach</button>
-              <button class="shop-btn" onclick="sortAds('recent')" style="font-size:11px;padding:4px 12px;" id="sort-recent">&#128197; Most Recent</button>
-            </div>
+            <span class="ad-status active">&#128994; ${sbAds.length} Ads Found</span>
+            <span style="font-size:12px;color:var(--text3);">From indexed Meta Ad Library data</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="ads-grid">
-            ${renderAdCards(ads)}
+            ${renderAdCards(sbAds)}
           </div>
           <div style="text-align:center;margin-top:20px;">
             <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
@@ -664,21 +687,68 @@ async function loadMetaAds(domainName, shopName){
             </a>
           </div>
         </div>`;
-      window.__shopAds=ads;
+      window.__shopAds=sbAds;
     }else{
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
-          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Indexed Ads Found</div>
-          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">We haven\'t matched any Meta ads to this shop yet. Check the Meta Ad Library directly.</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Active Ads Detected</div>
+          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This store doesn\'t appear to have active Meta ads right now. Check the Meta Ad Library directly.</div>
           <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
             &#128269; Search Meta Ad Library &#8599;
           </a>
         </div>`;
     }
   }catch(e){
-    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data: '+e.message+'</div>';
+    console.log('Meta ads error:',e.message);
+    updateAdCount(0);
+    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data. <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q='+encodeURIComponent(domainName)+'" target="_blank" style="color:var(--pink);">Search Meta Library</a></div>';
   }
+}
+
+// Render cards from real-time Meta API data
+function renderMetaAdCards(ads){
+  return ads.map((a,i)=>{
+    const body=(a.body||'').substring(0,150);
+    const title=a.title||a.page_name||'Ad';
+    const days=a.days_running;
+    const daysLabel=days!==null?(days===0?'Today':days===1?'1 day':days+' days'):'';
+    const reach=a.reach?fmtV(a.reach)+' reach':'';
+    const spendTxt=(a.spend_lower||a.spend_upper)?'$'+fmtV(a.spend_lower||0)+(a.spend_upper&&a.spend_upper!==a.spend_lower?' - $'+fmtV(a.spend_upper):''):'';
+    const impTxt=(a.impressions_lower||a.impressions_upper)?fmtV(a.impressions_lower||0)+(a.impressions_upper&&a.impressions_upper!==a.impressions_lower?' - '+fmtV(a.impressions_upper):'')+'imp':'';
+    const platforms=(a.platforms||[]).map(p=>p==='facebook'?'FB':p==='instagram'?'IG':p==='messenger'?'MSG':p==='audience_network'?'AN':p).join(', ');
+    const startDate=a.start_date?new Date(a.start_date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+
+    return `<div class="ad-card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:13px;font-weight:700;color:var(--text1);">${a.page_name||'Unknown'}</div>
+        <span style="font-size:11px;padding:2px 8px;background:rgba(76,175,80,0.1);color:#4CAF50;border-radius:6px;font-weight:600;">&#128994; Active</span>
+      </div>
+      ${title!==a.page_name?'<div style="font-size:12px;font-weight:600;color:var(--text1);">'+title+'</div>':''}
+      ${body?'<div style="font-size:12px;color:var(--text2);line-height:1.5;">'+body+(body.length>=150?'...':'')+'</div>':''}
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px;border-top:1px solid var(--border);">
+        ${daysLabel?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128197; '+daysLabel+'</span>':''}
+        ${startDate?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128198; '+startDate+'</span>':''}
+        ${reach?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128200; '+reach+'</span>':''}
+        ${spendTxt?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128176; '+spendTxt+'</span>':''}
+        ${impTxt?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128065; '+impTxt+'</span>':''}
+        ${platforms?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128241; '+platforms+'</span>':''}
+      </div>
+      ${a.snapshot_url?'<a href="'+a.snapshot_url+'" target="_blank" style="font-size:11px;color:var(--pink);text-decoration:none;font-weight:600;">View Ad Snapshot &#8599;</a>':''}
+    </div>`;
+  }).join('');
+}
+
+function sortMetaAds(mode){
+  if(!window.__metaAds) return;
+  const ads=[...window.__metaAds];
+  if(mode==='reach') ads.sort((a,b)=>(b.reach||0)-(a.reach||0));
+  else if(mode==='recent') ads.sort((a,b)=>new Date(b.start_date||0)-new Date(a.start_date||0));
+  else if(mode==='spend') ads.sort((a,b)=>(b.spend_upper||0)-(a.spend_upper||0));
+  document.querySelectorAll('[id^="sort-"]').forEach(b=>b.style.background='');
+  const btn=document.getElementById('sort-'+mode);
+  if(btn) btn.style.background='rgba(232,121,154,0.15)';
+  document.getElementById('ads-grid').innerHTML=renderMetaAdCards(ads);
 }
 
 function sortAds(mode){
