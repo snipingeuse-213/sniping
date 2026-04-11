@@ -539,11 +539,12 @@ async function actionMetaSync(req, res) {
   const samples = [];
 
   // Fetch shops: if force=true, get all; otherwise only those with live_ads=0 or null
+  // Order by monthly_visits desc (high-traffic shops most likely to have ads)
   let queryUrl;
   if (force) {
-    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&order=monthly_visits.desc.nullslast&limit=${batchSize}&offset=${offset}`;
   } else {
-    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score&or=(live_ads.eq.0,live_ads.is.null)&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&or=(live_ads.eq.0,live_ads.is.null)&order=monthly_visits.desc.nullslast&limit=${batchSize}&offset=${offset}`;
   }
 
   const fetchResp = await fetch(queryUrl, {
