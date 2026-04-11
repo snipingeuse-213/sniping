@@ -622,7 +622,7 @@ async function loadMetaAds(domainName, shopName){
   try{
     // 1. Try real-time Meta Ad Library API
     const cleanDomain=domainName.replace(/^www\./,'');
-    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=20',{signal:AbortSignal.timeout(15000)});
+    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=10',{signal:AbortSignal.timeout(15000)});
 
     if(resp.ok){
       const data=await resp.json();
@@ -632,8 +632,10 @@ async function loadMetaAds(domainName, shopName){
       updateAdCount(total);
 
       if(ads.length>0){
+        const initialAds=ads.slice(0,6);
+        const hasMore=ads.length>6;
         container.innerHTML=`
-          <div style="grid-column:1/-1;">
+          <div>
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
               <span class="ad-status active">&#128994; ${fmtV(total)} Live Ads</span>
               <span style="font-size:12px;color:var(--text3);">Real-time from Meta Ad Library</span>
@@ -643,10 +645,11 @@ async function loadMetaAds(domainName, shopName){
                 <button class="shop-btn" onclick="sortMetaAds('spend')" style="font-size:11px;padding:4px 12px;" id="sort-spend">&#128176; Top Spend</button>
               </div>
             </div>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="ads-grid">
-              ${renderMetaAdCards(ads)}
+            <div style="display:flex;flex-wrap:wrap;gap:16px;" id="ads-grid">
+              ${renderMetaAdCards(initialAds)}
             </div>
-            ${total>ads.length?`<div style="text-align:center;margin-top:16px;font-size:13px;color:var(--text3);">Showing ${ads.length} of ${fmtV(total)} active ads</div>`:''}
+            ${hasMore?`<div style="text-align:center;margin-top:16px;" id="show-more-ads"><button class="shop-btn" onclick="showAllMetaAds()" style="padding:8px 24px;">Show all ${ads.length} ads</button></div>`:''}
+            ${total>ads.length?`<div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text3);">Showing ${Math.min(ads.length,6)} of ${fmtV(total)} active ads</div>`:''}
             <div style="text-align:center;margin-top:12px;">
               <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(cleanDomain)}" target="_blank" style="display:inline-flex;">
                 &#128269; View All on Meta Library &#8599;
@@ -673,12 +676,12 @@ async function loadMetaAds(domainName, shopName){
 
     if(sbAds.length>0){
       container.innerHTML=`
-        <div style="grid-column:1/-1;">
+        <div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
             <span class="ad-status active">&#128994; ${sbAds.length} Ads Found</span>
             <span style="font-size:12px;color:var(--text3);">From indexed Meta Ad Library data</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="ads-grid">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;" id="ads-grid">
             ${renderAdCards(sbAds)}
           </div>
           <div style="text-align:center;margin-top:20px;">
@@ -719,7 +722,7 @@ function renderMetaAdCards(ads){
     const platforms=(a.platforms||[]).map(p=>p==='facebook'?'FB':p==='instagram'?'IG':p==='messenger'?'MSG':p==='audience_network'?'AN':p).join(', ');
     const startDate=a.start_date?new Date(a.start_date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
 
-    return `<div class="ad-card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;">
+    return `<div class="ad-card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;width:calc(50% - 8px);min-width:300px;max-width:100%;box-sizing:border-box;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <div style="font-size:13px;font-weight:700;color:var(--text1);">${a.page_name||'Unknown'}</div>
         <span style="font-size:11px;padding:2px 8px;background:rgba(76,175,80,0.1);color:#4CAF50;border-radius:6px;font-weight:600;">&#128994; Active</span>
@@ -739,6 +742,14 @@ function renderMetaAdCards(ads){
   }).join('');
 }
 
+function showAllMetaAds(){
+  if(!window.__metaAds) return;
+  const grid=document.getElementById('ads-grid');
+  if(grid) grid.innerHTML=renderMetaAdCards(window.__metaAds);
+  const btn=document.getElementById('show-more-ads');
+  if(btn) btn.remove();
+}
+
 function sortMetaAds(mode){
   if(!window.__metaAds) return;
   const ads=[...window.__metaAds];
@@ -749,6 +760,8 @@ function sortMetaAds(mode){
   const btn=document.getElementById('sort-'+mode);
   if(btn) btn.style.background='rgba(232,121,154,0.15)';
   document.getElementById('ads-grid').innerHTML=renderMetaAdCards(ads);
+  const moreBtn=document.getElementById('show-more-ads');
+  if(moreBtn) moreBtn.remove();
 }
 
 function sortAds(mode){
