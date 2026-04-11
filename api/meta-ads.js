@@ -183,7 +183,12 @@ function transformAd(raw) {
     title: raw.ad_creative_link_titles ? raw.ad_creative_link_titles[0] : null,
     caption: raw.ad_creative_link_captions ? raw.ad_creative_link_captions[0] : null,
     description: raw.ad_creative_link_descriptions ? raw.ad_creative_link_descriptions[0] : null,
-    snapshot_url: raw.ad_snapshot_url || null,
+    // Strip access_token from snapshot URL for security (don't leak token to frontend)
+    snapshot_url: raw.ad_snapshot_url
+      ? raw.ad_snapshot_url.replace(/[?&]access_token=[^&]+/, '').replace(/\?$/, '')
+      : null,
+    // Also provide a clean Meta Library link
+    meta_library_url: raw.id ? `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id=${raw.id}` : null,
     start_date: raw.ad_delivery_start_time || null,
     days_running: daysRunning,
     reach: Number(raw.eu_total_reach) || 0,

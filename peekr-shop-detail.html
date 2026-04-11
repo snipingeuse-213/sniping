@@ -622,7 +622,7 @@ async function loadMetaAds(domainName, shopName){
   try{
     // 1. Try real-time Meta Ad Library API
     const cleanDomain=domainName.replace(/^www\./,'');
-    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=50',{signal:AbortSignal.timeout(30000)});
+    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=20',{signal:AbortSignal.timeout(15000)});
 
     if(resp.ok){
       const data=await resp.json();
@@ -734,7 +734,7 @@ function renderMetaAdCards(ads){
         ${impTxt?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128065; '+impTxt+'</span>':''}
         ${platforms?'<span style="font-size:10px;padding:2px 6px;background:rgba(232,121,154,0.08);border-radius:4px;color:var(--text2);">&#128241; '+platforms+'</span>':''}
       </div>
-      ${a.snapshot_url?'<a href="'+a.snapshot_url+'" target="_blank" style="font-size:11px;color:var(--pink);text-decoration:none;font-weight:600;">View Ad Snapshot &#8599;</a>':''}
+      ${(a.meta_library_url||a.snapshot_url)?'<a href="'+(a.meta_library_url||a.snapshot_url)+'" target="_blank" style="font-size:11px;color:var(--pink);text-decoration:none;font-weight:600;">View on Meta &#8599;</a>':''}
     </div>`;
   }).join('');
 }
