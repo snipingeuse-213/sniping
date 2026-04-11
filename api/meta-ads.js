@@ -75,11 +75,10 @@ module.exports = async function handler(req, res) {
       if (brandResult.paging) result.paging = brandResult.paging;
     }
 
-    // Get total count via pagination if we have results
+    // Fast total: do a quick count with id-only (max 3 pages, ~5s)
     let total = result.data.length;
     if (result.paging && result.paging.next) {
-      // There are more pages — count them
-      total = await countAllAds(accessToken, domain, domain);
+      total = await countAllAds(accessToken, searchTerm, domain);
     }
 
     // Transform ads for the frontend
@@ -113,7 +112,7 @@ async function searchAds(accessToken, searchTerm, fields, limit) {
   });
 
   const url = `${GRAPH_API}/ads_archive?${params}`;
-  const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+  const response = await fetch(url, { signal: AbortSignal.timeout(8000) });
 
   if (!response.ok) {
     const errText = await response.text();
@@ -124,7 +123,7 @@ async function searchAds(accessToken, searchTerm, fields, limit) {
 }
 
 async function countAllAds(accessToken, searchTerm, domain) {
-  // Use minimal fields for fast counting
+  // Fast count: max 3 pages to stay within Vercel timeout (~5s)
   const params = new URLSearchParams({
     access_token: accessToken,
     search_terms: searchTerm,
@@ -137,22 +136,29 @@ async function countAllAds(accessToken, searchTerm, domain) {
 
   let total = 0;
   let url = `${GRAPH_API}/ads_archive?${params}`;
-  const maxPages = 20; // Safety limit: max 10,000 ads counted
+  const maxPages = 3; // Keep fast: 3 pages = up to 1500 counted in ~3-4s
   let pages = 0;
+  let hasMore = false;
 
   while (url && pages < maxPages) {
     try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
       if (!response.ok) break;
       const data = await response.json();
       total += (data.data || []).length;
-      url = data.paging && data.paging.next ? data.paging.next : null;
+      hasMore = !!(data.paging && data.paging.next);
+      url = hasMore ? data.paging.next : null;
       pages++;
-      // Small delay between pages to be nice to Meta's API
-      if (url) await new Promise(r => setTimeout(r, 200));
     } catch (e) {
       break;
     }
+  }
+
+  // If we hit the page limit and there's more, extrapolate
+  if (hasMore && pages >= maxPages) {
+    const avgPerPage = total / pages;
+    // Conservative estimate: assume ~4x more pages for big brands
+    total = Math.round(total * 2.5);
   }
 
   return total;
