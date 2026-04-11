@@ -479,6 +479,141 @@ async function actionFullEnrich(req, res) {
   });
 }
 
+// ACTION: meta-sync — Fetch REAL live ads count from Meta Ad Library API for each shop
+// This gives accurate counts unlike the technology-based estimation
+// Processes ~5 shops per call to stay within Vercel 10s timeout
+// GET /api/backfill-ads?action=meta-sync&batch=5&offset=0
+// GET /api/backfill-ads?action=meta-sync&batch=5&offset=0&force=true  (re-sync all, not just 0)
+const GRAPH_API = 'https://graph.facebook.com/v21.0';
+
+async function metaCountAds(accessToken, searchTerm) {
+  const params = new URLSearchParams({
+    access_token: accessToken,
+    search_terms: searchTerm,
+    ad_reached_countries: '["US","GB","FR","DE","ES","IT","CA","AU"]',
+    ad_type: 'ALL',
+    ad_active_status: 'ACTIVE',
+    fields: 'id',
+    limit: '500'
+  });
+
+  let total = 0;
+  let url = `${GRAPH_API}/ads_archive?${params}`;
+  const maxPages = 2; // 2 pages max = ~1000 counted per shop
+  let pages = 0;
+  let hasMore = false;
+
+  while (url && pages < maxPages) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(4000) });
+      if (!response.ok) break;
+      const data = await response.json();
+      total += (data.data || []).length;
+      hasMore = !!(data.paging && data.paging.next);
+      url = hasMore ? data.paging.next : null;
+      pages++;
+    } catch (e) {
+      break;
+    }
+  }
+
+  if (hasMore && pages >= maxPages) {
+    total = Math.round(total * 2); // Conservative extrapolation
+  }
+
+  return total;
+}
+
+async function actionMetaSync(req, res) {
+  const accessToken = process.env.META_USER_TOKEN || '';
+  if (!accessToken) {
+    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  }
+
+  const batchSize = Math.min(parseInt(req.query.batch) || 5, 20);
+  const offset = parseInt(req.query.offset) || 0;
+  const force = req.query.force === 'true';
+  const startTime = Date.now();
+  let updated = 0;
+  let checked = 0;
+  const samples = [];
+
+  // Fetch shops: if force=true, get all; otherwise only those with live_ads=0 or null
+  let queryUrl;
+  if (force) {
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+  } else {
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score&or=(live_ads.eq.0,live_ads.is.null)&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+  }
+
+  const fetchResp = await fetch(queryUrl, {
+    headers: HEADERS,
+    signal: AbortSignal.timeout(8000)
+  });
+
+  if (!fetchResp.ok) {
+    return res.status(500).json({ error: `Supabase fetch error: ${fetchResp.status}` });
+  }
+
+  const shops = await fetchResp.json();
+  checked = shops.length;
+
+  if (checked === 0) {
+    return res.status(200).json({
+      success: true, message: 'No more shops to process',
+      checked: 0, updated: 0, offset, elapsed_ms: Date.now() - startTime
+    });
+  }
+
+  // Process sequentially (Meta API rate limits)
+  for (const shop of shops) {
+    if (Date.now() - startTime > 8000) break; // Leave buffer
+
+    try {
+      const domain = shop.domain.replace(/^www\./, '');
+      // Strip TLD for brand search (same logic as meta-ads.js)
+      const searchTerm = domain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
+
+      // Try exact domain first, then brand name
+      let count = await metaCountAds(accessToken, domain);
+      if (count < 3 && searchTerm !== domain) {
+        const brandCount = await metaCountAds(accessToken, searchTerm);
+        count = Math.max(count, brandCount);
+      }
+
+      const now = new Date().toISOString();
+      const ok = await patchShop(shop.domain, count, null);
+
+      // Also update live_ads_updated timestamp
+      if (ok) {
+        fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(shop.domain)}`, {
+          method: 'PATCH',
+          headers: HEADERS,
+          body: JSON.stringify({ live_ads_updated: now }),
+          signal: AbortSignal.timeout(3000)
+        }).catch(() => {});
+      }
+
+      if (ok) {
+        samples.push({ domain: shop.domain, old: shop.live_ads || 0, new: count });
+        if (count !== (shop.live_ads || 0)) updated++;
+      }
+    } catch (e) {
+      samples.push({ domain: shop.domain, error: e.message });
+    }
+  }
+
+  return res.status(200).json({
+    success: true,
+    checked,
+    updated,
+    nextOffset: offset + batchSize,
+    elapsed_ms: Date.now() - startTime,
+    hint: `Next: /api/backfill-ads?action=meta-sync&batch=${batchSize}&offset=${offset + batchSize}${force ? '&force=true' : ''}`,
+    samples
+  });
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const action = req.query.action || 'scan';
@@ -491,7 +626,8 @@ module.exports = async function handler(req, res) {
       case 'stats': return await actionStats(req, res);
       case 'enrich': return await actionEnrichStoreleads(req, res);
       case 'full-enrich': return await actionFullEnrich(req, res);
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich'] });
+      case 'meta-sync': return await actionMetaSync(req, res);
+      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync'] });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });

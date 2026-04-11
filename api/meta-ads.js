@@ -5,6 +5,30 @@
 // Requires env vars: META_USER_TOKEN (long-lived user access token with ads_read permission)
 
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
+const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+
+// Fire-and-forget: save live_ads count back to Supabase so dashboard has real data
+function saveAdCount(domain, count) {
+  const now = new Date().toISOString();
+  // Try multiple domain variants (exact, with www, without TLD variations)
+  const variants = [domain];
+  if (!domain.startsWith('www.')) variants.push('www.' + domain);
+
+  for (const d of variants) {
+    fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(d)}`, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
+      signal: AbortSignal.timeout(3000)
+    }).catch(() => {}); // Silently ignore errors — this is a best-effort write-back
+  }
+}
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -83,6 +107,9 @@ module.exports = async function handler(req, res) {
 
     // Transform ads for the frontend
     const ads = result.data.slice(0, limit).map(transformAd);
+
+    // Write-back: save real Meta count to Supabase (fire-and-forget)
+    saveAdCount(domain, total);
 
     return res.json({
       total,
