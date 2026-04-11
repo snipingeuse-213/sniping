@@ -547,6 +547,11 @@ function switchTab(panel, el){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-'+panel).classList.add('active');
+  // Lazy-render Meta Ads cards only when tab is first shown
+  if(panel==='ads'&&window.__metaAdsReady&&!window.__metaAdsRendered){
+    window.__metaAdsRendered=true;
+    renderMetaAdsPanel();
+  }
 }
 
 // --- Similar Shops ---
@@ -632,31 +637,15 @@ async function loadMetaAds(domainName, shopName){
       updateAdCount(total);
 
       if(ads.length>0){
-        const initialAds=ads.slice(0,6);
-        const hasMore=ads.length>6;
-        container.innerHTML=`
-          <div>
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-              <span class="ad-status active">&#128994; ${fmtV(total)} Live Ads</span>
-              <span style="font-size:12px;color:var(--text3);">Real-time from Meta Ad Library</span>
-              <div style="margin-left:auto;display:flex;gap:8px;">
-                <button class="shop-btn" onclick="sortMetaAds('reach')" style="font-size:11px;padding:4px 12px;" id="sort-reach">&#128200; Top Reach</button>
-                <button class="shop-btn" onclick="sortMetaAds('recent')" style="font-size:11px;padding:4px 12px;" id="sort-recent">&#128197; Most Recent</button>
-                <button class="shop-btn" onclick="sortMetaAds('spend')" style="font-size:11px;padding:4px 12px;" id="sort-spend">&#128176; Top Spend</button>
-              </div>
-            </div>
-            <div style="display:flex;flex-wrap:wrap;gap:16px;" id="ads-grid">
-              ${renderMetaAdCards(initialAds)}
-            </div>
-            ${hasMore?`<div style="text-align:center;margin-top:16px;" id="show-more-ads"><button class="shop-btn" onclick="showAllMetaAds()" style="padding:8px 24px;">Show all ${ads.length} ads</button></div>`:''}
-            ${total>ads.length?`<div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text3);">Showing ${Math.min(ads.length,6)} of ${fmtV(total)} active ads</div>`:''}
-            <div style="text-align:center;margin-top:12px;">
-              <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(cleanDomain)}" target="_blank" style="display:inline-flex;">
-                &#128269; View All on Meta Library &#8599;
-              </a>
-            </div>
-          </div>`;
+        // Store data but DON'T render cards yet (panel is display:none, causes layout freeze)
+        // Cards will be rendered lazily when Meta Ads tab is first clicked
         window.__metaAds=ads;
+        window.__metaAdsTotal=total;
+        window.__metaAdsDomain=cleanDomain;
+        window.__metaAdsReady=true;
+        window.__metaAdsRendered=false;
+        // Show loading placeholder
+        container.innerHTML='<div style="padding:20px;text-align:center;color:var(--text2);">Click the Meta Ads tab to view '+fmtV(total)+' active ads</div>';
         return;
       }
     }
@@ -762,6 +751,38 @@ function sortMetaAds(mode){
   document.getElementById('ads-grid').innerHTML=renderMetaAdCards(ads);
   const moreBtn=document.getElementById('show-more-ads');
   if(moreBtn) moreBtn.remove();
+}
+
+function renderMetaAdsPanel(){
+  const ads=window.__metaAds;
+  const total=window.__metaAdsTotal||ads.length;
+  const cleanDomain=window.__metaAdsDomain||'';
+  const container=document.getElementById('meta-ads');
+  if(!container||!ads) return;
+  const initialAds=ads.slice(0,6);
+  const hasMore=ads.length>6;
+  container.innerHTML=`
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <span class="ad-status active">&#128994; ${fmtV(total)} Live Ads</span>
+        <span style="font-size:12px;color:var(--text3);">Real-time from Meta Ad Library</span>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="shop-btn" onclick="sortMetaAds('reach')" style="font-size:11px;padding:4px 12px;" id="sort-reach">&#128200; Top Reach</button>
+          <button class="shop-btn" onclick="sortMetaAds('recent')" style="font-size:11px;padding:4px 12px;" id="sort-recent">&#128197; Most Recent</button>
+          <button class="shop-btn" onclick="sortMetaAds('spend')" style="font-size:11px;padding:4px 12px;" id="sort-spend">&#128176; Top Spend</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;" id="ads-grid">
+        ${renderMetaAdCards(initialAds)}
+      </div>
+      ${hasMore?'<div style="text-align:center;margin-top:16px;" id="show-more-ads"><button class="shop-btn" onclick="showAllMetaAds()" style="padding:8px 24px;">Show all '+ads.length+' ads</button></div>':''}
+      ${total>ads.length?'<div style="text-align:center;margin-top:12px;font-size:13px;color:var(--text3);">Showing '+Math.min(ads.length,6)+' of '+fmtV(total)+' active ads</div>':''}
+      <div style="text-align:center;margin-top:12px;">
+        <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(cleanDomain)}" target="_blank" style="display:inline-flex;">
+          &#128269; View All on Meta Library &#8599;
+        </a>
+      </div>
+    </div>`;
 }
 
 function sortAds(mode){
