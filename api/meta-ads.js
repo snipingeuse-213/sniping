@@ -2,7 +2,7 @@
 // GET /api/meta-ads?domain=gymshark.com&limit=25
 //
 // Returns: { total, ads: [...], cached }
-// Requires env vars: META_APP_ID, META_APP_SECRET
+// Requires env vars: META_USER_TOKEN (long-lived user access token with ads_read permission)
 
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
 
@@ -18,17 +18,15 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Missing domain parameter' });
   }
 
-  const META_APP_ID = process.env.META_APP_ID || '';
-  const META_APP_SECRET = process.env.META_APP_SECRET || '';
+  // Use long-lived user access token (ads_read permission required for ads_archive)
+  const accessToken = process.env.META_USER_TOKEN || '';
 
-  if (!META_APP_ID || !META_APP_SECRET) {
+  if (!accessToken) {
     return res.status(500).json({
       error: 'Meta API not configured',
-      message: 'META_APP_ID and META_APP_SECRET environment variables are required'
+      message: 'META_USER_TOKEN environment variable is required (user access token with ads_read permission)'
     });
   }
-
-  const accessToken = `${META_APP_ID}|${META_APP_SECRET}`;
 
   try {
     // Strategy: search by domain name as search term
