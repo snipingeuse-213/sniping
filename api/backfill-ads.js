@@ -487,6 +487,7 @@ async function actionFullEnrich(req, res) {
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
 
 async function metaCountAds(accessToken, searchTerm) {
+  // Single-page fast count: fetch up to 500 IDs in one call
   const params = new URLSearchParams({
     access_token: accessToken,
     search_terms: searchTerm,
@@ -497,31 +498,17 @@ async function metaCountAds(accessToken, searchTerm) {
     limit: '500'
   });
 
-  let total = 0;
-  let url = `${GRAPH_API}/ads_archive?${params}`;
-  const maxPages = 2; // 2 pages max = ~1000 counted per shop
-  let pages = 0;
-  let hasMore = false;
-
-  while (url && pages < maxPages) {
-    try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(4000) });
-      if (!response.ok) break;
-      const data = await response.json();
-      total += (data.data || []).length;
-      hasMore = !!(data.paging && data.paging.next);
-      url = hasMore ? data.paging.next : null;
-      pages++;
-    } catch (e) {
-      break;
-    }
+  try {
+    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, { signal: AbortSignal.timeout(3000) });
+    if (!response.ok) return 0;
+    const data = await response.json();
+    const count = (data.data || []).length;
+    const hasMore = !!(data.paging && data.paging.next);
+    // If there are more pages, estimate conservatively
+    return hasMore ? count * 3 : count;
+  } catch (e) {
+    return 0;
   }
-
-  if (hasMore && pages >= maxPages) {
-    total = Math.round(total * 2); // Conservative extrapolation
-  }
-
-  return total;
 }
 
 async function actionMetaSync(req, res) {
@@ -575,11 +562,11 @@ async function actionMetaSync(req, res) {
       // Strip TLD for brand search (same logic as meta-ads.js)
       const searchTerm = domain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
-      // Try exact domain first, then brand name
-      let count = await metaCountAds(accessToken, domain);
-      if (count < 3 && searchTerm !== domain) {
-        const brandCount = await metaCountAds(accessToken, searchTerm);
-        count = Math.max(count, brandCount);
+      // Search by brand name (domain without TLD) — faster, better coverage
+      let count = await metaCountAds(accessToken, searchTerm);
+      // If brand name search yielded nothing, try exact domain
+      if (count === 0 && searchTerm !== domain) {
+        count = await metaCountAds(accessToken, domain);
       }
 
       const now = new Date().toISOString();
