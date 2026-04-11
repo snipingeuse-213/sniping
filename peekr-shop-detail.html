@@ -664,6 +664,7 @@ async function loadMetaAds(domainName, shopName){
     updateAdCount(sbAds.length);
 
     if(sbAds.length>0){
+      container.style.display='block'; // Override .ads-grid CSS grid
       container.innerHTML=`
         <div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
@@ -759,6 +760,7 @@ function renderMetaAdsPanel(){
   const cleanDomain=window.__metaAdsDomain||'';
   const container=document.getElementById('meta-ads');
   if(!container||!ads) return;
+  container.style.display='block'; // Override .ads-grid CSS grid to prevent column constraint
   const initialAds=ads.slice(0,6);
   const hasMore=ads.length>6;
   container.innerHTML=`
