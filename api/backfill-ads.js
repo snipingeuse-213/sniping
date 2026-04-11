@@ -517,26 +517,31 @@ async function actionMetaSync(req, res) {
     return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
   }
 
-  const batchSize = Math.min(parseInt(req.query.batch) || 5, 20);
+  const batchSize = Math.min(parseInt(req.query.batch) || 50, 200);
   const offset = parseInt(req.query.offset) || 0;
   const force = req.query.force === 'true';
+  const orderBy = req.query.order || 'score'; // score or visits
   const startTime = Date.now();
   let updated = 0;
   let checked = 0;
   const samples = [];
 
-  // Fetch shops: if force=true, get all; otherwise only those with live_ads=0 or null
-  // Order by monthly_visits desc (high-traffic shops most likely to have ads)
+  // Order: by score (most important shops first) or monthly_visits
+  const orderClause = orderBy === 'visits'
+    ? 'monthly_visits.desc.nullslast'
+    : 'score.desc.nullslast';
+
+  // Fetch shops: if force=true, get all; otherwise only those not yet synced
   let queryUrl;
   if (force) {
-    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&order=monthly_visits.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&order=${orderClause}&limit=${batchSize}&offset=${offset}`;
   } else {
-    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&or=(live_ads.eq.0,live_ads.is.null)&order=monthly_visits.desc.nullslast&limit=${batchSize}&offset=${offset}`;
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&live_ads_updated=is.null&order=${orderClause}&limit=${batchSize}&offset=${offset}`;
   }
 
   const fetchResp = await fetch(queryUrl, {
     headers: HEADERS,
-    signal: AbortSignal.timeout(8000)
+    signal: AbortSignal.timeout(10000)
   });
 
   if (!fetchResp.ok) {
@@ -553,41 +558,42 @@ async function actionMetaSync(req, res) {
     });
   }
 
-  // Process sequentially (Meta API rate limits)
-  for (const shop of shops) {
-    if (Date.now() - startTime > 8000) break; // Leave buffer
+  // Process in PARALLEL batches of 10 (respect Meta rate limits)
+  const PARALLEL = Math.min(parseInt(req.query.parallel) || 10, 20);
+  for (let i = 0; i < shops.length; i += PARALLEL) {
+    if (Date.now() - startTime > 45000) break; // 45s budget (Vercel max 60s)
 
-    try {
+    const chunk = shops.slice(i, i + PARALLEL);
+    const results = await Promise.allSettled(chunk.map(async (shop) => {
       const domain = shop.domain.replace(/^www\./, '');
-      // Strip TLD for brand search (same logic as meta-ads.js)
       const searchTerm = domain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
-      // Search by brand name (domain without TLD) — faster, better coverage
+      // Search by brand name first, fallback to full domain
       let count = await metaCountAds(accessToken, searchTerm);
-      // If brand name search yielded nothing, try exact domain
       if (count === 0 && searchTerm !== domain) {
         count = await metaCountAds(accessToken, domain);
       }
 
+      // Single PATCH with both live_ads + live_ads_updated
       const now = new Date().toISOString();
-      const ok = await patchShop(shop.domain, count, null);
+      const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(shop.domain)}`;
+      const resp = await fetch(url, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
+        signal: AbortSignal.timeout(5000)
+      });
 
-      // Also update live_ads_updated timestamp
-      if (ok) {
-        fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(shop.domain)}`, {
-          method: 'PATCH',
-          headers: HEADERS,
-          body: JSON.stringify({ live_ads_updated: now }),
-          signal: AbortSignal.timeout(3000)
-        }).catch(() => {});
-      }
+      return { domain: shop.domain, old: shop.live_ads || 0, new: count, ok: resp.ok };
+    }));
 
-      if (ok) {
-        samples.push({ domain: shop.domain, old: shop.live_ads || 0, new: count });
-        if (count !== (shop.live_ads || 0)) updated++;
+    for (const r of results) {
+      if (r.status === 'fulfilled' && r.value.ok) {
+        samples.push({ domain: r.value.domain, old: r.value.old, new: r.value.new });
+        if (r.value.new !== r.value.old) updated++;
+      } else if (r.status === 'rejected') {
+        samples.push({ domain: '?', error: r.reason?.message || 'unknown' });
       }
-    } catch (e) {
-      samples.push({ domain: shop.domain, error: e.message });
     }
   }
 
@@ -597,8 +603,8 @@ async function actionMetaSync(req, res) {
     updated,
     nextOffset: offset + batchSize,
     elapsed_ms: Date.now() - startTime,
-    hint: `Next: /api/backfill-ads?action=meta-sync&batch=${batchSize}&offset=${offset + batchSize}${force ? '&force=true' : ''}`,
-    samples
+    hint: `Next: /api/backfill-ads?action=meta-sync&batch=${batchSize}&offset=${offset + batchSize}${force ? '&force=true' : ''}&order=${orderBy}`,
+    samples: samples.slice(0, 30) // Limit response size
   });
 }
 
