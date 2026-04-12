@@ -525,7 +525,7 @@ async function actionMetaSync(req, res) {
     return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
   }
 
-  const batchSize = Math.min(parseInt(req.query.batch) || 50, 200);
+  const batchSize = Math.min(parseInt(req.query.batch) || 10, 200);
   const offset = parseInt(req.query.offset) || 0;
   const force = req.query.force === 'true';
   const orderBy = req.query.order || 'score'; // score or visits
@@ -566,10 +566,12 @@ async function actionMetaSync(req, res) {
     });
   }
 
-  // Process in PARALLEL batches of 10 (respect Meta rate limits)
-  const PARALLEL = Math.min(parseInt(req.query.parallel) || 10, 20);
+  // Process in small parallel batches (max 3) to respect Meta rate limits
+  const PARALLEL = Math.min(parseInt(req.query.parallel) || 3, 5);
+  let rateLimited = false;
   for (let i = 0; i < shops.length; i += PARALLEL) {
     if (Date.now() - startTime > 45000) break; // 45s budget (Vercel max 60s)
+    if (rateLimited) break;
 
     const chunk = shops.slice(i, i + PARALLEL);
     const results = await Promise.allSettled(chunk.map(async (shop) => {
@@ -578,6 +580,16 @@ async function actionMetaSync(req, res) {
 
       // Search by brand name first, fallback to full domain
       let count = await metaCountAds(accessToken, searchTerm);
+
+      // Detect rate limit
+      if (count === 0) {
+        const check = await metaCountAds(accessToken, searchTerm, true);
+        if (check.error && check.error.includes('400')) {
+          rateLimited = true;
+          return { domain: shop.domain, old: shop.live_ads || 0, new: -1, ok: false, rateLimited: true };
+        }
+      }
+
       if (count === 0 && searchTerm !== domain) {
         count = await metaCountAds(accessToken, domain);
       }
@@ -659,24 +671,66 @@ async function actionLiveLookup(req, res) {
     return res.status(400).json({ error: 'Missing domains parameter (comma-separated)' });
   }
 
-  // Limit to 20 domains per call to stay fast
   const domains = domainsParam.split(',').map(d => d.trim()).filter(Boolean).slice(0, 20);
   const startTime = Date.now();
   const results = {};
+  const CACHE_TTL_HOURS = 6;
 
-  // Query Meta in parallel for all domains
-  const promises = domains.map(async (domain) => {
+  // Step 1: Check Supabase for recently-cached live_ads values
+  const domainFilter = domains.map(d => `"${d}"`).join(',');
+  try {
+    const cacheUrl = `${SUPABASE_URL}/rest/v1/shops?domain=in.(${domainFilter})&select=domain,live_ads,live_ads_updated`;
+    const cacheResp = await fetch(cacheUrl, { headers: HEADERS, signal: AbortSignal.timeout(4000) });
+    if (cacheResp.ok) {
+      const cached = await cacheResp.json();
+      const now = Date.now();
+      for (const row of cached) {
+        if (row.live_ads != null && row.live_ads_updated) {
+          const age = (now - new Date(row.live_ads_updated).getTime()) / (1000 * 60 * 60);
+          if (age < CACHE_TTL_HOURS) {
+            results[row.domain] = row.live_ads;
+          }
+        }
+      }
+    }
+  } catch (e) { /* cache miss is fine, proceed to Meta */ }
+
+  // Step 2: Only query Meta for domains NOT in recent cache
+  const needMeta = domains.filter(d => results[d] === undefined);
+  let rateLimited = false;
+  let metaQueried = 0;
+
+  // Sequential calls (max 5 per request) to avoid rate limits
+  for (const domain of needMeta.slice(0, 5)) {
+    if (rateLimited) {
+      // Don't query, leave undefined so frontend retries later
+      break;
+    }
+
     const cleanDomain = domain.replace(/^www\./, '');
     const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
     let count = await metaCountAds(accessToken, searchTerm);
+
+    // Detect rate limit (metaCountAds returns 0 on HTTP errors)
+    // Use debug mode to check if it's a rate limit
+    if (count === 0) {
+      const debugResult = await metaCountAds(accessToken, searchTerm, true);
+      if (debugResult.error && debugResult.error.includes('400')) {
+        // Rate limited — stop querying, don't cache the 0
+        rateLimited = true;
+        break;
+      }
+    }
+
     if (count === 0 && searchTerm !== cleanDomain) {
       count = await metaCountAds(accessToken, cleanDomain);
     }
 
     results[domain] = count;
+    metaQueried++;
 
-    // Update database in background (fire and forget for speed)
+    // Update database
     const now = new Date().toISOString();
     const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`;
     fetch(url, {
@@ -686,15 +740,19 @@ async function actionLiveLookup(req, res) {
       signal: AbortSignal.timeout(5000)
     }).catch(() => {});
 
-    return { domain, count };
-  });
-
-  await Promise.allSettled(promises);
+    // Small delay between calls to be gentle on rate limit
+    if (metaQueried < needMeta.length) {
+      await new Promise(r => setTimeout(r, 200));
+    }
+  }
 
   return res.status(200).json({
     success: true,
     results,
     count: domains.length,
+    from_cache: domains.length - needMeta.length,
+    meta_queried: metaQueried,
+    rate_limited: rateLimited,
     elapsed_ms: Date.now() - startTime
   });
 }

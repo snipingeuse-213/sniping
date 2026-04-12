@@ -1394,7 +1394,7 @@ function _doLiveLookup(pageShops){
   // Find shops that have ad=0 and haven't been looked up or queued yet
   const needLookup=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined).map(s=>s.d);
   if(needLookup.length===0)return;
-  const batch=needLookup.slice(0,20);
+  const batch=needLookup.slice(0,5); // Small batches to avoid Meta rate limits
   // Mark all batch domains as pending IMMEDIATELY to prevent duplicate requests
   batch.forEach(d=>{_liveCache[d]='pending';});
   fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(15000)})
@@ -1435,9 +1435,14 @@ function _doLiveLookup(pageShops){
           }
         }
       }
-      // Next batch after short delay
+      // If rate limited, stop — don't burn more quota
+      if(data.rate_limited){
+        console.warn('Meta API rate limited — pausing live lookup');
+        return;
+      }
+      // Next batch after longer delay (2s) to be gentle on rate limit
       const more=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined);
-      if(more.length>0) setTimeout(()=>_doLiveLookup(pageShops),500);
+      if(more.length>0) setTimeout(()=>_doLiveLookup(pageShops),2000);
     })
     .catch(()=>{
       // On error, reset pending domains so they can be retried
