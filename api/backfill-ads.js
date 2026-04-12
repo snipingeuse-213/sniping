@@ -934,6 +934,265 @@ async function actionAdsHistory(req, res) {
   }
 }
 
+// ACTION: trustpilot â Scrape Trustpilot rating and review count
+// Caches results in shop_trustpilot table with 24h TTL
+async function actionTrustpilot(req, res) {
+  const domain = req.query.domain || '';
+  if (!domain) return res.status(400).json({ error: 'Missing domain parameter' });
+
+  const startTime = Date.now();
+
+  try {
+    // Check Supabase cache first (24h TTL)
+    const cacheUrl = `${SUPABASE_URL}/rest/v1/shop_trustpilot?domain=eq.${encodeURIComponent(domain)}&select=domain,rating,review_count,updated_at`;
+    const cacheResp = await fetch(cacheUrl, { headers: HEADERS, signal: AbortSignal.timeout(3000) });
+
+    if (cacheResp.ok) {
+      const cached = await cacheResp.json();
+      if (cached && cached.length > 0) {
+        const row = cached[0];
+        const ageHours = (Date.now() - new Date(row.updated_at).getTime()) / (1000 * 60 * 60);
+        if (ageHours < 24) {
+          return res.status(200).json({
+            success: true,
+            domain,
+            rating: row.rating,
+            review_count: row.review_count,
+            source: 'cache',
+            cached_age_hours: ageHours.toFixed(1),
+            elapsed_ms: Date.now() - startTime
+          });
+        }
+      }
+    }
+
+    // Cache miss or stale â fetch from Trustpilot
+    const trustpilotUrl = `https://www.trustpilot.com/review/${domain}`;
+    const fetchResp = await fetch(trustpilotUrl, {
+      signal: AbortSignal.timeout(10000),
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Peekr/1.0; +https://peekr.app)' }
+    });
+
+    if (!fetchResp.ok) {
+      return res.status(404).json({
+        success: false,
+        error: `Trustpilot page not found for ${domain}`,
+        status: fetchResp.status,
+        elapsed_ms: Date.now() - startTime
+      });
+    }
+
+    const html = await fetchResp.text();
+
+    // Try to extract JSON-LD structured data first
+    let rating = null;
+    let reviewCount = null;
+
+    const jsonLdMatch = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i);
+    if (jsonLdMatch) {
+      try {
+        const jsonLdData = JSON.parse(jsonLdMatch[1]);
+
+        // Handle different JSON-LD formats
+        const findAggregateRating = (obj) => {
+          if (!obj) return null;
+          if (obj.aggregateRating) {
+            return {
+              rating: parseFloat(obj.aggregateRating.ratingValue),
+              count: parseInt(obj.aggregateRating.reviewCount, 10)
+            };
+          }
+          if (obj['@graph']) {
+            for (const item of obj['@graph']) {
+              const result = findAggregateRating(item);
+              if (result) return result;
+            }
+          }
+          return null;
+        };
+
+        const result = findAggregateRating(jsonLdData);
+        if (result) {
+          rating = result.rating;
+          reviewCount = result.count;
+        }
+      } catch (e) {
+        // JSON-LD parse error, fall through to regex
+      }
+    }
+
+    // Fallback: try regex patterns if JSON-LD failed
+    if (rating === null || reviewCount === null) {
+      // Look for rating in common HTML patterns
+      const ratingMatch = html.match(/rating["\s:]*([0-9.]+)/i) || html.match(/stars["\s:]*([0-9.]+)/i);
+      if (ratingMatch) rating = parseFloat(ratingMatch[1]);
+
+      // Look for review count patterns like "3,241 reviews" or "3241 reviews"
+      const countMatch = html.match(/([0-9,]+)\s*reviews/i) || html.match(/"reviewCount"\s*:\s*([0-9]+)/i);
+      if (countMatch) {
+        reviewCount = parseInt(countMatch[1].replace(/,/g, ''), 10);
+      }
+    }
+
+    // If we couldn't find either value, return error
+    if (rating === null && reviewCount === null) {
+      return res.status(400).json({
+        success: false,
+        error: `Could not extract Trustpilot data for ${domain}`,
+        hint: 'Domain may not have Trustpilot page or page format changed',
+        elapsed_ms: Date.now() - startTime
+      });
+    }
+
+    // Store in Supabase cache
+    const now = new Date().toISOString();
+    const upsertUrl = `${SUPABASE_URL}/rest/v1/shop_trustpilot`;
+
+    // Try upsert: check if exists first
+    const checkExist = await fetch(`${SUPABASE_URL}/rest/v1/shop_trustpilot?domain=eq.${encodeURIComponent(domain)}&select=domain`, { headers: HEADERS, signal: AbortSignal.timeout(2000) }).catch(() => null);
+
+    if (checkExist?.ok) {
+      const existing = await checkExist.json().catch(() => []);
+      if (existing && existing.length > 0) {
+        // UPDATE
+        await fetch(`${upsertUrl}?domain=eq.${encodeURIComponent(domain)}`, {
+          method: 'PATCH',
+          headers: HEADERS,
+          body: JSON.stringify({ rating, review_count: reviewCount, updated_at: now }),
+          signal: AbortSignal.timeout(3000)
+        }).catch(() => {});
+      } else {
+        // INSERT
+        await fetch(upsertUrl, {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ domain, rating, review_count: reviewCount, updated_at: now }),
+          signal: AbortSignal.timeout(3000)
+        }).catch(() => {});
+      }
+    }
+
+    return res.status(200).json({
+      success: true,
+      domain,
+      rating: rating !== null ? rating : undefined,
+      review_count: reviewCount !== null ? reviewCount : undefined,
+      source: 'live',
+      elapsed_ms: Date.now() - startTime
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      error: e.message,
+      domain,
+      elapsed_ms: Date.now() - startTime
+    });
+  }
+}
+
+// ACTION: ad-creatives â Fetch detailed ad creatives from Meta Ad Library
+// Returns rich ad data with creative bodies, impressions, spend, etc.
+async function actionAdCreatives(req, res) {
+  const accessToken = process.env.META_USER_TOKEN || '';
+  if (!accessToken) {
+    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  }
+
+  const domain = req.query.domain || '';
+  if (!domain) return res.status(400).json({ error: 'Missing domain parameter' });
+
+  const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+  const startTime = Date.now();
+
+  try {
+    const cleanDomain = domain.replace(/^www\./, '');
+    const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
+
+    const params = new URLSearchParams({
+      access_token: accessToken,
+      search_terms: searchTerm,
+      ad_reached_countries: 'US',
+      ad_type: 'ALL',
+      ad_active_status: 'ACTIVE',
+      fields: 'ad_creative_bodies,ad_creative_link_titles,ad_creative_link_descriptions,ad_snapshot_url,ad_delivery_start_time,page_name,page_id,publisher_platforms,impressions,spend,languages,target_locations',
+      limit: String(Math.min(limit, 500))
+    });
+
+    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, {
+      signal: AbortSignal.timeout(15000)
+    });
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => '');
+      return res.status(response.status).json({
+        success: false,
+        error: `Meta API error: ${response.status}`,
+        details: errText.slice(0, 300),
+        elapsed_ms: Date.now() - startTime
+      });
+    }
+
+    const data = await response.json();
+    const items = data.data || [];
+
+    // Process and enrich ad data
+    const ads = items.slice(0, limit).map(item => {
+      // Calculate days active
+      let daysActive = 0;
+      if (item.ad_delivery_start_time) {
+        const startDate = new Date(item.ad_delivery_start_time);
+        daysActive = Math.floor((Date.now() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      }
+
+      // Infer media type from snapshot URL
+      let mediaType = 'image';
+      const snapshotUrl = item.ad_snapshot_url || '';
+      if (snapshotUrl.includes('.mp4') || snapshotUrl.includes('.webm')) mediaType = 'video';
+      if (snapshotUrl.includes('.gif')) mediaType = 'gif';
+
+      // Parse platforms (publisher_platforms is usually an array)
+      const platforms = Array.isArray(item.publisher_platforms)
+        ? item.publisher_platforms
+        : (typeof item.publisher_platforms === 'string' ? [item.publisher_platforms] : []);
+
+      return {
+        ad_id: item.id || '',
+        page_name: item.page_name || '',
+        page_id: item.page_id || '',
+        body: (item.ad_creative_bodies || [])[0] || '',
+        title: (item.ad_creative_link_titles || [])[0] || '',
+        description: (item.ad_creative_link_descriptions || [])[0] || '',
+        snapshot_url: snapshotUrl,
+        start_date: item.ad_delivery_start_time || '',
+        days_active: daysActive,
+        platforms,
+        impressions: item.impressions || null,
+        spend: item.spend || null,
+        languages: item.languages || [],
+        target_locations: item.target_locations || [],
+        media_type: mediaType
+      };
+    }).filter(ad => ad.ad_id);
+
+    return res.status(200).json({
+      success: true,
+      domain,
+      ads,
+      total: ads.length,
+      limit_requested: limit,
+      api_version: '21.0',
+      elapsed_ms: Date.now() - startTime
+    });
+  } catch (e) {
+    return res.status(500).json({
+      success: false,
+      error: e.message,
+      domain,
+      elapsed_ms: Date.now() - startTime
+    });
+  }
+}
+
 // Proxy for product images â avoids CORS issues when fetching Shopify /products.json
 async function actionProductImages(req, res) {
   const domainsParam = req.query.domains || '';
@@ -977,6 +1236,8 @@ module.exports = async function handler(req, res) {
       case 'meta-sync': return await actionMetaSync(req, res);
       case 'live-lookup': return await actionLiveLookup(req, res);
       case 'ads-history': return await actionAdsHistory(req, res);
+      case 'trustpilot': return await actionTrustpilot(req, res);
+      case 'ad-creatives': return await actionAdCreatives(req, res);
       case 'product-images': return await actionProductImages(req, res);
       case 'meta-debug': {
         const accessToken = process.env.META_USER_TOKEN || '';
@@ -1003,7 +1264,7 @@ module.exports = async function handler(req, res) {
       }
       default: return res.status(400).json({
         error: `Unknown action: ${action}`,
-        available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'ads-history', 'product-images', 'meta-debug']
+        available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'ads-history', 'trustpilot', 'ad-creatives', 'product-images', 'meta-debug']
       });
     }
   } catch (error) {
