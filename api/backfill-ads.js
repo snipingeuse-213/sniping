@@ -1,4 +1,4 @@
-// Peekr â Backfill live_ads by parsing technologies already in DB
+// Peekr — Backfill live_ads by parsing technologies already in DB
 // Strategy: Read shops from Supabase, count advertising technologies, PATCH update live_ads
 // Uses PATCH (not POST) because POST upsert uses PK not domain unique constraint
 //
@@ -6,11 +6,14 @@
 // Each element is a JSON string like '{"name":"Google Adsense","categories":["Advertising"]}'
 //
 // Endpoints:
-//   GET /api/backfill-ads?action=scan&batch=200&offset=0  â scan DB, update live_ads for shops with live_ads=0
-//   GET /api/backfill-ads?action=scan-all&batch=200&offset=0 â scan ALL shops, recount
-//   GET /api/backfill-ads?action=revert&domain=gymshark.com â reset a shop's live_ads
-//   GET /api/backfill-ads?action=stats â show current live_ads distribution
-//   GET /api/backfill-ads?action=enrich&batch=50&offset=0 â fetch from Store Leads + PATCH
+//   GET /api/backfill-ads?action=scan&batch=200&offset=0  — scan DB, update live_ads for shops with live_ads=0
+//   GET /api/backfill-ads?action=scan-all&batch=200&offset=0 — scan ALL shops, recount
+//   GET /api/backfill-ads?action=revert&domain=gymshark.com — reset a shop's live_ads
+//   GET /api/backfill-ads?action=stats — show current live_ads distribution
+//   GET /api/backfill-ads?action=enrich&batch=50&offset=0 — fetch from Store Leads + PATCH
+//   GET /api/backfill-ads?action=meta-sync&batch=10&offset=0 — sync live ads via Meta Graph API
+//   GET /api/backfill-ads?action=live-lookup&domains=a.com,b.com — real-time lookup with 72h cache
+//   GET /api/backfill-ads?action=meta-debug&q=gymshark — diagnostic endpoint
 
 const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
@@ -21,7 +24,7 @@ const HEADERS = {
   'Content-Type': 'application/json'
 };
 
-// Parse a technology entry â it can be a JSON string or already an object
+// Parse a technology entry — it can be a JSON string or already an object
 function parseTech(tech) {
   if (typeof tech === 'string') {
     try { return JSON.parse(tech); } catch (e) { return { name: tech }; }
@@ -81,7 +84,7 @@ async function patchShop(domain, liveAds, adPlatforms) {
   return resp.ok;
 }
 
-// ACTION: scan â Read shops from DB with live_ads=0, count ad techs, update
+// ACTION: scan — Read shops from DB with live_ads=0, count ad techs, update
 async function actionScan(req, res) {
   const batchSize = Math.min(parseInt(req.query.batch) || 200, 500);
   const offset = parseInt(req.query.offset) || 0;
@@ -91,8 +94,6 @@ async function actionScan(req, res) {
   let skipped = 0;
   const samples = [];
 
-  // Fetch shops that have technologies (not null) and live_ads is 0 or null
-  // Note: technologies is text[] â use not.is.null to exclude NULLs, filter empty arrays server-side
   const queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,technologies,live_ads&technologies=not.is.null&or=(live_ads.eq.0,live_ads.is.null)&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
 
   const fetchResp = await fetch(queryUrl, {
@@ -117,11 +118,10 @@ async function actionScan(req, res) {
     });
   }
 
-  // Process in parallel batches of 20
   const PARALLEL = 20;
   for (let i = 0; i < shops.length; i += PARALLEL) {
     const batch = shops.slice(i, i + PARALLEL);
-    if (Date.now() - startTime > 50000) break; // Leave buffer for response
+    if (Date.now() - startTime > 50000) break;
 
     const promises = batch.map(async (shop) => {
       try {
@@ -155,17 +155,14 @@ async function actionScan(req, res) {
 
   const elapsed = Date.now() - startTime;
   return res.status(200).json({
-    success: true,
-    checked,
-    updated,
-    skipped,
+    success: true, checked, updated, skipped,
     nextOffset: offset + batchSize,
     elapsed_ms: elapsed,
     samples: samples.slice(0, 20)
   });
 }
 
-// ACTION: scan-all â Scan ALL shops (not just live_ads=0), recount ad techs
+// ACTION: scan-all — Scan ALL shops (not just live_ads=0), recount ad techs
 async function actionScanAll(req, res) {
   const batchSize = Math.min(parseInt(req.query.batch) || 200, 500);
   const offset = parseInt(req.query.offset) || 0;
@@ -238,7 +235,7 @@ async function actionScanAll(req, res) {
   });
 }
 
-// ACTION: revert â Reset a specific shop's live_ads to 0
+// ACTION: revert — Reset a specific shop's live_ads to 0
 async function actionRevert(req, res) {
   const domain = req.query.domain;
   if (!domain) return res.status(400).json({ error: 'Missing domain parameter' });
@@ -246,14 +243,13 @@ async function actionRevert(req, res) {
   return res.status(200).json({ success: ok, domain, live_ads: 0 });
 }
 
-// ACTION: stats â Show live_ads distribution
+// ACTION: stats — Show live_ads distribution
 async function actionStats(req, res) {
   const countUrl = `${SUPABASE_URL}/rest/v1/shops?live_ads=gt.0&select=domain,live_ads,name,score&order=live_ads.desc&limit=50`;
   const resp = await fetch(countUrl, { headers: HEADERS, signal: AbortSignal.timeout(10000) });
   if (!resp.ok) return res.status(500).json({ error: 'Failed to fetch stats' });
   const topShops = await resp.json();
 
-  // Count with live_ads > 0
   const adsCountUrl = `${SUPABASE_URL}/rest/v1/shops?live_ads=gt.0&select=domain&limit=1`;
   const adsResp = await fetch(adsCountUrl, {
     headers: { ...HEADERS, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' },
@@ -265,7 +261,6 @@ async function actionStats(req, res) {
     if (range) totalWithAds = range.split('/')[1];
   }
 
-  // Count with technologies not null
   const techCountUrl = `${SUPABASE_URL}/rest/v1/shops?technologies=not.is.null&select=domain&limit=1`;
   const techResp = await fetch(techCountUrl, {
     headers: { ...HEADERS, 'Prefer': 'count=exact', 'Range-Unit': 'items', 'Range': '0-0' },
@@ -284,7 +279,7 @@ async function actionStats(req, res) {
   });
 }
 
-// ACTION: enrich-storeleads â Fetch from Store Leads and update via PATCH
+// ACTION: enrich-storeleads — Fetch from Store Leads and update via PATCH
 async function actionEnrichStoreleads(req, res) {
   const STORELEADS_KEY = '0828c887-79f6-45b0-5ea9-e3427cb4';
   const batchSize = Math.min(parseInt(req.query.batch) || 50, 50);
@@ -317,7 +312,6 @@ async function actionEnrichStoreleads(req, res) {
     if (Date.now() - startTime > 50000) break;
 
     const promises = batch.map(async (d) => {
-      // Store Leads technologies are already objects (not JSON strings)
       const result = countAdTechs((d.technologies || []).map(t => typeof t === 'string' ? t : JSON.stringify(t)));
       let liveAds = d.facebook_ad_count || d.ad_count || d.facebook_ads || d.live_ads || 0;
       if (liveAds === 0) liveAds = result.count;
@@ -346,8 +340,7 @@ async function actionEnrichStoreleads(req, res) {
   });
 }
 
-// ACTION: full-enrich â Fetch top shops from Store Leads with ALL fields and do full PATCH
-// This updates traffic_trend, visitor_countries, technologies, ad_platforms, etc.
+// ACTION: full-enrich — Fetch top shops from Store Leads with ALL fields and do full PATCH
 async function actionFullEnrich(req, res) {
   const STORELEADS_KEY = '0828c887-79f6-45b0-5ea9-e3427cb4';
   const batchSize = Math.min(parseInt(req.query.batch) || 50, 50);
@@ -399,24 +392,18 @@ async function actionFullEnrich(req, res) {
         if (liveAds === 0) liveAds = result.count;
 
         const catStr = Array.isArray(d.categories) ? d.categories.join(',') : '';
-        const visits = d.estimated_visits || 0;
-        const sales = d.estimated_sales || 0;
-        const rank = d.platform_rank || 999999;
-        const prods = d.product_count || 0;
-        const appCount = Array.isArray(d.apps) ? d.apps.length : 0;
 
-        // Build full update body with ALL fields
         const body = {
           live_ads: liveAds,
           ad_platforms: result.adPlatforms.length > 0 ? result.adPlatforms : (d.ad_platforms || []),
           technologies: techs,
           visitor_countries: d.visitor_countries || [],
           traffic_trend: d.traffic_trend || [],
-          monthly_visits: visits,
-          estimated_sales: sales,
+          monthly_visits: d.estimated_visits || 0,
+          estimated_sales: d.estimated_sales || 0,
           estimated_sales_yearly: d.estimated_sales_yearly || 0,
-          products_count: prods,
-          platform_rank: rank,
+          products_count: d.product_count || 0,
+          platform_rank: d.platform_rank || 999999,
           global_rank: d.rank,
           rank_percentile: d.rank_percentile,
           avg_price_usd: d.avg_price_usd,
@@ -448,13 +435,10 @@ async function actionFullEnrich(req, res) {
         });
 
         if (resp.ok) {
-          const hasTraffic = (d.traffic_trend || []).length > 0;
-          const hasVisitors = (d.visitor_countries || []).length > 0;
           samples.push({
-            domain: d.name,
-            live_ads: liveAds,
-            traffic: hasTraffic ? `${(d.traffic_trend || []).length} pts` : 'none',
-            visitors: hasVisitors ? `${(d.visitor_countries || []).length} countries` : 'none',
+            domain: d.name, live_ads: liveAds,
+            traffic: `${(d.traffic_trend || []).length} pts`,
+            visitors: `${(d.visitor_countries || []).length} countries`,
             techs: techs.length
           });
           return 'updated';
@@ -479,292 +463,193 @@ async function actionFullEnrich(req, res) {
   });
 }
 
-// ACTION: meta-sync â Fetch REAL live ads count from Meta Ad Library API for each shop
-// This gives accurate counts unlike the technology-based estimation
-// Processes ~5 shops per call to stay within Vercel 10s timeout
-// GET /api/backfill-ads?action=meta-sync&batch=5&offset=0
-// GET /api/backfill-ads?action=meta-sync&batch=5&offset=0&force=true  (re-sync all, not just 0)
-const GRAPH_API = 'https://graph.facebook.com/v21.0';
-const APIFY_API = 'https://api.apify.com/v2';
-// Actor: curious_coder~facebook-ads-library-scraper (4.8â, most popular)
-const APIFY_ACTOR = 'curious_coder~facebook-ads-library-scraper';
+// ═══════════════════════════════════════════════════════════
+// META GRAPH API — Free, rate-limited (200 calls/hour)
+// Used for: ad count + top ads enrichment
+// Cache: 72h in Supabase to minimize API calls
+// ═══════════════════════════════════════════════════════════
 
-// âââ Apify: scrape Meta Ad Library (reliable, paid) âââ
-// Returns { count, ads[] } â ads contain creative data for "top ads" feature
-async function apifyScrapAds(searchTerm, maxItems = 50, debug = false) {
-  const apifyToken = process.env.APIFY_TOKEN || '';
-  if (!apifyToken) {
-    if (debug) return { count: 0, ads: [], source: 'apify', error: 'APIFY_TOKEN not set' };
-    return { count: 0, ads: [] };
+const GRAPH_API = 'https://graph.facebook.com/v21.0';
+const CACHE_TTL_HOURS = 72; // 3 days cache
+
+// ─── Count active ads for a search term via Meta Graph API ───
+// Returns count (number) or { count, source, ... } if debug=true
+async function metaCountAds(accessToken, searchTerm, debug = false) {
+  if (!accessToken) {
+    if (debug) return { count: 0, source: 'none', error: 'META_USER_TOKEN not set' };
+    return 0;
   }
 
-  // Build the Facebook Ad Library URL for active ads worldwide
-  const adLibUrl = `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(searchTerm)}&search_type=keyword_unordered&media_type=all`;
-
-  const input = {
-    urls: [{ url: adLibUrl }],
-    maxItems: maxItems,
-    proxy: { useApifyProxy: true }
-  };
+  const params = new URLSearchParams({
+    access_token: accessToken,
+    search_terms: searchTerm,
+    ad_reached_countries: '["US","GB","FR","DE","ES","IT","CA","AU"]',
+    ad_type: 'ALL',
+    ad_active_status: 'ACTIVE',
+    fields: 'id',
+    limit: '500'
+  });
 
   try {
-    // Run actor synchronously and get dataset items directly
-    // Timeout: 120s (Apify max sync is 300s, but we want to stay within Vercel limits)
-    const url = `${APIFY_API}/acts/${APIFY_ACTOR}/run-sync-get-dataset-items?token=${apifyToken}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(input),
-      signal: AbortSignal.timeout(120000)
+    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, {
+      signal: AbortSignal.timeout(10000)
     });
 
-    if (!response.ok) {
-      const errText = await response.text().catch(() => '');
-      if (debug) return { count: 0, ads: [], source: 'apify', error: `HTTP ${response.status}`, body: errText.slice(0, 500) };
-      return { count: 0, ads: [] };
+    if (response.ok) {
+      const data = await response.json();
+      const count = (data.data || []).length;
+      const hasMore = !!(data.paging && data.paging.next);
+      const result = hasMore ? count * 3 : count; // Estimate total if paginated
+      if (debug) return { count: result, source: 'meta-graph', raw_count: count, hasMore, search_terms: searchTerm };
+      return result;
     }
 
-    const items = await response.json();
-    if (!Array.isArray(items)) {
-      if (debug) return { count: 0, ads: [], source: 'apify', error: 'Invalid response format', raw: typeof items };
-      return { count: 0, ads: [] };
-    }
-
-    // Extract the useful data from each ad
-    const ads = items.map(item => ({
-      ad_id: item.adArchiveID || item.adid || item.ad_id || '',
-      page_name: item.pageName || item.snapshot?.page_name || '',
-      body: item.snapshot?.body?.markup?.__html || item.snapshot?.body?.text || item.body || '',
-      title: item.snapshot?.title || item.title || '',
-      cta_text: item.snapshot?.cta_text || '',
-      cta_link: item.snapshot?.link_url || item.snapshot?.caption || '',
-      image_url: item.snapshot?.images?.[0]?.original_image_url || item.snapshot?.images?.[0]?.resized_image_url || '',
-      video_url: item.snapshot?.videos?.[0]?.video_hd_url || item.snapshot?.videos?.[0]?.video_sd_url || '',
-      start_date: item.startDate || item.start_date || '',
-      end_date: item.endDate || item.end_date || '',
-      is_active: item.isActive !== undefined ? item.isActive : true,
-      platforms: item.publisherPlatform || item.publisher_platform || [],
-      collation_count: item.collationCount || 1,
-      currency: item.currency || '',
-      spend: item.spend || null,
-      impressions: item.impressions || null
-    })).filter(ad => ad.ad_id || ad.body || ad.image_url);
-
-    const count = ads.length;
-
-    if (debug) return { count, ads: ads.slice(0, 5), source: 'apify', total_items: items.length };
-    return { count, ads };
+    // Handle rate limit (HTTP 400 with error code 4, or HTTP 429/613)
+    const errText = await response.text().catch(() => '');
+    if (debug) return { count: 0, source: 'meta-graph', error: `HTTP ${response.status}`, body: errText.slice(0, 500) };
+    return 0;
   } catch (e) {
-    if (debug) return { count: 0, ads: [], source: 'apify', error: e.message };
-    return { count: 0, ads: [] };
+    if (debug) return { count: 0, source: 'meta-graph', error: e.message };
+    return 0;
   }
 }
 
-// âââ Main ad count function âââ
-// Priority: 1) Apify (reliable paid) â 2) Meta Graph API (free, rate-limited)
-async function metaCountAds(accessToken, searchTerm, debug = false) {
-  const apifyToken = process.env.APIFY_TOKEN || '';
+// ─── Fetch top ads with creative data via Meta Graph API ───
+// Returns array of ad objects with creative details
+async function metaFetchTopAds(accessToken, searchTerm, maxAds = 50) {
+  if (!accessToken) return [];
 
-  // âââ Try Apify first if available (but only for debug/enrich, not live-lookup) âââ
-  // Apify is slow (10-30s), so we DON'T use it for real-time live-lookup
-  // It's used via apifyScrapAds() directly for background enrichment
-  // For fast counting, we use Meta Graph API:
+  const params = new URLSearchParams({
+    access_token: accessToken,
+    search_terms: searchTerm,
+    ad_reached_countries: '["US","GB","FR","DE","ES","IT","CA","AU"]',
+    ad_type: 'ALL',
+    ad_active_status: 'ACTIVE',
+    fields: 'id,ad_snapshot_url,ad_creative_bodies,ad_creative_link_titles,ad_creative_link_captions,ad_delivery_start_time,page_name,publisher_platform,ad_creative_link_descriptions,impressions,spend',
+    limit: String(Math.min(maxAds, 500))
+  });
 
-  // âââ Meta Graph API (fast, <2s per query) âââ
-  if (accessToken) {
-    const params = new URLSearchParams({
-      access_token: accessToken,
-      search_terms: searchTerm,
-      ad_reached_countries: '["US","GB","FR","DE","ES","IT","CA","AU"]',
-      ad_type: 'ALL',
-      ad_active_status: 'ACTIVE',
-      fields: 'id',
-      limit: '500'
+  try {
+    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, {
+      signal: AbortSignal.timeout(15000)
     });
 
-    try {
-      const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, { signal: AbortSignal.timeout(8000) });
-      if (response.ok) {
-        const data = await response.json();
-        const count = (data.data || []).length;
-        const hasMore = !!(data.paging && data.paging.next);
-        const result = hasMore ? count * 3 : count;
-        if (debug) return { count: result, source: 'meta-graph', raw_count: count, hasMore, search_terms: searchTerm };
-        return result;
-      }
-      // If HTTP error (rate limit etc), fall through
-      if (debug) {
-        const text = await response.text().catch(() => '');
-        // Don't return yet â try Apify fallback
-        if (!apifyToken) return { count: 0, source: 'meta-graph', error: `HTTP ${response.status}`, body: text.slice(0, 500) };
-      }
-    } catch (e) {
-      if (debug && !apifyToken) return { count: 0, source: 'meta-graph', error: e.message };
-      // Fall through to Apify
-    }
-  }
+    if (!response.ok) return [];
 
-  // âââ Apify fallback (slow but reliable, for when Meta is rate-limited) âââ
-  if (apifyToken) {
-    const result = await apifyScrapAds(searchTerm, 100, debug);
-    if (debug) return result;
-    return result.count;
-  }
+    const data = await response.json();
+    const items = data.data || [];
 
-  if (debug) return { count: 0, source: 'none', error: 'No META_USER_TOKEN or APIFY_TOKEN configured' };
-  return 0;
+    return items.map(item => ({
+      ad_id: item.id || '',
+      page_name: item.page_name || '',
+      body: (item.ad_creative_bodies || [])[0] || '',
+      title: (item.ad_creative_link_titles || [])[0] || '',
+      caption: (item.ad_creative_link_captions || [])[0] || '',
+      description: (item.ad_creative_link_descriptions || [])[0] || '',
+      snapshot_url: item.ad_snapshot_url || '',
+      start_date: item.ad_delivery_start_time || '',
+      platforms: item.publisher_platform || [],
+      impressions: item.impressions || null,
+      spend: item.spend || null
+    })).filter(ad => ad.ad_id);
+  } catch (e) {
+    return [];
+  }
 }
 
-// âââ Apify enrichment: get top ads for a shop and store in Supabase âââ
-async function enrichShopAds(domain, maxAds = 20) {
-  const apifyToken = process.env.APIFY_TOKEN || '';
-  if (!apifyToken) return { success: false, error: 'APIFY_TOKEN not set' };
-
+// ─── Enrich a shop with Meta Graph API: count + top 5 viral ads ───
+async function enrichShopMeta(accessToken, domain) {
   const cleanDomain = domain.replace(/^www\./, '');
   const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
-  const result = await apifyScrapAds(searchTerm, maxAds);
-
-  if (result.count === 0 && searchTerm !== cleanDomain) {
-    // Retry with full domain
-    const result2 = await apifyScrapAds(cleanDomain, maxAds);
-    if (result2.count > result.count) {
-      result.count = result2.count;
-      result.ads = result2.ads;
-    }
+  // Step 1: Get ad count
+  let count = await metaCountAds(accessToken, searchTerm);
+  if (count === 0 && searchTerm !== cleanDomain) {
+    count = await metaCountAds(accessToken, cleanDomain);
   }
 
-  // Sort ads by start_date ascending (oldest = most viral/profitable)
-  const sortedAds = result.ads
-    .filter(a => a.is_active)
+  // Step 2: Get top ads with creative data
+  let ads = await metaFetchTopAds(accessToken, searchTerm, 50);
+  if (ads.length === 0 && searchTerm !== cleanDomain) {
+    ads = await metaFetchTopAds(accessToken, cleanDomain, 50);
+  }
+
+  // Use ads count from actual results if higher
+  if (ads.length > count) count = ads.length;
+
+  // Sort by start_date ascending (oldest first = longest running = most viral)
+  const sortedAds = ads
     .sort((a, b) => {
-      const da = a.start_date ? new Date(a.start_date).getTime() : 0;
-      const db = b.start_date ? new Date(b.start_date).getTime() : 0;
-      return da - db; // oldest first = running longest = most successful
+      const da = a.start_date ? new Date(a.start_date).getTime() : Infinity;
+      const db = b.start_date ? new Date(b.start_date).getTime() : Infinity;
+      return da - db;
     });
 
-  // Take top 5 most viral (longest-running active ads)
+  // Take top 5 longest-running (most successful) ads
   const topAds = sortedAds.slice(0, 5).map(ad => ({
     ad_id: ad.ad_id,
     body: (ad.body || '').slice(0, 500),
     title: (ad.title || '').slice(0, 200),
-    image_url: ad.image_url,
-    video_url: ad.video_url,
+    caption: ad.caption || '',
+    snapshot_url: ad.snapshot_url,
     start_date: ad.start_date,
     platforms: ad.platforms,
-    cta_text: ad.cta_text,
-    cta_link: ad.cta_link
+    page_name: ad.page_name
   }));
 
-  // Update Supabase: live_ads count + top_ads JSONB + timestamp
+  // Step 3: Update Supabase
   const now = new Date().toISOString();
-  const patchUrl = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`;
+  const patchData = {
+    live_ads: count,
+    live_ads_updated: now
+  };
+  if (topAds.length > 0) {
+    patchData.top_ads = topAds;
+    patchData.top_ads_updated = now;
+  }
+
   try {
-    await fetch(patchUrl, {
+    await fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`, {
       method: 'PATCH',
       headers: HEADERS,
-      body: JSON.stringify({
-        live_ads: result.count,
-        live_ads_updated: now,
-        top_ads: topAds,
-        top_ads_updated: now
-      }),
+      body: JSON.stringify(patchData),
       signal: AbortSignal.timeout(5000)
     });
   } catch (e) { /* non-blocking */ }
 
-  return {
-    success: true,
-    domain,
-    count: result.count,
-    top_ads: topAds,
-    total_scraped: result.ads.length
-  };
+  return { count, topAds, totalScraped: ads.length };
 }
 
-// âââ Action: Apify enrichment endpoint âââ
-async function actionApifyEnrich(req, res) {
-  const apifyToken = process.env.APIFY_TOKEN || '';
-  if (!apifyToken) {
-    return res.status(500).json({ error: 'APIFY_TOKEN not configured' });
-  }
-
-  const domain = req.query.domain || '';
-  const batchDomains = req.query.domains || '';
-  const maxAds = Math.min(parseInt(req.query.max) || 20, 100);
-  const startTime = Date.now();
-
-  // Single domain enrichment
-  if (domain) {
-    const result = await enrichShopAds(domain, maxAds);
-    return res.status(200).json({ ...result, elapsed_ms: Date.now() - startTime });
-  }
-
-  // Batch: enrich top shops by score that haven't been enriched recently
-  const batchSize = Math.min(parseInt(req.query.batch) || 5, 10);
-  let domains = [];
-
-  if (batchDomains) {
-    domains = batchDomains.split(',').map(d => d.trim()).filter(Boolean).slice(0, batchSize);
-  } else {
-    // Auto-select: top shops by score without recent top_ads
-    try {
-      const url = `${SUPABASE_URL}/rest/v1/shops?select=domain,score&or=(top_ads_updated.is.null,top_ads_updated.lt.${new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()})&order=score.desc.nullslast&limit=${batchSize}`;
-      const resp = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(5000) });
-      if (resp.ok) {
-        const rows = await resp.json();
-        domains = rows.map(r => r.domain);
-      }
-    } catch (e) { /* */ }
-  }
-
-  if (domains.length === 0) {
-    return res.status(200).json({ success: true, message: 'No shops to enrich', elapsed_ms: Date.now() - startTime });
-  }
-
-  // Process sequentially (Apify is slow, don't blast them)
-  const results = [];
-  for (const d of domains) {
-    if (Date.now() - startTime > 50000) break; // 50s budget
-    const result = await enrichShopAds(d, maxAds);
-    results.push({ domain: d, count: result.count, top_ads_count: result.top_ads?.length || 0 });
-  }
-
-  return res.status(200).json({
-    success: true,
-    enriched: results.length,
-    results,
-    elapsed_ms: Date.now() - startTime
-  });
-}
-
+// ACTION: meta-sync — Batch sync shops via Meta Graph API
+// Processes shops in order of score, with rate limit detection
 async function actionMetaSync(req, res) {
   const accessToken = process.env.META_USER_TOKEN || '';
-  const apifyToken = process.env.APIFY_TOKEN || '';
-  if (!accessToken && !apifyToken) {
-    return res.status(500).json({ error: 'Neither APIFY_TOKEN nor META_USER_TOKEN configured' });
+  if (!accessToken) {
+    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
   }
 
   const batchSize = Math.min(parseInt(req.query.batch) || 10, 200);
   const offset = parseInt(req.query.offset) || 0;
   const force = req.query.force === 'true';
-  const orderBy = req.query.order || 'score'; // score or visits
+  const orderBy = req.query.order || 'score';
+  const withTopAds = req.query.top_ads === 'true'; // Also fetch top ads (slower)
   const startTime = Date.now();
   let updated = 0;
   let checked = 0;
   const samples = [];
 
-  // Order: by score (most important shops first) or monthly_visits
   const orderClause = orderBy === 'visits'
     ? 'monthly_visits.desc.nullslast'
     : 'score.desc.nullslast';
 
-  // Fetch shops: if force=true, get all; otherwise only those not yet synced
+  // Fetch shops: if force=true, get all; otherwise only not recently synced
   let queryUrl;
   if (force) {
     queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&order=${orderClause}&limit=${batchSize}&offset=${offset}`;
   } else {
-    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&live_ads_updated=is.null&order=${orderClause}&limit=${batchSize}&offset=${offset}`;
+    // Get shops where live_ads_updated is null OR older than 72h
+    const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 60 * 60 * 1000).toISOString();
+    queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,name,live_ads,score,monthly_visits&or=(live_ads_updated.is.null,live_ads_updated.lt.${cutoff})&order=${orderClause}&limit=${batchSize}&offset=${offset}`;
   }
 
   const fetchResp = await fetch(queryUrl, {
@@ -786,11 +671,12 @@ async function actionMetaSync(req, res) {
     });
   }
 
-  // Process in small parallel batches (max 3) to respect Meta rate limits
-  const PARALLEL = Math.min(parseInt(req.query.parallel) || 3, 5);
+  // Process: 3 parallel for count-only, 1 sequential for top_ads (heavier)
+  const PARALLEL = withTopAds ? 1 : Math.min(parseInt(req.query.parallel) || 3, 5);
   let rateLimited = false;
+
   for (let i = 0; i < shops.length; i += PARALLEL) {
-    if (Date.now() - startTime > 45000) break; // 45s budget (Vercel max 60s)
+    if (Date.now() - startTime > 250000) break; // 250s budget (max 300s)
     if (rateLimited) break;
 
     const chunk = shops.slice(i, i + PARALLEL);
@@ -798,13 +684,19 @@ async function actionMetaSync(req, res) {
       const domain = shop.domain.replace(/^www\./, '');
       const searchTerm = domain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
-      // Search by brand name first, fallback to full domain
+      if (withTopAds) {
+        // Full enrichment: count + top ads
+        const result = await enrichShopMeta(accessToken, shop.domain);
+        return { domain: shop.domain, old: shop.live_ads || 0, new: result.count, ok: true, topAds: result.topAds.length };
+      }
+
+      // Count only (faster)
       let count = await metaCountAds(accessToken, searchTerm);
 
       // Detect rate limit
       if (count === 0) {
         const check = await metaCountAds(accessToken, searchTerm, true);
-        if (check.error && check.error.includes('400')) {
+        if (check.error && (check.error.includes('400') || check.error.includes('429') || check.error.includes('613'))) {
           rateLimited = true;
           return { domain: shop.domain, old: shop.live_ads || 0, new: -1, ok: false, rateLimited: true };
         }
@@ -814,7 +706,6 @@ async function actionMetaSync(req, res) {
         count = await metaCountAds(accessToken, domain);
       }
 
-      // Single PATCH with both live_ads + live_ads_updated
       const now = new Date().toISOString();
       const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(shop.domain)}`;
       const resp = await fetch(url, {
@@ -829,11 +720,16 @@ async function actionMetaSync(req, res) {
 
     for (const r of results) {
       if (r.status === 'fulfilled' && r.value.ok) {
-        samples.push({ domain: r.value.domain, old: r.value.old, new: r.value.new });
+        samples.push({ domain: r.value.domain, old: r.value.old, new: r.value.new, topAds: r.value.topAds || 0 });
         if (r.value.new !== r.value.old) updated++;
       } else if (r.status === 'rejected') {
         samples.push({ domain: '?', error: r.reason?.message || 'unknown' });
       }
+    }
+
+    // Small delay between batches to respect rate limits (200/h = 1 every 18s, but burst OK)
+    if (!rateLimited && i + PARALLEL < shops.length) {
+      await new Promise(r => setTimeout(r, 500));
     }
   }
 
@@ -841,19 +737,114 @@ async function actionMetaSync(req, res) {
     success: true,
     checked,
     updated,
+    rateLimited,
     nextOffset: offset + batchSize,
     elapsed_ms: Date.now() - startTime,
-    hint: `Next: /api/backfill-ads?action=meta-sync&batch=${batchSize}&offset=${offset + batchSize}${force ? '&force=true' : ''}&order=${orderBy}`,
-    samples: samples.slice(0, 30) // Limit response size
+    hint: `Next: /api/backfill-ads?action=meta-sync&batch=${batchSize}&offset=${offset + batchSize}${force ? '&force=true' : ''}&order=${orderBy}${withTopAds ? '&top_ads=true' : ''}`,
+    samples: samples.slice(0, 30)
   });
 }
 
-// ACTION: live-lookup â Real-time Meta Ad Library lookup for a list of domains
+// ACTION: live-lookup — Real-time Meta Ad Library lookup for a list of domains
 // Called from the dashboard when shops are displayed but have no live_ads data
-// GET /api/backfill-ads?action=live-lookup&domains=shop1.com,shop2.com,shop3.com
-// Returns { results: { "shop1.com": 42, "shop2.com": 0, ... } }
-// Also updates the database so subsequent loads are instant
-// Proxy for product images â avoids CORS issues when fetching Shopify /products.json
+// Uses 72h Supabase cache to minimize Meta API calls
+async function actionLiveLookup(req, res) {
+  const accessToken = process.env.META_USER_TOKEN || '';
+  if (!accessToken) {
+    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  }
+
+  const domainsParam = req.query.domains || '';
+  if (!domainsParam) {
+    return res.status(400).json({ error: 'Missing domains parameter (comma-separated)' });
+  }
+
+  const domains = domainsParam.split(',').map(d => d.trim()).filter(Boolean).slice(0, 20);
+  const startTime = Date.now();
+  const results = {};
+  const sources = {};
+  let rateLimited = false;
+
+  // ─── Step 1: Check Supabase cache (72h TTL) ───
+  const domainFilter = domains.map(d => `"${d}"`).join(',');
+  try {
+    const cacheUrl = `${SUPABASE_URL}/rest/v1/shops?domain=in.(${domainFilter})&select=domain,live_ads,live_ads_updated`;
+    const cacheResp = await fetch(cacheUrl, { headers: HEADERS, signal: AbortSignal.timeout(4000) });
+    if (cacheResp.ok) {
+      const cached = await cacheResp.json();
+      const now = Date.now();
+      for (const row of cached) {
+        if (row.live_ads != null && row.live_ads_updated) {
+          const ageHours = (now - new Date(row.live_ads_updated).getTime()) / (1000 * 60 * 60);
+          if (ageHours < CACHE_TTL_HOURS) {
+            results[row.domain] = row.live_ads;
+            sources[row.domain] = 'cache';
+          }
+        }
+      }
+    }
+  } catch (e) { /* cache miss → proceed to live lookup */ }
+
+  // ─── Step 2: For uncached domains, query Meta Graph API ───
+  const needLookup = domains.filter(d => results[d] === undefined);
+
+  if (needLookup.length > 0) {
+    const batch = needLookup.slice(0, 10); // Max 10 live lookups per request
+
+    for (const domain of batch) {
+      if (rateLimited) break;
+      if (Date.now() - startTime > 25000) break; // 25s budget
+
+      const cleanDomain = domain.replace(/^www\./, '');
+      const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
+
+      let count = await metaCountAds(accessToken, searchTerm);
+
+      // Detect rate limit
+      if (count === 0) {
+        const check = await metaCountAds(accessToken, searchTerm, true);
+        if (check.error && (check.error.includes('400') || check.error.includes('429') || check.error.includes('613'))) {
+          rateLimited = true;
+          break;
+        }
+      }
+
+      if (count === 0 && searchTerm !== cleanDomain) {
+        count = await metaCountAds(accessToken, cleanDomain);
+      }
+
+      results[domain] = count;
+      sources[domain] = 'meta-graph';
+
+      // Cache in Supabase
+      const now = new Date().toISOString();
+      fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
+        signal: AbortSignal.timeout(5000)
+      }).catch(() => {});
+
+      // Small delay between lookups
+      if (batch.indexOf(domain) < batch.length - 1) {
+        await new Promise(r => setTimeout(r, 300));
+      }
+    }
+  }
+
+  return res.status(200).json({
+    success: true,
+    results,
+    sources,
+    count: domains.length,
+    from_cache: Object.values(sources).filter(s => s === 'cache').length,
+    lookup_source: 'meta-graph',
+    rate_limited: rateLimited,
+    elapsed_ms: Date.now() - startTime
+  });
+}
+
+// Proxy for product images — avoids CORS issues when fetching Shopify /products.json
 async function actionProductImages(req, res) {
   const domainsParam = req.query.domains || '';
   if (!domainsParam) return res.status(400).json({ error: 'Missing domains parameter' });
@@ -880,156 +871,7 @@ async function actionProductImages(req, res) {
   return res.status(200).json({ success: true, results });
 }
 
-async function actionLiveLookup(req, res) {
-  const accessToken = process.env.META_USER_TOKEN || '';
-  const apifyToken = process.env.APIFY_TOKEN || '';
-  if (!accessToken && !apifyToken) {
-    return res.status(500).json({ error: 'Neither APIFY_TOKEN nor META_USER_TOKEN configured' });
-  }
-
-  const domainsParam = req.query.domains || '';
-  if (!domainsParam) {
-    return res.status(400).json({ error: 'Missing domains parameter (comma-separated)' });
-  }
-
-  const domains = domainsParam.split(',').map(d => d.trim()).filter(Boolean).slice(0, 20);
-  const startTime = Date.now();
-  const results = {};
-  const sources = {};
-  const CACHE_TTL_HOURS = 6;
-
-  // âââ Step 1: Check Supabase cache first (instant) âââ
-  const domainFilter = domains.map(d => `"${d}"`).join(',');
-  try {
-    const cacheUrl = `${SUPABASE_URL}/rest/v1/shops?domain=in.(${domainFilter})&select=domain,live_ads,live_ads_updated`;
-    const cacheResp = await fetch(cacheUrl, { headers: HEADERS, signal: AbortSignal.timeout(4000) });
-    if (cacheResp.ok) {
-      const cached = await cacheResp.json();
-      const now = Date.now();
-      for (const row of cached) {
-        if (row.live_ads != null && row.live_ads_updated) {
-          const age = (now - new Date(row.live_ads_updated).getTime()) / (1000 * 60 * 60);
-          if (age < CACHE_TTL_HOURS) {
-            results[row.domain] = row.live_ads;
-            sources[row.domain] = 'cache';
-          }
-        }
-      }
-    }
-  } catch (e) { /* cache miss â proceed to live sources */ }
-
-  // âââ Step 2: For uncached domains, use Apify (primary) or Meta Graph (fallback) âââ
-  const needLookup = domains.filter(d => results[d] === undefined);
-  let lookupSource = 'none';
-  let rateLimited = false;
-
-  if (needLookup.length > 0 && apifyToken) {
-    // âââ APIFY: scrape each domain (reliable but slower ~10-30s each) âââ
-    lookupSource = 'apify';
-    // Process max 3 domains via Apify per request (each takes 10-30s)
-    const apifyBatch = needLookup.slice(0, 3);
-
-    for (const domain of apifyBatch) {
-      if (Date.now() - startTime > 50000) break; // 50s budget for Vercel
-
-      const cleanDomain = domain.replace(/^www\./, '');
-      const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
-
-      // Use apifyScrapAds with small maxItems for speed
-      let result = await apifyScrapAds(searchTerm, 100);
-      if (result.count === 0 && searchTerm !== cleanDomain) {
-        result = await apifyScrapAds(cleanDomain, 100);
-      }
-
-      results[domain] = result.count;
-      sources[domain] = 'apify';
-
-      // Store count + top ads in Supabase
-      const topAds = result.ads
-        .filter(a => a.is_active)
-        .sort((a, b) => {
-          const da = a.start_date ? new Date(a.start_date).getTime() : 0;
-          const db = b.start_date ? new Date(b.start_date).getTime() : 0;
-          return da - db;
-        })
-        .slice(0, 5)
-        .map(ad => ({
-          ad_id: ad.ad_id,
-          body: (ad.body || '').slice(0, 500),
-          title: (ad.title || '').slice(0, 200),
-          image_url: ad.image_url,
-          video_url: ad.video_url,
-          start_date: ad.start_date,
-          platforms: ad.platforms,
-          cta_text: ad.cta_text,
-          cta_link: ad.cta_link
-        }));
-
-      const now = new Date().toISOString();
-      const patchData = { live_ads: result.count, live_ads_updated: now };
-      if (topAds.length > 0) {
-        patchData.top_ads = topAds;
-        patchData.top_ads_updated = now;
-      }
-
-      fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`, {
-        method: 'PATCH',
-        headers: HEADERS,
-        body: JSON.stringify(patchData),
-        signal: AbortSignal.timeout(5000)
-      }).catch(() => {});
-    }
-  } else if (needLookup.length > 0 && accessToken) {
-    // âââ META GRAPH API fallback (fast but rate-limited) âââ
-    lookupSource = 'meta-graph';
-    const batch = needLookup.slice(0, 5);
-
-    for (const domain of batch) {
-      if (rateLimited) break;
-
-      const cleanDomain = domain.replace(/^www\./, '');
-      const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
-
-      let count = await metaCountAds(accessToken, searchTerm);
-
-      // Detect rate limit
-      if (count === 0) {
-        const check = await metaCountAds(accessToken, searchTerm, true);
-        if (check.error && (check.error.includes('400') || check.error.includes('613'))) {
-          rateLimited = true;
-          break;
-        }
-      }
-
-      if (count === 0 && searchTerm !== cleanDomain) {
-        count = await metaCountAds(accessToken, cleanDomain);
-      }
-
-      results[domain] = count;
-      sources[domain] = 'meta-graph';
-
-      const now = new Date().toISOString();
-      fetch(`${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`, {
-        method: 'PATCH',
-        headers: HEADERS,
-        body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
-        signal: AbortSignal.timeout(5000)
-      }).catch(() => {});
-    }
-  }
-
-  return res.status(200).json({
-    success: true,
-    results,
-    sources,
-    count: domains.length,
-    from_cache: Object.values(sources).filter(s => s === 'cache').length,
-    lookup_source: lookupSource,
-    rate_limited: rateLimited,
-    elapsed_ms: Date.now() - startTime
-  });
-}
-
+// ─── Main handler ───
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const action = req.query.action || 'scan';
@@ -1045,34 +887,35 @@ module.exports = async function handler(req, res) {
       case 'meta-sync': return await actionMetaSync(req, res);
       case 'live-lookup': return await actionLiveLookup(req, res);
       case 'product-images': return await actionProductImages(req, res);
-      case 'apify-enrich': return await actionApifyEnrich(req, res);
       case 'meta-debug': {
         const accessToken = process.env.META_USER_TOKEN || '';
-        const apifyToken = process.env.APIFY_TOKEN || '';
         const tokenPreview = accessToken ? accessToken.slice(0, 10) + '...' + accessToken.slice(-5) : 'NOT SET';
-        const apifyPreview = apifyToken ? apifyToken.slice(0, 8) + '...' : 'NOT SET';
         const testTerm = req.query.q || 'gymshark';
 
-        // Determine active source
-        let activeSource = 'none';
-        if (apifyToken) activeSource = 'apify (primary) + meta-graph (fast fallback)';
-        else if (accessToken) activeSource = 'meta-graph only';
-
         const result = await metaCountAds(accessToken, testTerm, true);
+
+        // Also test top ads fetch
+        let topAdsTest = { count: 0 };
+        if (accessToken) {
+          const ads = await metaFetchTopAds(accessToken, testTerm, 5);
+          topAdsTest = { count: ads.length, sample: ads.slice(0, 2) };
+        }
+
         return res.status(200).json({
           meta_token: tokenPreview,
-          apify_token: apifyPreview,
-          active_source: activeSource,
+          active_source: 'meta-graph (free, 200 calls/h)',
+          cache_ttl: `${CACHE_TTL_HOURS}h`,
           search_term: testTerm,
-          result
+          count_result: result,
+          top_ads_test: topAdsTest
         });
       }
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images', 'apify-enrich', 'meta-debug'] });
+      default: return res.status(400).json({
+        error: `Unknown action: ${action}`,
+        available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images', 'meta-debug']
+      });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });
   }
 };
-
-// Vercel Scale plan: allow up to 120s for Apify sync calls
-module.exports.config = { maxDuration: 120 };
