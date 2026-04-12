@@ -608,6 +608,62 @@ async function actionMetaSync(req, res) {
   });
 }
 
+// ACTION: live-lookup — Real-time Meta Ad Library lookup for a list of domains
+// Called from the dashboard when shops are displayed but have no live_ads data
+// GET /api/backfill-ads?action=live-lookup&domains=shop1.com,shop2.com,shop3.com
+// Returns { results: { "shop1.com": 42, "shop2.com": 0, ... } }
+// Also updates the database so subsequent loads are instant
+async function actionLiveLookup(req, res) {
+  const accessToken = process.env.META_USER_TOKEN || '';
+  if (!accessToken) {
+    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  }
+
+  const domainsParam = req.query.domains || '';
+  if (!domainsParam) {
+    return res.status(400).json({ error: 'Missing domains parameter (comma-separated)' });
+  }
+
+  // Limit to 20 domains per call to stay fast
+  const domains = domainsParam.split(',').map(d => d.trim()).filter(Boolean).slice(0, 20);
+  const startTime = Date.now();
+  const results = {};
+
+  // Query Meta in parallel for all domains
+  const promises = domains.map(async (domain) => {
+    const cleanDomain = domain.replace(/^www\./, '');
+    const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
+
+    let count = await metaCountAds(accessToken, searchTerm);
+    if (count === 0 && searchTerm !== cleanDomain) {
+      count = await metaCountAds(accessToken, cleanDomain);
+    }
+
+    results[domain] = count;
+
+    // Update database in background (fire and forget for speed)
+    const now = new Date().toISOString();
+    const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`;
+    fetch(url, {
+      method: 'PATCH',
+      headers: HEADERS,
+      body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
+      signal: AbortSignal.timeout(5000)
+    }).catch(() => {});
+
+    return { domain, count };
+  });
+
+  await Promise.allSettled(promises);
+
+  return res.status(200).json({
+    success: true,
+    results,
+    count: domains.length,
+    elapsed_ms: Date.now() - startTime
+  });
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   const action = req.query.action || 'scan';
@@ -621,7 +677,8 @@ module.exports = async function handler(req, res) {
       case 'enrich': return await actionEnrichStoreleads(req, res);
       case 'full-enrich': return await actionFullEnrich(req, res);
       case 'meta-sync': return await actionMetaSync(req, res);
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync'] });
+      case 'live-lookup': return await actionLiveLookup(req, res);
+      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup'] });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });

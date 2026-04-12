@@ -1376,6 +1376,74 @@ function re(){
 
   // Lazy-load product images from Shopify /products.json
   loadProductImages();
+  // Live-lookup Meta ads for shops with ad=0 on current page
+  liveLookupAds(pageShops);
+}
+
+// Live Meta Ad Library lookup — fetch real ad counts for visible shops with no data
+const _liveCache={};
+let _livePending=false;
+function liveLookupAds(pageShops){
+  if(_livePending)return;
+  // Find shops on this page that have ad=0 and haven't been looked up yet
+  const needLookup=pageShops.filter(s=>s.ad===0&&!_liveCache[s.d]).map(s=>s.d);
+  if(needLookup.length===0)return;
+  // Batch up to 20 at a time
+  const batch=needLookup.slice(0,20);
+  _livePending=true;
+  fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(15000)})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(data=>{
+      _livePending=false;
+      if(!data.results)return;
+      let anyUpdate=false;
+      for(const [domain,count] of Object.entries(data.results)){
+        _liveCache[domain]=count;
+        // Update the shop in D array so re-renders are correct
+        const shop=D.find(x=>x.d===domain);
+        if(shop&&shop.ad!==count){shop.ad=count;shop._live=true;anyUpdate=true;}
+      }
+      // Update visible cells without full re-render (smooth UX)
+      if(anyUpdate){
+        document.querySelectorAll('.acs').forEach(el=>{
+          const href=el.getAttribute('href')||'';
+          const m=href.match(/q=([^&"]+)/);
+          if(!m)return;
+          const domain=decodeURIComponent(m[1]);
+          if(_liveCache[domain]===undefined)return;
+          const count=_liveCache[domain];
+          const ac=count>30?'#e8799a':count>10?'#f6a05a':count>0?'#e6b83a':'#b8a8b0';
+          const dot=el.querySelector('.adot');
+          const span=el.querySelector('span');
+          if(dot)dot.style.background=ac;
+          if(span){span.textContent=count;span.style.color=ac;}
+          // Add subtle flash animation
+          el.style.transition='background 0.3s';
+          el.style.background='rgba(232,121,154,0.08)';
+          setTimeout(()=>{el.style.background='';},1500);
+        });
+        // Add API badge to rows that got live data
+        for(const [domain,count] of Object.entries(data.results)){
+          const row=document.querySelector(`tr .sname[href*="${domain}"]`);
+          if(row&&!row.parentElement.querySelector('.api-badge')){
+            const badge=document.createElement('span');
+            badge.className='api-badge';
+            badge.style.cssText='background:linear-gradient(135deg,#e8799a,#c74b7a);color:#fff;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;margin-left:4px;';
+            badge.textContent='LIVE';
+            row.parentElement.appendChild(badge);
+          }
+        }
+      }
+      // If there are more shops needing lookup, do next batch
+      const remaining=needLookup.slice(20);
+      if(remaining.length>0){
+        setTimeout(()=>{
+          const nextShops=pageShops.filter(s=>s.ad===0&&!_liveCache[s.d]);
+          if(nextShops.length>0)liveLookupAds(pageShops);
+        },500);
+      }
+    })
+    .catch(()=>{_livePending=false;});
 }
 
 const _prodCache={};
