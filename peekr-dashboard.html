@@ -1382,47 +1382,46 @@ function re(){
 
 // Live Meta Ad Library lookup — fetch real ad counts for visible shops with no data
 const _liveCache={};
-let _livePending=false;
+let _liveTimer=null;
 function liveLookupAds(pageShops){
-  if(_livePending)return;
-  // Find shops on this page that have ad=0 and haven't been looked up yet
+  // Debounce: wait 300ms after last re() call before firing
+  clearTimeout(_liveTimer);
+  _liveTimer=setTimeout(()=>_doLiveLookup(pageShops),300);
+}
+function _doLiveLookup(pageShops){
+  // Find shops that have ad=0 and haven't been looked up or queued yet
   const needLookup=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined).map(s=>s.d);
   if(needLookup.length===0)return;
-  // Batch up to 20 at a time
   const batch=needLookup.slice(0,20);
-  _livePending=true;
+  // Mark all batch domains as pending IMMEDIATELY to prevent duplicate requests
+  batch.forEach(d=>{_liveCache[d]='pending';});
   fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(15000)})
     .then(r=>r.ok?r.json():Promise.reject())
     .then(data=>{
-      _livePending=false;
       if(!data.results)return;
       let anyUpdate=false;
       for(const [domain,count] of Object.entries(data.results)){
         _liveCache[domain]=count;
-        // Update the shop in D array so re-renders are correct
         const shop=D.find(x=>x.d===domain);
         if(shop&&shop.ad!==count){shop.ad=count;shop._live=true;anyUpdate=true;}
       }
-      // Update visible cells without full re-render (smooth UX)
       if(anyUpdate){
         document.querySelectorAll('.acs').forEach(el=>{
           const href=el.getAttribute('href')||'';
           const m=href.match(/q=([^&"]+)/);
           if(!m)return;
           const domain=decodeURIComponent(m[1]);
-          if(_liveCache[domain]===undefined)return;
+          if(typeof _liveCache[domain]!=='number')return;
           const count=_liveCache[domain];
           const ac=count>30?'#e8799a':count>10?'#f6a05a':count>0?'#e6b83a':'#b8a8b0';
           const dot=el.querySelector('.adot');
           const span=el.querySelector('span');
           if(dot)dot.style.background=ac;
           if(span){span.textContent=count;span.style.color=ac;}
-          // Add subtle flash animation
           el.style.transition='background 0.3s';
           el.style.background='rgba(232,121,154,0.08)';
           setTimeout(()=>{el.style.background='';},1500);
         });
-        // Add API badge to rows that got live data
         for(const [domain,count] of Object.entries(data.results)){
           const row=document.querySelector(`tr .sname[href*="${domain}"]`);
           if(row&&!row.parentElement.querySelector('.api-badge')){
@@ -1434,16 +1433,14 @@ function liveLookupAds(pageShops){
           }
         }
       }
-      // If there are more shops needing lookup, do next batch
-      const remaining=needLookup.slice(20);
-      if(remaining.length>0){
-        setTimeout(()=>{
-          const nextShops=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined);
-          if(nextShops.length>0)liveLookupAds(pageShops);
-        },500);
-      }
+      // Next batch after short delay
+      const more=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined);
+      if(more.length>0) setTimeout(()=>_doLiveLookup(pageShops),500);
     })
-    .catch(()=>{_livePending=false;});
+    .catch(()=>{
+      // On error, reset pending domains so they can be retried
+      batch.forEach(d=>{if(_liveCache[d]==='pending')delete _liveCache[d];});
+    });
 }
 
 const _prodCache={};
