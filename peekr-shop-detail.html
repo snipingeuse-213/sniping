@@ -101,6 +101,11 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .chart-labels{display:flex;gap:4px;margin-top:6px;}
 .chart-labels span{flex:1;text-align:center;font-size:9px;color:var(--text3);font-weight:600;}
 
+/* Range Buttons (TrendTrack-style) */
+.range-btn{font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
+.range-btn:hover{border-color:var(--pink);color:var(--pink);}
+.range-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);}
+
 /* Tags */
 .tags{display:flex;flex-wrap:wrap;gap:6px;}
 .tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:8px;border:1px solid;display:inline-flex;align-items:center;gap:5px;}
@@ -240,13 +245,7 @@ async function sbFetch(url){
 
 async function loadShop(d){
   try{
-    // Try exact domain first
-    let data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*');
-    // If not found, try with/without www prefix
-    if(!data||data.length===0){
-      const alt=d.startsWith('www.')?d.replace('www.',''):'www.'+d;
-      data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(alt)+'&select=*');
-    }
+    const data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*');
     if(!data||data.length===0){
       document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128533;</div><div style="font-size:16px;font-weight:700;">Shop not found</div><div style="color:var(--text2);">'+d+' is not in our database yet.</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
       return;
@@ -268,7 +267,7 @@ function renderShop(s){
   const c=TC[tier];
 
   const visits=s.monthly_visits||0;
-  const ads=s.live_ads||'...';
+  const ads=s.live_ads||0;
   const products=s.products_count||0;
   const estSales=s.estimated_sales||0;
   const estSalesY=s.estimated_sales_yearly||0;
@@ -281,21 +280,12 @@ function renderShop(s){
   const currency=s.currency||'N/A';
   const plan=s.shopify_plan||'N/A';
   const theme=s.theme||'Unknown';
-  const parsedTechs=(s.technologies||[]).map(t=>{if(typeof t==='object'&&t!==null)return t;if(typeof t==='string'){try{return JSON.parse(t);}catch(e){return{name:t};}}return{name:String(t)};});
-  const rawTechs=parsedTechs.map(t=>t.name||'');
-  // Extract pixels/ad platforms: use ad_platforms if non-empty, otherwise detect from technologies
-  const PIXEL_NAMES={'google adsense':'Google Ads','google adwords':'Google Ads','google analytics':'Google Analytics','google tag manager':'Google Tag Manager','google remarketing':'Google Ads','google conversion tracking':'Google Ads','google ads conversion tracking':'Google Ads','google ads pixel':'Google Ads','google publisher tag':'Google Ads','facebook pixel':'Meta Pixel','facebook ads':'Meta Pixel','facebook signal':'Meta Pixel','facebook custom audiences':'Meta Pixel','meta pixel':'Meta Pixel','meta ads':'Meta Pixel','tiktok pixel':'TikTok Ads','tiktok ads':'TikTok Ads','snapchat ads':'Snap Pixel','snap pixel':'Snap Pixel','pinterest tag':'Pinterest Ads','pinterest ads':'Pinterest Ads','pinterest pixel':'Pinterest Ads','pinterest conversion tag':'Pinterest Ads','twitter ads':'Twitter Ads','twitter pixel':'Twitter Ads','linkedin ads':'LinkedIn Ads','linkedin insight':'LinkedIn Ads','linkedin insight tag':'LinkedIn Ads','microsoft advertising':'Microsoft Advertising','bing ads':'Microsoft Advertising','microsoft clarity':'Microsoft Clarity','criteo':'Criteo','adroll':'AdRoll','taboola':'Taboola','outbrain':'Outbrain','hotjar':'Hotjar','dynamic yield':'Dynamic Yield','doubleclick':'DoubleClick','amazon ads':'Amazon Ads','applovin':'AppLovin','blotout':'Blotout','klaviyo':'Klaviyo','attentive':'Attentive','postscript':'Postscript','yotpo':'Yotpo','privy':'Privy','omnisend':'Omnisend','mailchimp':'Mailchimp','hubspot':'HubSpot','impact':'Impact','partnerize':'Partnerize','rakuten advertising':'Rakuten Advertising','shareasale':'ShareASale','refersion':'Refersion','awin':'Awin','cj affiliate':'CJ Affiliate'};
-  const detectedPixelSet=new Set();
-  const pixelOriginalNames=new Set();
-  parsedTechs.forEach(t=>{const n=(t.name||'').toLowerCase();const cats=(t.categories||[]).join(' ').toLowerCase();let isPixel=false;if(/advertising|ad network|ad exchange|retargeting|remarketing|ad server|tag management/.test(cats)){const mapped=PIXEL_NAMES[n]||t.name;detectedPixelSet.add(mapped);isPixel=true;}else if(/analytics/.test(cats)&&/google|facebook|meta|tiktok|snap|pinterest|twitter|linkedin|bing|microsoft|adobe|amplitude|mixpanel|segment|heap/i.test(n)){const mapped=PIXEL_NAMES[n]||t.name;detectedPixelSet.add(mapped);isPixel=true;}else{for(const[key,val]of Object.entries(PIXEL_NAMES)){if(n.includes(key)){detectedPixelSet.add(val);isPixel=true;break;}}}if(isPixel)pixelOriginalNames.add(t.name);});
-  const detectedPixels=[...detectedPixelSet];
-  const pixels=(s.ad_platforms&&s.ad_platforms.length>0)?s.ad_platforms:detectedPixels;
-  const techs=rawTechs.filter(t=>!pixels.includes(t)&&!pixelOriginalNames.has(t));
+  const pixels=s.ad_platforms||s.technologies?.filter(t=>/(pixel|analytics|tag manager|ads|snap|tiktok|taboola|pinterest)/i.test(t))||[];
+  const techs=s.technologies||[];
   const rawApps=s.apps||[];
   const apps=rawApps.map(a=>{if(typeof a==='object')return{name:a.name||'Unknown',icon:a.icon_url||''};if(typeof a==='string'){try{const p=JSON.parse(a);return{name:p.name||'Unknown',icon:p.icon_url||''};}catch(e){return{name:a,icon:''};}}return{name:String(a),icon:''};});
   const strats=s.strategies||[];
   const shipsTo=s.ships_to||[];
-  const visitorCountries=(s.visitor_countries||[]).map(vc=>{if(typeof vc==='object')return{country:vc.country_code||vc.code||'',pct:vc.percentage||vc.pct||vc.share||0};if(typeof vc==='string'){try{const p=JSON.parse(vc);return{country:p.country_code||p.code||'',pct:p.percentage||p.pct||p.share||0};}catch(e){return{country:vc,pct:0};}}return null;}).filter(Boolean).sort((a,b)=>b.pct-a.pct);
   const rawTraffic=s.traffic_trend||[];
   const traffic=rawTraffic.map(v=>typeof v==='object'?(v.visits||v.value||0):Number(v)||0);
   const icon=s.icon||'';
@@ -371,7 +361,7 @@ function renderShop(s){
         </div>
         <div class="kpi">
           <div class="kpi-label">&#128226; Live Ads</div>
-          <div class="kpi-value" id="live-ads-kpi" style="color:inherit">${ads}</div>
+          <div class="kpi-value" style="color:${ads>20?'var(--pink)':'inherit'}">${ads}</div>
           <div class="kpi-sub">Active Meta ads</div>
         </div>
         <div class="kpi">
@@ -396,21 +386,35 @@ function renderShop(s){
           <div class="section">
             <div class="section-title"><span class="ico">&#128200;</span> Traffic Trend (12 weeks)</div>
             <div class="chart-container">
-              ${traffic.length>1?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*180,6)}px;background:linear-gradient(180deg,${c},${c}88);opacity:${0.3+(i/traffic.length)*0.7};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):visits>0?`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"><div style="font-size:32px;font-weight:800;color:var(--text1);">${fmtV(visits)}</div><div style="color:var(--text3);font-size:13px;">estimated monthly visits</div></div>`:'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;">No traffic data available</div>'}
+              ${traffic.length>0?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*180,6)}px;background:linear-gradient(180deg,${c},${c}88);opacity:${0.3+(i/traffic.length)*0.7};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;">No traffic data available</div>'}
             </div>
             ${traffic.length?`<div class="chart-labels">${traffic.map((_,i)=>`<span>W${i+1}</span>`).join('')}</div>`:''}
           </div>
 
-          <!-- Pixels & Ad Platforms -->
-          <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.04),rgba(232,121,154,0.01));border-color:rgba(232,121,154,0.12);">
-            <div class="section-title"><span class="ico">&#128225;</span> Pixels & Ad Platforms</div>
-            <div id="pixels-container">${pixels.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">${p}</span>`).join('')}</div><div style="margin-top:6px;font-size:10px;color:var(--text3);"><span id="pixel-scan-status">&#128269; Scanning for more...</span></div>`:`<div style="color:var(--text3);font-size:12px;"><span id="pixel-scan-status">&#128269; Scanning store for tracking pixels...</span></div>`}</div>
+          <!-- Ads Actives dans le temps (like TrendTrack) -->
+          <div class="section">
+            <div class="section-title">
+              <span class="ico">&#128227;</span> Active Ads Over Time
+              <div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range">
+                <button class="range-btn" data-range="3m" onclick="loadAdsChart('${s.domain}','3m',this)">3M</button>
+                <button class="range-btn active" data-range="6m" onclick="loadAdsChart('${s.domain}','6m',this)">6M</button>
+                <button class="range-btn" data-range="all" onclick="loadAdsChart('${s.domain}','all',this)">ALL</button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+              <span style="font-size:28px;font-weight:800;color:var(--text1);" id="ads-chart-current">${ads}</span>
+              <span style="font-size:12px;color:var(--pink);font-weight:700;">&#128994; Active now</span>
+            </div>
+            <div id="ads-chart-container" style="height:180px;position:relative;">
+              <canvas id="ads-chart-canvas" style="width:100%;height:100%;"></canvas>
+            </div>
+            <div id="ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div>
           </div>
 
-          <!-- Other Technologies -->
+          <!-- Pixels & Technologies -->
           <div class="section">
-            <div class="section-title"><span class="ico">&#9881;&#65039;</span> Technologies (${techs.length})</div>
-            ${techs.length?`<div class="tags">${techs.filter(t=>!pixels.includes(t)).slice(0,20).map(t=>`<span class="tag app">${t}</span>`).join('')}${techs.filter(t=>!pixels.includes(t)).length>20?`<span style="color:var(--text3);font-size:11px;">+${techs.filter(t=>!pixels.includes(t)).length-20} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No technologies detected</div>'}
+            <div class="section-title"><span class="ico">&#128225;</span> Pixels & Technologies</div>
+            ${pixels.length||techs.length?`<div class="tags">${pixels.map(p=>`<span class="tag pixel">${p}</span>`).join('')}${techs.filter(t=>!pixels.includes(t)).slice(0,15).map(t=>`<span class="tag app">${t}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No technologies detected</div>'}
           </div>
 
           <!-- Apps -->
@@ -431,7 +435,7 @@ function renderShop(s){
           <div class="section">
             <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
             <div class="details-grid">
-              <div class="detail-item"><span class="label">Theme</span><span class="value">${(()=>{try{const t=typeof theme==="string"?JSON.parse(theme):theme;return t&&t.name?(t.name+(t.style?" ("+t.style+")":"")):"N/A"}catch(e){return theme||"N/A"}})()}</span></div>
+              <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
               <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
               <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
               <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
@@ -442,47 +446,17 @@ function renderShop(s){
             </div>
           </div>
 
-          <!-- Visitor Countries -->
-          <div class="section" style="background:linear-gradient(135deg,rgba(99,102,241,0.04),rgba(99,102,241,0.01));border-color:rgba(99,102,241,0.12);">
-            <div class="section-title"><span class="ico">&#127758;</span> Visitor Countries</div>
-            ${visitorCountries.length?`<div style="display:flex;flex-wrap:wrap;gap:10px;">${visitorCountries.slice(0,10).map(vc=>`<div style="display:flex;align-items:center;gap:6px;background:var(--bg2);border-radius:8px;padding:6px 12px;"><img src="https://flagcdn.com/w20/${vc.country.toLowerCase()}.png" style="width:20px;height:14px;border-radius:2px;"/><span style="font-weight:700;font-size:13px;">${vc.country.toUpperCase()}</span><span style="color:var(--text3);font-size:12px;">${vc.pct>0?(vc.pct<1?vc.pct.toFixed(1):Math.round(vc.pct))+'%':''}</span></div>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No visitor data available</div>'}
-          </div>
-
           <!-- Ships To -->
           <div class="section">
-            <div class="section-title"><span class="ico">&#128230;</span> Ships To (${shipsTo.length} countries)</div>
+            <div class="section-title"><span class="ico">&#127758;</span> Ships To (${shipsTo.length} countries)</div>
             ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,25).map(c2=>`<span class="tag ship">${c2.toUpperCase()} <img src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="width:14px;height:10px;border-radius:1px;"/></span>`).join('')}${shipsTo.length>25?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-25} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info available</div>'}
-          </div>
-
-          <!-- Trustpilot -->
-          <div class="section" id="trustpilot-section" style="background:linear-gradient(135deg,rgba(0,182,122,0.04),rgba(0,182,122,0.01));border-color:rgba(0,182,122,0.15);">
-            <div class="section-title"><span class="ico">&#11088;</span> Trustpilot</div>
-            <div id="trustpilot-content" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:8px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#00b67a"/></svg>
-                <span id="tp-rating" style="font-size:20px;font-weight:800;color:#00b67a;">--</span>
-                <span id="tp-count" style="font-size:12px;color:var(--text2);font-weight:600;"></span>
-              </div>
-              <div id="tp-stars" style="display:flex;gap:2px;"></div>
-              <a id="tp-link" class="shop-btn" href="https://www.trustpilot.com/review/${s.domain}" target="_blank" style="margin-left:auto;">
-                View on Trustpilot &#8599;
-              </a>
-            </div>
-          </div>
-
-          <!-- Product Catalog -->
-          <div class="section">
-            <div class="section-title"><span class="ico">&#128722;</span> Product Catalog <span style="font-family:Figtree;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;" id="prod-subtitle">Loading...</span></div>
-            <div id="product-gallery" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;">
-              ${[0,1,2,3,4,5].map(()=>'<div style="aspect-ratio:1;border-radius:10px;background:#f5f0eb;"></div>').join('')}
-            </div>
           </div>
 
           <!-- Meta Ads Link -->
           <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
             <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
-            <p style="font-size:13px;color:var(--text2);margin-bottom:12px;" id="meta-ads-intel">
-              <span style="color:var(--text3);">&#128269; Scanning Meta Ad Library...</span>
+            <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
+              ${ads>0?`This store has <strong style="color:var(--pink);">${ads} active ads</strong> running on Meta.`:'No active Meta ads detected.'}
             </p>
             <div style="display:flex;gap:8px;">
               <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank">
@@ -531,13 +505,9 @@ function renderShop(s){
   // Load similar shops
   loadSimilarShops(s);
   // Load meta ads
-  loadMetaAds(s.domain, (s.name && s.name !== s.domain) ? s.name : (s.title || s.domain));
-  // Load Trustpilot
-  loadTrustpilot(s.domain);
-  // Load product images
-  loadProducts(s.domain);
-  // Always run live pixel scan to find additional pixels
-  scanPixels(s.domain, pixels);
+  loadMetaAds(s.domain);
+  // Load ads history chart
+  initAdsChart(s.domain);
 }
 
 // --- Tab Switching ---
@@ -547,11 +517,6 @@ function switchTab(panel, el){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   el.classList.add('active');
   document.getElementById('panel-'+panel).classList.add('active');
-  // Lazy-render Meta Ads cards only when tab is first shown
-  if(panel==='ads'&&window.__metaAdsReady&&!window.__metaAdsRendered){
-    window.__metaAdsRendered=true;
-    renderMetaAdsPanel();
-  }
 }
 
 // --- Similar Shops ---
@@ -608,317 +573,76 @@ function renderSimilar(container, shops){
   }).join('');
 }
 
-// --- Meta Ads (Real-time from Meta Ad Library API) ---
-async function loadMetaAds(domainName, shopName){
+// --- Meta Ads ---
+async function loadMetaAds(domainName){
   const container=document.getElementById('meta-ads');
-  const liveAdsKpi=document.getElementById('live-ads-kpi');
-  const adsCountBadge=document.getElementById('ads-count');
-  const intelBox=document.getElementById('meta-ads-intel');
-
-  function updateAdCount(count){
-    if(liveAdsKpi){liveAdsKpi.textContent=fmtV(count);liveAdsKpi.style.color=count>20?'var(--pink)':'inherit';}
-    if(adsCountBadge) adsCountBadge.textContent=count>0?fmtV(count):'0';
-    if(intelBox){
-      if(count>0) intelBox.innerHTML='This store has <strong style="color:var(--pink);">'+fmtV(count)+' active ads</strong> running on Meta.';
-      else intelBox.innerHTML='No active Meta ads detected.';
-    }
-  }
-
   try{
-    // 1. Try real-time Meta Ad Library API
-    const cleanDomain=domainName.replace(/^www\./,'');
-    const resp=await fetch('/api/meta-ads?domain='+encodeURIComponent(cleanDomain)+'&limit=10',{signal:AbortSignal.timeout(15000)});
+    // Try fetching from Meta Ads Library via our Supabase proxy or directly show a visual placeholder
+    // For now, we show a rich placeholder with link to Meta Library
+    // In production, this would call the Meta Ads Library API
+    const adCount=parseInt(document.getElementById('ads-count')?.textContent)||0;
 
-    if(resp.ok){
-      const data=await resp.json();
-      const total=data.total||data.count||0;
-      const ads=data.ads||[];
-
-      updateAdCount(total);
-
-      if(ads.length>0){
-        // Store data but DON'T render cards yet (panel is display:none, causes layout freeze)
-        // Cards will be rendered lazily when Meta Ads tab is first clicked
-        window.__metaAds=ads;
-        window.__metaAdsTotal=total;
-        window.__metaAdsDomain=cleanDomain;
-        window.__metaAdsReady=true;
-        window.__metaAdsRendered=false;
-        // Show loading placeholder
-        container.innerHTML='<div style="padding:20px;text-align:center;color:var(--text2);">Click the Meta Ads tab to view '+fmtV(total)+' active ads</div>';
-        return;
-      }
-    }
-
-    // 2. Fallback: search Supabase ads table
-    const rawName=shopName||domainName;
-    const domainBase=domainName.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org|co\.za|co\.il|com\.sg)$/i,'').replace(/[-_]/g,' ').trim();
-    let sbAds=[];
-    const byDomain=await sbFetch(_SB+'/rest/v1/ads?shop_domain=eq.'+encodeURIComponent(domainName)+'&select=*&order=peekr_score.desc&limit=50');
-    if(byDomain&&byDomain.length>0&&!byDomain.error) sbAds=byDomain;
-    if(sbAds.length===0&&domainBase.length>2){
-      const byBase=await sbFetch(_SB+'/rest/v1/ads?page_name=ilike.*'+encodeURIComponent(domainBase)+'*&select=*&order=peekr_score.desc&limit=50');
-      if(byBase&&byBase.length>0&&!byBase.error) sbAds=byBase;
-    }
-
-    updateAdCount(sbAds.length);
-
-    if(sbAds.length>0){
-      container.style.display='block'; // Override .ads-grid CSS grid
+    if(adCount>0){
       container.innerHTML=`
-        <div>
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-            <span class="ad-status active">&#128994; ${sbAds.length} Ads Found</span>
-            <span style="font-size:12px;color:var(--text3);">From indexed Meta Ad Library data</span>
+        <div style="grid-column:1/-1;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <span class="ad-status active">&#128994; ${adCount} Active Ads</span>
+            <span style="font-size:12px;color:var(--text3);">Data from Meta Ads Library</span>
           </div>
-          <div style="display:flex;flex-wrap:wrap;gap:16px;" id="ads-grid">
-            ${renderAdCards(sbAds)}
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+            ${generateAdPlaceholders(domainName, adCount)}
           </div>
           <div style="text-align:center;margin-top:20px;">
             <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
-              &#128269; View All on Meta Library &#8599;
+              &#128269; View All ${adCount} Ads on Meta Library &#8599;
             </a>
           </div>
         </div>`;
-      window.__shopAds=sbAds;
     }else{
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
           <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Active Ads Detected</div>
-          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This store doesn\'t appear to have active Meta ads right now. Check the Meta Ad Library directly.</div>
-          <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
-            &#128269; Search Meta Ad Library &#8599;
+          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This shop doesn't currently have active Meta ads, or we haven't indexed them yet.</div>
+          <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
+            &#128269; Check Meta Ad Library &#8599;
           </a>
         </div>`;
     }
+
+    // Update tab count
+    document.getElementById('ads-count').textContent=adCount||'0';
   }catch(e){
-    console.log('Meta ads error:',e.message);
-    updateAdCount(0);
-    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data. <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q='+encodeURIComponent(domainName)+'" target="_blank" style="color:var(--pink);">Search Meta Library</a></div>';
+    container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data.</div>';
   }
 }
 
-// Render cards from real-time Meta API data — Trendtrack-level quality
-function renderMetaAdCards(ads, startIdx){
-  startIdx=startIdx||0;
-  const totalAds=window.__metaAdsTotal||ads.length;
-  // Generate gradient colors for creative placeholders
-  const gradients=[
-    'linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%)',
-    'linear-gradient(135deg,#2d1b69 0%,#11998e 100%)',
-    'linear-gradient(135deg,#0c0c0c 0%,#1a1a1a 50%,#333 100%)',
-    'linear-gradient(135deg,#141e30 0%,#243b55 100%)',
-    'linear-gradient(135deg,#1f1c2c 0%,#928dab 100%)',
-    'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)',
-    'linear-gradient(135deg,#232526 0%,#414345 100%)',
-    'linear-gradient(135deg,#1e3c72 0%,#2a5298 100%)',
-    'linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)',
-    'linear-gradient(135deg,#200122 0%,#6f0000 100%)'
-  ];
-  return ads.map((a,i)=>{
-    const rank=startIdx+i+1;
-    const body=(a.body||'').substring(0,120);
-    const title=a.title||'';
-    const days=a.days_running;
-    const daysLabel=days!==null?(days===0?'<1 day':days===1?'1 day':days+' days'):'';
-    const startDate=a.start_date?new Date(a.start_date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    const dateRange=startDate?(startDate+' - Today'):'';
-    const platforms=(a.platforms||[]).map(p=>p==='facebook'?'FB':p==='instagram'?'IG':p==='messenger'?'MSG':p==='audience_network'?'AN':p).join(', ');
-    const reachNum=a.reach||0;
-    const reachTxt=reachNum?fmtV(reachNum):'';
-    const impLow=a.impressions_lower||0;
-    const impHigh=a.impressions_upper||0;
-    const impTxt=impLow?fmtV(impLow)+(impHigh&&impHigh!==impLow?'-'+fmtV(impHigh):''):'';
-    const grad=gradients[(rank-1)%gradients.length];
-    const pageLetter=(a.page_name||'A').charAt(0).toUpperCase();
-    const linkUrl=a.meta_library_url||a.snapshot_url||'';
-
-    return `<div style="position:relative;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;width:calc(33.333% - 11px);min-width:280px;box-sizing:border-box;transition:transform 0.15s,box-shadow 0.15s;cursor:pointer;" onclick="if(event.target.tagName!=='A')window.open('${linkUrl}','_blank')" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
-      <div style="position:absolute;top:8px;left:8px;z-index:2;background:var(--pink);color:#fff;font-size:11px;font-weight:800;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;">${rank}</div>
-      <div style="height:160px;background:${grad};display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-          <div style="width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:rgba(255,255,255,0.9);backdrop-filter:blur(4px);">${pageLetter}</div>
-        </div>
-        ${title?'<div style="position:absolute;bottom:0;left:0;right:0;padding:12px 14px;background:linear-gradient(transparent,rgba(0,0,0,0.7));color:#fff;font-size:12px;font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+title+'</div>':''}
-        <div style="position:absolute;top:8px;right:8px;display:flex;gap:4px;">
-          ${platforms.includes('IG')?'<span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);padding:2px 6px;border-radius:4px;font-size:9px;color:#fff;font-weight:600;">IG</span>':''}
-          ${platforms.includes('FB')?'<span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);padding:2px 6px;border-radius:4px;font-size:9px;color:#fff;font-weight:600;">FB</span>':''}
-          ${platforms.includes('MSG')?'<span style="background:rgba(255,255,255,0.2);backdrop-filter:blur(4px);padding:2px 6px;border-radius:4px;font-size:9px;color:#fff;font-weight:600;">MSG</span>':''}
-        </div>
+function generateAdPlaceholders(domain, count){
+  const n=Math.min(count, 6);
+  let html='';
+  for(let i=0;i<n;i++){
+    html+=`
+    <div class="ad-card">
+      <div class="ad-card-media">
+        <img src="https://image.thum.io/get/width/600/crop/600/https://${domain}"
+             onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
       </div>
-      <div style="padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1;">
-        <div style="display:flex;align-items:center;gap:6px;">
-          <span style="font-size:12px;font-weight:700;color:var(--text1);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.page_name||'Unknown'}</span>
-          <span style="font-size:9px;color:var(--text3);white-space:nowrap;">#${rank}/${fmtV(totalAds)}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-          ${daysLabel?'<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#4CAF50;font-weight:600;"><span style="width:6px;height:6px;background:#4CAF50;border-radius:50%;display:inline-block;"></span>'+daysLabel+'</span>':''}
-          ${dateRange?'<span style="font-size:10px;color:var(--text3);">'+dateRange+'</span>':''}
-        </div>
-        ${body?'<div style="font-size:11px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">'+body+(body.length>=120?'...':'')+'</div>':''}
-        <div style="display:flex;gap:8px;margin-top:auto;padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;">
-          ${reachTxt?'<span style="font-size:10px;color:var(--text2);"><b style="color:var(--text1);">'+reachTxt+'</b> reach</span>':''}
-          ${impTxt?'<span style="font-size:10px;color:var(--text2);"><b style="color:var(--text1);">'+impTxt+'</b> imp</span>':''}
+      <div class="ad-card-body">
+        <div class="ad-card-page">${domain}</div>
+        <div class="ad-card-text" style="color:var(--text3);font-style:italic;">Ad creative #${i+1} â View on Meta Library for full details</div>
+        <div class="ad-card-footer">
+          <span class="ad-status active">&#128994; Active</span>
+          <a class="ad-card-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domain)}" target="_blank">View Ad &#8599;</a>
         </div>
       </div>
     </div>`;
-  }).join('');
+  }
+  return html;
 }
 
-function showAllMetaAds(){
-  if(!window.__metaAds) return;
-  const grid=document.getElementById('ads-grid');
-  if(grid) grid.innerHTML=renderMetaAdCards(window.__metaAds,0);
-  const btn=document.getElementById('show-more-ads');
-  if(btn) btn.remove();
-}
-
-function sortMetaAds(mode){
-  if(!window.__metaAds) return;
-  const ads=[...window.__metaAds];
-  if(mode==='reach') ads.sort((a,b)=>(b.reach||0)-(a.reach||0));
-  else if(mode==='recent') ads.sort((a,b)=>new Date(b.start_date||0)-new Date(a.start_date||0));
-  else if(mode==='longest') ads.sort((a,b)=>(b.days_running||0)-(a.days_running||0));
-  else if(mode==='spend') ads.sort((a,b)=>(b.spend_upper||0)-(a.spend_upper||0));
-  // Update sort tab active state
-  document.querySelectorAll('.meta-sort-tab').forEach(t=>{
-    t.style.color=t.dataset.mode===mode?'var(--pink)':'var(--text3)';
-    t.style.borderBottom=t.dataset.mode===mode?'2px solid var(--pink)':'2px solid transparent';
-    t.style.fontWeight=t.dataset.mode===mode?'700':'500';
-  });
-  document.getElementById('ads-grid').innerHTML=renderMetaAdCards(ads,0);
-  const moreBtn=document.getElementById('show-more-ads');
-  if(moreBtn) moreBtn.remove();
-}
-
-function renderMetaAdsPanel(){
-  const ads=window.__metaAds;
-  const total=window.__metaAdsTotal||ads.length;
-  const cleanDomain=window.__metaAdsDomain||'';
-  const container=document.getElementById('meta-ads');
-  if(!container||!ads) return;
-  container.style.display='block';
-
-  // Compute media mix stats
-  let platCounts={fb:0,ig:0,msg:0,an:0};
-  let totalReach=0;
-  ads.forEach(a=>{
-    (a.platforms||[]).forEach(p=>{
-      if(p==='facebook') platCounts.fb++;
-      else if(p==='instagram') platCounts.ig++;
-      else if(p==='messenger') platCounts.msg++;
-      else if(p==='audience_network') platCounts.an++;
-    });
-    totalReach+=(a.reach||0);
-  });
-
-  const initialAds=ads.slice(0,9);
-  const hasMore=ads.length>9;
-  container.innerHTML=`
-    <div>
-      <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:200px;">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-            <span style="font-size:20px;font-weight:800;color:var(--text1);">${fmtV(total)}</span>
-            <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#4CAF50;font-weight:600;background:rgba(76,175,80,0.1);padding:3px 10px;border-radius:20px;"><span style="width:6px;height:6px;background:#4CAF50;border-radius:50%;display:inline-block;"></span> Live Ads</span>
-            <span style="font-size:11px;color:var(--text3);">Real-time from Meta Ad Library</span>
-          </div>
-          <div style="display:flex;gap:16px;flex-wrap:wrap;">
-            <div style="display:flex;align-items:center;gap:6px;">
-              <span style="font-size:11px;color:var(--text3);">Platforms:</span>
-              ${platCounts.fb?'<span style="background:rgba(66,103,178,0.1);color:#4267B2;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;">FB '+platCounts.fb+'</span>':''}
-              ${platCounts.ig?'<span style="background:rgba(225,48,108,0.1);color:#E1306C;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;">IG '+platCounts.ig+'</span>':''}
-              ${platCounts.msg?'<span style="background:rgba(0,132,255,0.1);color:#0084FF;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;">MSG '+platCounts.msg+'</span>':''}
-              ${platCounts.an?'<span style="background:rgba(100,100,100,0.1);color:#666;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:600;">AN '+platCounts.an+'</span>':''}
-            </div>
-            ${totalReach?'<span style="font-size:11px;color:var(--text3);">Total Reach: <b style="color:var(--text1);">'+fmtV(totalReach)+'</b></span>':''}
-          </div>
-        </div>
-        <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(cleanDomain)}" target="_blank" style="display:inline-flex;font-size:12px;padding:8px 16px;white-space:nowrap;">
-          View All on Meta Library &#8599;
-        </a>
-      </div>
-      <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;">
-        <button class="meta-sort-tab" data-mode="reach" onclick="sortMetaAds('reach')" style="background:none;border:none;padding:8px 16px;font-size:12px;font-family:Figtree;cursor:pointer;color:var(--pink);border-bottom:2px solid var(--pink);font-weight:700;">Top Performing</button>
-        <button class="meta-sort-tab" data-mode="recent" onclick="sortMetaAds('recent')" style="background:none;border:none;padding:8px 16px;font-size:12px;font-family:Figtree;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;font-weight:500;">Most Recent</button>
-        <button class="meta-sort-tab" data-mode="longest" onclick="sortMetaAds('longest')" style="background:none;border:none;padding:8px 16px;font-size:12px;font-family:Figtree;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;font-weight:500;">Longest Active</button>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:14px;" id="ads-grid">
-        ${renderMetaAdCards(initialAds,0)}
-      </div>
-      ${hasMore?'<div style="text-align:center;margin-top:20px;" id="show-more-ads"><button class="shop-btn" onclick="showAllMetaAds()" style="padding:10px 32px;font-size:13px;">Show all '+ads.length+' ads</button></div>':''}
-      ${total>ads.length?'<div style="text-align:center;margin-top:10px;font-size:12px;color:var(--text3);">Showing '+Math.min(ads.length,9)+' of '+fmtV(total)+' active ads</div>':''}
-    </div>`;
-}
-
-function sortAds(mode){
-  if(!window.__shopAds) return;
-  const ads=[...window.__shopAds];
-  if(mode==='score') ads.sort((a,b)=>(b.peekr_score||0)-(a.peekr_score||0));
-  else if(mode==='reach') ads.sort((a,b)=>(b.eu_total_reach||0)-(a.eu_total_reach||0));
-  else if(mode==='recent') ads.sort((a,b)=>new Date(b.ad_delivery_start_time||0)-new Date(a.ad_delivery_start_time||0));
-  document.querySelectorAll('[id^="sort-"]').forEach(b=>b.style.background='');
-  const btn=document.getElementById('sort-'+mode);
-  if(btn) btn.style.background='rgba(232,121,154,0.15)';
-  document.getElementById('ads-grid').innerHTML=renderAdCards(ads);
-}
-
-function renderAdCards(ads){
-  return ads.map((a,i)=>{
-    const days=a.ad_delivery_start_time?Math.floor((Date.now()-new Date(a.ad_delivery_start_time))/(86400000)):0;
-    const score=a.peekr_score?Number(a.peekr_score).toFixed(1):'-';
-    const reach=a.eu_total_reach?fmtV(a.eu_total_reach):'N/A';
-    const spend=a.spend_upper?('$'+fmtV(a.spend_upper)):'';
-    const body=(a.ad_creative_body||'No ad copy available').substring(0,180);
-    const platforms=(a.publisher_platforms||[]).map(p=>{
-      if(p==='facebook') return '\u{1F1EB}';
-      if(p==='instagram') return '\u{1F4F7}';
-      if(p==='messenger') return '\u{1F4AC}';
-      return '';
-    }).join(' ');
-    const startDate=a.ad_delivery_start_time||'';
-    const metaId=a.meta_ad_id||'';
-    const snapshotUrl=metaId?'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&id='+metaId:'#';
-
-    const brandInit=(a.page_name||'?')[0].toUpperCase();
-    const hue=Math.abs([...((a.page_name||'Ad')).split('')].reduce((h,c)=>((h<<5)-h)+c.charCodeAt(0),0))%360;
-    return `
-    <div class="ad-card" style="border:1px solid var(--border);border-radius:14px;background:var(--card);overflow:hidden;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.08)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('${snapshotUrl}','_blank')">
-      <div style="padding:14px 16px 10px;border-bottom:1px solid var(--border);">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:13px;font-weight:700;color:var(--pink);">#${i+1}</span>
-            <span style="font-size:13px;font-weight:700;">${a.page_name||'Unknown'}</span>
-          </div>
-          <span style="background:${Number(score)>=70?'rgba(34,197,94,0.1)':Number(score)>=40?'rgba(246,160,90,0.1)':'rgba(180,160,170,0.1)'};color:${Number(score)>=70?'var(--green)':Number(score)>=40?'var(--orange)':'var(--text3)'};font-size:11px;font-weight:800;padding:2px 8px;border-radius:8px;">&#9733; ${score}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:11px;color:var(--text2);flex-wrap:wrap;">
-          <span>&#128994; ${days}d running</span>
-          <span style="color:var(--text3);">&#8226;</span>
-          <span>&#128200; ${reach} reach</span>
-          ${spend?'<span style="color:var(--text3);">&#8226;</span><span>&#128176; '+spend+'</span>':''}
-        </div>
-        ${startDate?'<div style="font-size:10px;color:var(--text3);margin-top:4px;">Since '+startDate+' - Today</div>':''}
-      </div>
-      <div style="background:linear-gradient(135deg,hsl(${hue},45%,92%),hsl(${(hue+40)%360},35%,85%));padding:24px 16px;display:flex;flex-direction:column;align-items:center;border-bottom:1px solid var(--border);">
-        <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,hsl(${hue},50%,55%),hsl(${(hue+40)%360},45%,45%));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;margin-bottom:10px;box-shadow:0 4px 12px hsla(${hue},50%,40%,0.3);">${brandInit}</div>
-        <div style="font-size:12px;color:hsl(${hue},25%,45%);text-align:center;line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body.substring(0,120)}${body.length>120?'...':''}</div>
-      </div>
-      <div style="padding:12px 16px;">
-        <div style="font-size:12.5px;line-height:1.5;color:var(--text1);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;">${body.replace(/'/g,"&#39;").replace(/"/g,"&quot;")}${body.length>=180?'...':''}</div>
-      </div>
-      <div style="padding:8px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);">
-        <span class="ad-status active" style="font-size:10px;">&#128994; Active</span>
-        <a style="font-size:11px;font-weight:700;color:var(--pink);text-decoration:none;" href="${snapshotUrl}" target="_blank" onclick="event.stopPropagation();">View on Meta &#8599;</a>
-      </div>
-    </div>`;
-  }).join('');
-}
 // --- Helpers ---
 function fmtV(n){
   if(!n)return '0';
-  if(n>=1e9)return(n/1e9).toFixed(1)+'B';
   if(n>=1e6)return(n/1e6).toFixed(1)+'M';
   if(n>=1e3)return(n/1e3).toFixed(n>=1e4?0:1)+'K';
   return n.toLocaleString();
@@ -935,98 +659,139 @@ function getAge(dateStr){
   return y+'y'+(m>0?' '+m+'mo':'');
 }
 
-// --- Trustpilot ---
-async function loadTrustpilot(domain){
-  const tpRating=document.getElementById('tp-rating');
-  const tpCount=document.getElementById('tp-count');
-  const tpStars=document.getElementById('tp-stars');
-  const tpLink=document.getElementById('tp-link');
-  if(!tpRating) return;
-  const cleanDomain=domain.replace(/^www\./,'');
-  try{
-    // Use our server-side proxy to bypass CORS
-    const resp=await fetch('/api/trustpilot?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(12000)});
-    if(resp.ok){
-      const d=await resp.json();
-      if(d&&d.trustScore!==null&&d.trustScore!==undefined){
-        tpRating.textContent=Number(d.trustScore).toFixed(1);
-        tpRating.style.color=d.trustScore>=4?'#00b67a':d.trustScore>=3?'#73cf11':d.trustScore>=2?'#ffce00':'#ff3722';
-        tpCount.textContent=d.numberOfReviews?'('+Number(d.numberOfReviews).toLocaleString()+' reviews)':'';
-        renderTpStars(tpStars,d.stars||Math.round(d.trustScore));
-        return;
-      }
-    }
-  }catch(e){console.log('Trustpilot proxy error:',e.message);}
-  // Fallback
-  tpRating.textContent='N/A';
-  tpCount.textContent='Check reviews on Trustpilot';
-  tpStars.innerHTML='';
-}
-function renderTpStars(el,stars){
-  el.innerHTML=Array.from({length:5},(_,i)=>{
-    const fill=i<Math.floor(stars)?'#00b67a':i<stars?'#73cf11':'#dcdce6';
-    return '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="'+fill+'"/></svg>';
-  }).join('');
-}
+// --- Ads History Chart (like TrendTrack "Ads actives dans le temps") ---
+const API_BASE = 'https://sniping-three.vercel.app/api/backfill-ads';
 
-// --- Live Pixel Scanner ---
-async function scanPixels(domain, existingPixels){
-  const container=document.getElementById('pixels-container');
-  const statusEl=document.getElementById('pixel-scan-status');
-  if(!container) return;
-  const existing=new Set((existingPixels||[]).map(p=>p.toLowerCase()));
-  const cleanDomain=domain.replace(/^www\./,'');
-  try{
-    const proxyResp=await fetch('/api/scan-pixels?domain='+encodeURIComponent(cleanDomain),{signal:AbortSignal.timeout(15000)});
-    if(proxyResp.ok){
-      const data=await proxyResp.json();
-      if(data&&data.pixels&&data.pixels.length>0){
-        // Merge: add new pixels not already in existing set
-        const newPixels=data.pixels.filter(p=>!existing.has(p.toLowerCase()));
-        if(newPixels.length>0||!existingPixels||existingPixels.length===0){
-          const allPixels=[...(existingPixels||[]),...newPixels];
-          container.innerHTML='<div class="tags">'+allPixels.map(p=>'<span class="tag pixel" style="background:rgba(232,121,154,0.08);border-color:rgba(232,121,154,0.2);font-weight:600;">'+p+'</span>').join('')+'</div>'+(newPixels.length>0?'<div style="margin-top:6px;font-size:10px;color:var(--text3);">+'+newPixels.length+' detected via live scan</div>':'');
-          return;
-        }
-      }
-    }
-  }catch(e){console.log('Pixel scan error:',e.message);}
-  if(statusEl) statusEl.innerHTML='No additional ad platforms detected';
-}
+async function loadAdsChart(domain, range, btnEl) {
+  // Update active button
+  if (btnEl) {
+    document.querySelectorAll('#ads-chart-range .range-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
+  }
 
-// --- Product Images ---
-async function loadProducts(domain){
-  const gallery=document.getElementById('product-gallery');
-  const subtitle=document.getElementById('prod-subtitle');
-  if(!gallery) return;
-  try{
-    const resp=await fetch('https://'+domain+'/products.json?limit=12&fields=images,title,variants',{signal:AbortSignal.timeout(8000)});
-    if(!resp.ok) throw new Error('Not available');
-    const data=await resp.json();
-    const products=(data.products||[]).slice(0,12);
-    if(products.length===0){
-      gallery.innerHTML='<div style="grid-column:1/-1;color:var(--text3);font-size:13px;padding:10px;">No products found via public catalog.</div>';
-      subtitle.textContent='';
+  const canvas = document.getElementById('ads-chart-canvas');
+  const labelsEl = document.getElementById('ads-chart-labels');
+  if (!canvas) return;
+
+  try {
+    const resp = await fetch(`${API_BASE}?action=ads-history&domain=${encodeURIComponent(domain)}&range=${range}`);
+    const data = await resp.json();
+
+    if (data.current_live_ads) {
+      document.getElementById('ads-chart-current').textContent = data.current_live_ads.toLocaleString();
+    }
+
+    const history = data.history || [];
+    if (history.length < 2) {
+      // Not enough data points â show message
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvas.parentElement.innerHTML = `
+        <div style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);">
+          <div style="font-size:32px;margin-bottom:8px;">&#128202;</div>
+          <div style="font-size:13px;font-weight:600;">Historical data building up</div>
+          <div style="font-size:11px;margin-top:4px;">Chart will appear once we have multiple daily snapshots</div>
+        </div>`;
+      labelsEl.innerHTML = '';
       return;
     }
-    subtitle.textContent=products.length+' products shown';
-    gallery.innerHTML=products.map(p=>{
-      const img=p.images&&p.images[0]?p.images[0].src.replace(/\.([a-z]+)\?/,'_400x400.$1?'):'';
-      const title=p.title||'Product';
-      const price=p.variants&&p.variants[0]?p.variants[0].price:'';
-      return `<div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#fff;transition:transform .15s,box-shadow .15s;cursor:pointer;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.06)';" onmouseout="this.style.transform='';this.style.boxShadow='';" onclick="window.open('https://${domain}','_blank')">
-        ${img?`<div style="aspect-ratio:1;overflow:hidden;background:#f5f0eb;"><img src="${img}" style="width:100%;height:100%;object-fit:cover;" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text3);\\'>&#128722;</div>'"/></div>`
-            :'<div style="aspect-ratio:1;background:#f5f0eb;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--text3);">&#128722;</div>'}
-        <div style="padding:8px 10px;">
-          <div style="font-size:11px;font-weight:600;color:var(--text1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${title}</div>
-          ${price?`<div style="font-size:12px;font-weight:700;color:var(--pink);margin-top:2px;">$${price}</div>`:''}
-        </div>
-      </div>`;
-    }).join('');
-  }catch(e){
-    gallery.innerHTML='<div style="grid-column:1/-1;color:var(--text3);font-size:13px;padding:10px;">Product catalog not publicly available for this store.</div>';
-    subtitle.textContent='';
+
+    drawAdsChart(canvas, history, labelsEl);
+  } catch (e) {
+    console.error('Ads chart error:', e);
   }
+}
+
+function drawAdsChart(canvas, history, labelsEl) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, rect.width, rect.height);
+
+  const values = history.map(h => h.live_ads);
+  const dates = history.map(h => h.recorded_at);
+  const maxVal = Math.max(...values, 1);
+  const minVal = Math.min(...values, 0);
+  const range = maxVal - minVal || 1;
+  const pad = { top: 20, right: 10, bottom: 5, left: 40 };
+  const w = rect.width - pad.left - pad.right;
+  const h = rect.height - pad.top - pad.bottom;
+
+  // Y-axis labels
+  ctx.fillStyle = '#b8a8b0';
+  ctx.font = '10px Figtree, sans-serif';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const val = minVal + (range * (4 - i) / 4);
+    const y = pad.top + (h * i / 4);
+    ctx.fillText(fmtV(Math.round(val)), pad.left - 6, y + 3);
+    // Grid line
+    ctx.strokeStyle = 'rgba(200,160,170,0.1)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(pad.left + w, y);
+    ctx.stroke();
+  }
+
+  // Draw filled area + line
+  const points = values.map((v, i) => ({
+    x: pad.left + (i / (values.length - 1)) * w,
+    y: pad.top + h - ((v - minVal) / range) * h
+  }));
+
+  // Filled area
+  ctx.beginPath();
+  ctx.moveTo(points[0].x, pad.top + h);
+  points.forEach(p => ctx.lineTo(p.x, p.y));
+  ctx.lineTo(points[points.length - 1].x, pad.top + h);
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + h);
+  grad.addColorStop(0, 'rgba(232,121,154,0.25)');
+  grad.addColorStop(1, 'rgba(232,121,154,0.02)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+  ctx.strokeStyle = '#e8799a';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Dots on last point
+  const last = points[points.length - 1];
+  ctx.beginPath();
+  ctx.arc(last.x, last.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#e8799a';
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(last.x, last.y, 6, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(232,121,154,0.3)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // X-axis labels (show ~6 dates evenly spaced)
+  const labelCount = Math.min(dates.length, 6);
+  const step = Math.max(1, Math.floor(dates.length / labelCount));
+  let labelsHtml = '';
+  for (let i = 0; i < dates.length; i += step) {
+    const d = new Date(dates[i]);
+    const label = d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+    labelsHtml += `<span>${label}</span>`;
+  }
+  labelsEl.innerHTML = labelsHtml;
+}
+
+// Auto-load ads chart on page load (called after renderShop)
+function initAdsChart(domain) {
+  setTimeout(() => loadAdsChart(domain, '6m', null), 500);
 }
 
 async function saveShop(domain){
