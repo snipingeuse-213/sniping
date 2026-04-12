@@ -1,24 +1,24 @@
 {
-    "framework": null,
-    "rewrites": [
-        {
-            "source": "/",
-            "destination": "/peekr-landing.html"
-        }
-    ],
-    "functions": {
-        "api/*.js": {
-            "maxDuration": 300
-        }
-    },
-    "crons": [
-        {
-            "path": "/api/scrape-shops",
-            "schedule": "0 0 * * *"
+        "framework": null,
+        "rewrites": [
+                    {
+                                    "source": "/",
+                                    "destination": "/peekr-landing.html"
+                    }
+        ],
+        "functions": {
+                    "api/*.js": {
+                                    "maxDuration": 300
+                    }
         },
-        {
-            "path": "/api/backfill-ads?action=meta-sync&batch=100&offset=0&order=score",
-            "schedule": "* * * * *"
-        }
-    ]
+        "crons": [
+                    {
+                                    "path": "/api/scrape-shops",
+                                    "schedule": "0 0 * * *"
+                    },
+                    {
+                                    "path": "/api/backfill-ads?action=meta-sync&batch=15&offset=0&order=score",
+                                    "schedule": "*/10 * * * *"
+                    }
+        ]
 }
