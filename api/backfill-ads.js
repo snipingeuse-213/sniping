@@ -613,6 +613,33 @@ async function actionMetaSync(req, res) {
 // GET /api/backfill-ads?action=live-lookup&domains=shop1.com,shop2.com,shop3.com
 // Returns { results: { "shop1.com": 42, "shop2.com": 0, ... } }
 // Also updates the database so subsequent loads are instant
+// Proxy for product images — avoids CORS issues when fetching Shopify /products.json
+async function actionProductImages(req, res) {
+  const domainsParam = req.query.domains || '';
+  if (!domainsParam) return res.status(400).json({ error: 'Missing domains parameter' });
+  const domains = domainsParam.split(',').map(d => d.trim()).filter(Boolean).slice(0, 20);
+  const results = {};
+  const promises = domains.map(async (domain) => {
+    try {
+      const resp = await fetch(`https://${domain}/products.json?limit=4&fields=images,title`, {
+        signal: AbortSignal.timeout(4000),
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Peekr/1.0)' }
+      });
+      if (!resp.ok) { results[domain] = []; return; }
+      const data = await resp.json();
+      const imgs = (data.products || []).slice(0, 3).map(p => {
+        const img = p.images && p.images[0] ? p.images[0].src : '';
+        return img ? img.replace(/\.([a-z]+)\?/, '_200x200.$1?') : '';
+      }).filter(Boolean);
+      results[domain] = imgs;
+    } catch (e) {
+      results[domain] = [];
+    }
+  });
+  await Promise.allSettled(promises);
+  return res.status(200).json({ success: true, results });
+}
+
 async function actionLiveLookup(req, res) {
   const accessToken = process.env.META_USER_TOKEN || '';
   if (!accessToken) {
@@ -678,7 +705,8 @@ module.exports = async function handler(req, res) {
       case 'full-enrich': return await actionFullEnrich(req, res);
       case 'meta-sync': return await actionMetaSync(req, res);
       case 'live-lookup': return await actionLiveLookup(req, res);
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup'] });
+      case 'product-images': return await actionProductImages(req, res);
+      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images'] });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });

@@ -1334,9 +1334,9 @@ function re(){
     return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')" style="cursor:pointer;">
       <td><div class="si2">
         <div class="sthumb">
-          <img src="https://image.thum.io/get/width/400/crop/200/https://${s.d}"
+          <img src="https://www.google.com/s2/favicons?domain=${s.d}&sz=128"
                onerror="this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';"
-               loading="lazy" alt="${s.n}"/>
+               loading="lazy" alt="${s.n}" style="border-radius:8px;"/>
           <div class="sthumb-fb" style="display:none;">${init(s.n)}</div>
         </div>
         <div>
@@ -1444,29 +1444,44 @@ function _doLiveLookup(pageShops){
 }
 
 const _prodCache={};
+let _prodTimer=null;
 function loadProductImages(){
-  document.querySelectorAll('.prod-imgs[data-domain]').forEach(el=>{
+  // Debounce: batch all visible domains into one proxy call
+  clearTimeout(_prodTimer);
+  _prodTimer=setTimeout(_doLoadProductImages,200);
+}
+function _doLoadProductImages(){
+  const els=document.querySelectorAll('.prod-imgs[data-domain]');
+  const needFetch=[];
+  els.forEach(el=>{
     const domain=el.dataset.domain;
     if(!domain)return;
-    if(_prodCache[domain]){
+    if(_prodCache[domain]!==undefined){
       renderProdImgs(el,_prodCache[domain]);
       return;
     }
-    fetch(`https://${domain}/products.json?limit=4&fields=images,title`,{signal:AbortSignal.timeout(5000)})
-      .then(r=>r.ok?r.json():Promise.reject())
-      .then(data=>{
-        const imgs=(data.products||[]).slice(0,3).map(p=>{
-          const img=p.images&&p.images[0]?p.images[0].src:'';
-          return img?img.replace(/\.([a-z]+)\?/,'_200x200.$1?'):'';
-        }).filter(Boolean);
-        _prodCache[domain]=imgs;
-        renderProdImgs(el,imgs);
-      })
-      .catch(()=>{
-        _prodCache[domain]=[];
-        // Keep placeholder boxes on error
-      });
+    needFetch.push(domain);
+    _prodCache[domain]='pending';
   });
+  if(needFetch.length===0)return;
+  // Batch up to 20 via server proxy (avoids CORS)
+  const batch=needFetch.slice(0,20);
+  fetch('/api/backfill-ads?action=product-images&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(12000)})
+    .then(r=>r.ok?r.json():Promise.reject())
+    .then(data=>{
+      if(!data.results)return;
+      for(const [domain,imgs] of Object.entries(data.results)){
+        _prodCache[domain]=imgs;
+        const el=document.querySelector(`.prod-imgs[data-domain="${domain}"]`);
+        if(el)renderProdImgs(el,imgs);
+      }
+      // Next batch if needed
+      const more=needFetch.slice(20);
+      if(more.length>0)setTimeout(_doLoadProductImages,300);
+    })
+    .catch(()=>{
+      batch.forEach(d=>{if(_prodCache[d]==='pending')delete _prodCache[d];});
+    });
 }
 function renderProdImgs(el,imgs){
   if(imgs.length===0)return;
