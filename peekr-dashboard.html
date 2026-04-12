@@ -246,9 +246,11 @@ td{padding:11px 14px;vertical-align:middle;}
   position:relative;
 }
 .sthumb img{
-  width:100%;height:100%;
-  object-fit:cover;
+  width:28px;height:28px;
+  object-fit:contain;
   display:block;
+  margin:auto;
+  position:relative;top:50%;transform:translateY(-50%);
 }
 .sthumb-fb{
   position:absolute;inset:0;
@@ -1456,16 +1458,17 @@ function _doLoadProductImages(){
   els.forEach(el=>{
     const domain=el.dataset.domain;
     if(!domain)return;
-    if(_prodCache[domain]!==undefined){
+    if(Array.isArray(_prodCache[domain])){
       renderProdImgs(el,_prodCache[domain]);
       return;
     }
+    if(_prodCache[domain]==='pending')return; // already queued
     needFetch.push(domain);
-    _prodCache[domain]='pending';
   });
   if(needFetch.length===0)return;
-  // Batch up to 20 via server proxy (avoids CORS)
+  // Only mark THIS batch as pending (not all)
   const batch=needFetch.slice(0,20);
+  batch.forEach(d=>{_prodCache[d]='pending';});
   fetch('/api/backfill-ads?action=product-images&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(12000)})
     .then(r=>r.ok?r.json():Promise.reject())
     .then(data=>{
@@ -1476,8 +1479,8 @@ function _doLoadProductImages(){
         if(el)renderProdImgs(el,imgs);
       }
       // Next batch if needed
-      const more=needFetch.slice(20);
-      if(more.length>0)setTimeout(_doLoadProductImages,300);
+      const remaining=needFetch.slice(20);
+      if(remaining.length>0)setTimeout(_doLoadProductImages,300);
     })
     .catch(()=>{
       batch.forEach(d=>{if(_prodCache[d]==='pending')delete _prodCache[d];});
