@@ -18,7 +18,7 @@
         },
         {
             "path": "/api/backfill-ads?action=meta-sync&batch=100&offset=0&order=score",
-            "schedule": "0 3 * * *"
+            "schedule": "* * * * *"
         }
     ]
 }
