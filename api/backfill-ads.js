@@ -486,7 +486,7 @@ async function actionFullEnrich(req, res) {
 // GET /api/backfill-ads?action=meta-sync&batch=5&offset=0&force=true  (re-sync all, not just 0)
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
 
-async function metaCountAds(accessToken, searchTerm) {
+async function metaCountAds(accessToken, searchTerm, debug = false) {
   // Single-page fast count: fetch up to 500 IDs in one call
   const params = new URLSearchParams({
     access_token: accessToken,
@@ -499,14 +499,22 @@ async function metaCountAds(accessToken, searchTerm) {
   });
 
   try {
-    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, { signal: AbortSignal.timeout(3000) });
-    if (!response.ok) return 0;
+    const response = await fetch(`${GRAPH_API}/ads_archive?${params}`, { signal: AbortSignal.timeout(8000) });
+    if (!response.ok) {
+      if (debug) {
+        const text = await response.text().catch(() => '');
+        return { count: 0, error: `HTTP ${response.status}`, body: text.slice(0, 500) };
+      }
+      return 0;
+    }
     const data = await response.json();
     const count = (data.data || []).length;
     const hasMore = !!(data.paging && data.paging.next);
-    // If there are more pages, estimate conservatively
-    return hasMore ? count * 3 : count;
+    const result = hasMore ? count * 3 : count;
+    if (debug) return { count: result, raw_count: count, hasMore, search_terms: searchTerm };
+    return result;
   } catch (e) {
+    if (debug) return { count: 0, error: e.message };
     return 0;
   }
 }
@@ -706,7 +714,14 @@ module.exports = async function handler(req, res) {
       case 'meta-sync': return await actionMetaSync(req, res);
       case 'live-lookup': return await actionLiveLookup(req, res);
       case 'product-images': return await actionProductImages(req, res);
-      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images'] });
+      case 'meta-debug': {
+        const accessToken = process.env.META_USER_TOKEN || '';
+        const tokenPreview = accessToken ? accessToken.slice(0, 10) + '...' + accessToken.slice(-5) : 'NOT SET';
+        const testTerm = req.query.q || 'gymshark';
+        const result = await metaCountAds(accessToken, testTerm, true);
+        return res.status(200).json({ token_preview: tokenPreview, token_length: accessToken.length, search_term: testTerm, result, graph_api: GRAPH_API });
+      }
+      default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images', 'meta-debug'] });
     }
   } catch (error) {
     return res.status(500).json({ error: error.message, action });
