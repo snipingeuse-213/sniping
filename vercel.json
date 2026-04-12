@@ -15,6 +15,10 @@
         {
             "path": "/api/scrape-shops",
             "schedule": "0 0 * * *"
+        },
+        {
+            "path": "/api/backfill-ads?action=meta-sync&batch=100&offset=0&order=score",
+            "schedule": "*/5 * * * *"
         }
     ]
 }
