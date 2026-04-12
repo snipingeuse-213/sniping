@@ -1386,7 +1386,7 @@ let _livePending=false;
 function liveLookupAds(pageShops){
   if(_livePending)return;
   // Find shops on this page that have ad=0 and haven't been looked up yet
-  const needLookup=pageShops.filter(s=>s.ad===0&&!_liveCache[s.d]).map(s=>s.d);
+  const needLookup=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined).map(s=>s.d);
   if(needLookup.length===0)return;
   // Batch up to 20 at a time
   const batch=needLookup.slice(0,20);
@@ -1438,7 +1438,7 @@ function liveLookupAds(pageShops){
       const remaining=needLookup.slice(20);
       if(remaining.length>0){
         setTimeout(()=>{
-          const nextShops=pageShops.filter(s=>s.ad===0&&!_liveCache[s.d]);
+          const nextShops=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined);
           if(nextShops.length>0)liveLookupAds(pageShops);
         },500);
       }
