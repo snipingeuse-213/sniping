@@ -502,7 +502,7 @@ async function apifyScrapAds(searchTerm, maxItems = 50, debug = false) {
   const adLibUrl = `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=ALL&q=${encodeURIComponent(searchTerm)}&search_type=keyword_unordered&media_type=all`;
 
   const input = {
-    startUrls: [{ url: adLibUrl }],
+    urls: [{ url: adLibUrl }],
     maxItems: maxItems,
     proxy: { useApifyProxy: true }
   };
