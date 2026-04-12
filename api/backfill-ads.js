@@ -1,4 +1,4 @@
-// Peekr — Backfill live_ads by parsing technologies already in DB
+// Peekr â Backfill live_ads by parsing technologies already in DB
 // Strategy: Read shops from Supabase, count advertising technologies, PATCH update live_ads
 // Uses PATCH (not POST) because POST upsert uses PK not domain unique constraint
 //
@@ -6,11 +6,11 @@
 // Each element is a JSON string like '{"name":"Google Adsense","categories":["Advertising"]}'
 //
 // Endpoints:
-//   GET /api/backfill-ads?action=scan&batch=200&offset=0  — scan DB, update live_ads for shops with live_ads=0
-//   GET /api/backfill-ads?action=scan-all&batch=200&offset=0 — scan ALL shops, recount
-//   GET /api/backfill-ads?action=revert&domain=gymshark.com — reset a shop's live_ads
-//   GET /api/backfill-ads?action=stats — show current live_ads distribution
-//   GET /api/backfill-ads?action=enrich&batch=50&offset=0 — fetch from Store Leads + PATCH
+//   GET /api/backfill-ads?action=scan&batch=200&offset=0  â scan DB, update live_ads for shops with live_ads=0
+//   GET /api/backfill-ads?action=scan-all&batch=200&offset=0 â scan ALL shops, recount
+//   GET /api/backfill-ads?action=revert&domain=gymshark.com â reset a shop's live_ads
+//   GET /api/backfill-ads?action=stats â show current live_ads distribution
+//   GET /api/backfill-ads?action=enrich&batch=50&offset=0 â fetch from Store Leads + PATCH
 
 const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
@@ -21,7 +21,7 @@ const HEADERS = {
   'Content-Type': 'application/json'
 };
 
-// Parse a technology entry — it can be a JSON string or already an object
+// Parse a technology entry â it can be a JSON string or already an object
 function parseTech(tech) {
   if (typeof tech === 'string') {
     try { return JSON.parse(tech); } catch (e) { return { name: tech }; }
@@ -81,7 +81,7 @@ async function patchShop(domain, liveAds, adPlatforms) {
   return resp.ok;
 }
 
-// ACTION: scan — Read shops from DB with live_ads=0, count ad techs, update
+// ACTION: scan â Read shops from DB with live_ads=0, count ad techs, update
 async function actionScan(req, res) {
   const batchSize = Math.min(parseInt(req.query.batch) || 200, 500);
   const offset = parseInt(req.query.offset) || 0;
@@ -92,7 +92,7 @@ async function actionScan(req, res) {
   const samples = [];
 
   // Fetch shops that have technologies (not null) and live_ads is 0 or null
-  // Note: technologies is text[] — use not.is.null to exclude NULLs, filter empty arrays server-side
+  // Note: technologies is text[] â use not.is.null to exclude NULLs, filter empty arrays server-side
   const queryUrl = `${SUPABASE_URL}/rest/v1/shops?select=domain,technologies,live_ads&technologies=not.is.null&or=(live_ads.eq.0,live_ads.is.null)&order=score.desc.nullslast&limit=${batchSize}&offset=${offset}`;
 
   const fetchResp = await fetch(queryUrl, {
@@ -165,7 +165,7 @@ async function actionScan(req, res) {
   });
 }
 
-// ACTION: scan-all — Scan ALL shops (not just live_ads=0), recount ad techs
+// ACTION: scan-all â Scan ALL shops (not just live_ads=0), recount ad techs
 async function actionScanAll(req, res) {
   const batchSize = Math.min(parseInt(req.query.batch) || 200, 500);
   const offset = parseInt(req.query.offset) || 0;
@@ -238,7 +238,7 @@ async function actionScanAll(req, res) {
   });
 }
 
-// ACTION: revert — Reset a specific shop's live_ads to 0
+// ACTION: revert â Reset a specific shop's live_ads to 0
 async function actionRevert(req, res) {
   const domain = req.query.domain;
   if (!domain) return res.status(400).json({ error: 'Missing domain parameter' });
@@ -246,7 +246,7 @@ async function actionRevert(req, res) {
   return res.status(200).json({ success: ok, domain, live_ads: 0 });
 }
 
-// ACTION: stats — Show live_ads distribution
+// ACTION: stats â Show live_ads distribution
 async function actionStats(req, res) {
   const countUrl = `${SUPABASE_URL}/rest/v1/shops?live_ads=gt.0&select=domain,live_ads,name,score&order=live_ads.desc&limit=50`;
   const resp = await fetch(countUrl, { headers: HEADERS, signal: AbortSignal.timeout(10000) });
@@ -284,7 +284,7 @@ async function actionStats(req, res) {
   });
 }
 
-// ACTION: enrich-storeleads — Fetch from Store Leads and update via PATCH
+// ACTION: enrich-storeleads â Fetch from Store Leads and update via PATCH
 async function actionEnrichStoreleads(req, res) {
   const STORELEADS_KEY = '0828c887-79f6-45b0-5ea9-e3427cb4';
   const batchSize = Math.min(parseInt(req.query.batch) || 50, 50);
@@ -346,7 +346,7 @@ async function actionEnrichStoreleads(req, res) {
   });
 }
 
-// ACTION: full-enrich — Fetch top shops from Store Leads with ALL fields and do full PATCH
+// ACTION: full-enrich â Fetch top shops from Store Leads with ALL fields and do full PATCH
 // This updates traffic_trend, visitor_countries, technologies, ad_platforms, etc.
 async function actionFullEnrich(req, res) {
   const STORELEADS_KEY = '0828c887-79f6-45b0-5ea9-e3427cb4';
@@ -479,18 +479,18 @@ async function actionFullEnrich(req, res) {
   });
 }
 
-// ACTION: meta-sync — Fetch REAL live ads count from Meta Ad Library API for each shop
+// ACTION: meta-sync â Fetch REAL live ads count from Meta Ad Library API for each shop
 // This gives accurate counts unlike the technology-based estimation
 // Processes ~5 shops per call to stay within Vercel 10s timeout
 // GET /api/backfill-ads?action=meta-sync&batch=5&offset=0
 // GET /api/backfill-ads?action=meta-sync&batch=5&offset=0&force=true  (re-sync all, not just 0)
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
 const APIFY_API = 'https://api.apify.com/v2';
-// Actor: curious_coder~facebook-ads-library-scraper (4.8★, most popular)
+// Actor: curious_coder~facebook-ads-library-scraper (4.8â, most popular)
 const APIFY_ACTOR = 'curious_coder~facebook-ads-library-scraper';
 
-// ─── Apify: scrape Meta Ad Library (reliable, paid) ───
-// Returns { count, ads[] } — ads contain creative data for "top ads" feature
+// âââ Apify: scrape Meta Ad Library (reliable, paid) âââ
+// Returns { count, ads[] } â ads contain creative data for "top ads" feature
 async function apifyScrapAds(searchTerm, maxItems = 50, debug = false) {
   const apifyToken = process.env.APIFY_TOKEN || '';
   if (!apifyToken) {
@@ -560,17 +560,17 @@ async function apifyScrapAds(searchTerm, maxItems = 50, debug = false) {
   }
 }
 
-// ─── Main ad count function ───
-// Priority: 1) Apify (reliable paid) → 2) Meta Graph API (free, rate-limited)
+// âââ Main ad count function âââ
+// Priority: 1) Apify (reliable paid) â 2) Meta Graph API (free, rate-limited)
 async function metaCountAds(accessToken, searchTerm, debug = false) {
   const apifyToken = process.env.APIFY_TOKEN || '';
 
-  // ─── Try Apify first if available (but only for debug/enrich, not live-lookup) ───
+  // âââ Try Apify first if available (but only for debug/enrich, not live-lookup) âââ
   // Apify is slow (10-30s), so we DON'T use it for real-time live-lookup
   // It's used via apifyScrapAds() directly for background enrichment
   // For fast counting, we use Meta Graph API:
 
-  // ─── Meta Graph API (fast, <2s per query) ───
+  // âââ Meta Graph API (fast, <2s per query) âââ
   if (accessToken) {
     const params = new URLSearchParams({
       access_token: accessToken,
@@ -595,7 +595,7 @@ async function metaCountAds(accessToken, searchTerm, debug = false) {
       // If HTTP error (rate limit etc), fall through
       if (debug) {
         const text = await response.text().catch(() => '');
-        // Don't return yet — try Apify fallback
+        // Don't return yet â try Apify fallback
         if (!apifyToken) return { count: 0, source: 'meta-graph', error: `HTTP ${response.status}`, body: text.slice(0, 500) };
       }
     } catch (e) {
@@ -604,7 +604,7 @@ async function metaCountAds(accessToken, searchTerm, debug = false) {
     }
   }
 
-  // ─── Apify fallback (slow but reliable, for when Meta is rate-limited) ───
+  // âââ Apify fallback (slow but reliable, for when Meta is rate-limited) âââ
   if (apifyToken) {
     const result = await apifyScrapAds(searchTerm, 100, debug);
     if (debug) return result;
@@ -615,7 +615,7 @@ async function metaCountAds(accessToken, searchTerm, debug = false) {
   return 0;
 }
 
-// ─── Apify enrichment: get top ads for a shop and store in Supabase ───
+// âââ Apify enrichment: get top ads for a shop and store in Supabase âââ
 async function enrichShopAds(domain, maxAds = 20) {
   const apifyToken = process.env.APIFY_TOKEN || '';
   if (!apifyToken) return { success: false, error: 'APIFY_TOKEN not set' };
@@ -682,7 +682,7 @@ async function enrichShopAds(domain, maxAds = 20) {
   };
 }
 
-// ─── Action: Apify enrichment endpoint ───
+// âââ Action: Apify enrichment endpoint âââ
 async function actionApifyEnrich(req, res) {
   const apifyToken = process.env.APIFY_TOKEN || '';
   if (!apifyToken) {
@@ -848,12 +848,12 @@ async function actionMetaSync(req, res) {
   });
 }
 
-// ACTION: live-lookup — Real-time Meta Ad Library lookup for a list of domains
+// ACTION: live-lookup â Real-time Meta Ad Library lookup for a list of domains
 // Called from the dashboard when shops are displayed but have no live_ads data
 // GET /api/backfill-ads?action=live-lookup&domains=shop1.com,shop2.com,shop3.com
 // Returns { results: { "shop1.com": 42, "shop2.com": 0, ... } }
 // Also updates the database so subsequent loads are instant
-// Proxy for product images — avoids CORS issues when fetching Shopify /products.json
+// Proxy for product images â avoids CORS issues when fetching Shopify /products.json
 async function actionProductImages(req, res) {
   const domainsParam = req.query.domains || '';
   if (!domainsParam) return res.status(400).json({ error: 'Missing domains parameter' });
@@ -898,7 +898,7 @@ async function actionLiveLookup(req, res) {
   const sources = {};
   const CACHE_TTL_HOURS = 6;
 
-  // ─── Step 1: Check Supabase cache first (instant) ───
+  // âââ Step 1: Check Supabase cache first (instant) âââ
   const domainFilter = domains.map(d => `"${d}"`).join(',');
   try {
     const cacheUrl = `${SUPABASE_URL}/rest/v1/shops?domain=in.(${domainFilter})&select=domain,live_ads,live_ads_updated`;
@@ -916,15 +916,15 @@ async function actionLiveLookup(req, res) {
         }
       }
     }
-  } catch (e) { /* cache miss → proceed to live sources */ }
+  } catch (e) { /* cache miss â proceed to live sources */ }
 
-  // ─── Step 2: For uncached domains, use Apify (primary) or Meta Graph (fallback) ───
+  // âââ Step 2: For uncached domains, use Apify (primary) or Meta Graph (fallback) âââ
   const needLookup = domains.filter(d => results[d] === undefined);
   let lookupSource = 'none';
   let rateLimited = false;
 
   if (needLookup.length > 0 && apifyToken) {
-    // ─── APIFY: scrape each domain (reliable but slower ~10-30s each) ───
+    // âââ APIFY: scrape each domain (reliable but slower ~10-30s each) âââ
     lookupSource = 'apify';
     // Process max 3 domains via Apify per request (each takes 10-30s)
     const apifyBatch = needLookup.slice(0, 3);
@@ -980,7 +980,7 @@ async function actionLiveLookup(req, res) {
       }).catch(() => {});
     }
   } else if (needLookup.length > 0 && accessToken) {
-    // ─── META GRAPH API fallback (fast but rate-limited) ───
+    // âââ META GRAPH API fallback (fast but rate-limited) âââ
     lookupSource = 'meta-graph';
     const batch = needLookup.slice(0, 5);
 
@@ -1073,3 +1073,6 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: error.message, action });
   }
 };
+
+// Vercel Scale plan: allow up to 120s for Apify sync calls
+module.exports.config = { maxDuration: 120 };
