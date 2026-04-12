@@ -485,9 +485,49 @@ async function actionFullEnrich(req, res) {
 // GET /api/backfill-ads?action=meta-sync&batch=5&offset=0
 // GET /api/backfill-ads?action=meta-sync&batch=5&offset=0&force=true  (re-sync all, not just 0)
 const GRAPH_API = 'https://graph.facebook.com/v21.0';
+const SEARCHAPI_URL = 'https://www.searchapi.io/api/v1/search';
 
+// Primary: SearchAPI.io (paid, reliable, no rate limits)
+// Fallback: Meta Graph API direct (free, rate limited)
 async function metaCountAds(accessToken, searchTerm, debug = false) {
-  // Single-page fast count: fetch up to 500 IDs in one call
+  const searchApiKey = process.env.SEARCHAPI_KEY || '';
+
+  // ─── Try SearchAPI.io first (reliable paid API) ───
+  if (searchApiKey) {
+    try {
+      const params = new URLSearchParams({
+        engine: 'meta_ad_library',
+        q: searchTerm,
+        country: 'ALL',
+        active_status: 'active',
+        ad_type: 'all',
+        api_key: searchApiKey
+      });
+      const response = await fetch(`${SEARCHAPI_URL}?${params}`, {
+        signal: AbortSignal.timeout(10000)
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const total = data.search_information?.total_results || 0;
+        if (debug) return { count: total, source: 'searchapi', search_term: searchTerm, raw: data.search_information };
+        return total;
+      } else {
+        const text = await response.text().catch(() => '');
+        if (debug) return { count: 0, source: 'searchapi', error: `HTTP ${response.status}`, body: text.slice(0, 300) };
+        // Fall through to Meta Graph API
+      }
+    } catch (e) {
+      if (debug) return { count: 0, source: 'searchapi', error: e.message };
+      // Fall through to Meta Graph API
+    }
+  }
+
+  // ─── Fallback: Meta Graph API direct ───
+  if (!accessToken) {
+    if (debug) return { count: 0, source: 'none', error: 'No SEARCHAPI_KEY or META_USER_TOKEN configured' };
+    return 0;
+  }
+
   const params = new URLSearchParams({
     access_token: accessToken,
     search_terms: searchTerm,
@@ -503,7 +543,7 @@ async function metaCountAds(accessToken, searchTerm, debug = false) {
     if (!response.ok) {
       if (debug) {
         const text = await response.text().catch(() => '');
-        return { count: 0, error: `HTTP ${response.status}`, body: text.slice(0, 500) };
+        return { count: 0, source: 'meta-graph', error: `HTTP ${response.status}`, body: text.slice(0, 500) };
       }
       return 0;
     }
@@ -511,18 +551,19 @@ async function metaCountAds(accessToken, searchTerm, debug = false) {
     const count = (data.data || []).length;
     const hasMore = !!(data.paging && data.paging.next);
     const result = hasMore ? count * 3 : count;
-    if (debug) return { count: result, raw_count: count, hasMore, search_terms: searchTerm };
+    if (debug) return { count: result, source: 'meta-graph', raw_count: count, hasMore, search_terms: searchTerm };
     return result;
   } catch (e) {
-    if (debug) return { count: 0, error: e.message };
+    if (debug) return { count: 0, source: 'meta-graph', error: e.message };
     return 0;
   }
 }
 
 async function actionMetaSync(req, res) {
   const accessToken = process.env.META_USER_TOKEN || '';
-  if (!accessToken) {
-    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  const searchApiKey = process.env.SEARCHAPI_KEY || '';
+  if (!accessToken && !searchApiKey) {
+    return res.status(500).json({ error: 'Neither SEARCHAPI_KEY nor META_USER_TOKEN configured' });
   }
 
   const batchSize = Math.min(parseInt(req.query.batch) || 10, 200);
@@ -662,8 +703,9 @@ async function actionProductImages(req, res) {
 
 async function actionLiveLookup(req, res) {
   const accessToken = process.env.META_USER_TOKEN || '';
-  if (!accessToken) {
-    return res.status(500).json({ error: 'META_USER_TOKEN not configured' });
+  const searchApiKey = process.env.SEARCHAPI_KEY || '';
+  if (!accessToken && !searchApiKey) {
+    return res.status(500).json({ error: 'Neither SEARCHAPI_KEY nor META_USER_TOKEN configured' });
   }
 
   const domainsParam = req.query.domains || '';
@@ -695,31 +737,29 @@ async function actionLiveLookup(req, res) {
     }
   } catch (e) { /* cache miss is fine, proceed to Meta */ }
 
-  // Step 2: Only query Meta for domains NOT in recent cache
+  // Step 2: Query ad counts for domains NOT in recent cache
   const needMeta = domains.filter(d => results[d] === undefined);
   let rateLimited = false;
   let metaQueried = 0;
+  const useSearchApi = !!process.env.SEARCHAPI_KEY;
 
-  // Sequential calls (max 5 per request) to avoid rate limits
-  for (const domain of needMeta.slice(0, 5)) {
-    if (rateLimited) {
-      // Don't query, leave undefined so frontend retries later
-      break;
-    }
+  // With SearchAPI.io: parallel batches of 10 (reliable, paid)
+  // With Meta Graph API: sequential max 5 (rate-limited)
+  const batchLimit = useSearchApi ? 10 : 5;
+  const batch = needMeta.slice(0, batchLimit);
 
+  const lookupPromises = batch.map(async (domain) => {
     const cleanDomain = domain.replace(/^www\./, '');
     const searchTerm = cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i, '');
 
     let count = await metaCountAds(accessToken, searchTerm);
 
-    // Detect rate limit (metaCountAds returns 0 on HTTP errors)
-    // Use debug mode to check if it's a rate limit
-    if (count === 0) {
+    // If using Meta Graph fallback, check for rate limit
+    if (!useSearchApi && count === 0) {
       const debugResult = await metaCountAds(accessToken, searchTerm, true);
       if (debugResult.error && debugResult.error.includes('400')) {
-        // Rate limited — stop querying, don't cache the 0
         rateLimited = true;
-        break;
+        return { domain, count: -1, rateLimited: true };
       }
     }
 
@@ -727,10 +767,18 @@ async function actionLiveLookup(req, res) {
       count = await metaCountAds(accessToken, cleanDomain);
     }
 
+    return { domain, count };
+  });
+
+  const lookupResults = await Promise.allSettled(lookupPromises);
+
+  for (const r of lookupResults) {
+    if (r.status !== 'fulfilled' || r.value.rateLimited) continue;
+    const { domain, count } = r.value;
     results[domain] = count;
     metaQueried++;
 
-    // Update database
+    // Update database in background
     const now = new Date().toISOString();
     const url = `${SUPABASE_URL}/rest/v1/shops?domain=eq.${encodeURIComponent(domain)}`;
     fetch(url, {
@@ -739,11 +787,6 @@ async function actionLiveLookup(req, res) {
       body: JSON.stringify({ live_ads: count, live_ads_updated: now }),
       signal: AbortSignal.timeout(5000)
     }).catch(() => {});
-
-    // Small delay between calls to be gentle on rate limit
-    if (metaQueried < needMeta.length) {
-      await new Promise(r => setTimeout(r, 200));
-    }
   }
 
   return res.status(200).json({
@@ -774,10 +817,18 @@ module.exports = async function handler(req, res) {
       case 'product-images': return await actionProductImages(req, res);
       case 'meta-debug': {
         const accessToken = process.env.META_USER_TOKEN || '';
+        const searchApiKey = process.env.SEARCHAPI_KEY || '';
         const tokenPreview = accessToken ? accessToken.slice(0, 10) + '...' + accessToken.slice(-5) : 'NOT SET';
+        const searchApiPreview = searchApiKey ? searchApiKey.slice(0, 8) + '...' : 'NOT SET';
         const testTerm = req.query.q || 'gymshark';
         const result = await metaCountAds(accessToken, testTerm, true);
-        return res.status(200).json({ token_preview: tokenPreview, token_length: accessToken.length, search_term: testTerm, result, graph_api: GRAPH_API });
+        return res.status(200).json({
+          meta_token: tokenPreview,
+          searchapi_key: searchApiPreview,
+          active_source: searchApiKey ? 'searchapi.io' : (accessToken ? 'meta-graph' : 'none'),
+          search_term: testTerm,
+          result
+        });
       }
       default: return res.status(400).json({ error: `Unknown action: ${action}`, available: ['scan', 'scan-all', 'revert', 'stats', 'enrich', 'full-enrich', 'meta-sync', 'live-lookup', 'product-images', 'meta-debug'] });
     }

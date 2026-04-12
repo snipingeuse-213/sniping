@@ -1394,7 +1394,7 @@ function _doLiveLookup(pageShops){
   // Find shops that have ad=0 and haven't been looked up or queued yet
   const needLookup=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined).map(s=>s.d);
   if(needLookup.length===0)return;
-  const batch=needLookup.slice(0,5); // Small batches to avoid Meta rate limits
+  const batch=needLookup.slice(0,10); // Batch size for live-lookup
   // Mark all batch domains as pending IMMEDIATELY to prevent duplicate requests
   batch.forEach(d=>{_liveCache[d]='pending';});
   fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(15000)})
