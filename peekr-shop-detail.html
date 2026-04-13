@@ -807,28 +807,96 @@ async function loadInfoRow(domainName){
 }
 
 // --- Latest Ads ---
+// Render ad cards helper (shared by loadLatestAds and loadMetaAds)
+function renderAdCard(ad, domainName, style){
+  const snap=ad.ad_snapshot_url||ad.snapshot_url||'';
+  const imgSrc=snap||'https://image.thum.io/get/width/280/crop/160/https://'+domainName;
+  const pageName=ad.page_name||domainName;
+  const bodyText=ad.body_text||ad.creative_text||ad.body||ad.ad_creative_body||'View ad on Meta';
+  const daysActive=ad.days_active||0;
+  if(style==='latest'){
+    return `<div class="latest-ad-card">
+      <div class="latest-ad-image">
+        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:20px;\\'>&#128226;</div>'" loading="lazy"/>
+      </div>
+      <div class="latest-ad-body">
+        <div class="latest-ad-page">${pageName}</div>
+        <div class="latest-ad-text">${bodyText.substring(0,120)}${bodyText.length>120?'...':''}</div>
+        <div class="latest-ad-footer">
+          <span>${daysActive}d</span>
+          <a class="latest-ad-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank">View &#8599;</a>
+        </div>
+      </div>
+    </div>`;
+  }
+  // Grid card style for Meta Ads panel
+  return `<div class="ad-card">
+    <div class="ad-card-media">
+      <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
+    </div>
+    <div class="ad-card-body">
+      <div class="ad-card-page">${pageName}</div>
+      <div class="ad-card-text">${bodyText.substring(0,200)}${bodyText.length>200?'...':''}</div>
+      <div class="ad-card-footer">
+        <span class="ad-status ${ad.status==='active'||!ad.status?'active':'inactive'}">&#128994; ${ad.status||'Active'}</span>
+        ${daysActive?`<span style="font-size:11px;color:var(--text3);">${daysActive}d active</span>`:''}
+        <a class="ad-card-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank">View Ad &#8599;</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+// Fetch ads with multi-layer fallback: API → Supabase ads table → Meta Library link
+async function fetchAdsWithFallback(domainName, limit){
+  // Layer 1: Try the Meta API via our backend
+  try{
+    const resp=await fetch(API_BASE+'?action=ad-creatives&domain='+encodeURIComponent(domainName)+'&limit='+limit);
+    const data=await resp.json();
+    if(data.ads && data.ads.length>0) return {source:'meta-api', ads:data.ads};
+  }catch(e){}
+
+  // Layer 2: Query Supabase ads table directly (search by domain in page_name or shop_domain)
+  try{
+    const cleanDomain=domainName.replace(/^www\./,'');
+    const searchTerm=cleanDomain.replace(/\.(com|fr|de|co\.uk|es|it|io|shop|store|net|org)$/i,'');
+    // Try shop_domain match first, then page_name partial match
+    let query=_SB+'/rest/v1/ads?select=id,meta_ad_id,page_name,page_id,ad_creative_body,ad_snapshot_url,ad_delivery_start_time,status,niche,peekr_score,publisher_platforms&order=ad_delivery_start_time.desc.nullslast&limit='+limit;
+    // First try exact shop_domain
+    let data=await sbFetch(query+'&shop_domain=eq.'+encodeURIComponent(cleanDomain));
+    if(!data||data.length===0){
+      // Try ilike on shop_domain
+      data=await sbFetch(query+'&shop_domain=ilike.*'+encodeURIComponent(searchTerm)+'*');
+    }
+    if(!data||data.length===0){
+      // Try page_name ilike
+      data=await sbFetch(query+'&page_name=ilike.*'+encodeURIComponent(searchTerm)+'*');
+    }
+    if(data && data.length>0){
+      const ads=data.map(row=>({
+        ad_id:row.meta_ad_id||row.id,
+        page_name:row.page_name||'',
+        body:row.ad_creative_body||'',
+        ad_snapshot_url:row.ad_snapshot_url||'',
+        snapshot_url:row.ad_snapshot_url||'',
+        status:row.status||'active',
+        days_active:row.ad_delivery_start_time?Math.floor((Date.now()-new Date(row.ad_delivery_start_time).getTime())/(1000*60*60*24)):0,
+        start_date:row.ad_delivery_start_time||'',
+        platforms:row.publisher_platforms||[],
+        peekr_score:row.peekr_score||0
+      }));
+      return {source:'supabase', ads};
+    }
+  }catch(e){}
+
+  return {source:'none', ads:[]};
+}
+
 async function loadLatestAds(domainName){
   const container=document.getElementById('latest-ads-scroll');
   try{
-    const resp=await fetch(API_BASE+'?action=ad-creatives&domain='+encodeURIComponent(domainName)+'&limit=6');
-    const data=await resp.json();
-
-    if(data.ads && data.ads.length>0){
-      container.innerHTML=data.ads.map(ad=>`
-        <div class="latest-ad-card">
-          <div class="latest-ad-image">
-            <img src="${ad.ad_snapshot_url||'https://image.thum.io/get/width/280/crop/160/https://'+domainName}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:20px;\\'>&#128226;</div>'"/>
-          </div>
-          <div class="latest-ad-body">
-            <div class="latest-ad-page">${ad.page_name||domainName}</div>
-            <div class="latest-ad-text">${ad.body_text||ad.creative_text||'View ad on Meta'}</div>
-            <div class="latest-ad-footer">
-              <span>${ad.days_active||0}d</span>
-              <a class="latest-ad-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank">View &#8599;</a>
-            </div>
-          </div>
-        </div>
-      `).join('');
+    const {ads}=await fetchAdsWithFallback(domainName, 6);
+    if(ads.length>0){
+      container.innerHTML=ads.map(ad=>renderAdCard(ad, domainName, 'latest')).join('');
     }else{
       container.innerHTML='<div style="color:var(--text3);font-size:12px;padding:20px;"><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q='+encodeURIComponent(domainName)+'" target="_blank" style="color:var(--pink);">View ads on Meta Library</a></div>';
     }
@@ -894,16 +962,18 @@ function renderSimilar(container, shops){
 async function loadMetaAds(domainName){
   const container=document.getElementById('meta-ads');
   try{
-    const adCount=parseInt(document.getElementById('ads-count')?.textContent)||0;
-
-    if(adCount>0){
-      container.innerHTML=generateAdPlaceholders(domainName, Math.min(adCount, 6));
+    const {ads, source}=await fetchAdsWithFallback(domainName, 20);
+    if(ads.length>0){
+      container.innerHTML=ads.map(ad=>renderAdCard(ad, domainName, 'grid')).join('');
+      // Update media mix based on actual data
+      updateMediaMix(ads);
     }else{
+      const adCount=parseInt(document.getElementById('ads-count')?.textContent)||0;
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
-          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Active Ads Detected</div>
-          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This shop doesn't currently have active Meta ads, or we haven't indexed them yet.</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">${adCount>0?adCount+' Active Ads Detected':'No Active Ads Detected'}</div>
+          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">${adCount>0?'We detected '+adCount+' ads but couldn\\'t fetch the creatives yet. Check Meta Library for full details.':'This shop doesn\\'t currently have active Meta ads, or we haven\\'t indexed them yet.'}</div>
           <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
             &#128269; Check Meta Ad Library &#8599;
           </a>
@@ -914,27 +984,25 @@ async function loadMetaAds(domainName){
   }
 }
 
-function generateAdPlaceholders(domain, count){
-  const n=Math.min(count, 6);
-  let html='';
-  for(let i=0;i<n;i++){
-    html+=`
-    <div class="ad-card">
-      <div class="ad-card-media">
-        <img src="https://image.thum.io/get/width/600/crop/600/https://${domain}"
-             onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
-      </div>
-      <div class="ad-card-body">
-        <div class="ad-card-page">${domain}</div>
-        <div class="ad-card-text" style="color:var(--text3);font-style:italic;">Ad creative #${i+1} — View on Meta Library for full details</div>
-        <div class="ad-card-footer">
-          <span class="ad-status active">&#128994; Active</span>
-          <a class="ad-card-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domain)}" target="_blank">View Ad &#8599;</a>
-        </div>
-      </div>
-    </div>`;
-  }
-  return html;
+// Update media mix display based on actual ad data
+function updateMediaMix(ads){
+  const mixContainer=document.getElementById('media-mix-container');
+  if(!mixContainer||!ads.length) return;
+  let video=0,image=0,other=0;
+  ads.forEach(ad=>{
+    const snap=(ad.ad_snapshot_url||ad.snapshot_url||'').toLowerCase();
+    if(snap.includes('.mp4')||snap.includes('.webm')||snap.includes('video')) video++;
+    else if(snap.includes('.jpg')||snap.includes('.png')||snap.includes('.jpeg')||snap.includes('image')) image++;
+    else other++;
+  });
+  const total=ads.length;
+  const vPct=Math.round(video/total*100);
+  const iPct=Math.round(image/total*100);
+  const oPct=Math.round(other/total*100);
+  mixContainer.innerHTML=`
+    <div class="media-mix-row"><div class="media-mix-label">Video</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar video" style="width:${vPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${vPct}%</div></div>
+    <div class="media-mix-row"><div class="media-mix-label">Image</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar image" style="width:${iPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${iPct}%</div></div>
+    <div class="media-mix-row"><div class="media-mix-label">Other</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar dco" style="width:${oPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${oPct}%</div></div>`;
 }
 
 function renderPixelCards(pixels, techs){
