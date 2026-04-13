@@ -359,8 +359,12 @@ function renderShop(s){
   const currency=s.currency||'N/A';
   const plan=s.shopify_plan||'N/A';
   const theme=s.theme||'Unknown';
-  const pixels=s.ad_platforms||s.technologies?.filter(t=>/(pixel|analytics|tag manager|ads|snap|tiktok|taboola|pinterest)/i.test(t))||[];
-  const techs=s.technologies||[];
+  // Parse technologies - they may be JSON strings from Store Leads API
+  const rawTechs=s.technologies||[];
+  const parsedTechs=rawTechs.map(t=>{if(typeof t==='object')return t;if(typeof t==='string'){try{return JSON.parse(t);}catch(e){return{name:t};}}return{name:String(t)};});
+  const techNames=parsedTechs.map(t=>t.name||'');
+  const pixels=s.ad_platforms&&s.ad_platforms.length?s.ad_platforms:parsedTechs;
+  const techs=techNames;
   const rawApps=s.apps||[];
   const apps=rawApps.map(a=>{if(typeof a==='object')return{name:a.name||'Unknown',icon:a.icon_url||''};if(typeof a==='string'){try{const p=JSON.parse(a);return{name:p.name||'Unknown',icon:p.icon_url||''};}catch(e){return{name:a,icon:''};}}return{name:String(a),icon:''};});
   const strats=s.strategies||[];
@@ -964,8 +968,8 @@ function renderPixelCards(pixels, techs){
       return{name:String(p)};
     });
   }else{
-    // Fallback to tech tags if no pixel objects
-    pixelList=techs.filter(t=>/(pixel|analytics|tag|ads)/i.test(t)).slice(0,10).map(t=>({name:t}));
+    // Fallback to tech names if no pixel objects
+    pixelList=techs.filter(t=>/(pixel|analytics|tag manager|ads)/i.test(t)).slice(0,10).map(t=>(typeof t==='object'?t:{name:typeof t==='string'?t:'Unknown'}));
   }
 
   if(!pixelList.length) return '<div style="color:var(--text3);font-size:13px;">No pixels detected</div>';
