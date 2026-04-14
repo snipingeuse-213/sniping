@@ -558,20 +558,25 @@ function renderShop(s){
             <div id="ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div>
           </div>
 
-          <!-- Pixels & Apps (Tabbed) -->
-          <div class="section">
-            <div class="section-title"><span class="ico">&#128225;</span> Pixels & Apps</div>
-            <div class="section-tabs">
-              <div class="section-tab active" onclick="switchPixelsTab('pixels',this)">Pixels</div>
-              <div class="section-tab" onclick="switchPixelsTab('apps',this)">Apps Shopify</div>
+          <!-- Pixels & Apps (compact, collapsible) -->
+          <details class="section" style="padding:10px 14px;">
+            <summary style="cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;list-style:none;">
+              <span class="ico">&#128225;</span> Pixels & Apps
+              <span style="color:var(--text3);font-size:11px;font-weight:500;margin-left:auto;">${(pixels||[]).length} pixels · ${(apps||[]).length} apps</span>
+            </summary>
+            <div style="margin-top:10px;">
+              <div class="section-tabs" style="margin-bottom:8px;">
+                <div class="section-tab active" onclick="switchPixelsTab('pixels',this)">Pixels</div>
+                <div class="section-tab" onclick="switchPixelsTab('apps',this)">Apps Shopify</div>
+              </div>
+              <div id="pixels-panel" style="display:block;max-height:180px;overflow-y:auto;">
+                ${renderPixelCards(pixels, techs)}
+              </div>
+              <div id="apps-panel" style="display:none;max-height:180px;overflow-y:auto;">
+                ${renderAppCards(apps)}
+              </div>
             </div>
-            <div id="pixels-panel" style="display:block;">
-              ${renderPixelCards(pixels, techs)}
-            </div>
-            <div id="apps-panel" style="display:none;">
-              ${renderAppCards(apps)}
-            </div>
-          </div>
+          </details>
 
           <!-- Growth Strategies -->
           <div class="section">
@@ -854,6 +859,33 @@ function renderAdCard(ad, domainName, style){
 
 // Fetch ads with multi-layer fallback: API → Supabase ads table → Meta Library link
 async function fetchAdsWithFallback(domainName, limit){
+  // Layer 0 (primary): Query our meta_ads table — filled by the Peekr scraper
+  try{
+    const cleanDomain0=domainName.replace(/^www\./,'');
+    const queries=[cleanDomain0, 'www.'+cleanDomain0];
+    for(const q of queries){
+      const url=_SB+'/rest/v1/meta_ads?shop_domain=eq.'+encodeURIComponent(q)+'&select=ad_id,headline,ad_text,cta_type,image_url,video_url,original_fb_url,platform,status,first_seen,last_seen&order=first_seen.desc.nullslast&limit='+limit;
+      const data=await sbFetch(url);
+      if(data && data.length>0){
+        const ads=data.map(row=>({
+          ad_id:row.ad_id,
+          page_name:row.headline||'',
+          body:row.ad_text||'',
+          ad_snapshot_url:row.original_fb_url||'',
+          snapshot_url:row.original_fb_url||'',
+          image_url:row.image_url||'',
+          video_url:row.video_url||'',
+          status:row.status||'active',
+          days_active:row.first_seen?Math.floor((Date.now()-new Date(row.first_seen).getTime())/(1000*60*60*24)):0,
+          start_date:row.first_seen||'',
+          platforms:row.platform?row.platform.split(','):['facebook'],
+          peekr_score:0
+        }));
+        return {source:'meta_ads', ads};
+      }
+    }
+  }catch(e){}
+
   // Layer 1: Try the Meta API via our backend
   try{
     const resp=await fetch(API_BASE+'?action=ad-creatives&domain='+encodeURIComponent(domainName)+'&limit='+limit);
