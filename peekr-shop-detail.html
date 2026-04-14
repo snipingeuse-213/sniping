@@ -9,31 +9,36 @@
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f0ece6;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--cream:#f0ece6;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;}
+:root{--bg:#f0ece6;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--cream:#f0ece6;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);--neon-glow2:rgba(255,45,120,0.15);--neon-glow3:rgba(255,45,120,0.08);}
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
 
 /* Sidebar */
-.sb{width:220px;flex-shrink:0;background:var(--dark);display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:20;}
-.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb{width:220px;background:#0a0a0f;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;position:fixed;left:0;top:0;height:100vh;z-index:20;border-right:1px solid rgba(255,45,120,0.08);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:3px;}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,45,120,0.1);position:relative;}
+.sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);}
+.sb-sec{padding:10px 0 2px;}
+.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
 .ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
 .ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
-.ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
-.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--pink);border-radius:0 3px 3px 0;}
-.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
-.ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
-.nb{margin-left:auto;background:var(--pink);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
-.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
-.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.sb-sec{padding:10px 0 2px;}
-.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
-.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;}
-.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.ni:hover .ni-ico{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
+.ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);box-shadow:0 0 8px rgba(255,45,120,0.15);}
+.nb{margin-left:auto;background:var(--neon,#ff2d78);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;box-shadow:0 0 10px rgba(255,45,120,0.35);}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);box-shadow:none;}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,45,120,0.08);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,45,120,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,45,120,0.08);border-color:rgba(255,45,120,0.2);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon,#ff2d78),var(--neon-soft,#ff5c9a));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 12px rgba(255,45,120,0.35);}
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
-.up{font-size:10px;color:var(--pink);font-weight:700;}
+.up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
 
 /* Main */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#fff;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#fff;margin-left:220px;}
 
 /* Topbar */
 .topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;background:#fff;border-bottom:1px solid var(--border);}
@@ -248,44 +253,45 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 </head>
 <body>
 
-<!-- Sidebar -->
-<div class="sb">
-  <div class="sb-logo">
-    <a href="peekr-landing.html" style="text-decoration:none;font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;">peekr<span style="color:#e8799a;">.</span></a>
-  </div>
+<!-- SIDEBAR NEON ROSE -->
+<aside class="sb">
+  <div class="sb-logo"><span style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
   <div class="sb-sec">
     <div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><div class="ni-ico">&#128202;</div>Dashboard</a>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Analyse</div>
-    <a class="ni active" href="peekr-dashboard.html"><div class="ni-ico">&#127978;</div>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><div class="ni-ico">&#128227;</div>Trending Ads</a>
-    <a class="ni" href="peekr-best-trends.html"><div class="ni-ico">&#128293;</div>Best Trends</a>
+    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">📣</span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">🔥</span>Best Trends<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><div class="ni-ico">&#128203;</div>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><div class="ni-ico">&#11088;</div>Saved Shops</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">💾</span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Community</div>
-    <a class="ni" href="peekr-community.html"><div class="ni-ico">&#128172;</div>Community <span class="nb">New</span></a>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico">💬</span>Community<span class="nb">New</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Resources</div>
-    <a class="ni" href="peekr-blog.html"><div class="ni-ico">&#128221;</div>Blog &amp; Tips</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-export.html"><div class="ni-ico">&#128228;</div>Export</a>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><div class="ni-ico">&#128142;</div>Upgrade <span class="nb">&#128293;</span></a>
-    <a class="ni" href="peekr-affiliate.html"><div class="ni-ico">&#129309;</div>Affiliate</a>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">🎯</span>Upgrade<span class="nb">🔥</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">👨‍👩‍👧‍👦</span>Affiliate</a>
   </div>
-</div>
+  <div class="sb-bot">
+    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+  </div>
+</aside>
 
 <!-- Main -->
 <div class="main">
@@ -944,7 +950,7 @@ function renderSimilar(container, shops){
         </div>
         <div>
           <div class="sim-card-name">${s.title||s.name||s.domain}</div>
-          <div class="sim-card-domain">${s.domain}</div>
+          <a class="sim-card-domain" href="https://${s.domain}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="text-decoration:none;color:inherit;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.domain}</a>
         </div>
         ${s.country?`<img class="sim-card-flag" src="https://flagcdn.com/w40/${s.country.toLowerCase()}.png" style="margin-left:auto;"/>`:''}
       </div>
@@ -962,26 +968,101 @@ function renderSimilar(container, shops){
 async function loadMetaAds(domainName){
   const container=document.getElementById('meta-ads');
   try{
-    const {ads, source}=await fetchAdsWithFallback(domainName, 20);
-    if(ads.length>0){
-      container.innerHTML=ads.map(ad=>renderAdCard(ad, domainName, 'grid')).join('');
+    // Query meta_ads table from Supabase with 6 ad limit
+    const cleanDomain=domainName.replace(/^www\./,'');
+    const url=_SB+'/rest/v1/meta_ads?shop_domain=eq.'+encodeURIComponent(cleanDomain)+'&select=id,ad_id,headline,ad_text,cta_type,image_url,video_url,original_fb_url,platform,status,first_seen,last_seen&order=last_seen.desc&limit=6';
+    const data=await sbFetch(url);
+
+    if(data && data.length>0){
+      container.innerHTML=data.map(ad=>renderMetaAdCard(ad, domainName)).join('');
       // Update media mix based on actual data
-      updateMediaMix(ads);
+      updateMediaMixFromMetaAds(data);
     }else{
-      const adCount=parseInt(document.getElementById('ads-count')?.textContent)||0;
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
-          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">${adCount>0?adCount+' Active Ads Detected':'No Active Ads Detected'}</div>
-          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">${adCount>0?'We detected '+adCount+' ads but couldn\\'t fetch the creatives yet. Check Meta Library for full details.':'This shop doesn\\'t currently have active Meta ads, or we haven\\'t indexed them yet.'}</div>
+          <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Meta Ads Found</div>
+          <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This shop doesn't currently have indexed Meta ads in our database.</div>
           <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
             &#128269; Check Meta Ad Library &#8599;
           </a>
         </div>`;
     }
   }catch(e){
+    console.error('Meta ads load error:',e);
     container.innerHTML='<div style="color:var(--text3);padding:20px;">Could not load ads data.</div>';
   }
+}
+
+// Render a single meta ad card from the meta_ads table
+function renderMetaAdCard(ad, domainName){
+  const imgSrc=ad.image_url||'https://image.thum.io/get/width/280/crop/160/https://'+domainName;
+  const headline=ad.headline||'';
+  const adText=ad.ad_text||'';
+  const ctaType=ad.cta_type||'Learn More';
+  const status=ad.status||'active';
+  const fbUrl=ad.original_fb_url||'https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q='+encodeURIComponent(domainName);
+
+  // Calculate duration text
+  let durationText='Today';
+  if(ad.first_seen && ad.last_seen){
+    const firstDate=new Date(ad.first_seen);
+    const lastDate=new Date(ad.last_seen);
+    const daysActive=Math.floor((lastDate-firstDate)/(1000*60*60*24));
+    if(daysActive===0) durationText='Today';
+    else if(daysActive===1) durationText='1 day';
+    else durationText=daysActive+' days';
+  }
+
+  // Status badge color
+  const statusColor=status==='active'?'#22c55e':'#b8a8b0';
+  const statusLabel=status==='active'?'Active':'Inactive';
+
+  return `
+    <div class="ad-card" style="display:flex;flex-direction:column;height:100%;">
+      <div class="ad-card-media" style="position:relative;">
+        ${ad.video_url?'<div class="play-overlay"><div class="play-btn">▶</div></div>':''}
+        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
+      </div>
+      <div class="ad-card-body" style="flex:1;display:flex;flex-direction:column;">
+        ${headline?`<div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:6px;line-height:1.4;">${headline}</div>`:''}
+        <div class="ad-card-text">${adText}</div>
+        <div style="flex:1;"></div>
+        <div class="ad-card-footer">
+          <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:rgba(${status==='active'?'34,197,94':'184,168,176'},0.1);color:${statusColor};font-size:11px;font-weight:600;">
+            &#128994; ${statusLabel}
+          </span>
+          <span style="font-size:11px;color:var(--text3);">${durationText}</span>
+          ${ctaType?`<span style="font-size:11px;color:var(--text3);margin-left:auto;">${ctaType}</span>`:''}
+        </div>
+        <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
+          <a href="${fbUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;background:var(--pink);color:#fff;font-size:11px;font-weight:700;text-decoration:none;transition:all .15s;">
+            View on Facebook &#8599;
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Update media mix based on meta_ads data (check image_url vs video_url)
+function updateMediaMixFromMetaAds(ads){
+  const mixContainer=document.getElementById('media-mix-container');
+  if(!mixContainer||!ads.length) return;
+  let video=0,image=0,other=0;
+  ads.forEach(ad=>{
+    if(ad.video_url) video++;
+    else if(ad.image_url) image++;
+    else other++;
+  });
+  const total=ads.length;
+  const vPct=total>0?Math.round(video/total*100):0;
+  const iPct=total>0?Math.round(image/total*100):0;
+  const oPct=total>0?Math.round(other/total*100):0;
+  mixContainer.innerHTML=`
+    <div class="media-mix-row"><div class="media-mix-label">Video</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar video" style="width:${vPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${vPct}%</div></div>
+    <div class="media-mix-row"><div class="media-mix-label">Image</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar image" style="width:${iPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${iPct}%</div></div>
+    <div class="media-mix-row"><div class="media-mix-label">Other</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar dco" style="width:${oPct}%;"></div></div><div style="font-size:11px;font-weight:700;color:var(--text1);min-width:40px;text-align:right;">${oPct}%</div></div>`;
 }
 
 // Update media mix display based on actual ad data
