@@ -18,317 +18,41 @@
 
         body {
             font-family: 'Figtree', sans-serif;
-            background-color: #f0ece6;
+            background-color: #ffffff;
             display: flex;
             min-height: 100vh;
         }
 
         /* Sidebar */
-        .sidebar {
-            width: 220px;
-            background-color: #1a0a0f;
-            color: #ffffff;
-            padding: 24px 16px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .sidebar-logo {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 32px;
-            color: #e8799a;
-        }
-
-        .sidebar-nav {
-            flex: 1;
-        }
-
-        .nav-item {
-            display: block;
-            padding: 12px 12px;
-            margin-bottom: 8px;
-            border-radius: 9px;
-            text-decoration: none;
-            color: #b0b0b0;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .nav-item:hover {
-            background-color: rgba(232, 121, 154, 0.1);
-            color: #e8799a;
-        }
-
-        .nav-item.active {
-            background-color: #e8799a;
-            color: #ffffff;
-        }
-
-        .sidebar-section-title {
-            font-size: 11px;
-            text-transform: uppercase;
-            color: #707070;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .sidebar-user {
-            margin-top: auto;
-            padding-top: 16px;
-            border-top: 1px solid rgba(232, 121, 154, 0.2);
-        }
-
-        .user-avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #e8799a, #d4607a);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 12px;
-        }
-
-        .user-info {
-            font-size: 12px;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-
-        .user-plan {
-            font-size: 11px;
-            color: #b0b0b0;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 220px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Topbar */
-        .topbar {
-            background-color: #ffffff;
-            padding: 20px 32px;
-            border-bottom: 1px solid #e8e8e8;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .topbar-title {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a0a0f;
-        }
-
-        .topbar-controls {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .time-period-filter {
-            display: flex;
-            gap: 8px;
-        }
-
-        .filter-btn {
-            padding: 8px 16px;
-            border: 1px solid #e0e0e0;
-            border-radius: 9px;
-            background-color: #ffffff;
-            color: #666;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .filter-btn:hover {
-            border-color: #e8799a;
-            color: #e8799a;
-        }
-
-        .filter-btn.active {
-            background-color: #e8799a;
-            color: #ffffff;
-            border-color: #e8799a;
-        }
-
-        /* Content Area */
-        .content {
-            flex: 1;
-            padding: 32px;
-            overflow-y: auto;
-        }
-
-        .section {
-            margin-bottom: 48px;
-        }
-
-        .section-title {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a0a0f;
-            margin-bottom: 20px;
-        }
-
-        /* Niches Grid */
-        .niches-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .niche-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid #f0ece6;
-        }
-
-        .niche-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(232, 121, 154, 0.15);
-            border-color: #e8799a;
-        }
-
-        .niche-name {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a0a0f;
-            margin-bottom: 12px;
-        }
-
-        .niche-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: #666;
-        }
-
-        .stat-label {
-            font-weight: 500;
-        }
-
-        .stat-value {
-            font-weight: 600;
-            color: #1a0a0f;
-        }
-
-        .score-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 9px;
-            font-size: 12px;
-            font-weight: 600;
-            background-color: #f4a7b9;
-            color: #ffffff;
-        }
-
-        .score-badge.high {
-            background-color: #e8799a;
-        }
-
-        .score-badge.medium {
-            background-color: #f4a7b9;
-        }
-
-        .score-badge.low {
-            background-color: #d4607a;
-        }
-
-        .trend-indicator {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-left: 8px;
-        }
-
-        .trend-hot {
-            background-color: #ffe0e6;
-            color: #e8799a;
-        }
-
-        .trend-rising {
-            background-color: #ffedc7;
-            color: #d97706;
-        }
-
-        .trend-watch {
-            background-color: #e0f2fe;
-            color: #0284c7;
-        }
-
-        .expand-btn {
-            margin-top: 12px;
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #e8799a;
-            border-radius: 9px;
-            background-color: transparent;
-            color: #e8799a;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .expand-btn:hover {
-            background-color: #e8799a;
-            color: #ffffff;
-        }
-
-        .niche-expanded {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .niche-expanded.active {
-            max-height: 500px;
-        }
+/* ── SIDEBAR NEON ROSE ── */
+.sb{width:220px;background:#0a0a0f;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;position:fixed;left:0;top:0;height:100vh;z-index:20;border-right:1px solid rgba(255,45,120,0.08);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:3px;}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,45,120,0.1);position:relative;}
+.sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);}
+.sb-logo img{height:32px;width:auto;}
+.sb-sec{padding:10px 0 2px;}
+.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:#ffffff;background:rgba(255,255,255,0.06);}
+.ni:hover .ni-ico{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
+.ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);box-shadow:0 0 8px rgba(255,45,120,0.15);}
+.nb{margin-left:auto;background:var(--neon,#ff2d78);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;box-shadow:0 0 10px rgba(255,45,120,0.35);}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);box-shadow:none;}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,45,120,0.08);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,45,120,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,45,120,0.08);border-color:rgba(255,45,120,0.2);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon,#ff2d78),var(--neon-soft,#ff5c9a));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 12px rgba(255,45,120,0.35);}
+.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
+.up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
 
         .top-shops {
             margin-top: 12px;
             padding-top: 12px;
-            border-top: 1px solid #f0ece6;
+            border-top: 1px solid #ffffff;
         }
 
         .shop-link {
@@ -363,7 +87,7 @@
             background-color: #ffffff;
             border-radius: 12px;
             padding: 24px;
-            border: 1px solid #f0ece6;
+            border: 1px solid #ffffff;
         }
 
         .chart-title {
@@ -392,7 +116,7 @@
 
         .bar-wrapper {
             flex: 1;
-            background-color: #f0ece6;
+            background-color: #ffffff;
             border-radius: 6px;
             height: 24px;
             overflow: hidden;
@@ -431,7 +155,7 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            border: 1px solid #f0ece6;
+            border: 1px solid #ffffff;
         }
 
         .country-card:hover {
@@ -478,7 +202,7 @@
         }
 
         .spinner {
-            border: 3px solid #f0ece6;
+            border: 3px solid #ffffff;
             border-top: 3px solid #e8799a;
             border-radius: 50%;
             width: 40px;
@@ -503,7 +227,7 @@
         }
 
         .content::-webkit-scrollbar-track {
-            background: #f0ece6;
+            background: #ffffff;
         }
 
         .content::-webkit-scrollbar-thumb {
@@ -527,49 +251,45 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div class="sidebar" style="padding:0;display:flex;flex-direction:column;">
-        <div style="padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);">
-            <span style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#e8799a;">Peekr</span>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Overview</div>
-            <a href="peekr-overview.html" class="nav-item">&#128202; Dashboard</a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Analyse</div>
-            <a href="peekr-dashboard.html" class="nav-item">&#127978; Trending Shops</a>
-            <a href="peekr-best-trends.html" class="nav-item active">&#128293; Best Trends </a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Favorites</div>
-            <a href="peekr-saved.html" class="nav-item">&#128203; Saved Ads</a>
-            <a href="peekr-saved.html" class="nav-item">&#11088; Saved Shops</a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Community</div>
-    <a class="ni" href="peekr-community.html"><span class="ni-ico">&#128172;</span>Community<span class="nb">New</span></a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Resources</div>
-            <a href="peekr-blog.html" class="nav-item">&#128221; Blog & Tips</a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Tools</div>
-
-            <a href="peekr-export.html" class="nav-item">&#128228; Export </a>
-        </div>
-        <div style="padding:10px 0 2px;">
-            <div style="font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;">Account</div>
-            <a href="peekr-pricing.html" class="nav-item">&#128142; Upgrade <span style="background:#e8799a;color:#fff;font-size:9px;font-weight:800;padding:2px 7px;border-radius:99px;margin-left:6px;">&#128293;</span></a>
-            <a href="peekr-affiliate.html" class="nav-item">&#129309; Affiliate</a>
-        </div>
-        <div style="margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;">
-            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;">
-                <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;">LR</div>
-                <div><div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);">Lyli Rose</div><div style="font-size:10px;color:#e8799a;font-weight:700;">Pro Plan</div></div>
-            </div>
-        </div>
-    </div>
+    <!-- SIDEBAR NEON ROSE -->
+<aside class="sb">
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Analyse</div>
+    <a class="ni" href="peekr-dashboard.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg></span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Trending Ads</a>
+    <a class="ni active" href="peekr-best-trends.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Best Trends<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Saved Shops</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Community</div>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Community<span class="nb">New</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Blog & Tips</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+  </div>
+  <div class="sb-bot">
+    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+  </div>
+</aside>
 
     <!-- Main Content -->
     <div class="main-content">

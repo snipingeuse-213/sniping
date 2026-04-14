@@ -47,31 +47,45 @@ body{
 ::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(255,45,120,0.4)}
 
-/* ── SIDEBAR (same dark as dashboard) ── */
+/* ── SIDEBAR NEON ROSE ── */
 .sb{
-  width:220px;flex-shrink:0;
-  position:relative;z-index:20;
-  background:#1a0a0f;
+  width:220px;
+  background:#0a0a0f;
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
+  position:fixed;left:0;top:0;height:100vh;z-index:20;
+  border-right:1px solid rgba(255,45,120,0.08);
 }
-.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:3px;}
+.sb-logo{
+  padding:16px 18px 14px;
+  border-bottom:1px solid rgba(255,45,120,0.1);
+  position:relative;
+}
+.sb-logo::after{
+  content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);
+}
+.sb-logo img{height:32px;width:auto;}
 .sb-sec{padding:10px 0 2px;}
 .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
-.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
-.ni.active{color:var(--neon-soft);background:rgba(255,45,120,0.12);font-weight:700;}
-.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon);border-radius:0 3px 3px 0;}
-.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
-.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);}
-.nb{margin-left:auto;background:var(--neon);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
-.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
-.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
-.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
-.uc:hover{background:rgba(255,255,255,0.12);}
-.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon-soft));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:#ffffff;background:rgba(255,255,255,0.06);}
+.ni:hover .ni-ico{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
+.ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);box-shadow:0 0 8px rgba(255,45,120,0.15);}
+.nb{margin-left:auto;background:var(--neon,#ff2d78);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;box-shadow:0 0 10px rgba(255,45,120,0.35);}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);box-shadow:none;}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,45,120,0.08);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,45,120,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,45,120,0.08);border-color:rgba(255,45,120,0.2);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon,#ff2d78),var(--neon-soft,#ff5c9a));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 12px rgba(255,45,120,0.35);}
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
-.up{font-size:10px;color:var(--neon-soft);font-weight:700;}
+.up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
+
 
 /* ── MAIN LAYOUT ── */
 .main{flex:1;display:flex;overflow:hidden;min-width:0;position:relative;z-index:5;}
@@ -529,94 +543,45 @@ body{
 </head>
 <body>
 
-<!-- Glow orbs -->
-<div class="glow-orb o1"></div>
-<div class="glow-orb o2"></div>
-
-<!-- ── LEFT SIDEBAR (Nav) ── -->
+<!-- SIDEBAR NEON ROSE -->
 <aside class="sb">
-        <div class="sb-logo">peekr</div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Overview</div>
-            <a href="peekr-overview.html" class="ni">
-                <span class="ni-ico">📊</span>
-                <span>Dashboard</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Analyse</div>
-            <a href="peekr-dashboard.html" class="ni">
-                <span class="ni-ico">🔥</span>
-                <span>Trending Shops</span>
-            </a>
-            <a href="peekr-best-trends.html" class="ni">
-                <span class="ni-ico">⭐</span>
-                <span>Best Trends</span>
-                <span class="nb s">Soon</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Favorites</div>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">❤️</span>
-                <span>Saved Ads</span>
-            </a>
-            <a href="peekr-saved.html" class="ni">
-                <span class="ni-ico">🛍️</span>
-                <span>Saved Shops</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Community</div>
-            <a href="peekr-community.html" class="ni active">
-                <span class="ni-ico">💬</span>
-                <span>Community</span>
-                <span class="nb">New</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Resources</div>
-            <a href="peekr-blog.html" class="ni">
-                <span class="ni-ico">📚</span>
-                <span>Blog & Tips</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Tools</div>
-            <a href="peekr-export.html" class="ni">
-                <span class="ni-ico">📥</span>
-                <span>Export</span>
-            </a>
-        </div>
-
-        <div class="sb-sec">
-            <div class="sb-lbl">Account</div>
-            <a href="peekr-pricing.html" class="ni">
-                <span class="ni-ico">⬆️</span>
-                <span>Upgrade</span>
-            </a>
-            <a href="peekr-affiliate.html" class="ni">
-                <span class="ni-ico">🤝</span>
-                <span>Affiliate</span>
-            </a>
-        </div>
-
-        <div class="sb-bot">
-            <div class="uc">
-                <div class="ua">LR</div>
-                <div>
-                    <div class="un">Lyli Rose</div>
-                    <div class="up">Pro Plan</div>
-                </div>
-            </div>
-        </div>
-    </aside>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Analyse</div>
+    <a class="ni" href="peekr-dashboard.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg></span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Best Trends<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Saved Shops</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Community</div>
+    <a class="ni active" href="peekr-community.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Community<span class="nb">New</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Blog & Tips</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+  </div>
+  <div class="sb-bot">
+    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+  </div>
+</aside>
 
 <!-- ── CHANNEL SIDEBAR ── -->
 <div class="channels">

@@ -5,13 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Shop Analytics - Peekr</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#f0ece6;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--cream:#f0ece6;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);--neon-glow2:rgba(255,45,120,0.15);--neon-glow3:rgba(255,45,120,0.08);}
+:root{--bg:#ffffff;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--cream:#ffffff;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);--neon-glow2:rgba(255,45,120,0.15);--neon-glow3:rgba(255,45,120,0.08);}
 html,body{height:100%;overflow:hidden;}
-body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
 
 /* Sidebar */
 .sb{width:220px;background:#0a0a0f;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;position:fixed;left:0;top:0;height:100vh;z-index:20;border-right:1px solid rgba(255,45,120,0.08);}
@@ -21,8 +20,8 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);}
 .sb-sec{padding:10px 0 2px;}
 .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
-.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:#ffffff;background:rgba(255,255,255,0.06);}
 .ni:hover .ni-ico{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
 .ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
 .ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
@@ -44,7 +43,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;background:#fff;border-bottom:1px solid var(--border);}
 .back-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;border:1px solid var(--border);background:var(--card);transition:all .15s;text-decoration:none;}
 .back-btn:hover{border-color:var(--pink);color:var(--pink);}
-.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;}
+.tb-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;}
 .tb-domain{font-size:13px;color:var(--pink);font-weight:600;margin-left:4px;}
 
 /* Content */
@@ -52,11 +51,11 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 
 /* Shop Header */
 .shop-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:0;background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:16px 16px 0 0;padding:24px;}
-.shop-icon{width:64px;height:64px;border-radius:14px;overflow:hidden;flex-shrink:0;background:#f5f0eb;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;}
+.shop-icon{width:64px;height:64px;border-radius:14px;overflow:hidden;flex-shrink:0;background:#fafafa;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;}
 .shop-icon img{width:100%;height:100%;object-fit:cover;}
 .shop-icon-fb{font-size:22px;font-weight:800;color:var(--pink);background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.04));width:100%;height:100%;display:flex;align-items:center;justify-content:center;}
 .shop-info{flex:1;min-width:0;}
-.shop-name{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;display:flex;align-items:center;gap:10px;}
+.shop-name{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;display:flex;align-items:center;gap:10px;}
 .shopify-badge{display:inline-flex;align-items:center;gap:3px;background:#95BF47;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
 .shop-domains{display:flex;align-items:center;gap:12px;margin-top:4px;}
 .shop-domain{color:var(--pink);font-size:13px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:4px;}
@@ -93,9 +92,9 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 
 /* Sections */
 .section{background:var(--card);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
-.section-title{font-family:'Clash Display',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.section-title{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .section-title .ico{font-size:16px;}
-.section-title .see-more{margin-left:auto;font-family:'Figtree',sans-serif;font-size:12px;font-weight:600;color:var(--pink);cursor:pointer;text-decoration:none;}
+.section-title .see-more{margin-left:auto;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:600;color:var(--pink);cursor:pointer;text-decoration:none;}
 
 /* Chart */
 .chart-container{height:200px;display:flex;align-items:flex-end;gap:4px;padding-top:10px;position:relative;}
@@ -107,7 +106,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .chart-labels span{flex:1;text-align:center;font-size:9px;color:var(--text3);font-weight:600;}
 
 /* Range Buttons (TrendTrack-style) */
-.range-btn{font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
+.range-btn{font-size:11px;font-weight:700;padding:3px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
 .range-btn:hover{border-color:var(--pink);color:var(--pink);}
 .range-btn.active{background:var(--pink);color:#fff;border-color:var(--pink);}
 
@@ -134,10 +133,10 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .kpi-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
 @media(max-width:900px){.kpi-trio{grid-template-columns:1fr;}}
 .kpi-big{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
-.kpi-big-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
+.kpi-big-label{font-size:10px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
 .kpi-big-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
 .kpi-big-icon{font-size:18px;}
-.kpi-big-value{font-size:28px;font-weight:800;color:var(--text1);font-family:'Clash Display',sans-serif;}
+.kpi-big-value{font-size:24px;font-weight:800;color:var(--text1);font-family:'Inter',sans-serif;}
 .kpi-big-sub{font-size:11px;color:var(--text3);font-weight:500;}
 
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
@@ -178,7 +177,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 
 .product-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;flex-shrink:0;width:140px;cursor:pointer;transition:all .15s;}
 .product-card:hover{border-color:var(--pink);transform:translateY(-2px);}
-.product-image{width:100%;aspect-ratio:1/1;background:#f5f0eb;border-radius:8px;overflow:hidden;margin-bottom:8px;}
+.product-image{width:100%;aspect-ratio:1/1;background:#fafafa;border-radius:8px;overflow:hidden;margin-bottom:8px;}
 .product-image img{width:100%;height:100%;object-fit:cover;}
 .product-title{font-size:11px;font-weight:700;color:var(--text1);margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3;}
 .product-price{font-size:12px;font-weight:800;color:var(--pink);margin-bottom:2px;}
@@ -197,7 +196,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 
 .latest-ad-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;flex-shrink:0;width:280px;transition:all .15s;cursor:pointer;}
 .latest-ad-card:hover{border-color:var(--pink);box-shadow:0 4px 12px rgba(232,121,154,0.1);}
-.latest-ad-image{width:100%;aspect-ratio:16/9;background:#f5f0eb;overflow:hidden;position:relative;}
+.latest-ad-image{width:100%;aspect-ratio:16/9;background:#fafafa;overflow:hidden;position:relative;}
 .latest-ad-image img{width:100%;height:100%;object-fit:cover;}
 .latest-ad-body{padding:12px;}
 .latest-ad-page{font-size:10px;color:var(--text3);font-weight:600;margin-bottom:4px;}
@@ -224,7 +223,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .sim-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;}
 .sim-card:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:0 4px 12px rgba(232,121,154,0.1);}
 .sim-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.sim-card-icon{width:36px;height:36px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#f5f0eb;border:1px solid var(--border);}
+.sim-card-icon{width:36px;height:36px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#fafafa;border:1px solid var(--border);}
 .sim-card-icon img{width:100%;height:100%;object-fit:cover;}
 .sim-card-name{font-size:14px;font-weight:700;}
 .sim-card-domain{font-size:11px;color:var(--text3);}
@@ -236,7 +235,7 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .ads-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
 .ad-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .15s;}
 .ad-card:hover{border-color:var(--pink);box-shadow:0 4px 12px rgba(232,121,154,0.08);}
-.ad-card-media{width:100%;aspect-ratio:1/1;background:#f5f0eb;overflow:hidden;position:relative;}
+.ad-card-media{width:100%;aspect-ratio:1/1;background:#fafafa;overflow:hidden;position:relative;}
 .ad-card-media img{width:100%;height:100%;object-fit:cover;}
 .ad-card-media .play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);}
 .ad-card-media .play-btn{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:20px;}
@@ -272,38 +271,38 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 
 <!-- SIDEBAR NEON ROSE -->
 <aside class="sb">
-  <div class="sb-logo"><span style="font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
   <div class="sb-sec">
     <div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><span class="ni-ico">📊</span>Dashboard</a>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Analyse</div>
-    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">🏪</span>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">📣</span>Trending Ads</a>
-    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">🔥</span>Best Trends<span class="nb s">Soon</span></a>
+    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg></span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Best Trends<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">💾</span>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">⭐</span>Saved Shops</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Saved Shops</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Community</div>
-    <a class="ni" href="peekr-community.html"><span class="ni-ico">💬</span>Community<span class="nb">New</span></a>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Community<span class="nb">New</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Resources</div>
-    <a class="ni" href="peekr-blog.html"><span class="ni-ico">📝</span>Blog & Tips</a>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Blog & Tips</a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-export.html"><span class="ni-ico">📤</span>Export<span class="nb s">Soon</span></a>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">🎯</span>Upgrade<span class="nb">🔥</span></a>
-    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">👨‍👩‍👧‍👦</span>Affiliate</a>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
   </div>
   <div class="sb-bot">
     <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
@@ -335,7 +334,7 @@ const params=new URLSearchParams(window.location.search);
 const domain=params.get('domain');
 
 if(!domain){
-  document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128269;</div><div style="font-size:16px;font-weight:700;">No shop selected</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
+  document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div><div style="font-size:16px;font-weight:700;">No shop selected</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
 }else{
   document.getElementById('page-domain').textContent=domain;
   loadShop(domain);
@@ -349,7 +348,7 @@ async function loadShop(d){
   try{
     const data=await sbFetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(d)+'&select=*');
     if(!data||data.length===0){
-      document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;">&#128533;</div><div style="font-size:16px;font-weight:700;">Shop not found</div><div style="color:var(--text2);">'+d+' is not in our database yet.</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
+      document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;"></div><div style="font-size:16px;font-weight:700;">Shop not found</div><div style="color:var(--text2);">'+d+' is not in our database yet.</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
       return;
     }
     renderShop(data[0]);
@@ -443,7 +442,7 @@ function renderShop(s){
       <div class="shop-info">
         <div class="shop-name">
           ${s.title||s.name||s.domain}
-          <span class="shopify-badge">&#128994; Shopify</span>
+          <span class="shopify-badge"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> Shopify</span>
         </div>
         <div class="shop-domains">
           <a class="shop-domain" href="https://${s.domain}" target="_blank">${s.domain} &#8599;</a>
@@ -452,11 +451,11 @@ function renderShop(s){
         </div>
         <div class="shop-meta">
           ${country?`<span class="meta-chip"><img src="https://flagcdn.com/w40/${country.toLowerCase()}.png"/> ${country.toUpperCase()}</span>`:''}
-          <span class="meta-chip">&#128197; ${created||'N/A'} ${age!=='N/A'?'('+age+')':''}</span>
-          <span class="meta-chip">&#127760; ${lang}</span>
-          <span class="meta-chip">&#128176; ${currency}</span>
+          <span class="meta-chip">${created||'N/A'} ${age!=='N/A'?'('+age+')':''}</span>
+          <span class="meta-chip">${lang}</span>
+          <span class="meta-chip">${currency}</span>
           <span class="meta-chip tag niche" style="margin:0;">${niche}</span>
-          <span class="meta-chip">&#127991; ${plan}</span>
+          <span class="meta-chip">${plan}</span>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
@@ -465,18 +464,18 @@ function renderShop(s){
           <div class="score-label">${TL[tier]}</div>
         </div>
         <div style="display:flex;gap:6px;">
-          <button class="shop-btn" onclick="saveShop('${s.domain}')" title="Save Shop">&#128190;</button>
-          <a class="shop-btn" href="https://${s.domain}" target="_blank" title="Visit Store">&#127760;</a>
+          <button class="shop-btn" onclick="saveShop('${s.domain}')" title="Save Shop"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>
+          <a class="shop-btn" href="https://${s.domain}" target="_blank" title="Visit Store"></a>
         </div>
       </div>
     </div>
 
     <!-- Tabs -->
     <div class="tabs-bar">
-      <div class="tab active" onclick="switchTab('analytics',this)">&#128202; Shop Analytics</div>
-      <div class="tab" onclick="switchTab('similar',this)">&#127978; Similar Shops</div>
-      <div class="tab" onclick="switchTab('ads',this)">&#128227; Meta Ads <span class="count" id="ads-count">${ads||'?'}</span></div>
-      <div class="tab" onclick="switchTab('emails',this)" style="opacity:0.4;cursor:default;">&#128231; Emails <span class="nb s">Soon</span></div>
+      <div class="tab active" onclick="switchTab('analytics',this)">Shop Analytics</div>
+      <div class="tab" onclick="switchTab('similar',this)">Similar Shops</div>
+      <div class="tab" onclick="switchTab('ads',this)">Meta Ads <span class="count" id="ads-count">${ads||'?'}</span></div>
+      <div class="tab" onclick="switchTab('emails',this)" style="opacity:0.4;cursor:default;">Emails <span class="nb s">Soon</span></div>
     </div>
 
     <!-- Panel: Analytics -->
@@ -488,7 +487,6 @@ function renderShop(s){
         <div class="kpi-big">
           <div class="kpi-big-label">Visites mensuelles</div>
           <div class="kpi-big-row">
-            <span class="kpi-big-icon">&#128100;</span>
             <span class="kpi-big-value">${fmtV(visits)}</span>
           </div>
           <div class="kpi-big-sub">${products.toLocaleString()} produits · ${estSales?'$'+fmtV(estSales)+'/mo est.':'—'}</div>
@@ -501,7 +499,7 @@ function renderShop(s){
       <div class="chart-grid">
         <div class="section chart-section">
           <div class="section-title">
-            <span class="ico">&#128200;</span> Trafic dans le temps
+            Trafic dans le temps
             <div style="margin-left:auto;display:flex;gap:4px;">
               <button class="range-btn" data-range="3m">3M</button>
               <button class="range-btn" data-range="6m">6M</button>
@@ -510,7 +508,7 @@ function renderShop(s){
           </div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
             <span style="font-size:24px;font-weight:800;color:var(--text1);">${fmtV(visits)}</span>
-            <span style="font-size:11px;color:var(--green);font-weight:700;">&#128994; ${traffic.length>1?'+'+Math.round((traffic[traffic.length-1]-traffic[0])/Math.max(traffic[0],1)*100)+'%':''}</span>
+            <span style="font-size:11px;color:var(--green);font-weight:700;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> ${traffic.length>1?'+'+Math.round((traffic[traffic.length-1]-traffic[0])/Math.max(traffic[0],1)*100)+'%':''}</span>
           </div>
           <div class="chart-container" style="height:180px;">
             ${traffic.length>0?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*170,4)}px;background:linear-gradient(180deg,var(--neon),var(--neon-soft));opacity:${0.4+(i/traffic.length)*0.6};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:12px;">No traffic data</div>'}
@@ -519,7 +517,7 @@ function renderShop(s){
 
         <div class="section chart-section">
           <div class="section-title">
-            <span class="ico">&#128227;</span> Ads actives dans le temps
+            Ads actives dans le temps
             <div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range">
               <button class="range-btn" data-range="3m" onclick="loadAdsChart('${s.domain}','3m',this)">3M</button>
               <button class="range-btn active" data-range="6m" onclick="loadAdsChart('${s.domain}','6m',this)">6M</button>
@@ -528,7 +526,7 @@ function renderShop(s){
           </div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
             <span style="font-size:24px;font-weight:800;color:var(--text1);" id="ads-chart-current">${ads}</span>
-            <span style="font-size:11px;color:var(--neon);font-weight:700;">&#128994; Active now</span>
+            <span style="font-size:11px;color:var(--neon);font-weight:700;"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> Active now</span>
           </div>
           <div id="ads-chart-container" style="height:180px;position:relative;">
             <canvas id="ads-chart-canvas" style="width:100%;height:100%;"></canvas>
@@ -540,7 +538,7 @@ function renderShop(s){
           <!-- Products Carousel -->
           <div class="section">
             <div class="section-title">
-              <span class="ico">&#128722;</span> Products: ${topProducts.length}
+              Products: ${topProducts.length}
               <div style="margin-left:auto;display:flex;gap:4px;" id="products-tabs">
                 <button class="section-tab active" onclick="switchProductsTab('best',this)">Best Sellers</button>
                 <button class="section-tab" onclick="switchProductsTab('recent',this)">Recently Added</button>
@@ -550,7 +548,7 @@ function renderShop(s){
               ${topProducts.length>0?topProducts.slice(0,10).map(p=>`
               <div class="product-card">
                 <div class="product-image">
-                  ${p.image?`<img src="${p.image}" onerror="this.style.display='none'"/><div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f5f0eb;font-size:24px;">&#128722;</div>`:'<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#f5f0eb;font-size:24px;">&#128722;</div>'}
+                  ${p.image?`<img src="${p.image}" onerror="this.style.display='none'"/><div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fafafa;font-size:24px;"></div>`:'<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fafafa;font-size:24px;"></div>'}
                 </div>
                 <div class="product-title">${p.title||p.name||'Product'}</div>
                 ${p.price?`<div class="product-price">$${parseFloat(p.price).toFixed(2)}</div>`:''}
@@ -563,7 +561,7 @@ function renderShop(s){
           <!-- Pixels & Apps (compact, collapsible) -->
           <details class="section" style="padding:10px 14px;">
             <summary style="cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;list-style:none;">
-              <span class="ico">&#128225;</span> Pixels & Apps
+              Pixels & Apps
               <span style="color:var(--text3);font-size:11px;font-weight:500;margin-left:auto;">${(pixels||[]).length} pixels · ${(apps||[]).length} apps</span>
             </summary>
             <div style="margin-top:10px;">
@@ -582,14 +580,14 @@ function renderShop(s){
 
           <!-- Growth Strategies -->
           <div class="section">
-            <div class="section-title"><span class="ico">&#127919;</span> Growth Strategies</div>
+            <div class="section-title">Growth Strategies</div>
             ${strats.length?`<div class="tags">${strats.map(s2=>`<span class="tag strat">${s2}</span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px;">No strategies detected</div>'}
           </div>
 
           <!-- Latest Ads Section -->
           <div class="section">
             <div class="section-title">
-              <span class="ico">&#128227;</span> Dernières Ads
+              Dernières Ads
               <a class="see-more" onclick="switchTab('ads',document.querySelectorAll('.tab')[2])" href="javascript:;">See more →</a>
             </div>
             <div class="ads-scroll" id="latest-ads-scroll">
@@ -600,7 +598,7 @@ function renderShop(s){
           <!-- Store Details + Ships To in a 2-col grid (bottom section) -->
           <div class="info-grid-2">
             <div class="section">
-              <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
+              <div class="section-title">Store Details</div>
               <div class="details-grid">
                 <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
                 <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
@@ -612,7 +610,7 @@ function renderShop(s){
             </div>
 
             <div class="section">
-              <div class="section-title"><span class="ico">&#127758;</span> Ships To (${shipsTo.length})</div>
+              <div class="section-title">Ships To (${shipsTo.length})</div>
               ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,15).map(c2=>`<span class="tag ship">${c2.toUpperCase()}</span>`).join('')}${shipsTo.length>15?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-15}</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No data</div>'}
             </div>
           </div>
@@ -621,7 +619,7 @@ function renderShop(s){
     <!-- Panel: Similar Shops -->
     <div class="tab-panel" id="panel-similar">
       <div class="section">
-        <div class="section-title"><span class="ico">&#127978;</span> Similar Shops <span style="font-family:Figtree;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;">Shops in the same niche & country</span></div>
+        <div class="section-title">Similar Shops <span style="font-family:Figtree;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;">Shops in the same niche & country</span></div>
         <div class="sim-grid" id="similar-shops">
           <div class="loading" style="grid-column:1/-1;height:200px;"><div class="spinner"></div><div>Finding similar shops...</div></div>
         </div>
@@ -632,7 +630,7 @@ function renderShop(s){
     <div class="tab-panel" id="panel-ads">
       <div class="section">
         <div class="section-title">
-          <span class="ico">&#128227;</span> Meta Ads Analysis
+          Meta Ads Analysis
         </div>
 
         <!-- Ads History Chart (bigger) -->
@@ -690,7 +688,7 @@ function renderShop(s){
 
         <div style="text-align:center;margin-top:24px;">
           <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank" style="display:inline-flex;">
-            &#128269; View All Ads on Meta Library &#8599;
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> View All Ads on Meta Library &#8599;
           </a>
         </div>
       </div>
@@ -699,7 +697,7 @@ function renderShop(s){
     <!-- Panel: Emails -->
     <div class="tab-panel" id="panel-emails">
       <div class="section" style="text-align:center;padding:60px 20px;">
-        <div style="font-size:48px;margin-bottom:12px;">&#128231;</div>
+        <div style="font-size:48px;margin-bottom:12px;"></div>
         <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Email Tracking Coming Soon</div>
         <div style="color:var(--text2);font-size:14px;">We're building email intelligence to track newsletter campaigns, promotions, and email strategies.</div>
       </div>
@@ -786,7 +784,7 @@ async function loadInfoRow(domainName){
 
   try{
     // Fetch Trustpilot data
-    let trustpilotHtml='<div class="info-card"><div class="info-card-title">&#11088; Trustpilot</div>';
+    let trustpilotHtml='<div class="info-card"><div class="info-card-title">Trustpilot</div>';
     try{
       const tpResp=await fetch(API_BASE+'?action=trustpilot&domain='+encodeURIComponent(domainName));
       const tpData=await tpResp.json();
@@ -808,7 +806,7 @@ async function loadInfoRow(domainName){
     trustpilotHtml+='</div>';
 
     // Visitor Countries (placeholder - would be filled from shop data)
-    let countriesHtml='<div class="info-card"><div class="info-card-title">&#127760; Visitor Countries</div><div class="countries-list">';
+    let countriesHtml='<div class="info-card"><div class="info-card-title">Visitor Countries</div><div class="countries-list">';
     const countryData=[
       {name:'United States',code:'US',percentage:45},
       {name:'Canada',code:'CA',percentage:12},
@@ -823,9 +821,9 @@ async function loadInfoRow(domainName){
     countriesHtml+='</div></div>';
 
     // Social Media (placeholder)
-    let socialHtml='<div class="info-card"><div class="info-card-title">&#128231; Social Media</div><div class="social-list">';
+    let socialHtml='<div class="info-card"><div class="info-card-title">Social Media</div><div class="social-list">';
     const socialPlatforms=[
-      {name:'Instagram',icon:'&#128247;',followers:'45K'},
+      {name:'Instagram',icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',followers:'45K'},
       {name:'TikTok',icon:'🎵',followers:'28K'},
       {name:'Facebook',icon:'ⓕ',followers:'12K'}
     ];
@@ -853,7 +851,7 @@ function renderAdCard(ad, domainName, style){
   if(style==='latest'){
     return `<div class="latest-ad-card">
       <div class="latest-ad-image">
-        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:20px;\\'>&#128226;</div>'" loading="lazy"/>
+        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:20px;\\'></div>'" loading="lazy"/>
       </div>
       <div class="latest-ad-body">
         <div class="latest-ad-page">${pageName}</div>
@@ -868,13 +866,13 @@ function renderAdCard(ad, domainName, style){
   // Grid card style for Meta Ads panel
   return `<div class="ad-card">
     <div class="ad-card-media">
-      <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
+      <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'></div>'" loading="lazy"/>
     </div>
     <div class="ad-card-body">
       <div class="ad-card-page">${pageName}</div>
       <div class="ad-card-text">${bodyText.substring(0,200)}${bodyText.length>200?'...':''}</div>
       <div class="ad-card-footer">
-        <span class="ad-status ${ad.status==='active'||!ad.status?'active':'inactive'}">&#128994; ${ad.status||'Active'}</span>
+        <span class="ad-status ${ad.status==='active'||!ad.status?'active':'inactive'}"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> ${ad.status||'Active'}</span>
         ${daysActive?`<span style="font-size:11px;color:var(--text3);">${daysActive}d active</span>`:''}
         <a class="ad-card-cta" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank">View Ad &#8599;</a>
       </div>
@@ -1012,10 +1010,10 @@ function renderSimilar(container, shops){
         ${s.country?`<img class="sim-card-flag" src="https://flagcdn.com/w40/${s.country.toLowerCase()}.png" style="margin-left:auto;"/>`:''}
       </div>
       <div class="sim-card-stats">
-        <span>&#128200; ${fmtV(s.monthly_visits||0)}</span>
-        <span>&#128722; ${s.products_count||0}</span>
-        <span>&#128226; ${s.live_ads||0} ads</span>
-        ${created?`<span>&#128197; ${created}</span>`:''}
+        <span>${fmtV(s.monthly_visits||0)}</span>
+        <span>${s.products_count||0}</span>
+        <span>${s.live_ads||0} ads</span>
+        ${created?`<span>${created}</span>`:''}
       </div>
     </a>`;
   }).join('');
@@ -1037,11 +1035,11 @@ async function loadMetaAds(domainName){
     }else{
       container.innerHTML=`
         <div style="grid-column:1/-1;text-align:center;padding:40px 20px;">
-          <div style="font-size:40px;margin-bottom:8px;">&#128226;</div>
+          <div style="font-size:40px;margin-bottom:8px;"></div>
           <div style="font-size:16px;font-weight:700;margin-bottom:6px;">No Meta Ads Found</div>
           <div style="color:var(--text2);font-size:13px;margin-bottom:16px;">This shop doesn't currently have indexed Meta ads in our database.</div>
           <a class="shop-btn" href="https://www.facebook.com/ads/library/?active_status=all&ad_type=all&q=${encodeURIComponent(domainName)}" target="_blank" style="display:inline-flex;">
-            &#128269; Check Meta Ad Library &#8599;
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Check Meta Ad Library &#8599;
           </a>
         </div>`;
     }
@@ -1079,7 +1077,7 @@ function renderMetaAdCard(ad, domainName){
     <div class="ad-card" style="display:flex;flex-direction:column;height:100%;">
       <div class="ad-card-media" style="position:relative;">
         ${ad.video_url?'<div class="play-overlay"><div class="play-btn">▶</div></div>':''}
-        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'>&#128226;</div>'" loading="lazy"/>
+        <img src="${imgSrc}" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(232,121,154,0.1),rgba(232,121,154,0.03));display:flex;align-items:center;justify-content:center;font-size:24px;\\'></div>'" loading="lazy"/>
       </div>
       <div class="ad-card-body" style="flex:1;display:flex;flex-direction:column;">
         ${headline?`<div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:6px;line-height:1.4;">${headline}</div>`:''}
@@ -1087,7 +1085,7 @@ function renderMetaAdCard(ad, domainName){
         <div style="flex:1;"></div>
         <div class="ad-card-footer">
           <span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:rgba(${status==='active'?'34,197,94':'184,168,176'},0.1);color:${statusColor};font-size:11px;font-weight:600;">
-            &#128994; ${statusLabel}
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> ${statusLabel}
           </span>
           <span style="font-size:11px;color:var(--text3);">${durationText}</span>
           ${ctaType?`<span style="font-size:11px;color:var(--text3);margin-left:auto;">${ctaType}</span>`:''}
@@ -1195,7 +1193,7 @@ function renderPixelCards(pixels, techs){
 
     return `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;transition:all .15s;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-height:220px;">
       <div style="display:flex;align-items:flex-start;gap:10px;">
-        ${iconUrl?`<img src="${iconUrl}" alt="${name}" style="width:40px;height:40px;border-radius:8px;object-fit:contain;background:#f5f0eb;padding:4px;flex-shrink:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div style="width:40px;height:40px;border-radius:8px;background:rgba(232,121,154,0.1);display:none;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${fallbackIcon}</div>`:
+        ${iconUrl?`<img src="${iconUrl}" alt="${name}" style="width:40px;height:40px;border-radius:8px;object-fit:contain;background:#fafafa;padding:4px;flex-shrink:0;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div style="width:40px;height:40px;border-radius:8px;background:rgba(232,121,154,0.1);display:none;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${fallbackIcon}</div>`:
         `<div style="width:40px;height:40px;border-radius:8px;background:rgba(232,121,154,0.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">${fallbackIcon}</div>`}
         <div style="flex:1;min-width:0;">
           <div style="font-size:13px;font-weight:700;color:var(--text1);line-height:1.3;word-break:break-word;">${name}</div>
@@ -1261,7 +1259,7 @@ async function loadAdsChart(domain, range, btnEl) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       canvas.parentElement.innerHTML = `
         <div style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);">
-          <div style="font-size:32px;margin-bottom:8px;">&#128202;</div>
+          <div style="font-size:32px;margin-bottom:8px;"></div>
           <div style="font-size:13px;font-weight:600;">Historical data building up</div>
           <div style="font-size:11px;margin-top:4px;">Chart will appear once we have multiple daily snapshots</div>
         </div>`;

@@ -18,12 +18,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
 <style>
+:root{
+  --neon:#ff2d78;
+  --neon-soft:#ff5c9a;
+  --neon-glow:rgba(255,45,120,0.35);
+  --neon-glow2:rgba(255,45,120,0.15);
+  --neon-glow3:rgba(255,45,120,0.08);
+  --cream:#ffffff;
+  --black:#1a0a0f;
+  --pink:#e8799a;
+  --pink-dark:#d4607a;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{
   font-family:'Figtree',sans-serif;
-  background:#f0ece6;
-  color:#1a0a0f;
+  background:var(--cream);
+  color:var(--black);
   display:flex;
   height:100vh;
   position:relative;
@@ -46,56 +57,66 @@ body{
 
 @keyframes fl1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
 @keyframes fl2{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-8px) rotate(2deg)}}
+@keyframes shimmer{0%{opacity:.5}100%{opacity:1}}
 
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:4px}
 
-/* ── SIDEBAR ── */
+/* ── SIDEBAR NEON ROSE ── */
 .sb{
-  width:220px;flex-shrink:0;
-  position:relative;z-index:20;
-  background:#1a0a0f;
-  border-right:none;
+  width:220px;
+  background:#0a0a0f;
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
+  position:fixed;left:0;top:0;height:100vh;z-index:20;
+  border-right:1px solid rgba(255,45,120,0.08);
 }
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:3px;}
 .sb-logo{
   padding:16px 18px 14px;
-  border-bottom:1px solid rgba(255,255,255,0.07);
+  border-bottom:1px solid rgba(255,45,120,0.1);
+  position:relative;
+}
+.sb-logo::after{
+  content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);
 }
 .sb-logo img{height:32px;width:auto;}
 .sb-sec{padding:10px 0 2px;}
 .sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;}
-.ni:hover{color:rgba(255,255,255,0.9);background:rgba(255,255,255,0.06);}
-.ni.active{color:#f4a7b9;background:rgba(232,121,154,0.15);font-weight:700;}
-.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#e8799a;border-radius:0 3px 3px 0;}
-.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
-.ni.active .ni-ico{background:rgba(232,121,154,0.2);border-color:rgba(232,121,154,0.35);}
-.nb{margin-left:auto;background:#e8799a;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;}
-.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);}
-.sb-bot{margin-top:auto;border-top:1px solid rgba(255,255,255,0.07);padding:12px;}
-.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
-.uc:hover{background:rgba(255,255,255,0.12);}
-.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#e8799a,#f4a7b9);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:#ffffff;background:rgba(255,255,255,0.06);}
+.ni:hover .ni-ico{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);}
+.ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);box-shadow:0 0 8px rgba(255,45,120,0.15);}
+.nb{margin-left:auto;background:var(--neon,#ff2d78);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;box-shadow:0 0 10px rgba(255,45,120,0.35);}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);box-shadow:none;}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,45,120,0.08);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,45,120,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.uc:hover{background:rgba(255,45,120,0.08);border-color:rgba(255,45,120,0.2);}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon,#ff2d78),var(--neon-soft,#ff5c9a));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 12px rgba(255,45,120,0.35);}
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
-.up{font-size:10px;color:#e8799a;font-weight:700;}
+.up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
+
 
 /* ── MAIN ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:#ffffff;}
+.main{margin-left:220px;display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;z-index:5;background:linear-gradient(180deg,#ffffff 0%,#fffbfc 50%,#fef8fa 100%);height:100vh;}
 
-/* ── TOPBAR ── */
+/* ── TOPBAR NEON ── */
 .topbar{
   height:56px;flex-shrink:0;
   display:flex;align-items:center;gap:12px;
   padding:0 24px;
-  background:#ffffff;
-  border-bottom:1px solid rgba(220,200,210,0.18);
-  box-shadow:0 1px 0 rgba(220,200,210,0.12);
+  background:linear-gradient(135deg,#ffffff 0%,#fff8fa 100%);
+  border-bottom:1px solid rgba(255,45,120,0.08);
+  box-shadow:0 1px 12px rgba(255,45,120,0.04);
 }
-.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f;}
+.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--black);}
 .sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
-.sbox:focus-within{background:#fff;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
+.sbox:focus-within{background:#fff;border-color:var(--neon-soft);box-shadow:0 0 0 3px var(--neon-glow3),0 0 16px rgba(255,45,120,0.06);}
 .sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
 .sbox input::placeholder{color:rgba(26,10,15,0.3);}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
@@ -105,36 +126,36 @@ body{
 .ldot{width:6px;height:6px;border-radius:50%;background:#52c87a;animation:bl 2s infinite;}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
 .bico{width:34px;height:34px;background:rgba(255,255,255,0.7);backdrop-filter:blur(8px);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(26,10,15,0.5);font-size:14px;transition:all .15s;}
-.bico:hover{background:#fff;border-color:#e8799a;color:#e8799a;}
+.bico:hover{background:#fff;border-color:var(--neon-soft);color:var(--neon);box-shadow:0 0 12px var(--neon-glow3);}
 
-/* ── SEGMENTS ── */
-.segs{display:flex;align-items:center;gap:5px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .15s;font-family:'Figtree',sans-serif;}
-.sg:hover{background:rgba(255,255,255,0.6);color:#1a0a0f;}
+/* ── SEGMENTS NEON ── */
+.segs{display:flex;align-items:center;gap:6px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:linear-gradient(135deg,#ffffff 0%,#fff8fa 100%);}
+.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .18s;font-family:'Figtree',sans-serif;}
+.sg:hover{background:rgba(255,45,120,0.04);color:var(--neon);border-color:rgba(255,45,120,0.1);}
 .sg.active{
-  background:rgba(255,252,248,0.85);
+  background:rgba(255,45,120,0.06);
   backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.9);
-  box-shadow:0 2px 12px rgba(200,100,140,0.08),inset 0 1px 0 rgba(255,255,255,0.9);
-  color:#d4607a;
+  border:1px solid rgba(255,45,120,0.15);
+  box-shadow:0 2px 12px rgba(255,45,120,0.08);
+  color:var(--neon);
 }
 .sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
-/* ── FILTERS ── */
-.fw{padding:10px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;border-bottom:1px solid rgba(200,160,170,0.12);background:#fafafa;}
-.fr{display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+/* ── FILTERS NEON ROSE ── */
+.fw{padding:12px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid rgba(255,45,120,0.08);background:linear-gradient(180deg,#fefcfd 0%,#faf5f7 100%);}
+.fr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
-.fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
-.fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fb.has-value{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
-.fc{font-size:8px;opacity:.35;}
+.fb{display:flex;align-items:center;gap:5px;padding:6px 12px;background:rgba(255,255,255,0.85);border:1px solid rgba(255,45,120,0.12);border-radius:8px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.6);cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'Figtree',sans-serif;position:relative;box-shadow:0 1px 3px rgba(255,45,120,0.04);}
+.fb:hover{border-color:rgba(255,45,120,0.3);color:var(--black);background:#fff;box-shadow:0 2px 8px rgba(255,45,120,0.08);}
+.fb.active{border-color:var(--neon-soft);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 12px rgba(255,45,120,0.1);}
+.fb.has-value{border-color:var(--neon-soft);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 12px rgba(255,45,120,0.1);}
+.fc{font-size:8px;opacity:.45;color:var(--neon-soft);}
 /* Filter tabs */
-.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:4px;padding:0 2px;}
-.fhdr-label{font-size:12px;font-weight:700;color:rgba(26,10,15,0.35);text-transform:uppercase;letter-spacing:.06em;}
-.ftab{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(200,160,170,0.18);background:rgba(255,255,255,0.7);color:rgba(26,10,15,0.5);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
-.ftab:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;}
-.ftab.active{background:#1a0a0f;color:#fff;border-color:#1a0a0f;}
+.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:6px;padding:0 2px;}
+.fhdr-label{font-size:12px;font-weight:800;color:var(--neon);text-transform:uppercase;letter-spacing:.08em;text-shadow:0 0 20px var(--neon-glow2);}
+.ftab{display:flex;align-items:center;gap:5px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(255,45,120,0.15);background:rgba(255,255,255,0.8);color:rgba(26,10,15,0.5);cursor:pointer;transition:all .18s;font-family:'Figtree',sans-serif;}
+.ftab:hover{border-color:rgba(255,45,120,0.3);color:var(--neon);background:#fff;}
+.ftab.active{background:linear-gradient(135deg,var(--neon),var(--pink-dark));color:#fff;border-color:var(--neon);box-shadow:0 2px 12px var(--neon-glow2);}
 .ftab .ftab-ico{font-size:13px;}
 .fsort{display:flex;align-items:center;gap:8px;margin-top:2px;padding:0 2px;}
 .fsort-label{font-size:11px;color:rgba(26,10,15,0.35);display:flex;align-items:center;gap:4px;}
@@ -230,9 +251,9 @@ tbody tr td{
 tbody tr td:first-child{border-radius:12px 0 0 12px;border-left:1px solid rgba(200,160,170,0.1);}
 tbody tr td:last-child{border-radius:0 12px 12px 0;border-right:1px solid rgba(200,160,170,0.1);}
 tbody tr:hover td{
-  background:#fff8fa;
-  border-color:rgba(232,121,154,0.15);
-  box-shadow:0 2px 12px rgba(200,100,140,0.07);
+  background:#fff5f8;
+  border-color:rgba(255,45,120,0.12);
+  box-shadow:0 2px 16px rgba(255,45,120,0.08);
 }
 td{padding:11px 14px;vertical-align:middle;}
 
@@ -327,50 +348,43 @@ td{padding:11px 14px;vertical-align:middle;}
 </head>
 <body>
 
-<!-- FLOATING OBJECTS -->
-<div class="page-objects">
-  <div class="po p1"></div>
-  <div class="po p2"></div>
-  <div class="po p3"></div>
-  <div class="po p4"></div>
-  <div class="po pp"></div>
-  <div class="po pg"></div>
-  <div class="po-worm1"></div>
-  <div class="po-worm2"></div>
-</div>
-
-<!-- SIDEBAR -->
+<!-- SIDEBAR NEON ROSE -->
 <aside class="sb">
-  <div class="sb-logo">
-    <img style="filter:brightness(0) invert(1);" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iNDAwIiB6b29tQW5kUGFuPSJtYWduaWZ5IiB2aWV3Qm94PSIwIDAgMzAwIDg5Ljk5OTk5OSIgaGVpZ2h0PSIxMjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHZlcnNpb249IjEuMCI+PGRlZnM+PGcvPjwvZGVmcz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUzLjc1NjcyNywgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSAyOS4xNDA2MjUgMC43MDMxMjUgQyAyNS42OTE0MDYgMC43MDMxMjUgMjMuMDIzNDM4IC0wLjA3ODEyNSAyMS4xNDA2MjUgLTEuNjQwNjI1IEMgMTkuMjUzOTA2IC0zLjIxMDkzOCAxNy44NjMyODEgLTQuODkwNjI1IDE2Ljk2ODc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IC02LjY3MTg3NSBMIDE2LjM0Mzc1IDE2LjQyMTg3NSBMIDQgMTYuNDIxODc1IEwgNCAtNDEuNTYyNSBMIDE2LjM0Mzc1IC00MS41NjI1IEwgMTYuMzQzNzUgLTM1LjQzNzUgTCAxNi45Njg3NSAtMzUuNDM3NSBDIDE3LjY5NTMxMiAtMzcgMTkuMDE1NjI1IC0zOC41NTA3ODEgMjAuOTIxODc1IC00MC4wOTM3NSBDIDIyLjgzNTkzOCAtNDEuNjQ0NTMxIDI1LjU1MDc4MSAtNDIuNDIxODc1IDI5LjA2MjUgLTQyLjQyMTg3NSBDIDM0LjI1IC00Mi40MjE4NzUgMzguMjQyMTg4IC00MC40ODQzNzUgNDEuMDQ2ODc1IC0zNi42MDkzNzUgQyA0My44NDc2NTYgLTMyLjczNDM3NSA0NS4yNSAtMjcuNDY4NzUgNDUuMjUgLTIwLjgxMjUgQyA0NS4yNSAtMTQuMjY5NTMxIDQzLjg0NzY1NiAtOS4wNDY4NzUgNDEuMDQ2ODc1IC01LjE0MDYyNSBDIDM4LjI0MjE4OCAtMS4yNDIxODggMzQuMjczNDM4IDAuNzAzMTI1IDI5LjE0MDYyNSAwLjcwMzEyNSBaIE0gMjQuNTkzNzUgLTguOTUzMTI1IEMgMjcuNDE0MDYyIC04Ljk1MzEyNSAyOS40OTIxODggLTEwLjEyODkwNiAzMC44MjgxMjUgLTEyLjQ4NDM3NSBDIDMyLjE3MTg3NSAtMTQuODQ3NjU2IDMyLjg0Mzc1IC0xNy42MjUgMzIuODQzNzUgLTIwLjgxMjUgQyAzMi44NDM3NSAtMjQuMDA3ODEyIDMyLjE3MTg3NSAtMjYuNzUgMzAuODI4MTI1IC0yOS4wMzEyNSBDIDI5LjQ5MjE4OCAtMzEuMzEyNSAyNy40MTQwNjIgLTMyLjQ1MzEyNSAyNC41OTM3NSAtMzIuNDUzMTI1IEMgMjEuNzU3ODEyIC0zMi40NTMxMjUgMTkuNjc1NzgxIC0zMS4yOTY4NzUgMTguMzQzNzUgLTI4Ljk4NDM3NSBDIDE3LjAwNzgxMiAtMjYuNjc5Njg4IDE2LjM0Mzc1IC0yMy45NTcwMzEgMTYuMzQzNzUgLTIwLjgxMjUgQyAxNi4zNDM3NSAtMTcuNjI1IDE3LjAxOTUzMSAtMTQuODQ3NjU2IDE4LjM3NSAtMTIuNDg0Mzc1IEMgMTkuNzM4MjgxIC0xMC4xMjg5MDYgMjEuODEyNSAtOC45NTMxMjUgMjQuNTkzNzUgLTguOTUzMTI1IFogTSAyNC41OTM3NSAtOC45NTMxMjUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NS43ODY4LCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMzQuMjAzLCA2OS42ODI0OTMpIj48Zz48cGF0aCBkPSJNIDIyLjg1OTM3NSAwLjcwMzEyNSBDIDE4LjQ2MDkzOCAwLjcwMzEyNSAxNC43NTc4MTIgLTAuMzAwNzgxIDExLjc1IC0yLjMxMjUgQyA4LjczODI4MSAtNC4zMzIwMzEgNi41MDc4MTIgLTYuOTc2NTYyIDUuMDYyNSAtMTAuMjUgQyAzLjYyNSAtMTMuNTE5NTMxIDIuOTA2MjUgLTE3LjAzOTA2MiAyLjkwNjI1IC0yMC44MTI1IEMgMi45MDYyNSAtMjQuNTgyMDMxIDMuNjI1IC0yOC4xMDE1NjIgNS4wNjI1IC0zMS4zNzUgQyA2LjUwNzgxMiAtMzQuNjU2MjUgOC43MzgyODEgLTM3LjMxNjQwNiAxMS43NSAtMzkuMzU5Mzc1IEMgMTQuNzU3ODEyIC00MS4zOTg0MzggMTguNTE1NjI1IC00Mi40MjE4NzUgMjMuMDE1NjI1IC00Mi40MjE4NzUgQyAyOC44Nzg5MDYgLTQyLjQyMTg3NSAzMy41MzkwNjIgLTQwLjU3MDMxMiAzNyAtMzYuODc1IEMgNDAuNDU3MDMxIC0zMy4xODc1IDQyLjE4NzUgLTI3LjgzMjAzMSA0Mi4xODc1IC0yMC44MTI1IEwgNDIuMTg3NSAtMTcuNDM3NSBMIDE0LjY4NzUgLTE3LjQzNzUgTCAxNC42ODc1IC0xNi44MTI1IEMgMTQuNjg3NSAtMTQuNjY0MDYyIDE1LjQyOTY4OCAtMTIuODE2NDA2IDE2LjkyMTg3NSAtMTEuMjY1NjI1IEMgMTguNDIxODc1IC05LjcyMjY1NiAyMC4zMjAzMTIgLTguOTUzMTI1IDIyLjYyNSAtOC45NTMxMjUgQyAyNC40MDYyNSAtOC45NTMxMjUgMjUuOTIxODc1IC05LjM1OTM3NSAyNy4xNzE4NzUgLTEwLjE3MTg3NSBDIDI4LjQyOTY4OCAtMTAuOTg0Mzc1IDI5LjMyODEyNSAtMTIuMDcwMzEyIDI5Ljg1OTM3NSAtMTMuNDM3NSBMIDQxLjg3NSAtMTMuNDM3NSBDIDQwLjgyMDMxMiAtOS4zMDA3ODEgMzguNjYwMTU2IC01LjkxMDE1NiAzNS4zOTA2MjUgLTMuMjY1NjI1IEMgMzIuMTE3MTg4IC0wLjYxNzE4OCAyNy45NDE0MDYgMC43MDMxMjUgMjIuODU5Mzc1IDAuNzAzMTI1IFogTSAzMC40ODQzNzUgLTI1LjI5Njg3NSBDIDMwLjQyOTY4OCAtMjguMTI4OTA2IDI5LjcwNzAzMSAtMzAuMjIyNjU2IDI4LjMxMjUgLTMxLjU3ODEyNSBDIDI2LjkyNTc4MSAtMzIuOTQxNDA2IDI1LjA4MjAzMSAtMzMuNjI1IDIyLjc4MTI1IC0zMy42MjUgQyAyMC40MjU3ODEgLTMzLjYyNSAxOC41NTA3ODEgLTMyLjg5MDYyNSAxNy4xNTYyNSAtMzEuNDIxODc1IEMgMTUuNzY5NTMxIC0yOS45NTMxMjUgMTUuMDUwNzgxIC0yNy45MTAxNTYgMTUgLTI1LjI5Njg3NSBaIE0gMzAuNDg0Mzc1IC0yNS4yOTY4NzUgIi8+PC9nPjwvZz48L2c+PGcgZmlsbD0iIzFiMWIxYiIgZmlsbC1vcGFjaXR5PSIxIj48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNzIuNjE5MiwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjY0MDYyNSAtNTguMjk2ODc1IEwgMTYuOTY4NzUgLTU4LjI5Njg3NSBMIDE2Ljk2ODc1IC0yNS45MjE4NzUgTCAxNy4zNTkzNzUgLTI1LjkyMTg3NSBMIDI4LjkwNjI1IC00MS41NjI1IEwgNDIuNDIxODc1IC00MS41NjI1IEwgMjguNTE1NjI1IC0yMi4zOTA2MjUgTCA0Mi43MzQzNzUgMCBMIDI5LjE0MDYyNSAwIEwgMTcuNDM3NSAtMTkuODc1IEwgMTYuOTY4NzUgLTE5Ljg3NSBMIDE2Ljk2ODc1IDAgTCA0LjY0MDYyNSAwIFogTSA0LjY0MDYyNSAtNTguMjk2ODc1ICIvPjwvZz48L2c+PC9nPjxnIGZpbGw9IiNkNTgyOWIiIGZpbGwtb3BhY2l0eT0iMSI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjExLjE5ODEyOSwgNjkuNjgyNDkzKSI+PGc+PHBhdGggZD0iTSA0LjQ4NDM3NSAtNDEuNTYyNSBMIDE2LjY1NjI1IC00MS41NjI1IEwgMTYuNjU2MjUgLTM0Ljk1MzEyNSBMIDE3LjI4MTI1IC0zNC45NTMxMjUgQyAxNy45MDYyNSAtMzYuNzg1MTU2IDE5LjE0NDUzMSAtMzguMzQzNzUgMjEgLTM5LjYyNSBDIDIyLjg2MzI4MSAtNDAuOTE0MDYyIDI1LjI4OTA2MiAtNDEuNTYyNSAyOC4yODEyNSAtNDEuNTYyNSBDIDI5LjE3NTc4MSAtNDEuNTYyNSAzMC4wMTU2MjUgLTQxLjQ4NDM3NSAzMC43OTY4NzUgLTQxLjMyODEyNSBMIDMwLjI1IC0zMC4wOTM3NSBDIDI5LjAzOTA2MiAtMzAuNTA3ODEyIDI3LjY0ODQzOCAtMzAuNzE4NzUgMjYuMDc4MTI1IC0zMC43MTg3NSBDIDIyLjc4NTE1NiAtMzAuNzE4NzUgMjAuMzkwNjI1IC0yOS44Nzg5MDYgMTguODkwNjI1IC0yOC4yMDMxMjUgQyAxNy4zOTg0MzggLTI2LjUyMzQzOCAxNi42NTYyNSAtMjMuNzUgMTYuNjU2MjUgLTE5Ljg3NSBMIDE2LjY1NjI1IDAgTCA0LjQ4NDM3NSAwIFogTSA0LjQ4NDM3NSAtNDEuNTYyNSAiLz48L2c+PC9nPjwvZz48ZyBmaWxsPSIjMWIxYjFiIiBmaWxsLW9wYWNpdHk9IjEiPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDIzNS44NjYwOTIsIDY5LjY4MjQ5MykiPjxnPjxwYXRoIGQ9Ik0gMTMuMjAzMTI1IDAuNzAzMTI1IEMgMTEuMjY1NjI1IDAuNzAzMTI1IDkuNjY0MDYyIDAuMDUwNzgxMiA4LjQwNjI1IC0xLjI1IEMgNy4xNDQ1MzEgLTIuNTYyNSA2LjUxNTYyNSAtNC4xNjAxNTYgNi41MTU2MjUgLTYuMDQ2ODc1IEMgNi41MTU2MjUgLTcuOTI5Njg4IDcuMTQ0NTMxIC05LjUxNTYyNSA4LjQwNjI1IC0xMC43OTY4NzUgQyA5LjY2NDA2MiAtMTIuMDg1OTM4IDExLjI2NTYyNSAtMTIuNzM0Mzc1IDEzLjIwMzEyNSAtMTIuNzM0Mzc1IEMgMTUuMTQwNjI1IC0xMi43MzQzNzUgMTYuNzUgLTEyLjA4NTkzOCAxOC4wMzEyNSAtMTAuNzk2ODc1IEMgMTkuMzEyNSAtOS41MTU2MjUgMTkuOTUzMTI1IC03LjkyOTY4OCAxOS45NTMxMjUgLTYuMDQ2ODc1IEMgMTkuOTUzMTI1IC00LjE2MDE1NiAxOS4yOTY4NzUgLTIuNTYyNSAxNy45ODQzNzUgLTEuMjUgQyAxNi42Nzk2ODggMC4wNTA3ODEyIDE1LjA4NTkzOCAwLjcwMzEyNSAxMy4yMDMxMjUgMC43MDMxMjUgWiBNIDEzLjIwMzEyNSAwLjcwMzEyNSAiLz48L2c+PC9nPjwvZz48L3N2Zz4=" alt="peekr"/>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Overview</div>
-    <a class="ni" href="peekr-overview.html"><span class="ni-ico">&#128202;</span>Dashboard</a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Analyse</div>
+    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg></span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Best Trends<span class="nb s">Soon</span></a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Analyse</div>
-    <a class="ni active" href="peekr-dashboard.html"><span class="ni-ico">&#127978;</span>Trending Shops</a>
-    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico">&#128227;</span>Trending Ads</a>
-    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico">&#128293;</span>Best Trends<span class="nb s">Soon</span></a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Saved Shops</a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Favorites</div>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#128203;</span>Saved Ads</a>
-    <a class="ni" href="peekr-saved.html"><span class="ni-ico">&#11088;</span>Saved Shops</a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Community</div>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Community<span class="nb">New</span></a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Community</div>
-    <a class="ni" href="peekr-community.html"><span class="ni-ico">&#128172;</span>Community<span class="nb">New</span></a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Blog & Tips</a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Resources</div>
-    <a class="ni" href="peekr-blog.html"><span class="ni-ico">&#128221;</span>Blog & Tips</a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
   </div>
-  <div class="sb-sec"><div class="sb-lbl">Tools</div>
-    <a class="ni" href="peekr-export.html"><span class="ni-ico">&#128228;</span>Export<span class="nb s">Soon</span></a>
-  </div>
-  <div class="sb-sec"><div class="sb-lbl">Account</div>
-    <a class="ni" href="peekr-pricing.html"><span class="ni-ico">&#128142;</span>Upgrade<span class="nb">&#128293;</span></a>
-    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico">&#129309;</span>Affiliate</a>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
   </div>
   <div class="sb-bot">
-    <div class="uc" onclick="Peekr.signOut()"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
   </div>
 </aside>
 
@@ -511,30 +525,30 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
       const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=eq.total_count&select=value', { headers: { 'apikey': _AK } });
       if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
-    // Step 1: fetch first 1000 shops (no count=exact needed)
-    const result = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc&limit=1000');
-    if (!window._totalShopCount) window._totalShopCount = result.count || result.data.length;
+    // Step 1: fetch US shops first (best shops, with products) then rest
     const seen = new Set();
     let allShops = [];
-    for (const s of (result.data||[])) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
-    if (allShops.length > 0) {
+    // Priority: US shops with products, sorted by score
+    const usResult = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&country=eq.US&products_count=gt.0&order=score.desc&limit=1000');
+    if (!window._totalShopCount) window._totalShopCount = usResult.count || 0;
+    for (const s of (usResult.data||[])) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
+    console.log('[Peekr] Loaded ' + allShops.length + ' US shops first');
+    // Render immediately with US shops
+    if (allShops.length > 0 && typeof mapShop === 'function') {
       window._supabaseShops = allShops;
-      console.log('[Peekr] Loaded ' + allShops.length + ' shops, total in DB: ' + window._totalShopCount);
-      // Directly populate D and render — don't rely on waitForShops polling
-      if (typeof mapShop === 'function') {
-        D = allShops.map(mapShop);
-        if (typeof re === 'function') re();
-        console.log('[Peekr] Rendered ' + D.length + ' shops from IIFE');
-      }
+      D = allShops.map(mapShop);
+      if (typeof re === 'function') re();
+      console.log('[Peekr] Rendered ' + D.length + ' US shops');
     }
-    // Step 2: background load more pages sequentially (up to 10K for fast local filtering)
-    for (const off of [1000, 2000, 3000, 4000]) {
+    // Step 2: background load remaining top shops (all countries)
+    for (const off of [0, 1000, 2000, 3000, 4000]) {
       const page = await sbFetch(_SB+'/rest/v1/top_shops?select='+_COLS+'&order=score.desc&limit=1000&offset='+off);
       if (!page.data || page.data.length === 0) break;
+      if (!window._totalShopCount) window._totalShopCount = page.count || 0;
       for (const s of page.data) { if (s.domain && !seen.has(s.domain)) { seen.add(s.domain); allShops.push(s); } }
       window._supabaseShops = allShops;
       if (typeof re === 'function') { D = allShops.map(mapShop); re(); }
-      console.log('[Peekr] Background loaded ' + allShops.length + ' shops');
+      console.log('[Peekr] Background loaded ' + allShops.length + ' total shops');
     }
   } catch(e) { console.log('[Peekr] Shop load failed:', e); }
 })();
@@ -1193,6 +1207,16 @@ function gd(){
     if(_rangeFilters.salesMin>0)s=s.filter(x=>x.es>=_rangeFilters.salesMin);
   }
 
+  // US shops priority — boost US shops to the top by default
+  if(!sortCol){
+    s.sort((a,b)=>{
+      const aUS=(a.c==='us')?1:0;
+      const bUS=(b.c==='us')?1:0;
+      if(aUS!==bUS) return bUS-aUS;
+      return b.sc-a.sc; // secondary: score desc
+    });
+  }
+
   // Column sorting
   if(sortCol){
     s.sort((a,b)=>{
@@ -1354,13 +1378,13 @@ function re(){
       </div></td>
       <td>
         <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:5px;align-items:center;min-width:140px;">
-          ${[0,1,2].map(()=>`<div style="width:46px;height:46px;border-radius:8px;background:#f5f0ec;flex-shrink:0;"></div>`).join('')}
+          ${[0,1,2].map(()=>`<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#faf5f7,#f0eaed);border:1px solid rgba(255,45,120,0.06);flex-shrink:0;animation:shimmer 1.5s ease-in-out infinite alternate;"></div>`).join('')}
         </div>
         <div class="pct">${s.p} total</div>
       </td>
       <td><span class="tag-niche">${s.ni}</span></td>
       <td><div class="tv">${s.vf}</div><div class="spk">${spk(s.tr,c)}</div></td>
-      <td><div class="rv">${s.r}</div></td>
+      <td><div class="rv">${s.rv>0?s.r:'<span style="color:rgba(26,10,15,0.2);font-style:italic;font-size:11px;">Pending</span>'}</div></td>
       <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;gap:3px;cursor:pointer;" title="Spy ads on Meta">
         <div style="display:flex;align-items:center;gap:4px;">
           <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
@@ -1369,9 +1393,9 @@ function re(){
         </div>
         ${s.ad>0?'<div style="display:flex;gap:2px;"><img src="https://flagcdn.com/w20/'+s.c+'.png" style="width:16px;height:11px;border-radius:2px;opacity:0.7" onerror="this.style.display=\'none\'"/></div>':''}
       </a></td>
-      <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'—'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov.toFixed(2):'—'}</div></td>
-      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:#e8799a;':''}">${s.us?fmtV(s.us):'—'}</div></td>
+      <td><div class="rv" style="font-size:12px;">${s.es?fmtV(s.es):'<span style="color:rgba(26,10,15,0.18);font-size:11px;">—</span>'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;">${s.aov?'$'+s.aov.toFixed(2):'<span style="color:rgba(26,10,15,0.18);font-size:11px;">—</span>'}</div></td>
+      <td><div class="rv" style="font-size:12px;font-weight:700;${s.us>1000?'color:var(--neon);':''}">${s.us?fmtV(s.us):'<span style="color:rgba(26,10,15,0.18);font-size:11px;">—</span>'}</div></td>
       <td><div class="scp" style="color:${c};border-color:${c}50;background:${TB[s.t]};">${s.sc}</div></td>
     </tr>`;
   }).join('');
@@ -1394,10 +1418,11 @@ function _doLiveLookup(pageShops){
   // Find shops that have ad=0 and haven't been looked up or queued yet
   const needLookup=pageShops.filter(s=>s.ad===0&&_liveCache[s.d]===undefined).map(s=>s.d);
   if(needLookup.length===0)return;
-  const batch=needLookup.slice(0,10); // Batch size for live-lookup
+  const batch=needLookup.slice(0,3); // Small batches — Apify takes 10-30s per domain
   // Mark all batch domains as pending IMMEDIATELY to prevent duplicate requests
   batch.forEach(d=>{_liveCache[d]='pending';});
-  fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(15000)})
+  // Timeout 120s to accommodate Apify scraping time
+  fetch('/api/backfill-ads?action=live-lookup&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(120000)})
     .then(r=>r.ok?r.json():Promise.reject())
     .then(data=>{
       if(!data.results)return;
@@ -1452,14 +1477,17 @@ function _doLiveLookup(pageShops){
 
 const _prodCache={};
 let _prodTimer=null;
+let _prodQueue=[];
+let _prodRunning=0;
+const _PROD_CONCURRENCY=6; // fetch 6 shops in parallel
+
 function loadProductImages(){
-  // Debounce: batch all visible domains into one proxy call
   clearTimeout(_prodTimer);
-  _prodTimer=setTimeout(_doLoadProductImages,200);
+  _prodTimer=setTimeout(_doLoadProductImages,150);
 }
+
 function _doLoadProductImages(){
   const els=document.querySelectorAll('.prod-imgs[data-domain]');
-  const needFetch=[];
   els.forEach(el=>{
     const domain=el.dataset.domain;
     if(!domain)return;
@@ -1467,34 +1495,65 @@ function _doLoadProductImages(){
       renderProdImgs(el,_prodCache[domain]);
       return;
     }
-    if(_prodCache[domain]==='pending')return; // already queued
-    needFetch.push(domain);
+    if(_prodCache[domain]==='pending'||_prodCache[domain]==='failed')return;
+    _prodCache[domain]='pending';
+    _prodQueue.push(domain);
   });
-  if(needFetch.length===0)return;
-  // Only mark THIS batch as pending (not all)
-  const batch=needFetch.slice(0,20);
-  batch.forEach(d=>{_prodCache[d]='pending';});
-  fetch('/api/backfill-ads?action=product-images&domains='+encodeURIComponent(batch.join(',')),{signal:AbortSignal.timeout(12000)})
-    .then(r=>r.ok?r.json():Promise.reject())
-    .then(data=>{
-      if(!data.results)return;
-      for(const [domain,imgs] of Object.entries(data.results)){
-        _prodCache[domain]=imgs;
-        const el=document.querySelector(`.prod-imgs[data-domain="${domain}"]`);
-        if(el)renderProdImgs(el,imgs);
-      }
-      // Next batch if needed
-      const remaining=needFetch.slice(20);
-      if(remaining.length>0)setTimeout(_doLoadProductImages,300);
-    })
-    .catch(()=>{
-      batch.forEach(d=>{if(_prodCache[d]==='pending')delete _prodCache[d];});
-    });
+  _drainProdQueue();
 }
+
+function _drainProdQueue(){
+  while(_prodRunning<_PROD_CONCURRENCY&&_prodQueue.length>0){
+    const domain=_prodQueue.shift();
+    _prodRunning++;
+    _fetchShopProducts(domain).finally(()=>{
+      _prodRunning--;
+      _drainProdQueue();
+    });
+  }
+}
+
+async function _fetchShopProducts(domain){
+  try{
+    const r=await fetch('https://'+domain+'/products.json?limit=4',{
+      signal:AbortSignal.timeout(6000),
+      mode:'cors'
+    });
+    if(!r.ok)throw new Error('not ok');
+    const data=await r.json();
+    const imgs=[];
+    if(data.products){
+      for(const p of data.products.slice(0,3)){
+        if(p.images&&p.images.length>0){
+          // Use small Shopify CDN size for speed
+          let src=p.images[0].src;
+          if(src.includes('.jpg')||src.includes('.png')||src.includes('.webp')){
+            src=src.replace(/(\.\w+)(\?.*)?$/,'_small$1');
+          }
+          imgs.push(src);
+        }
+      }
+    }
+    _prodCache[domain]=imgs;
+    const el=document.querySelector('.prod-imgs[data-domain="'+domain+'"]');
+    if(el)renderProdImgs(el,imgs);
+  }catch(e){
+    _prodCache[domain]='failed';
+    // Show placeholder for failed loads
+    const el=document.querySelector('.prod-imgs[data-domain="'+domain+'"]');
+    if(el){
+      el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);">📦</div>').join('');
+    }
+  }
+}
+
 function renderProdImgs(el,imgs){
-  if(imgs.length===0)return;
-  el.innerHTML=imgs.map(src=>`<img src="${src}" style="width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f5f0ec;flex-shrink:0;" loading="lazy" onerror="this.style.display='none'"/>`).join('')+
-    (imgs.length<3?`<div style="width:46px;height:46px;border-radius:8px;background:#f5f0ec;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#b8a8b0;">+</div>`:'');
+  if(!imgs||imgs.length===0){
+    el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);">📦</div>').join('');
+    return;
+  }
+  el.innerHTML=imgs.slice(0,3).map(src=>`<img src="${src}" style="width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f5f0ec;border:1px solid rgba(255,45,120,0.06);flex-shrink:0;" loading="lazy" onerror="this.style.display='none';this.nextSibling||this.parentElement.insertAdjacentHTML('beforeend','<div style=\\'width:46px;height:46px;border-radius:8px;background:#f0eaed;flex-shrink:0;\\'></div>')"/>`).join('')+
+    (imgs.length>3?`<div style="width:46px;height:46px;border-radius:8px;background:rgba(255,45,120,0.06);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--neon,#ff2d78);">+${imgs.length-3}</div>`:'');
 }
 
 function om(id){
@@ -1627,7 +1686,7 @@ function runAC(term){
       </div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.n}</div>
-        <div style="font-size:11px;color:var(--pink);font-weight:600;">${s.d}</div>
+        <a href="https://${s.d}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:11px;color:var(--pink);font-weight:600;text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
       </div>
       <span style="font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;"><img src="https://flagcdn.com/w20/${s.c}.png" style="width:14px;height:10px;border-radius:1px;vertical-align:middle;margin-right:4px;"/>${s.ni}</span>
       <span style="font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;">&#128200; ${s.vf||fmtV(s.v)}</span>
