@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Peekr Community — Connect with ecom entrepreneurs, share winning products, and discuss strategies."/>
 <meta name="theme-color" content="#0a0a0f"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
 <title>Peekr — Community</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -600,14 +600,14 @@ body{
 <!-- ── FEED AREA ── -->
 <div class="feed-area" id="feed-area">
   <div class="feed-top" style="position:relative;">
-    <span class="ch-icon" id="feed-channel-icon">&#128293;</span>
+    <span class="ch-icon" id="feed-channel-icon"></span>
     <span class="ch-title" id="feed-channel-name">Winning Products</span>
     <span class="ch-subtitle" id="feed-channel-desc">— Share & discover winning products</span>
     <div class="feed-actions">
       <select class="sort-select" id="sort-select" onchange="loadPosts()">
-        <option value="new">&#128336; Newest</option>
-        <option value="top">&#128293; Top</option>
-        <option value="comments">&#128172; Most Discussed</option>
+        <option value="new"> Newest</option>
+        <option value="top"> Top</option>
+        <option value="comments"> Most Discussed</option>
       </select>
       <button class="feed-btn primary" onclick="openNewPost()">&#9999;&#65039; New Post</button>
     </div>
@@ -677,15 +677,15 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 // ── BADGE DEFINITIONS ──
 const BADGE_DEFS = {
   // Revenue milestones
-  '1k':   { ico:'&#128176;', label:'1K Club',  cls:'ab-1k',  tip:'Reached $1K/month revenue' },
-  '10k':  { ico:'&#128293;', label:'10K Club', cls:'ab-10k', tip:'Reached $10K/month revenue' },
-  '100k': { ico:'&#128142;', label:'100K',     cls:'ab-100k',tip:'Reached $100K/month revenue' },
-  '1m':   { ico:'&#128081;', label:'1M Club',  cls:'ab-1m',  tip:'$1M+/month — legendary status' },
+  '1k':   { ico:'', label:'1K Club',  cls:'ab-1k',  tip:'Reached $1K/month revenue' },
+  '10k':  { ico:'', label:'10K Club', cls:'ab-10k', tip:'Reached $10K/month revenue' },
+  '100k': { ico:'', label:'100K',     cls:'ab-100k',tip:'Reached $100K/month revenue' },
+  '1m':   { ico:'', label:'1M Club',  cls:'ab-1m',  tip:'$1M+/month — legendary status' },
   // Activity milestones
-  'first-post': { ico:'&#127919;', label:'First Post', cls:'ab-first', tip:'Made their first community post' },
+  'first-post': { ico:'', label:'First Post', cls:'ab-first', tip:'Made their first community post' },
   'writer':     { ico:'&#9997;&#65039;', label:'Writer',     cls:'ab-writer', tip:'Published 10+ posts' },
   'star':       { ico:'&#11088;', label:'Rising Star',cls:'ab-star',  tip:'Received 100+ upvotes' },
-  'top':        { ico:'&#127942;', label:'Top Contributor', cls:'ab-top', tip:'Most active community member' }
+  'top':        { ico:'', label:'Top Contributor', cls:'ab-top', tip:'Most active community member' }
 };
 
 // Demo badge assignments per username (in production: from Supabase user_badges table)
@@ -717,12 +717,12 @@ function renderBadges(username, compact) {
 
 // ── CHANNELS ──
 const CHANNELS = [
-  { id: 'winning-products', emoji: '&#128293;', name: 'Winning Products', desc: 'Share & discover winning products and hot niches' },
-  { id: 'ads-creatives', emoji: '&#128226;', name: 'Ads & Creatives', desc: 'Meta, TikTok, Google Ads strategies & creatives' },
-  { id: 'resultats', emoji: '&#128640;', name: 'Résultats', desc: 'Share your wins, revenue screenshots, milestones' },
-  { id: 'store-reviews', emoji: '&#127978;', name: 'Store Reviews', desc: 'Get feedback on your store from the community' },
-  { id: 'sourcing-logistics', emoji: '&#128230;', name: 'Sourcing & Logistics', desc: 'Suppliers, shipping, PSP, after-sales tips' },
-  { id: 'general-chat', emoji: '&#128172;', name: 'General Chat', desc: 'Introductions, questions, off-topic, chill' }
+  { id: 'winning-products', emoji: '', name: 'Winning Products', desc: 'Share & discover winning products and hot niches' },
+  { id: 'ads-creatives', emoji: '', name: 'Ads & Creatives', desc: 'Meta, TikTok, Google Ads strategies & creatives' },
+  { id: 'resultats', emoji: '', name: 'Résultats', desc: 'Share your wins, revenue screenshots, milestones' },
+  { id: 'store-reviews', emoji: '', name: 'Store Reviews', desc: 'Get feedback on your store from the community' },
+  { id: 'sourcing-logistics', emoji: '', name: 'Sourcing & Logistics', desc: 'Suppliers, shipping, PSP, after-sales tips' },
+  { id: 'general-chat', emoji: '', name: 'General Chat', desc: 'Introductions, questions, off-topic, chill' }
 ];
 
 let currentChannel = CHANNELS[0];
@@ -800,7 +800,7 @@ async function loadPosts() {
   if (sort === 'top') orderCol = 'upvotes';
   if (sort === 'comments') orderCol = 'comments_count';
   const { data, error } = await sb.from('community_posts').select('*').eq('channel_id', currentChannel.id).order('pinned', { ascending: false }).order(orderCol, { ascending: asc }).limit(50);
-  if (error) { feed.innerHTML = '<div class="empty-state"><div class="emoji">&#128533;</div><h3>Couldn\'t load posts</h3><p>Check your connection and try again.</p></div>'; return; }
+  if (error) { feed.innerHTML = '<div class="empty-state"><div class="emoji"></div><h3>Couldn\'t load posts</h3><p>Check your connection and try again.</p></div>'; return; }
   posts = data || [];
   renderPosts();
 }
@@ -817,7 +817,7 @@ function renderPosts() {
 function renderSinglePost(p, isNew) {
   return `
     <div class="post-card${p.pinned ? ' pinned' : ''}${isNew ? ' new' : ''}" onclick="openThread('${p.id}')">
-      ${p.pinned ? '<div class="pin-icon">&#128204;</div>' : ''}
+      ${p.pinned ? '<div class="pin-icon"></div>' : ''}
       <div class="post-head">
         <div class="post-avatar" style="background:${avatarGrad(p.username)}">${(p.username||'?').charAt(0).toUpperCase()}</div>
         <div class="post-meta">
@@ -837,8 +837,7 @@ function renderSinglePost(p, isNew) {
           ${p.comments_count || 0}
         </div>
         <div class="pf-item" onclick="event.stopPropagation();sharePost('${p.id}')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Share
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share
         </div>
       </div>
     </div>`;
@@ -927,7 +926,7 @@ async function submitPost() {
   if (error) { showToast('Error: ' + error.message); return; }
   closeNewPost();
   if (channelId === currentChannel.id) loadPosts();
-  showToast('Post published! &#127881;');
+  showToast('Post published! ');
 }
 
 // ── SUBMIT COMMENT ──
@@ -979,7 +978,7 @@ async function voteComment(commentId, el) {
 
 function sharePost(postId) {
   const url = window.location.href.split('?')[0] + '?channel=' + currentChannel.id + '&post=' + postId;
-  navigator.clipboard.writeText(url).then(() => showToast('Link copied! &#128203;'));
+  navigator.clipboard.writeText(url).then(() => showToast('Link copied! '));
 }
 
 // ── REAL-TIME ──

@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Shop Analytics - Peekr</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -498,8 +498,7 @@ function renderShop(s){
       <!-- 2 charts side-by-side: Trafic + Ads actives -->
       <div class="chart-grid">
         <div class="section chart-section">
-          <div class="section-title">
-            Trafic dans le temps
+          <div class="section-title"> Trafic dans le temps
             <div style="margin-left:auto;display:flex;gap:4px;">
               <button class="range-btn" data-range="3m">3M</button>
               <button class="range-btn" data-range="6m">6M</button>
@@ -516,8 +515,7 @@ function renderShop(s){
         </div>
 
         <div class="section chart-section">
-          <div class="section-title">
-            Ads actives dans le temps
+          <div class="section-title"> Ads actives dans le temps
             <div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range">
               <button class="range-btn" data-range="3m" onclick="loadAdsChart('${s.domain}','3m',this)">3M</button>
               <button class="range-btn active" data-range="6m" onclick="loadAdsChart('${s.domain}','6m',this)">6M</button>
@@ -537,8 +535,7 @@ function renderShop(s){
 
           <!-- Products Carousel -->
           <div class="section">
-            <div class="section-title">
-              Products: ${topProducts.length}
+            <div class="section-title"> Products: ${topProducts.length}
               <div style="margin-left:auto;display:flex;gap:4px;" id="products-tabs">
                 <button class="section-tab active" onclick="switchProductsTab('best',this)">Best Sellers</button>
                 <button class="section-tab" onclick="switchProductsTab('recent',this)">Recently Added</button>
@@ -560,8 +557,7 @@ function renderShop(s){
 
           <!-- Pixels & Apps (compact, collapsible) -->
           <details class="section" style="padding:10px 14px;">
-            <summary style="cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;list-style:none;">
-              Pixels & Apps
+            <summary style="cursor:pointer;font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;list-style:none;"> Pixels & Apps
               <span style="color:var(--text3);font-size:11px;font-weight:500;margin-left:auto;">${(pixels||[]).length} pixels · ${(apps||[]).length} apps</span>
             </summary>
             <div style="margin-top:10px;">
@@ -586,8 +582,7 @@ function renderShop(s){
 
           <!-- Latest Ads Section -->
           <div class="section">
-            <div class="section-title">
-              Dernières Ads
+            <div class="section-title"> Dernières Ads
               <a class="see-more" onclick="switchTab('ads',document.querySelectorAll('.tab')[2])" href="javascript:;">See more →</a>
             </div>
             <div class="ads-scroll" id="latest-ads-scroll">
@@ -629,8 +624,7 @@ function renderShop(s){
     <!-- Panel: Meta Ads -->
     <div class="tab-panel" id="panel-ads">
       <div class="section">
-        <div class="section-title">
-          Meta Ads Analysis
+        <div class="section-title"> Meta Ads Analysis
         </div>
 
         <!-- Ads History Chart (bigger) -->
@@ -750,7 +744,7 @@ async function loadInfoRow(domainName){
     const tpData = await tpResp.json();
     if (tpEl) {
       if (tpData.rating) {
-        const stars = '★'.repeat(Math.floor(tpData.rating)) + '☆'.repeat(5-Math.floor(tpData.rating));
+        const stars = ''.repeat(Math.floor(tpData.rating)) + ''.repeat(5-Math.floor(tpData.rating));
         tpEl.innerHTML = `
           <div class="kpi-big-label">Trustpilot</div>
           <div class="kpi-big-row">
@@ -771,8 +765,8 @@ async function loadInfoRow(domainName){
     scEl.innerHTML = `
       <div class="kpi-big-label">Réseaux sociaux</div>
       <div style="display:flex;gap:14px;align-items:center;padding:10px 0;font-size:22px;">
-        <a href="https://instagram.com/${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="Instagram" style="text-decoration:none;">📷</a>
-        <a href="https://tiktok.com/@${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="TikTok" style="text-decoration:none;">🎵</a>
+        <a href="https://instagram.com/${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="Instagram" style="text-decoration:none;"></a>
+        <a href="https://tiktok.com/@${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="TikTok" style="text-decoration:none;"></a>
         <a href="https://facebook.com/${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="Facebook" style="text-decoration:none;">ⓕ</a>
       </div>
       <div class="kpi-big-sub">Liens vers les profils officiels</div>`;
@@ -789,7 +783,7 @@ async function loadInfoRow(domainName){
       const tpResp=await fetch(API_BASE+'?action=trustpilot&domain='+encodeURIComponent(domainName));
       const tpData=await tpResp.json();
       if(tpData.rating){
-        const stars='★'.repeat(Math.floor(tpData.rating))+'☆'.repeat(5-Math.floor(tpData.rating));
+        const stars=''.repeat(Math.floor(tpData.rating))+''.repeat(5-Math.floor(tpData.rating));
         trustpilotHtml+=`
           <div class="trustpilot-rating">
             <div class="trustpilot-stars">${stars}</div>
@@ -815,7 +809,7 @@ async function loadInfoRow(domainName){
       {name:'Other',code:'Other',percentage:25}
     ];
     countryData.forEach(c=>{
-      const flag=c.code==='Other'?'🌍':String.fromCodePoint(127397+c.code.charCodeAt(0),127397+c.code.charCodeAt(1));
+      const flag=c.code==='Other'?'':String.fromCodePoint(127397+c.code.charCodeAt(0),127397+c.code.charCodeAt(1));
       countriesHtml+=`<div class="country-item"><span class="country-flag">${flag}</span><span class="country-name">${c.name}</span><span class="country-pct">${c.percentage}%</span></div>`;
     });
     countriesHtml+='</div></div>';
@@ -824,7 +818,7 @@ async function loadInfoRow(domainName){
     let socialHtml='<div class="info-card"><div class="info-card-title">Social Media</div><div class="social-list">';
     const socialPlatforms=[
       {name:'Instagram',icon:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',followers:'45K'},
-      {name:'TikTok',icon:'🎵',followers:'28K'},
+      {name:'TikTok',icon:'',followers:'28K'},
       {name:'Facebook',icon:'ⓕ',followers:'12K'}
     ];
     socialPlatforms.forEach(p=>{
@@ -1091,8 +1085,7 @@ function renderMetaAdCard(ad, domainName){
           ${ctaType?`<span style="font-size:11px;color:var(--text3);margin-left:auto;">${ctaType}</span>`:''}
         </div>
         <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);">
-          <a href="${fbUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;background:var(--pink);color:#fff;font-size:11px;font-weight:700;text-decoration:none;transition:all .15s;">
-            View on Facebook &#8599;
+          <a href="${fbUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;background:var(--pink);color:#fff;font-size:11px;font-weight:700;text-decoration:none;transition:all .15s;"> View on Facebook &#8599;
           </a>
         </div>
       </div>
@@ -1143,16 +1136,16 @@ function updateMediaMix(ads){
 
 function renderPixelCards(pixels, techs){
   const pixelIcons={
-    'Google Analytics':'📊',
-    'Google Tag Manager':'🏷️',
+    'Google Analytics':'',
+    'Google Tag Manager':'️',
     'Meta Pixel':'Ⓜ️',
     'Facebook Pixel':'ⓕ',
-    'Google Ads':'📢',
-    'TikTok Pixel':'🎵',
-    'Snap Pixel':'👻',
-    'Pinterest Tag':'📌',
+    'Google Ads':'',
+    'TikTok Pixel':'',
+    'Snap Pixel':'',
+    'Pinterest Tag':'',
     'Microsoft Ads':'Ⓜ',
-    'Criteo':'💰'
+    'Criteo':''
   };
 
   // Parse pixel data - handle both simple strings and complex objects from API
@@ -1187,7 +1180,7 @@ function renderPixelCards(pixels, techs){
     const installedAt=p.installed_at||'';
     const vendorUrl=p.vendor_url||'';
 
-    const fallbackIcon=pixelIcons[name]||'📊';
+    const fallbackIcon=pixelIcons[name]||'';
     const formattedInstalls=installs?fmtV(installs)+' installs':'';
     const installedDate=installedAt?new Date(installedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'2-digit'}):'';
 
