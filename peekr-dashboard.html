@@ -1276,7 +1276,7 @@ function re(){
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
   const totalLabel=_apiResults.length>0?`<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from 7.5M catalog</span>`:
-    `<b>${displayCount.toLocaleString()}</b> Shops`;
+    `<b>${displayCount.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur 975 638 shops</span>`;
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
