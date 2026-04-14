@@ -1275,8 +1275,11 @@ function re(){
   const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode;
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
-  const totalLabel=_apiResults.length>0?`<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from 7.5M catalog</span>`:
-    `<b>${displayCount.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur 975 638 shops</span>`;
+  const curatedCount = shops.length;
+  const catalogTotal = dbTotal || 975638;
+  const totalLabel = _apiResults.length > 0
+    ? `<b>${curatedCount.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from catalog</span>`
+    : `<b>${curatedCount.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur ${catalogTotal.toLocaleString()}</span>`;
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
@@ -1514,6 +1517,19 @@ function _drainProdQueue(){
 }
 
 async function _fetchShopProducts(domain){
+  // Priority: use cached images from Supabase shops.top_products_images (populated by Edge Function)
+  try{
+    const r=await fetch(_SB+'/rest/v1/shops?domain=eq.'+encodeURIComponent(domain)+'&select=top_products_images',{headers:{'apikey':_AK}});
+    const arr=await r.json();
+    const cached=arr[0]?.top_products_images;
+    if(Array.isArray(cached)&&cached.length>0){
+      _prodCache[domain]=cached.slice(0,4).map(p=>p.image).filter(Boolean);
+      document.querySelectorAll('.prod-imgs[data-domain="'+domain+'"]').forEach(el=>renderProdImgs(el,_prodCache[domain]));
+      return;
+    }
+  }catch(e){}
+
+  // Fallback: try direct Shopify /products.json (CORS may block but try anyway for non-cached shops)
   try{
     const r=await fetch('https://'+domain+'/products.json?limit=4',{
       signal:AbortSignal.timeout(6000),
