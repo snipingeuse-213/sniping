@@ -821,7 +821,9 @@ async function loadInfoRow(domainName){
 // Render ad cards helper (shared by loadLatestAds and loadMetaAds)
 function renderAdCard(ad, domainName, style){
   const snap=ad.ad_snapshot_url||ad.snapshot_url||'';
-  const imgSrc=snap||'https://image.thum.io/get/width/280/crop/160/https://'+domainName;
+  // Priority: real ad image from meta_ads > ad snapshot > site screenshot fallback
+  const imgSrc=ad.image_url||snap||'https://image.thum.io/get/width/280/crop/160/https://'+domainName;
+  const videoUrl=ad.video_url||'';
   const pageName=ad.page_name||domainName;
   const bodyText=ad.body_text||ad.creative_text||ad.body||ad.ad_creative_body||'View ad on Meta';
   const daysActive=ad.days_active||0;
