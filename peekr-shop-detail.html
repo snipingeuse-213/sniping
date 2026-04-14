@@ -130,6 +130,23 @@ body{font-family:'Figtree',sans-serif;background:var(--bg);color:var(--text1);di
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 @media(max-width:900px){.two-col{grid-template-columns:1fr;}}
 
+/* TrendTrack-style layout */
+.kpi-trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px;}
+@media(max-width:900px){.kpi-trio{grid-template-columns:1fr;}}
+.kpi-big{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;}
+.kpi-big-label{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
+.kpi-big-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.kpi-big-icon{font-size:18px;}
+.kpi-big-value{font-size:28px;font-weight:800;color:var(--text1);font-family:'Clash Display',sans-serif;}
+.kpi-big-sub{font-size:11px;color:var(--text3);font-weight:500;}
+
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+@media(max-width:1100px){.chart-grid{grid-template-columns:1fr;}}
+.chart-section{padding:16px 18px;}
+
+.info-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+@media(max-width:900px){.info-grid-2{grid-template-columns:1fr;}}
+
 /* Info Row (Trustpilot/Countries/Social) */
 .info-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;}
 @media(max-width:900px){.info-row{grid-template-columns:1fr;}}
@@ -466,54 +483,59 @@ function renderShop(s){
     <div class="tab-panel active" id="panel-analytics">
       ${description?`<div class="section" style="margin-bottom:16px;"><p style="font-size:13px;color:var(--text2);line-height:1.6;">${description}</p></div>`:''}
 
-      <!-- KPIs -->
-      <div class="kpi-grid">
-        <div class="kpi">
-          <div class="kpi-label">&#128200; Monthly Traffic</div>
-          <div class="kpi-value">${fmtV(visits)}</div>
-          <div class="kpi-sub">Estimated monthly visits</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">&#128722; Products</div>
-          <div class="kpi-value">${products.toLocaleString()}</div>
-          <div class="kpi-sub">Products in catalog</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">&#128226; Live Ads</div>
-          <div class="kpi-value" style="color:${ads>20?'var(--pink)':'inherit'}">${ads}</div>
-          <div class="kpi-sub">Active Meta ads</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">&#128184; Est. Sales / mo</div>
-          <div class="kpi-value">${estSales?'$'+fmtV(estSales):'N/A'}</div>
-          <div class="kpi-sub">${estSalesY?'~$'+fmtV(estSalesY)+'/year':'—'}</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">&#128181; Avg. Order Value</div>
-          <div class="kpi-value">${aov?'$'+(aov/100).toFixed(2):'N/A'}</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">&#127919; Score</div>
-          <div class="kpi-value" style="color:${c};">${score}<span style="font-size:13px;color:var(--text3);">/100</span></div>
-          <div class="kpi-sub">${TL[tier]} store</div>
-        </div>
-      </div>
-
-      <!-- Info Row: Trustpilot, Countries, Social -->
-      <div class="info-row" id="info-row-container">
-        <!-- Will be filled by loadInfoRow -->
-      </div>
-
-      <div class="two-col">
-        <div>
-          <!-- Traffic Chart -->
-          <div class="section">
-            <div class="section-title"><span class="ico">&#128200;</span> Traffic Trend (12 weeks)</div>
-            <div class="chart-container">
-              ${traffic.length>0?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*180,6)}px;background:linear-gradient(180deg,${c},${c}88);opacity:${0.3+(i/traffic.length)*0.7};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;">No traffic data available</div>'}
-            </div>
-            ${traffic.length?`<div class="chart-labels">${traffic.map((_,i)=>`<span>W${i+1}</span>`).join('')}</div>`:''}
+      <!-- 3 big KPI cards TrendTrack-style: Visits + Trustpilot + Social -->
+      <div class="kpi-trio" id="info-row-container">
+        <div class="kpi-big">
+          <div class="kpi-big-label">Visites mensuelles</div>
+          <div class="kpi-big-row">
+            <span class="kpi-big-icon">&#128100;</span>
+            <span class="kpi-big-value">${fmtV(visits)}</span>
           </div>
+          <div class="kpi-big-sub">${products.toLocaleString()} produits · ${estSales?'$'+fmtV(estSales)+'/mo est.':'—'}</div>
+        </div>
+        <div class="kpi-big" id="kpi-trustpilot"><div class="kpi-big-label">Trustpilot</div><div style="padding:10px 0;color:var(--text3);font-size:12px;">Loading...</div></div>
+        <div class="kpi-big" id="kpi-social"><div class="kpi-big-label">Réseaux sociaux</div><div style="padding:10px 0;color:var(--text3);font-size:12px;">Loading...</div></div>
+      </div>
+
+      <!-- 2 charts side-by-side: Trafic + Ads actives -->
+      <div class="chart-grid">
+        <div class="section chart-section">
+          <div class="section-title">
+            <span class="ico">&#128200;</span> Trafic dans le temps
+            <div style="margin-left:auto;display:flex;gap:4px;">
+              <button class="range-btn" data-range="3m">3M</button>
+              <button class="range-btn" data-range="6m">6M</button>
+              <button class="range-btn active" data-range="all">ALL</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="font-size:24px;font-weight:800;color:var(--text1);">${fmtV(visits)}</span>
+            <span style="font-size:11px;color:var(--green);font-weight:700;">&#128994; ${traffic.length>1?'+'+Math.round((traffic[traffic.length-1]-traffic[0])/Math.max(traffic[0],1)*100)+'%':''}</span>
+          </div>
+          <div class="chart-container" style="height:180px;">
+            ${traffic.length>0?traffic.map((v,i)=>`<div class="chart-bar" style="height:${Math.max((v/mx)*170,4)}px;background:linear-gradient(180deg,var(--neon),var(--neon-soft));opacity:${0.4+(i/traffic.length)*0.6};"><div class="tooltip">${fmtV(v)} visits</div></div>`).join(''):'<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:12px;">No traffic data</div>'}
+          </div>
+        </div>
+
+        <div class="section chart-section">
+          <div class="section-title">
+            <span class="ico">&#128227;</span> Ads actives dans le temps
+            <div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range">
+              <button class="range-btn" data-range="3m" onclick="loadAdsChart('${s.domain}','3m',this)">3M</button>
+              <button class="range-btn active" data-range="6m" onclick="loadAdsChart('${s.domain}','6m',this)">6M</button>
+              <button class="range-btn" data-range="all" onclick="loadAdsChart('${s.domain}','all',this)">ALL</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="font-size:24px;font-weight:800;color:var(--text1);" id="ads-chart-current">${ads}</span>
+            <span style="font-size:11px;color:var(--neon);font-weight:700;">&#128994; Active now</span>
+          </div>
+          <div id="ads-chart-container" style="height:180px;position:relative;">
+            <canvas id="ads-chart-canvas" style="width:100%;height:100%;"></canvas>
+          </div>
+          <div id="ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div>
+        </div>
+      </div>
 
           <!-- Products Carousel -->
           <div class="section">
@@ -536,26 +558,6 @@ function renderShop(s){
               </div>
               `).join(''):'<div style="color:var(--text3);font-size:13px;padding:20px;">No products data available</div>'}
             </div>
-          </div>
-
-          <!-- Ads History Chart -->
-          <div class="section">
-            <div class="section-title">
-              <span class="ico">&#128227;</span> Active Ads Over Time
-              <div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range">
-                <button class="range-btn" data-range="3m" onclick="loadAdsChart('${s.domain}','3m',this)">3M</button>
-                <button class="range-btn active" data-range="6m" onclick="loadAdsChart('${s.domain}','6m',this)">6M</button>
-                <button class="range-btn" data-range="all" onclick="loadAdsChart('${s.domain}','all',this)">ALL</button>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-              <span style="font-size:28px;font-weight:800;color:var(--text1);" id="ads-chart-current">${ads}</span>
-              <span style="font-size:12px;color:var(--pink);font-weight:700;">&#128994; Active now</span>
-            </div>
-            <div id="ads-chart-container" style="height:180px;position:relative;">
-              <canvas id="ads-chart-canvas" style="width:100%;height:100%;"></canvas>
-            </div>
-            <div id="ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div>
           </div>
 
           <!-- Pixels & Apps (compact, collapsible) -->
@@ -594,45 +596,26 @@ function renderShop(s){
               <div style="color:var(--text3);font-size:13px;padding:20px;">Loading ads...</div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <!-- Store Details -->
-          <div class="section">
-            <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
-            <div class="details-grid">
-              <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
-              <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
-              <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
-              <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
-              <div class="detail-item"><span class="label">Country</span><span class="value">${country?country.toUpperCase():'N/A'} ${country?`<img class="flag-img" src="https://flagcdn.com/w40/${country.toLowerCase()}.png" style="margin-left:4px;"/>`:''}</span></div>
-              <div class="detail-item"><span class="label">Created</span><span class="value">${created||'N/A'}</span></div>
-              <div class="detail-item"><span class="label">Age</span><span class="value">${age}</span></div>
-              ${merchantName?`<div class="detail-item"><span class="label">Merchant</span><span class="value">${merchantName}</span></div>`:''}
+          <!-- Store Details + Ships To in a 2-col grid (bottom section) -->
+          <div class="info-grid-2">
+            <div class="section">
+              <div class="section-title"><span class="ico">&#128203;</span> Store Details</div>
+              <div class="details-grid">
+                <div class="detail-item"><span class="label">Theme</span><span class="value">${theme}</span></div>
+                <div class="detail-item"><span class="label">Currency</span><span class="value">${currency}</span></div>
+                <div class="detail-item"><span class="label">Language</span><span class="value">${lang}</span></div>
+                <div class="detail-item"><span class="label">Shopify Plan</span><span class="value">${plan}</span></div>
+                <div class="detail-item"><span class="label">Country</span><span class="value">${country?country.toUpperCase():'N/A'}</span></div>
+                <div class="detail-item"><span class="label">Created</span><span class="value">${created||'N/A'}</span></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="section-title"><span class="ico">&#127758;</span> Ships To (${shipsTo.length})</div>
+              ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,15).map(c2=>`<span class="tag ship">${c2.toUpperCase()}</span>`).join('')}${shipsTo.length>15?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-15}</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No data</div>'}
             </div>
           </div>
-
-          <!-- Ships To -->
-          <div class="section">
-            <div class="section-title"><span class="ico">&#127758;</span> Ships To (${shipsTo.length} countries)</div>
-            ${shipsTo.length?`<div class="tags">${shipsTo.slice(0,25).map(c2=>`<span class="tag ship">${c2.toUpperCase()} <img src="https://flagcdn.com/w20/${c2.toLowerCase()}.png" style="width:14px;height:10px;border-radius:1px;"/></span>`).join('')}${shipsTo.length>25?`<span style="color:var(--text3);font-size:11px;">+${shipsTo.length-25} more</span>`:''}</div>`:'<div style="color:var(--text3);font-size:13px;">No shipping info available</div>'}
-          </div>
-
-          <!-- Meta Ads Intelligence Link -->
-          <div class="section" style="background:linear-gradient(135deg,rgba(232,121,154,0.06),rgba(232,121,154,0.02));border-color:rgba(232,121,154,0.15);">
-            <div class="section-title"><span class="ico">&#128226;</span> Meta Ads Intelligence</div>
-            <p style="font-size:13px;color:var(--text2);margin-bottom:12px;">
-              ${ads>0?`This store has <strong style="color:var(--pink);">${ads} active ads</strong> running on Meta.`:'No active Meta ads detected.'}
-            </p>
-            <div style="display:flex;gap:8px;">
-              <a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.domain)}" target="_blank">
-                &#128269; View on Meta Library
-              </a>
-              <button class="shop-btn" onclick="switchTab('ads',document.querySelectorAll('.tab')[2])">&#128202; See Ads Analysis</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Panel: Similar Shops -->
@@ -759,7 +742,47 @@ function switchPixelsTab(tab, el){
 
 // --- Info Row (Trustpilot, Countries, Social) ---
 async function loadInfoRow(domainName){
-  const container=document.getElementById('info-row-container');
+  // New layout: fill kpi-trustpilot and kpi-social directly (kpi-trio already has Visits)
+  const tpEl = document.getElementById('kpi-trustpilot');
+  const scEl = document.getElementById('kpi-social');
+
+  // Trustpilot card
+  try {
+    const tpResp = await fetch(API_BASE+'?action=trustpilot&domain='+encodeURIComponent(domainName));
+    const tpData = await tpResp.json();
+    if (tpEl) {
+      if (tpData.rating) {
+        const stars = '★'.repeat(Math.floor(tpData.rating)) + '☆'.repeat(5-Math.floor(tpData.rating));
+        tpEl.innerHTML = `
+          <div class="kpi-big-label">Trustpilot</div>
+          <div class="kpi-big-row">
+            <span style="color:#00b67a;font-size:16px;">${stars}</span>
+            <span class="kpi-big-value" style="font-size:24px;">${tpData.rating.toFixed(1)}</span>
+          </div>
+          <div class="kpi-big-sub">${tpData.reviews||0} avis</div>`;
+      } else {
+        tpEl.innerHTML = `<div class="kpi-big-label">Trustpilot</div><div style="padding:10px 0;color:var(--text3);font-size:12px;">Aucune note disponible</div>`;
+      }
+    }
+  } catch(e) {
+    if (tpEl) tpEl.innerHTML = `<div class="kpi-big-label">Trustpilot</div><div style="padding:10px 0;color:var(--text3);font-size:12px;">Aucune donnée</div>`;
+  }
+
+  // Social card
+  if (scEl) {
+    scEl.innerHTML = `
+      <div class="kpi-big-label">Réseaux sociaux</div>
+      <div style="display:flex;gap:14px;align-items:center;padding:10px 0;font-size:22px;">
+        <a href="https://instagram.com/${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="Instagram" style="text-decoration:none;">📷</a>
+        <a href="https://tiktok.com/@${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="TikTok" style="text-decoration:none;">🎵</a>
+        <a href="https://facebook.com/${domainName.replace(/\\.com|\\.fr|\\.co\\.uk/,'').replace(/^www\\./,'')}" target="_blank" title="Facebook" style="text-decoration:none;">ⓕ</a>
+      </div>
+      <div class="kpi-big-sub">Liens vers les profils officiels</div>`;
+  }
+  return;
+
+  // Legacy code below (unused but kept for reference)
+  const container=document.getElementById('info-row-container-legacy');
 
   try{
     // Fetch Trustpilot data
