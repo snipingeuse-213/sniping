@@ -142,10 +142,11 @@ body{
 .sd{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 
 /* ── FILTERS NEON ROSE ── */
-.fw{padding:12px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid rgba(0,0,0,0.06);background:#ffffff;}
-.fr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.fw{padding:10px 24px 12px;flex-shrink:0;display:flex;flex-direction:column;gap:5px;border-bottom:1px solid rgba(0,0,0,0.06);background:#ffffff;}
+.fr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.fr + .fr{margin-top:-1px;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:8px;font-size:12.5px;font-weight:500;color:#1a0a0f;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
+.fb{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:8px;font-size:12.5px;font-weight:500;color:#1a0a0f;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
 .fb:hover{border-color:rgba(26,10,15,0.25);background:#fafafa;}
 .fb.active{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
 .fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
@@ -156,14 +157,14 @@ body{
 .fb.active .fc,.fb.has-value .fc{color:var(--neon);}
 .fc{font-size:8px;opacity:.45;color:var(--neon-soft);}
 /* Filter tabs */
-.fhdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:0 2px;}
+.fhdr{display:flex;align-items:center;gap:10px;margin-bottom:4px;padding:0 2px;}
 .fhdr-label{font-size:11px;font-weight:700;color:rgba(26,10,15,0.4);text-transform:uppercase;letter-spacing:.1em;}
 .ftab{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(0,0,0,0.08);background:#fff;color:rgba(26,10,15,0.55);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
 .ftab:hover{border-color:rgba(26,10,15,0.2);color:var(--black);}
 .ftab.active{background:linear-gradient(135deg,var(--neon),var(--pink-dark));color:#fff;border-color:var(--neon);box-shadow:0 1px 6px rgba(255,45,120,0.25);}
 .ftab .ftab-ico{display:inline-flex;width:14px;height:14px;}
 .ftab .ftab-ico svg{width:14px;height:14px;}
-.fsort{display:flex;align-items:center;gap:10px;margin-top:4px;padding:0 2px;}
+.fsort{display:flex;align-items:center;gap:10px;margin-top:2px;padding:0 2px;}
 .fsort-label{font-size:13px;color:rgba(26,10,15,0.45);display:flex;align-items:center;gap:4px;font-weight:600;}
 /* Min/Max popover inside dropdown */
 .fb-range{padding:12px;min-width:220px;}
@@ -447,7 +448,7 @@ td{padding:11px 14px;vertical-align:middle;}
     </div>
     <!-- SHOPS filter group (copie TrendTrack) -->
     <div id="fgroup-shops">
-      <div class="fr" style="flex-wrap:wrap;gap:8px">
+      <div class="fr" style="flex-wrap:wrap;gap:12px">
         <div class="fb" onclick="tf(this)" data-filter="Traffic"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></span>Trafic <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Traffic Growth"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>Croissance du trafic <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Products"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg></span>Produits <span class="fc">&#9662;</span></div>
@@ -456,7 +457,7 @@ td{padding:11px 14px;vertical-align:middle;}
         <div class="fb" onclick="tf(this)" data-filter="Category"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Niche <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Creation Date"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Date de création <span class="fc">&#9662;</span></div>
       </div>
-      <div class="fr" style="flex-wrap:wrap;gap:8px">
+      <div class="fr" style="flex-wrap:wrap;gap:12px">
         <div class="fb" onclick="tf(this)" data-filter="Language"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langue <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Currency"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Devise <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Theme"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>Thème Shopify <span class="fc">&#9662;</span></div>
@@ -468,7 +469,7 @@ td{padding:11px 14px;vertical-align:middle;}
     </div>
     <!-- ADS filter group -->
     <div id="fgroup-ads" style="display:none">
-      <div class="fr" style="flex-wrap:wrap;gap:8px">
+      <div class="fr" style="flex-wrap:wrap;gap:12px">
         <div class="fb" onclick="tf(this)" data-filter="Live Ads"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Ads Actives <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Ads Growth"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>Croiss. des Ads <span class="fc">&#9662;</span></div>
         <div class="fb" onclick="tf(this)" data-filter="Est. Sales"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Ventes estimées <span class="fc">&#9662;</span></div>
