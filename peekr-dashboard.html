@@ -424,12 +424,12 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 
   <div class="segs">
-    <button class="sg active" onclick="ss(this,'all')"><span class="sd" style="background:rgba(26,10,15,0.3)"></span>All Shops</button>
+    <button class="sg active" onclick="ss(this,'all')"><span class="sd" style="background:rgba(26,10,15,0.3)"></span>Tous les shops</button>
     <button class="sg" onclick="ss(this,'gems')"><span class="sd" style="background:#7ab8f5"></span>Weekly Gems</button>
     <button class="sg" onclick="ss(this,'scaling')"><span class="sd" style="background:#52c87a"></span>Top Scaling</button>
-    <button class="sg" onclick="ss(this,'leaders')"><span class="sd" style="background:#e8799a"></span>Market Leaders</button>
-    <button class="sg" onclick="ss(this,'adpeak')"><span class="sd" style="background:#f6a05a"></span>Ad Peak</button>
-    <button class="sg" onclick="ss(this,'traffic')"><span class="sd" style="background:#f4a7b9"></span>Traffic Peak</button>
+    <button class="sg" onclick="ss(this,'leaders')"><span class="sd" style="background:#e8799a"></span>Market Leaders &amp; DTC Brands</button>
+    <button class="sg" onclick="ss(this,'adpeak')"><span class="sd" style="background:#f6a05a"></span>Record d'ads du shop</button>
+    <button class="sg" onclick="ss(this,'traffic')"><span class="sd" style="background:#f4a7b9"></span>Record de trafic du shop</button>
   </div>
 
   <div class="fw">
@@ -439,40 +439,43 @@ td{padding:11px 14px;vertical-align:middle;}
       <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico"></span> Shops</button>
       <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico"></span> Ads</button>
     </div>
-    <!-- SHOPS filter group -->
+    <!-- SHOPS filter group (copie TrendTrack) -->
     <div id="fgroup-shops">
       <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)">Traffic <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Products <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Shop Origin <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Visitor Country <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Category <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Creation Date <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Traffic">Trafic <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Traffic Growth">Croissance du trafic <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Products">Produits <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Shop Origin">Origine shop <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Visitor Country">Pays visiteurs <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Category">Niche <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Creation Date">Date de création <span class="fc">&#9662;</span></div>
       </div>
       <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)">Language <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Currency <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Theme <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Apps <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Shopify Plan <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Language">Langue <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Currency">Devise <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Theme">Thème Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Apps">Application Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Pixels">Pixels <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Shopify Plan">Plan Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Trustpilot">Trustpilot <span class="fc">&#9662;</span></div>
       </div>
     </div>
-    <!-- ADS filter group -->
+    <!-- ADS filter group (copie TrendTrack + bonus Peekr) -->
     <div id="fgroup-ads" style="display:none">
       <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)">Live Ads <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Ads Growth % <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Est. Sales <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Revenue <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">AOV <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Units Sold <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)">Score <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Live Ads">Ads Actives <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Ads Growth">Croiss. des Ads <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Est. Sales">Ventes estimées <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Revenue">Revenu <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="AOV">Panier moyen <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Units Sold">Unités vendues <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Score">Score <span class="fc">&#9662;</span></div>
       </div>
     </div>
     <!-- Sort row -->
     <div class="fsort">
       <span class="fsort-label">&#8595;</span>
-      <div class="fb" onclick="tf(this)">Relevance <span class="fc">&#9662;</span></div>
+      <div class="fb" onclick="tf(this)" data-filter="Relevance">Pertinence <span class="fc">&#9662;</span></div>
     </div>
     <!-- Reset bar -->
     <div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
@@ -482,15 +485,15 @@ td{padding:11px 14px;vertical-align:middle;}
 
   <div class="tw">
     <table><thead><tr>
-      <th style="width:240px"><div class="thi">Shop Info</div></th>
-      <th style="width:110px"><div class="thi">Products</div></th>
-      <th style="width:90px"><div class="thi">Category</div></th>
-      <th style="width:130px;cursor:pointer" onclick="sortBy('v')"><div class="thi">Monthly Visits <span class="sic">⇅</span></div></th>
-      <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenue Est. <span class="sic">⇅</span></div></th>
-      <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Live Ads <span class="sic">⇅</span></div></th>
-      <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Est. Sales <span class="sic">⇅</span></div></th>
-      <th style="width:75px;cursor:pointer" onclick="sortBy('aov')"><div class="thi">AOV <span class="sic">⇅</span></div></th>
-      <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Units Sold <span class="sic">⇅</span></div></th>
+      <th style="width:240px"><div class="thi">Infos du shop</div></th>
+      <th style="width:110px"><div class="thi">Meilleures ventes</div></th>
+      <th style="width:90px"><div class="thi">Catégorie</div></th>
+      <th style="width:130px;cursor:pointer" onclick="sortBy('v')"><div class="thi">Visites mensuelles <span class="sic">⇅</span></div></th>
+      <th style="width:150px;cursor:pointer" onclick="sortBy('rv')"><div class="thi">Revenu est. <span class="sic">⇅</span></div></th>
+      <th style="width:80px;cursor:pointer" onclick="sortBy('ad')"><div class="thi">Meta Ads <span class="sic">⇅</span></div></th>
+      <th style="width:110px;cursor:pointer" onclick="sortBy('es')"><div class="thi">Ventes est. <span class="sic">⇅</span></div></th>
+      <th style="width:75px;cursor:pointer" onclick="sortBy('aov')"><div class="thi">Panier moy. <span class="sic">⇅</span></div></th>
+      <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Unités vendues <span class="sic">⇅</span></div></th>
       <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
     <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px"></div><div style="font-size:14px;font-weight:600">No shops match</div></div>
@@ -543,10 +546,16 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
 // Load initial data + total count
 (async () => {
   try {
-    // Step 0: fetch cached total count from shop_stats (fast, no full scan)
+    // Step 0: fetch cached total + curated counts from shop_stats (fast, no full scan)
     try {
-      const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=eq.total_count&select=value', { headers: { 'apikey': _AK } });
-      if (statsR.ok) { const statsD = await statsR.json(); if (statsD.length > 0) window._totalShopCount = parseInt(statsD[0].value) || 0; }
+      const statsR = await fetch(_SB+'/rest/v1/shop_stats?key=in.(total_count,curated_count)&select=key,value', { headers: { 'apikey': _AK } });
+      if (statsR.ok) {
+        const rows = await statsR.json();
+        for (const r of rows) {
+          if (r.key === 'total_count') window._totalShopCount = parseInt(r.value) || 0;
+          if (r.key === 'curated_count') window._totalCuratedShops = parseInt(r.value) || 0;
+        }
+      }
     } catch(e) { console.warn('[Peekr] shop_stats fallback'); }
     // Step 1: fetch US shops first (best shops, with products) then rest
     const seen = new Set();
@@ -735,7 +744,8 @@ function getCountries(){
 
 // Toggle dropdown
 function tf(e){
-  const name=e.textContent.trim().replace(/\s*[▾×]\s*$/,'').trim();
+  // Priorité au data-filter pour garder la logique JS en anglais même si l'UI est en français
+  const name=(e.dataset && e.dataset.filter) ? e.dataset.filter : e.textContent.trim().replace(/\s*[▾×]\s*$/,'').trim();
   const ddId='fb-dd-'+name.replace(/\s+/g,'-');
   const existing=document.getElementById(ddId);
 
@@ -1301,11 +1311,12 @@ function re(){
   const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode;
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
-  // Always show TOTAL curated shops (5809) — not the count loaded in current view
-  const curatedTotal = window._totalCuratedShops || dbTotal || shops.length;
+  // Show TOTAL catalog count — 975 638 shops. Premium tag for the hand-picked top.
+  const grandTotal = window._totalShopCount || 975638;
+  const premiumCount = window._totalCuratedShops || 5809;
   const totalLabel = _apiResults.length > 0
     ? `<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from catalog</span>`
-    : `<b>${curatedTotal.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur 975 638</span>`;
+    : `<b>${grandTotal.toLocaleString()}</b> shops <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">dont ${premiumCount.toLocaleString()} premium</span>`;
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
