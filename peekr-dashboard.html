@@ -145,10 +145,10 @@ body{
 .fw{padding:12px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid rgba(255,45,120,0.08);background:linear-gradient(180deg,#fefcfd 0%,#faf5f7 100%);}
 .fr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:6px 12px;background:rgba(255,255,255,0.85);border:1px solid rgba(255,45,120,0.12);border-radius:8px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.6);cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'Figtree',sans-serif;position:relative;box-shadow:0 1px 3px rgba(255,45,120,0.04);}
-.fb:hover{border-color:rgba(255,45,120,0.3);color:var(--black);background:#fff;box-shadow:0 2px 8px rgba(255,45,120,0.08);}
-.fb.active{border-color:var(--neon-soft);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 12px rgba(255,45,120,0.1);}
-.fb.has-value{border-color:var(--neon-soft);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 12px rgba(255,45,120,0.1);}
+.fb{display:flex;align-items:center;gap:5px;padding:6px 12px;background:#fff;border:1.5px solid rgba(255,45,120,0.35);border-radius:8px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.75);cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'Figtree',sans-serif;position:relative;box-shadow:0 1px 3px rgba(255,45,120,0.08);}
+.fb:hover{border-color:rgba(255,45,120,0.7);color:var(--black);background:#fff;box-shadow:0 2px 10px rgba(255,45,120,0.15);}
+.fb.active{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.08);box-shadow:0 0 0 2px rgba(255,45,120,0.15),0 2px 12px rgba(255,45,120,0.2);}
+.fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.08);box-shadow:0 0 0 2px rgba(255,45,120,0.15),0 2px 12px rgba(255,45,120,0.2);}
 .fc{font-size:8px;opacity:.45;color:var(--neon-soft);}
 /* Filter tabs */
 .fhdr{display:flex;align-items:center;gap:12px;margin-bottom:6px;padding:0 2px;}
@@ -889,28 +889,28 @@ function createDropdown(filterName,btn){
     });
   }
   else if(filterName==='Traffic'){
-    html=`<div class="fb-range"><div class="fb-range-label">Visitors</div>
+    html=`<div class="fb-range"><div class="fb-range-label">Visiteurs par mois</div>
       <div class="fb-range-row"><label>Min</label><input type="number" id="rf-trafficMin" min="0" placeholder="0" value="${_rangeFilters.trafficMin||''}"></div>
       <div class="fb-range-row"><label>Max</label><input type="number" id="rf-trafficMax" min="0" placeholder="10,000,000" value="${_rangeFilters.trafficMax<Infinity?_rangeFilters.trafficMax:''}"></div>
       <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('traffic')">Apply</button></div>
       <div class="fb-dropdown-clear" onclick="clearRangeFilter('traffic')">Clear</div></div>`;
   }
   else if(filterName==='Products'){
-    html=`<div class="fb-range"><div class="fb-range-label">Product Count</div>
+    html=`<div class="fb-range"><div class="fb-range-label">Nombre de produits</div>
       <div class="fb-range-row"><label>Min</label><input type="number" id="rf-productsMin" min="0" placeholder="0" value="${_rangeFilters.productsMin||''}"></div>
       <div class="fb-range-row"><label>Max</label><input type="number" id="rf-productsMax" min="0" placeholder="100,000" value="${_rangeFilters.productsMax<Infinity?_rangeFilters.productsMax:''}"></div>
       <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('products')">Apply</button></div>
       <div class="fb-dropdown-clear" onclick="clearRangeFilter('products')">Clear</div></div>`;
   }
   else if(filterName==='Live Ads'){
-    html=`<div class="fb-range"><div class="fb-range-label">Live Ads</div>
+    html=`<div class="fb-range"><div class="fb-range-label">Ads Actives</div>
       <div class="fb-range-row"><label>Min</label><input type="number" id="rf-adsMin" min="0" placeholder="0" value="${_rangeFilters.adsMin||''}"></div>
       <div class="fb-range-row"><label>Max</label><input type="number" id="rf-adsMax" min="0" placeholder="10,000" value="${_rangeFilters.adsMax<Infinity?_rangeFilters.adsMax:''}"></div>
       <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('ads')">Apply</button></div>
       <div class="fb-dropdown-clear" onclick="clearRangeFilter('ads')">Clear</div></div>`;
   }
   else if(filterName==='Revenue'){
-    html=`<div class="fb-range"><div class="fb-range-label">Revenue Est.</div>
+    html=`<div class="fb-range"><div class="fb-range-label">Revenu estimé</div>
       <div class="fb-range-row"><label>Min</label><input type="number" id="rf-revenueMin" min="0" placeholder="0" value="${_rangeFilters.revenueMin||''}"></div>
       <div class="fb-range-row"><label>Max</label><input type="number" id="rf-revenueMax" min="0" placeholder="10,000,000" value="${_rangeFilters.revenueMax<Infinity?_rangeFilters.revenueMax:''}"></div>
       <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('revenue')">Apply</button></div>
@@ -924,7 +924,7 @@ function createDropdown(filterName,btn){
       <div class="fb-dropdown-clear" onclick="clearRangeFilter('score')">Clear</div></div>`;
   }
   else if(filterName==='Est. Sales'){
-    html=`<div class="fb-range"><div class="fb-range-label">Est. Sales</div>
+    html=`<div class="fb-range"><div class="fb-range-label">Ventes estimées</div>
       <div class="fb-range-row"><label>Min</label><input type="number" id="rf-salesMin" min="0" placeholder="0" value="${_rangeFilters.salesMin||''}"></div>
       <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('sales')">Apply</button></div>
       <div class="fb-dropdown-clear" onclick="clearRangeFilter('sales')">Clear</div></div>`;
@@ -951,7 +951,10 @@ function createDropdown(filterName,btn){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="sortmode" ${sortCol==='cr_new'?'checked':''} onchange="setSortMode('cr_new')"><label>Newest Shops</label></div>`;
   }
 
-  if(html){html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;}
+  // Only add a generic Clear if the range-specific dropdown didn't already render one
+  if(html && !html.includes('fb-dropdown-clear')){
+    html+=`<div class="fb-dropdown-clear" onclick="clearFilter('${esc(filterName)}')">Clear</div>`;
+  }
 
   dd.innerHTML=html;
   btn.parentNode.style.position='relative';
