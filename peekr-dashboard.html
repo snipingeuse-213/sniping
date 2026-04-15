@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
 <meta name="theme-color" content="#F4A7B9"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
 <meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
 <meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
 <meta property="og:type" content="website"/>
@@ -234,6 +234,14 @@ body{
 
 /* ── TABLE ── */
 .tw{flex:1;overflow:auto;padding:12px 24px 24px;}
+
+/* Skeleton loader shimmer — TrendTrack style */
+@keyframes shimmer { 0%{background-position:-400px 0} 100%{background-position:400px 0} }
+.skeleton{background:linear-gradient(90deg,#f0f0f0 0%,#f8f8f8 50%,#f0f0f0 100%);background-size:800px 100%;animation:shimmer 1.4s linear infinite;border-radius:4px;display:inline-block;}
+.skeleton-row{display:flex;gap:12px;padding:16px;border-bottom:1px solid var(--border);align-items:center;}
+.skeleton-circle{width:44px;height:44px;border-radius:8px;flex-shrink:0;}
+.skeleton-text{height:12px;flex:1;}
+.skeleton-small{height:10px;width:60px;}
 table{width:100%;border-collapse:separate;border-spacing:0 4px;min-width:900px;}
 thead th{padding:8px 14px;font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);text-align:left;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:10;background:#ffffff;transition:color .15s;}
 thead th:hover{color:rgba(26,10,15,0.6);}
@@ -391,7 +399,7 @@ td{padding:11px 14px;vertical-align:middle;}
 <div class="main">
   <div class="topbar">
     <div class="tb-title">Trending Shops</div>
-    <div class="sbox" style="position:relative;"><span style="color:rgba(26,10,15,0.35);font-size:13px;">&#128269;</span><input type="text" placeholder="Search shops, keywords…" id="si" oninput="fs()" onfocus="showAC()" autocomplete="off"/><div id="ac-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:0 0 12px 12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:380px;overflow-y:auto;z-index:100;"></div></div>
+    <div class="sbox" style="position:relative;"><span style="color:rgba(26,10,15,0.35);font-size:13px;"></span><input type="text" placeholder="Search shops, keywords…" id="si" oninput="fs()" onfocus="showAC()" autocomplete="off"/><div id="ac-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:0 0 12px 12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);max-height:380px;overflow-y:auto;z-index:100;"></div></div>
     <div class="tb-r">
       <div class="lpill"><div class="ldot"></div>Live</div>
       <div class="cnt" id="cnt"><b>—</b> Shops</div>
@@ -413,8 +421,8 @@ td{padding:11px 14px;vertical-align:middle;}
     <!-- FILTERS header + tabs -->
     <div class="fhdr">
       <span class="fhdr-label">Filters</span>
-      <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico">&#127978;</span> Shops</button>
-      <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico">&#128202;</span> Ads</button>
+      <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico"></span> Shops</button>
+      <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico"></span> Ads</button>
     </div>
     <!-- SHOPS filter group -->
     <div id="fgroup-shops">
@@ -470,7 +478,7 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:95px;cursor:pointer" onclick="sortBy('us')"><div class="thi">Units Sold <span class="sic">⇅</span></div></th>
       <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
-    <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px">&#128269;</div><div style="font-size:14px;font-weight:600">No shops match</div></div>
+    <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px"></div><div style="font-size:14px;font-weight:600">No shops match</div></div>
     <div id="pager" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0;font-family:'Figtree',sans-serif;font-size:13px;"></div>
   </div>
 </div>
@@ -560,8 +568,11 @@ function fmtR(min,max){
   return f(min)+' – '+f(max);
 }
 function calcAge(d){if(!d)return'N/A';const ms=Date.now()-new Date(d).getTime();const days=Math.floor(ms/864e5);if(days<7)return days+' days';if(days<60)return Math.round(days/7)+' weeks';if(days<365)return Math.round(days/30)+' months';return Math.round(days/365)+' years';}
-function mapShop(s,i){return{
-  id:i+1,n:s.name||s.domain,d:s.domain,ni:s.niche||'General',sc:s.score||0,t:s.trend_tag||'cold',
+function mapShop(s,i){
+  // Clean niche: "/Apparel" -> "Apparel", "/Business & Industrial/Agriculture/Wood" -> "Business & Industrial"
+  const cleanNiche = (s.niche||'General').replace(/^\//,'').split('/')[0].trim() || 'General';
+  return{
+  id:i+1,n:s.name||s.domain,d:s.domain,ni:cleanNiche,sc:s.score||0,t:s.trend_tag||'cold',
   c:(s.country||'US').toLowerCase(),c2:'',cr:(s.created_date||'').replace('T00:00:00',''),ag:calcAge(s.created_date),
   v:s.monthly_visits||0,vf:fmtV(s.monthly_visits),r:fmtR(s.revenue_min||0,s.revenue_max||0),
   rv:Math.round(((s.revenue_min||0)+(s.revenue_max||0))/2),
@@ -709,7 +720,7 @@ function getCountries(){
 
 // Toggle dropdown
 function tf(e){
-  const name=e.textContent.trim().replace(/\s*[▾×✕]\s*$/,'').trim();
+  const name=e.textContent.trim().replace(/\s*[▾×]\s*$/,'').trim();
   const ddId='fb-dd-'+name.replace(/\s+/g,'-');
   const existing=document.getElementById(ddId);
 
@@ -1094,7 +1105,7 @@ function setSortMode(col){
 // Update pill visual state to show which have values
 function updateFilterPillStates(){
   document.querySelectorAll('.fb').forEach(btn=>{
-    const name=btn.textContent.trim().replace(/[▾×✕]/g,'').trim();
+    const name=btn.textContent.trim().replace(/[▾×]/g,'').trim();
     let hasVal=false;
     if(name==='Traffic')hasVal=_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity;
     else if(name==='Products')hasVal=_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity;
@@ -1207,13 +1218,13 @@ function gd(){
     if(_rangeFilters.salesMin>0)s=s.filter(x=>x.es>=_rangeFilters.salesMin);
   }
 
-  // US shops priority — boost US shops to the top by default
+  // US shops priority — boost US shops to the top, then biggest traffic (TrendTrack-style)
   if(!sortCol){
     s.sort((a,b)=>{
       const aUS=(a.c==='us')?1:0;
       const bUS=(b.c==='us')?1:0;
       if(aUS!==bUS) return bUS-aUS;
-      return b.sc-a.sc; // secondary: score desc
+      return b.v-a.v; // secondary: monthly visits desc — variety of scores at the top
     });
   }
 
@@ -1275,11 +1286,11 @@ function re(){
   const cdfActive=filters['Creation Date']&&filters['Creation Date'].mode;
   const dbTotal = window._totalShopCount || 0;
   const displayCount = cdfActive ? shops.length : (dbTotal > shops.length ? dbTotal : shops.length);
-  const curatedCount = shops.length;
-  const catalogTotal = dbTotal || 975638;
+  // Always show TOTAL curated shops (5809) — not the count loaded in current view
+  const curatedTotal = window._totalCuratedShops || dbTotal || shops.length;
   const totalLabel = _apiResults.length > 0
-    ? `<b>${curatedCount.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from catalog</span>`
-    : `<b>${curatedCount.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur ${catalogTotal.toLocaleString()}</span>`;
+    ? `<b>${shops.length.toLocaleString()}</b> Shops <span style="color:#e8799a;font-size:11px;margin-left:4px;">+${_apiResults.length} from catalog</span>`
+    : `<b>${curatedTotal.toLocaleString()}</b> curés <span style="color:rgba(26,10,15,0.4);font-size:11px;margin-left:6px;">sur 975 638</span>`;
   document.getElementById('cnt').innerHTML=totalLabel;
   // Update Creation Date button to show active state with clear button
   document.querySelectorAll('.fb').forEach(btn=>{
@@ -1363,9 +1374,9 @@ function re(){
     return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')" style="cursor:pointer;">
       <td><div class="si2">
         <div class="sthumb">
-          <img src="https://www.google.com/s2/favicons?domain=${s.d}&sz=128"
-               onerror="this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';"
-               loading="lazy" alt="${s.n}" style="border-radius:8px;"/>
+          <img src="${s.ico||'https://www.google.com/s2/favicons?domain='+s.d+'&sz=128'}"
+               onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=${s.d}&sz=128';this.onerror=function(){this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';};"
+               loading="lazy" alt="${s.n}" style="border-radius:8px;width:100%;height:100%;object-fit:cover;"/>
           <div class="sthumb-fb" style="display:none;">${init(s.n)}</div>
         </div>
         <div>
@@ -1381,7 +1392,7 @@ function re(){
       </div></td>
       <td>
         <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:5px;align-items:center;min-width:140px;">
-          ${[0,1,2].map(()=>`<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#faf5f7,#f0eaed);border:1px solid rgba(255,45,120,0.06);flex-shrink:0;animation:shimmer 1.5s ease-in-out infinite alternate;"></div>`).join('')}
+          ${[0,1,2].map(()=>`<div class="skeleton" style="width:46px;height:46px;border-radius:8px;flex-shrink:0;border:1px solid rgba(0,0,0,0.04);"></div>`).join('')}
         </div>
         <div class="pct">${s.p} total</div>
       </td>
@@ -1558,14 +1569,14 @@ async function _fetchShopProducts(domain){
     // Show placeholder for failed loads
     const el=document.querySelector('.prod-imgs[data-domain="'+domain+'"]');
     if(el){
-      el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);">📦</div>').join('');
+      el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);"></div>').join('');
     }
   }
 }
 
 function renderProdImgs(el,imgs){
   if(!imgs||imgs.length===0){
-    el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);">📦</div>').join('');
+    el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);"></div>').join('');
     return;
   }
   el.innerHTML=imgs.slice(0,3).map(src=>`<img src="${src}" style="width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f5f0ec;border:1px solid rgba(255,45,120,0.06);flex-shrink:0;" loading="lazy" onerror="this.style.display='none';this.nextSibling||this.parentElement.insertAdjacentHTML('beforeend','<div style=\\'width:46px;height:46px;border-radius:8px;background:#f0eaed;flex-shrink:0;\\'></div>')"/>`).join('')+
@@ -1705,8 +1716,8 @@ function runAC(term){
         <a href="https://${s.d}" target="_blank" rel="noopener" onclick="event.stopPropagation();" style="font-size:11px;color:var(--pink);font-weight:600;text-decoration:none;cursor:pointer;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${s.d}</a>
       </div>
       <span style="font-size:11px;font-weight:600;color:var(--text3);white-space:nowrap;"><img src="https://flagcdn.com/w20/${s.c}.png" style="width:14px;height:10px;border-radius:1px;vertical-align:middle;margin-right:4px;"/>${s.ni}</span>
-      <span style="font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;">&#128200; ${s.vf||fmtV(s.v)}</span>
-      ${s.ad>0?`<span style="font-size:10px;font-weight:700;background:rgba(232,121,154,0.1);color:var(--pink);padding:2px 6px;border-radius:8px;">&#128226; ${s.ad}</span>`:''}
+      <span style="font-size:11px;font-weight:700;color:var(--text2);white-space:nowrap;"> ${s.vf||fmtV(s.v)}</span>
+      ${s.ad>0?`<span style="font-size:10px;font-weight:700;background:rgba(232,121,154,0.1);color:var(--pink);padding:2px 6px;border-radius:8px;"> ${s.ad}</span>`:''}
     </a>`).join('')+
     `<div style="padding:8px 14px;border-top:1px solid var(--border);"><span style="font-size:11px;color:var(--text3);">Press Enter to search all shops</span></div>`;
 }
