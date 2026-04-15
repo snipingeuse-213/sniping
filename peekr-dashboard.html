@@ -265,26 +265,41 @@ tbody tr:hover td{
 }
 td{padding:11px 14px;vertical-align:middle;}
 
-.si2{display:flex;align-items:center;gap:10px;}
+.si2{display:flex;align-items:center;gap:12px;}
 .sthumb{
-  width:52px;height:40px;border-radius:9px;
+  width:84px;height:56px;border-radius:8px;
   overflow:hidden;
-  border:1px solid rgba(200,160,170,0.15);
+  border:1px solid rgba(200,160,170,0.18);
   flex-shrink:0;
-  background:rgba(245,240,235,0.8);
+  background:linear-gradient(135deg,#fafafa,#f3eef0);
   position:relative;
 }
-.sthumb img{
-  width:28px;height:28px;
-  object-fit:contain;
+.sthumb .shot{
+  width:100%;height:100%;
+  object-fit:cover;
   display:block;
-  margin:auto;
-  position:relative;top:50%;transform:translateY(-50%);
+  background:#f5f0ec;
+}
+.sthumb .shot.loading{filter:blur(4px);opacity:0.6;}
+.sthumb .logo-overlay{
+  position:absolute;
+  bottom:3px;left:3px;
+  width:20px;height:20px;
+  border-radius:5px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 1px 3px rgba(0,0,0,0.12);
+  overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.sthumb .logo-overlay img{
+  width:100%;height:100%;object-fit:contain;
 }
 .sthumb-fb{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:800;color:rgba(26,10,15,0.35);
+  font-size:11px;font-weight:800;color:rgba(26,10,15,0.3);
+  background:linear-gradient(135deg,#fafafa,#efe8ec);
 }
 .sname{font-size:13px;font-weight:800;color:#1a0a0f;}
 .sdomain{font-size:11px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:1px;}
@@ -1374,9 +1389,16 @@ function re(){
     return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')" style="cursor:pointer;">
       <td><div class="si2">
         <div class="sthumb">
-          <img src="${s.ico||'https://www.google.com/s2/favicons?domain='+s.d+'&sz=128'}"
-               onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=${s.d}&sz=128';this.onerror=function(){this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';};"
-               loading="lazy" alt="${s.n}" style="border-radius:8px;width:100%;height:100%;object-fit:cover;"/>
+          <img class="shot loading"
+               src="https://s.wordpress.com/mshots/v1/${encodeURIComponent('https://'+s.d)}?w=400&h=240"
+               onload="this.classList.remove('loading');"
+               onerror="this.style.display='none';var fb=this.parentNode.querySelector('.sthumb-fb');if(fb)fb.style.display='flex';"
+               loading="lazy" alt="${s.n} homepage"/>
+          <div class="logo-overlay">
+            <img src="${s.ico||'https://www.google.com/s2/favicons?domain='+s.d+'&sz=128'}"
+                 onerror="this.onerror=null;this.src='https://www.google.com/s2/favicons?domain=${s.d}&sz=128';this.onerror=function(){this.style.display='none';};"
+                 loading="lazy" alt="${s.n} logo"/>
+          </div>
           <div class="sthumb-fb" style="display:none;">${init(s.n)}</div>
         </div>
         <div>
