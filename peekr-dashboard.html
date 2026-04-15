@@ -151,14 +151,15 @@ body{
 .fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.08);box-shadow:0 0 0 2px rgba(255,45,120,0.15),0 2px 12px rgba(255,45,120,0.2);}
 .fc{font-size:8px;opacity:.45;color:var(--neon-soft);}
 /* Filter tabs */
-.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:6px;padding:0 2px;}
-.fhdr-label{font-size:12px;font-weight:800;color:var(--neon);text-transform:uppercase;letter-spacing:.08em;text-shadow:0 0 20px var(--neon-glow2);}
-.ftab{display:flex;align-items:center;gap:5px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;border:1px solid rgba(255,45,120,0.15);background:rgba(255,255,255,0.8);color:rgba(26,10,15,0.5);cursor:pointer;transition:all .18s;font-family:'Figtree',sans-serif;}
-.ftab:hover{border-color:rgba(255,45,120,0.3);color:var(--neon);background:#fff;}
-.ftab.active{background:linear-gradient(135deg,var(--neon),var(--pink-dark));color:#fff;border-color:var(--neon);box-shadow:0 2px 12px var(--neon-glow2);}
-.ftab .ftab-ico{font-size:13px;}
-.fsort{display:flex;align-items:center;gap:8px;margin-top:2px;padding:0 2px;}
-.fsort-label{font-size:11px;color:rgba(26,10,15,0.35);display:flex;align-items:center;gap:4px;}
+.fhdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:0 2px;}
+.fhdr-label{font-size:11px;font-weight:700;color:rgba(26,10,15,0.4);text-transform:uppercase;letter-spacing:.1em;}
+.ftab{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(0,0,0,0.08);background:#fff;color:rgba(26,10,15,0.55);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
+.ftab:hover{border-color:rgba(26,10,15,0.2);color:var(--black);}
+.ftab.active{background:linear-gradient(135deg,var(--neon),var(--pink-dark));color:#fff;border-color:var(--neon);box-shadow:0 1px 6px rgba(255,45,120,0.25);}
+.ftab .ftab-ico{display:inline-flex;width:14px;height:14px;}
+.ftab .ftab-ico svg{width:14px;height:14px;}
+.fsort{display:flex;align-items:center;gap:10px;margin-top:4px;padding:0 2px;}
+.fsort-label{font-size:13px;color:rgba(26,10,15,0.45);display:flex;align-items:center;gap:4px;font-weight:600;}
 /* Min/Max popover inside dropdown */
 .fb-range{padding:12px;min-width:220px;}
 .fb-range-label{font-size:12px;font-weight:700;color:#1a0a0f;margin-bottom:8px;}
