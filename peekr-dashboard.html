@@ -145,10 +145,15 @@ body{
 .fw{padding:12px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid rgba(0,0,0,0.06);background:#ffffff;}
 .fr{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:flex;align-items:center;gap:5px;padding:6px 12px;background:#fff;border:1.5px solid rgba(255,45,120,0.35);border-radius:8px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.75);cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'Figtree',sans-serif;position:relative;box-shadow:0 1px 3px rgba(255,45,120,0.08);}
-.fb:hover{border-color:rgba(255,45,120,0.7);color:var(--black);background:#fff;box-shadow:0 2px 10px rgba(255,45,120,0.15);}
-.fb.active{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.08);box-shadow:0 0 0 2px rgba(255,45,120,0.15),0 2px 12px rgba(255,45,120,0.2);}
-.fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.08);box-shadow:0 0 0 2px rgba(255,45,120,0.15),0 2px 12px rgba(255,45,120,0.2);}
+.fb{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:8px;font-size:12.5px;font-weight:500;color:#1a0a0f;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
+.fb:hover{border-color:rgba(26,10,15,0.25);background:#fafafa;}
+.fb.active{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
+.fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
+.fb-ico{display:inline-flex;width:14px;height:14px;flex-shrink:0;color:rgba(26,10,15,0.55);}
+.fb-ico svg{width:14px;height:14px;stroke-width:2;}
+.fb.active .fb-ico,.fb.has-value .fb-ico{color:var(--neon);}
+.fb .fc{color:rgba(26,10,15,0.35);font-size:10px;margin-left:2px;}
+.fb.active .fc,.fb.has-value .fc{color:var(--neon);}
 .fc{font-size:8px;opacity:.45;color:var(--neon-soft);}
 /* Filter tabs */
 .fhdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:0 2px;}
@@ -434,49 +439,48 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
 
   <div class="fw">
-    <!-- FILTERS header + tabs -->
+    <!-- FILTERS header + tabs TrendTrack-style -->
     <div class="fhdr">
-      <span class="fhdr-label">Filters</span>
-      <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico"></span> Shops</button>
-      <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico"></span> Ads</button>
+      <span class="fhdr-label">FILTRES</span>
+      <button id="ftab-shops" class="ftab active" onclick="switchFilterTab('shops')"><span class="ftab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1-4h16l1 4"/><path d="M4 9v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M9 22V12h6v10"/></svg></span>Shops</button>
+      <button id="ftab-ads" class="ftab" onclick="switchFilterTab('ads')"><span class="ftab-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Ads</button>
     </div>
     <!-- SHOPS filter group (copie TrendTrack) -->
     <div id="fgroup-shops">
-      <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)" data-filter="Traffic">Trafic <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Traffic Growth">Croissance du trafic <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Products">Produits <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Shop Origin">Origine shop <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Visitor Country">Pays visiteurs <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Category">Niche <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Creation Date">Date de création <span class="fc">&#9662;</span></div>
+      <div class="fr" style="flex-wrap:wrap;gap:8px">
+        <div class="fb" onclick="tf(this)" data-filter="Traffic"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></span>Trafic <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Traffic Growth"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>Croissance du trafic <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Products"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.3 7 12 12 20.7 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg></span>Produits <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Shop Origin"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/></svg></span>Origine shop <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Visitor Country"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>Pays visiteurs <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Category"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Niche <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Creation Date"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>Date de création <span class="fc">&#9662;</span></div>
       </div>
-      <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)" data-filter="Language">Langue <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Currency">Devise <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Theme">Thème Shopify <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Apps">Application Shopify <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Pixels">Pixels <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Shopify Plan">Plan Shopify <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Trustpilot">Trustpilot <span class="fc">&#9662;</span></div>
+      <div class="fr" style="flex-wrap:wrap;gap:8px">
+        <div class="fb" onclick="tf(this)" data-filter="Language"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg></span>Langue <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Currency"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Devise <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Theme"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>Thème Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Apps"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>Application Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Pixels"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>Pixels <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Shopify Plan"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>Plan Shopify <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Trustpilot"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Trustpilot <span class="fc">&#9662;</span></div>
       </div>
     </div>
-    <!-- ADS filter group (copie TrendTrack + bonus Peekr) -->
+    <!-- ADS filter group -->
     <div id="fgroup-ads" style="display:none">
-      <div class="fr" style="flex-wrap:wrap;gap:6px">
-        <div class="fb" onclick="tf(this)" data-filter="Live Ads">Ads Actives <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Ads Growth">Croiss. des Ads <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Est. Sales">Ventes estimées <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Revenue">Revenu <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="AOV">Panier moyen <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Units Sold">Unités vendues <span class="fc">&#9662;</span></div>
-        <div class="fb" onclick="tf(this)" data-filter="Score">Score <span class="fc">&#9662;</span></div>
+      <div class="fr" style="flex-wrap:wrap;gap:8px">
+        <div class="fb" onclick="tf(this)" data-filter="Live Ads"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Ads Actives <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Ads Growth"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></span>Croiss. des Ads <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Est. Sales"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>Ventes estimées <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Revenue"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>Revenu <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="AOV"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>Panier moyen <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Units Sold"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>Unités vendues <span class="fc">&#9662;</span></div>
+        <div class="fb" onclick="tf(this)" data-filter="Score"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Score <span class="fc">&#9662;</span></div>
       </div>
     </div>
     <!-- Sort row -->
     <div class="fsort">
-      <span class="fsort-label">&#8595;</span>
-      <div class="fb" onclick="tf(this)" data-filter="Relevance">Pertinence <span class="fc">&#9662;</span></div>
+      <div class="fb" onclick="tf(this)" data-filter="Relevance"><span class="fb-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5h10"/><path d="M11 9h7"/><path d="M11 13h4"/><path d="M3 17l3 3 3-3"/><path d="M6 20V4"/></svg></span>Pertinence <span class="fc">&#9662;</span></div>
     </div>
     <!-- Reset bar -->
     <div id="reset-bar" class="fr" style="display:none;justify-content:flex-end;width:100%;padding:0 4px">
