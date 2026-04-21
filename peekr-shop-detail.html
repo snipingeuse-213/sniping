@@ -40,11 +40,29 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;background:#fff;margin-left:220px;}
 
 /* Topbar */
-.topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 24px;background:#fff;border-bottom:1px solid var(--border);}
-.back-btn{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;border:1px solid var(--border);background:var(--card);transition:all .15s;text-decoration:none;}
-.back-btn:hover{border-color:var(--pink);color:var(--pink);}
-.tb-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;}
-.tb-domain{font-size:13px;color:var(--pink);font-weight:600;margin-left:4px;}
+.topbar{flex-shrink:0;display:flex;flex-direction:column;background:#fff;border-bottom:1px solid var(--border);}
+.topbar-row1{height:52px;display:flex;align-items:center;gap:14px;padding:0 24px;}
+.back-arrow{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:#fff;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--text2);flex-shrink:0;}
+.back-arrow:hover{border-color:var(--pink);color:var(--pink);background:rgba(232,121,154,0.04);}
+.back-arrow svg{width:18px;height:18px;}
+.tb-shop-identity{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.tb-shop-icon{width:30px;height:30px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#fafafa;border:1px solid var(--border);}
+.tb-shop-icon img{width:100%;height:100%;object-fit:cover;}
+.tb-shop-icon-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--pink);background:rgba(232,121,154,0.06);}
+.tb-title{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tb-shopify{display:inline-flex;align-items:center;gap:3px;background:#95BF47;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;flex-shrink:0;}
+.tb-actions{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;}
+.tb-btn{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:#fff;color:var(--text1);transition:all .15s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+.tb-btn:hover{border-color:var(--pink);color:var(--pink);}
+.tb-btn.primary{background:var(--pink);color:#fff;border-color:var(--pink);}
+.tb-btn.primary:hover{background:var(--pink-dark);}
+.topbar-meta{display:flex;align-items:center;gap:10px;padding:0 24px 10px;flex-wrap:wrap;}
+.topbar-meta .meta-item{font-size:11px;color:var(--text2);font-weight:500;display:flex;align-items:center;gap:5px;}
+.topbar-meta .meta-item svg{width:13px;height:13px;opacity:.5;}
+.topbar-meta .meta-item img{width:16px;height:12px;border-radius:2px;}
+.topbar-meta .meta-item a{color:var(--pink);font-weight:600;text-decoration:none;}
+.topbar-meta .meta-item a:hover{text-decoration:underline;}
+.topbar-meta .meta-sep{width:1px;height:14px;background:var(--border);flex-shrink:0;}
 
 /* Content */
 .content{flex:1;overflow-y:auto;padding:24px;background:var(--bg);}
@@ -72,7 +90,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .score-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7;}
 
 /* Tabs */
-.tabs-bar{display:flex;background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 16px 16px;padding:0 24px;margin-bottom:20px;gap:0;}
+.tabs-bar{display:flex;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0 24px;margin-bottom:20px;gap:0;}
 .tab{padding:12px 20px;font-size:13px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;display:flex;align-items:center;gap:6px;}
 .tab:hover{color:var(--text1);}
 .tab.active{color:var(--pink);border-bottom-color:var(--pink);}
@@ -311,10 +329,20 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 
 <!-- Main -->
 <div class="main">
-  <div class="topbar">
-    <a class="back-btn" href="peekr-dashboard.html">&#8592; Back to Shops</a>
-    <div class="tb-title" id="page-title">Shop Analytics</div>
-    <span class="tb-domain" id="page-domain"></span>
+  <div class="topbar" id="topbar">
+    <div class="topbar-row1">
+      <a class="back-arrow" href="peekr-dashboard.html" title="Back to Shops"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></a>
+      <div class="tb-shop-identity" id="tb-shop-identity">
+        <div class="tb-shop-icon" id="tb-shop-icon"><div class="tb-shop-icon-fb" id="tb-icon-fb">?</div></div>
+        <span class="tb-title" id="page-title">Loading...</span>
+        <span class="tb-shopify"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;"></span> Shopify</span>
+      </div>
+      <div class="tb-actions" id="tb-actions">
+        <button class="tb-btn" id="tb-save-btn" title="Save"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>
+        <a class="tb-btn" id="tb-visit-btn" href="#" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Visit</a>
+      </div>
+    </div>
+    <div class="topbar-meta" id="topbar-meta"></div>
   </div>
 
   <div class="content" id="content">
@@ -336,7 +364,6 @@ const domain=params.get('domain');
 if(!domain){
   document.getElementById('content').innerHTML='<div class="loading"><div style="font-size:48px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div><div style="font-size:16px;font-weight:700;">No shop selected</div><a href="peekr-dashboard.html" style="color:var(--pink);font-weight:600;">Go to Dashboard</a></div>';
 }else{
-  document.getElementById('page-domain').textContent=domain;
   loadShop(domain);
 }
 
@@ -366,6 +393,33 @@ function renderShop(s){
   const TC={hot:'#e8799a',rising:'#f6a05a',watch:'#e6b83a',cold:'#b8a8b0'};
   const TL={hot:'Hot',rising:'Rising',watch:'Watch',cold:'Cold'};
   const c=TC[tier];
+
+  // Populate topbar icon
+  const tbIcon=document.getElementById('tb-shop-icon');
+  const tbIconFb=document.getElementById('tb-icon-fb');
+  if(s.icon){
+    tbIcon.innerHTML=`<img src="${s.icon}" onerror="this.style.display='none';this.parentElement.innerHTML='<div class=\\'tb-shop-icon-fb\\'>${((s.name||s.domain||'?').substring(0,2)).toUpperCase()}</div>'"/>`;
+  }else{
+    tbIconFb.textContent=((s.name||s.domain||'?').substring(0,2)).toUpperCase();
+  }
+  // Populate topbar actions + score
+  const tbActions=document.getElementById('tb-actions');
+  const scoreBg=score>=80?'var(--pink)':score>=60?'var(--orange)':score>=40?'#e6b83a':'var(--text3)';
+  tbActions.insertAdjacentHTML('afterbegin',`<div style="display:flex;align-items:center;gap:6px;margin-right:4px;"><div style="width:32px;height:32px;border-radius:50%;border:2.5px solid ${scoreBg};display:flex;align-items:center;justify-content:center;flex-direction:column;"><span style="font-size:13px;font-weight:800;color:${scoreBg};line-height:1;">${score}</span></div></div>`);
+  document.getElementById('tb-save-btn').onclick=()=>saveShop(s.domain);
+  document.getElementById('tb-visit-btn').href='https://'+s.domain;
+  // Populate topbar metadata bar
+  const metaBar=document.getElementById('topbar-meta');
+  const metaParts=[];
+  metaParts.push(`<span class="meta-item"><a href="https://${s.domain}" target="_blank">${s.domain}</a></span>`);
+  metaParts.push(`<span class="meta-item" style="color:var(--text3);font-family:monospace;font-size:10px;">${s.domain?.includes('.myshopify.')?s.domain:s.domain?.replace(/\\.[^.]+$/,'')+'.myshopify.com'}</span>`);
+  if(s.created_date){const cd=(s.created_date||'').replace('T00:00:00','');metaParts.push(`<div class="meta-sep"></div><span class="meta-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${cd} (${getAge(cd)})</span>`);}
+  if(s.country){metaParts.push(`<div class="meta-sep"></div><span class="meta-item"><img src="https://flagcdn.com/w40/${s.country.toLowerCase()}.png"/> ${s.country.toUpperCase()}</span>`);}
+  if(s.language){metaParts.push(`<div class="meta-sep"></div><span class="meta-item">${s.language}</span>`);}
+  if(s.currency){metaParts.push(`<div class="meta-sep"></div><span class="meta-item">${s.currency}</span>`);}
+  if(s.niche||(s.categories&&s.categories[0])){metaParts.push(`<div class="meta-sep"></div><span class="meta-item" style="color:var(--pink);font-weight:600;">${s.niche||s.categories[0]}</span>`);}
+  if(s.shopify_plan&&s.shopify_plan!=='N/A'){metaParts.push(`<div class="meta-sep"></div><span class="meta-item">${s.shopify_plan}</span>`);}
+  metaBar.innerHTML=metaParts.join('');
 
   const visits=s.monthly_visits||0;
   const ads=s.live_ads||0;
@@ -433,42 +487,7 @@ function renderShop(s){
 
   const ct=document.getElementById('content');
   ct.innerHTML=`
-    <!-- Shop Header -->
-    <div class="shop-header">
-      <div class="shop-icon">
-        ${icon?`<img src="${icon}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" /><div class="shop-icon-fb" style="display:none;">${init(s.name||s.domain)}</div>`:
-        `<div class="shop-icon-fb">${init(s.name||s.domain)}</div>`}
-      </div>
-      <div class="shop-info">
-        <div class="shop-name">
-          ${s.title||s.name||s.domain}
-          <span class="shopify-badge"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:4px;vertical-align:middle;"></span> Shopify</span>
-        </div>
-        <div class="shop-domains">
-          <a class="shop-domain" href="https://${s.domain}" target="_blank">${s.domain} &#8599;</a>
-          <span style="color:var(--text3);font-size:11px;">|</span>
-          <span style="font-size:11px;color:var(--text3);font-family:monospace;">${myshopify}</span>
-        </div>
-        <div class="shop-meta">
-          ${country?`<span class="meta-chip"><img src="https://flagcdn.com/w40/${country.toLowerCase()}.png"/> ${country.toUpperCase()}</span>`:''}
-          <span class="meta-chip">${created||'N/A'} ${age!=='N/A'?'('+age+')':''}</span>
-          <span class="meta-chip">${lang}</span>
-          <span class="meta-chip">${currency}</span>
-          <span class="meta-chip tag niche" style="margin:0;">${niche}</span>
-          <span class="meta-chip">${plan}</span>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;">
-        <div class="score-badge" style="color:${c};border-color:${c};">
-          ${score}
-          <div class="score-label">${TL[tier]}</div>
-        </div>
-        <div style="display:flex;gap:6px;">
-          <button class="shop-btn" onclick="saveShop('${s.domain}')" title="Save Shop"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></button>
-          <a class="shop-btn" href="https://${s.domain}" target="_blank" title="Visit Store"></a>
-        </div>
-      </div>
-    </div>
+    <!-- Tabs Bar (directly under topbar, no separate header — TrendTrack style) -->
 
     <!-- Tabs -->
     <div class="tabs-bar">
@@ -614,7 +633,7 @@ function renderShop(s){
     <!-- Panel: Similar Shops -->
     <div class="tab-panel" id="panel-similar">
       <div class="section">
-        <div class="section-title">Similar Shops <span style="font-family:Figtree;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;">Shops in the same niche & country</span></div>
+        <div class="section-title">Similar Shops <span style="font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:var(--text3);font-weight:500;margin-left:8px;">Shops in the same niche & country</span></div>
         <div class="sim-grid" id="similar-shops">
           <div class="loading" style="grid-column:1/-1;height:200px;"><div class="spinner"></div><div>Finding similar shops...</div></div>
         </div>
@@ -1288,7 +1307,7 @@ function drawAdsChart(canvas, history, labelsEl) {
 
   // Y-axis labels
   ctx.fillStyle = '#b8a8b0';
-  ctx.font = '10px Figtree, sans-serif';
+  ctx.font = '10px Inter, -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'right';
   for (let i = 0; i <= 4; i++) {
     const val = minVal + (range * (4 - i) / 4);

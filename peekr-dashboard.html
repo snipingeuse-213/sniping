@@ -15,8 +15,7 @@
 <title>Peekr — Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 :root{
   --neon:#ff2d78;
@@ -32,7 +31,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{
-  font-family:'Figtree',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   background:var(--cream);
   color:var(--black);
   display:flex;
@@ -114,10 +113,10 @@ body{
   border-bottom:1px solid rgba(0,0,0,0.06);
   box-shadow:none;
 }
-.tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--black);}
+.tb-title{font-family:'Inter',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--black);}
 .sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
 .sbox:focus-within{background:#fff;border-color:var(--neon-soft);box-shadow:0 0 0 3px var(--neon-glow3),0 0 16px rgba(255,45,120,0.06);}
-.sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
+.sbox input{background:transparent;border:none;outline:none;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
 .sbox input::placeholder{color:rgba(26,10,15,0.3);}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
 .cnt{font-size:13px;font-weight:700;color:rgba(26,10,15,0.5);}
@@ -130,7 +129,7 @@ body{
 
 /* ── SEGMENTS NEON ── */
 .segs{display:flex;align-items:center;gap:6px;padding:12px 24px 0;flex-shrink:0;overflow-x:auto;background:#ffffff;}
-.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .18s;font-family:'Figtree',sans-serif;}
+.sg{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;color:rgba(26,10,15,0.5);cursor:pointer;white-space:nowrap;border:1px solid transparent;background:transparent;transition:all .18s;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
 .sg:hover{background:rgba(255,45,120,0.04);color:var(--neon);border-color:rgba(255,45,120,0.1);}
 .sg.active{
   background:rgba(255,45,120,0.06);
@@ -146,7 +145,7 @@ body{
 #fgroup-shops,#fgroup-ads{display:flex;flex-direction:column;gap:14px;}
 .fr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
-.fb{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:8px;font-size:12.5px;font-weight:500;color:#1a0a0f;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;position:relative;}
+.fb{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:8px;font-size:12.5px;font-weight:500;color:#1a0a0f;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;}
 .fb:hover{border-color:rgba(26,10,15,0.25);background:#fafafa;}
 .fb.active{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
 .fb.has-value{border-color:var(--neon);color:var(--neon);background:rgba(255,45,120,0.06);box-shadow:0 0 0 2px rgba(255,45,120,0.12);}
@@ -159,7 +158,7 @@ body{
 /* Filter tabs */
 .fhdr{display:flex;align-items:center;gap:12px;padding:0 2px;}
 .fhdr-label{font-size:11px;font-weight:700;color:rgba(26,10,15,0.4);text-transform:uppercase;letter-spacing:.1em;}
-.ftab{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(0,0,0,0.08);background:#fff;color:rgba(26,10,15,0.55);cursor:pointer;transition:all .15s;font-family:'Figtree',sans-serif;}
+.ftab{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid rgba(0,0,0,0.08);background:#fff;color:rgba(26,10,15,0.55);cursor:pointer;transition:all .15s;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
 .ftab:hover{border-color:rgba(26,10,15,0.2);color:var(--black);}
 .ftab.active{background:linear-gradient(135deg,var(--neon),var(--pink-dark));color:#fff;border-color:var(--neon);box-shadow:0 1px 6px rgba(255,45,120,0.25);}
 .ftab .ftab-ico{display:inline-flex;width:14px;height:14px;}
@@ -171,10 +170,10 @@ body{
 .fb-range-label{font-size:12px;font-weight:700;color:#1a0a0f;margin-bottom:8px;}
 .fb-range-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .fb-range-row label{font-size:11px;color:rgba(26,10,15,0.4);min-width:28px;}
-.fb-range-row input{width:90px;padding:6px 8px;border:1px solid #e0d6e3;border-radius:8px;font-size:12px;background:#faf8fb;font-family:'Figtree',sans-serif;color:#1a0a0f;}
+.fb-range-row input{width:90px;padding:6px 8px;border:1px solid #e0d6e3;border-radius:8px;font-size:12px;background:#faf8fb;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#1a0a0f;}
 .fb-range-row input:focus{outline:none;border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.1);}
 .fb-range-apply{display:flex;justify-content:flex-end;margin-top:4px;}
-.fb-range-apply button{padding:5px 16px;background:#1a0a0f;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Figtree',sans-serif;transition:all .15s;}
+.fb-range-apply button{padding:5px 16px;background:#1a0a0f;color:#fff;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;transition:all .15s;}
 .fb-range-apply button:hover{background:#e8799a;}
 
 /* ── DROPDOWN FILTERS ── */
@@ -228,16 +227,93 @@ body{
 .date-picker-wrap label{display:block;font-size:11px;font-weight:600;color:rgba(26,10,15,0.5);margin-bottom:4px;}
 .date-picker-wrap select,.date-picker-wrap input[type="date"]{
   width:100%;padding:6px 8px;border:1px solid rgba(200,160,170,0.25);border-radius:7px;
-  font-family:'Figtree',sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:#1a0a0f;background:#fff;
   outline:none;transition:border .15s;margin-bottom:8px;
 }
 .date-picker-wrap select:focus,.date-picker-wrap input[type="date"]:focus{border-color:#e8799a;box-shadow:0 0 0 2px rgba(232,121,154,0.12);}
 .date-picker-apply{
   width:100%;padding:7px;border:none;border-radius:7px;
-  background:#e8799a;color:#fff;font-family:'Figtree',sans-serif;
+  background:#e8799a;color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;
 }
 .date-picker-apply:hover{background:#d4607a;}
+
+/* ── TrendTrack-style Date Picker ── */
+.fb-dropdown:has(.date-picker-tt){max-width:none;max-height:none;overflow:visible;padding:0;min-width:auto;}
+.date-picker-tt{display:flex;min-width:720px;padding:0;background:#fff;border-radius:12px;}
+.dp-presets{display:flex;flex-direction:column;padding:12px 0;border-right:1px solid rgba(0,0,0,0.07);min-width:170px;}
+.dp-preset{padding:7px 16px;font-size:13px;color:#1a0a0f;cursor:pointer;transition:background .12s;font-weight:500;white-space:nowrap;}
+.dp-preset:hover{background:rgba(255,45,120,0.06);color:var(--neon);}
+.dp-preset.active{background:rgba(255,45,120,0.1);color:var(--neon);font-weight:700;}
+.dp-calendars{display:flex;gap:20px;padding:12px 16px;flex:1;}
+.dp-cal-block{flex:1;display:flex;flex-direction:column;gap:8px;}
+.dp-cal-label{font-size:11px;font-weight:700;color:rgba(26,10,15,0.55);text-transform:uppercase;letter-spacing:0.3px;}
+.dp-date-display{padding:7px 10px;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12.5px;color:rgba(26,10,15,0.4);background:#fff;min-height:18px;cursor:default;}
+.dp-date-display.has-value{color:#1a0a0f;}
+.dp-cal-nav{display:flex;align-items:center;justify-content:space-between;padding:4px 0;margin-bottom:4px;}
+.dp-cal-nav-btn{background:none;border:none;cursor:pointer;font-size:16px;color:#1a0a0f;padding:2px 6px;border-radius:6px;transition:background .12s;line-height:1;}
+.dp-cal-nav-btn:hover{background:rgba(0,0,0,0.05);}
+.dp-cal-month-label{font-size:13px;font-weight:700;color:#1a0a0f;}
+.dp-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center;}
+.dp-cal-grid .dp-cal-dow{font-size:10px;font-weight:700;color:rgba(26,10,15,0.4);padding:4px 0;text-transform:uppercase;}
+.dp-cal-grid .dp-cal-day{font-size:12px;padding:5px 0;border-radius:6px;cursor:pointer;transition:all .12s;color:#1a0a0f;font-weight:500;line-height:1.6;}
+.dp-cal-grid .dp-cal-day:hover{background:rgba(255,45,120,0.08);}
+.dp-cal-grid .dp-cal-day.empty{cursor:default;}
+.dp-cal-grid .dp-cal-day.empty:hover{background:none;}
+.dp-cal-grid .dp-cal-day.today{font-weight:700;color:var(--neon);}
+.dp-cal-grid .dp-cal-day.selected{background:var(--neon);color:#fff;font-weight:700;}
+.dp-cal-grid .dp-cal-day.in-range{background:rgba(255,45,120,0.1);}
+.dp-cal-grid .dp-cal-day.other-month{color:rgba(26,10,15,0.2);}
+.dp-footer{display:flex;justify-content:flex-end;gap:8px;padding:10px 16px;border-top:1px solid rgba(0,0,0,0.06);}
+.dp-clear{background:transparent;border:none;color:rgba(26,10,15,0.5);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;font-weight:600;cursor:pointer;padding:6px 12px;}
+.dp-clear:hover{color:var(--neon);}
+.dp-apply{background:#22c55e;border:none;color:#fff;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12.5px;font-weight:700;cursor:pointer;padding:7px 20px;border-radius:8px;transition:background .15s;}
+.dp-apply:hover{background:#16a34a;}
+
+/* ── Period pills (Ads time, Growth rule) ── */
+.fb-range-sublabel{display:block;font-size:10px;font-weight:700;color:rgba(26,10,15,0.55);text-transform:uppercase;letter-spacing:.05em;margin:8px 0 6px;}
+.fb-period-pills{display:flex;gap:6px;flex-wrap:wrap;}
+.fb-period-pill{padding:6px 10px;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:11px;font-weight:600;color:#1a0a0f;cursor:pointer;transition:all .12s;background:#fff;}
+.fb-period-pill:hover{border-color:var(--neon);}
+.fb-period-pill.active{background:rgba(255,45,120,0.08);border-color:var(--neon);color:var(--neon);}
+.fb-rule-block{padding:10px 12px;background:rgba(0,0,0,0.02);border-radius:8px;margin:6px 0;}
+.fb-rule-title{font-size:11px;font-weight:700;color:rgba(26,10,15,0.5);margin-bottom:8px;}
+.fb-dir-row{display:flex;gap:8px;}
+.fb-dir-btn{flex:1;padding:8px 10px;border:1px solid rgba(0,0,0,0.1);border-radius:7px;font-size:11.5px;font-weight:600;color:#1a0a0f;cursor:pointer;transition:all .12s;background:#fff;text-align:center;}
+.fb-dir-btn:hover{border-color:var(--neon);}
+.fb-dir-btn.active{background:rgba(255,45,120,0.08);border-color:var(--neon);color:var(--neon);}
+
+/* ── TrendTrack-style filter dropdown enhancements ── */
+.fb-search{width:100%;padding:7px 10px;border:1px solid rgba(0,0,0,0.1);border-radius:8px;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:12px;color:#1a0a0f;background:#fff;outline:none;margin-bottom:8px;box-sizing:border-box;}
+.fb-search:focus{border-color:var(--neon);}
+.fb-search::placeholder{color:rgba(26,10,15,0.35);}
+.fb-slider{width:100%;height:4px;background:#e0e0e0;border-radius:4px;margin:8px 0 12px;position:relative;}
+.fb-slider-fill{height:100%;background:#22c55e;border-radius:4px;width:100%;}
+.fb-slider-dot{width:10px;height:10px;background:#22c55e;border-radius:50%;position:absolute;top:-3px;}
+.fb-slider-dot.left{left:0;}
+.fb-slider-dot.right{right:0;}
+.fb-range-inline{display:flex;gap:8px;align-items:flex-start;}
+.fb-range-inline .fb-range-col{flex:1;display:flex;flex-direction:column;gap:4px;}
+.fb-range-inline label{font-size:11px;color:rgba(26,10,15,0.4);}
+.fb-range-inline input{width:100%;padding:6px 8px;border:1px solid #e0d6e3;border-radius:8px;font-size:12px;background:#faf8fb;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;color:#1a0a0f;box-sizing:border-box;}
+.fb-range-inline input:focus{outline:none;border-color:#e8799a;}
+.fb-table-header{display:flex;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:10px;font-weight:700;color:rgba(26,10,15,0.45);text-transform:uppercase;}
+.fb-table-header .col-name{flex:1;}
+.fb-table-header .col-check{width:50px;text-align:center;}
+.fb-table-row{display:flex;align-items:center;padding:5px 0;font-size:12.5px;color:#1a0a0f;border-bottom:1px solid rgba(0,0,0,0.03);}
+.fb-table-row:hover{background:rgba(0,0,0,0.02);}
+.fb-table-row .col-name{flex:1;display:flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fb-table-row .col-check{width:50px;text-align:center;}
+.fb-table-row input[type=checkbox]{margin:0;cursor:pointer;}
+.fb-select-all{display:flex;align-items:center;padding:6px 0;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);border-top:1px solid rgba(0,0,0,0.06);margin-top:4px;gap:6px;cursor:pointer;}
+.fb-select-all input{margin:0;cursor:pointer;}
+.fb-cat-count{color:rgba(26,10,15,0.35);font-size:11px;margin-left:auto;}
+.fb-cat-chevron{color:rgba(26,10,15,0.3);margin-left:4px;font-size:10px;}
+.fb-dropdown.wide-dd{max-width:400px;min-width:320px;}
+.fb-dropdown.table-dd{max-width:420px;min-width:340px;}
+.fb-items-container{max-height:240px;overflow-y:auto;}
+.fb-items-container::-webkit-scrollbar{width:3px;}
+.fb-items-container::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:3px;}
 
 /* ── TABLE ── */
 .tw{flex:1;overflow:auto;padding:12px 24px 24px;}
@@ -352,7 +428,7 @@ td{padding:11px 14px;vertical-align:middle;}
 .mo.open .md{transform:translateY(0) scale(1);}
 .mh{padding:22px 24px 18px;border-bottom:1px solid rgba(200,160,170,0.12);display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,rgba(255,255,255,0.7),rgba(252,228,236,0.2));}
 .mico{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(244,167,185,0.15),rgba(255,255,255,0.8));border:1px solid rgba(200,160,170,0.2);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:rgba(26,10,15,0.4);flex-shrink:0;}
-.msn{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
+.msn{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em;}
 .mdom{font-size:12px;color:rgba(26,10,15,0.35);font-family:monospace;margin-top:3px;}
 .mcl{margin-left:auto;width:32px;height:32px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;color:rgba(26,10,15,0.4);transition:all .15s;flex-shrink:0;}
 .mcl:hover{background:#fff;color:#e8799a;border-color:#e8799a;}
@@ -503,7 +579,7 @@ td{padding:11px 14px;vertical-align:middle;}
       <th style="width:64px;cursor:pointer" onclick="sortBy('sc')"><div class="thi">Score <span class="sic">⇅</span></div></th>
     </tr></thead><tbody id="tb"></tbody></table>
     <div class="empty" id="em" style="display:none"><div style="font-size:40px;margin-bottom:12px"></div><div style="font-size:14px;font-weight:600">No shops match</div></div>
-    <div id="pager" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0;font-family:'Figtree',sans-serif;font-size:13px;"></div>
+    <div id="pager" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px 0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;"></div>
   </div>
 </div>
 
@@ -664,7 +740,7 @@ let seg='all',q='',sortCol=null,sortDir='asc';
 let currentPage=0, pageSize=50;
 let filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
 let activeDropdown=null;
-var _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0};
+var _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0,priceMin:0,priceMax:Infinity};
 
 function sn(e){document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));e.classList.add('active');}
 function ss(e,s){document.querySelectorAll('.sg').forEach(b=>b.classList.remove('active'));e.classList.add('active');seg=s;currentPage=0;filters['Creation Date']={mode:null,date:null};window._dateFilteredShops=null;re();}
@@ -787,6 +863,54 @@ function getAdsGrowth(shop){
   return prev?Math.round(((recent-prev)/prev)*100):0;
 }
 
+// Country flag emoji lookup
+const CFLAGS={us:'\u{1F1FA}\u{1F1F8}',ca:'\u{1F1E8}\u{1F1E6}',gb:'\u{1F1EC}\u{1F1E7}',fr:'\u{1F1EB}\u{1F1F7}',de:'\u{1F1E9}\u{1F1EA}',au:'\u{1F1E6}\u{1F1FA}',es:'\u{1F1EA}\u{1F1F8}',it:'\u{1F1EE}\u{1F1F9}',nl:'\u{1F1F3}\u{1F1F1}',br:'\u{1F1E7}\u{1F1F7}',mx:'\u{1F1F2}\u{1F1FD}',jp:'\u{1F1EF}\u{1F1F5}',kr:'\u{1F1F0}\u{1F1F7}',cn:'\u{1F1E8}\u{1F1F3}',in:'\u{1F1EE}\u{1F1F3}',se:'\u{1F1F8}\u{1F1EA}',no:'\u{1F1F3}\u{1F1F4}',dk:'\u{1F1E9}\u{1F1F0}',fi:'\u{1F1EB}\u{1F1EE}',pl:'\u{1F1F5}\u{1F1F1}',be:'\u{1F1E7}\u{1F1EA}',ch:'\u{1F1E8}\u{1F1ED}',at:'\u{1F1E6}\u{1F1F9}',pt:'\u{1F1F5}\u{1F1F9}',ie:'\u{1F1EE}\u{1F1EA}',nz:'\u{1F1F3}\u{1F1FF}',za:'\u{1F1FF}\u{1F1E6}',sg:'\u{1F1F8}\u{1F1EC}',hk:'\u{1F1ED}\u{1F1F0}',tw:'\u{1F1F9}\u{1F1FC}',il:'\u{1F1EE}\u{1F1F1}',ae:'\u{1F1E6}\u{1F1EA}',ru:'\u{1F1F7}\u{1F1FA}',tr:'\u{1F1F9}\u{1F1F7}',ar:'\u{1F1E6}\u{1F1F7}',cl:'\u{1F1E8}\u{1F1F1}',co:'\u{1F1E8}\u{1F1F4}',my:'\u{1F1F2}\u{1F1FE}',th:'\u{1F1F9}\u{1F1ED}',ph:'\u{1F1F5}\u{1F1ED}',id:'\u{1F1EE}\u{1F1E9}',vn:'\u{1F1FB}\u{1F1F3}',ro:'\u{1F1F7}\u{1F1F4}',cz:'\u{1F1E8}\u{1F1FF}',hu:'\u{1F1ED}\u{1F1FA}',gr:'\u{1F1EC}\u{1F1F7}',ua:'\u{1F1FA}\u{1F1E6}',hr:'\u{1F1ED}\u{1F1F7}',sk:'\u{1F1F8}\u{1F1F0}',bg:'\u{1F1E7}\u{1F1EC}',rs:'\u{1F1F7}\u{1F1F8}',lt:'\u{1F1F1}\u{1F1F9}',lv:'\u{1F1F1}\u{1F1FB}',ee:'\u{1F1EA}\u{1F1EA}',si:'\u{1F1F8}\u{1F1EE}'};
+const CNAMES={us:'United States',ca:'Canada',gb:'United Kingdom',fr:'France',de:'Germany',au:'Australia',es:'Spain',it:'Italy',nl:'Netherlands',br:'Brazil',mx:'Mexico',jp:'Japan',kr:'South Korea',cn:'China',in:'India',se:'Sweden',no:'Norway',dk:'Denmark',fi:'Finland',pl:'Poland',be:'Belgium',ch:'Switzerland',at:'Austria',pt:'Portugal',ie:'Ireland',nz:'New Zealand',za:'South Africa',sg:'Singapore',hk:'Hong Kong',tw:'Taiwan',il:'Israel',ae:'UAE',ru:'Russia',tr:'Turkey',ar:'Argentina',cl:'Chile',co:'Colombia',my:'Malaysia',th:'Thailand',ph:'Philippines',id:'Indonesia',vn:'Vietnam',ro:'Romania',cz:'Czech Republic',hu:'Hungary',gr:'Greece',ua:'Ukraine',hr:'Croatia',sk:'Slovakia',bg:'Bulgaria',rs:'Serbia',lt:'Lithuania',lv:'Latvia',ee:'Estonia',si:'Slovenia'};
+function cflag(code){return CFLAGS[code]||code.toUpperCase();}
+function cname(code){return CNAMES[code]||code.toUpperCase();}
+
+// Filter dropdown search helper
+function filterDropdownItems(input,containerId){
+  const q=input.value.toLowerCase();
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  Array.from(container.children).forEach(el=>{
+    const text=el.textContent.toLowerCase();
+    el.style.display=text.includes(q)?'':'none';
+  });
+}
+
+// Select-all toggle for checkbox filters
+function toggleSelectAll(filterName,checkbox,containerId){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const items=container.querySelectorAll('input[type=checkbox]');
+  if(checkbox.checked){
+    items.forEach(cb=>{if(!cb.checked){cb.checked=true;cb.dispatchEvent(new Event('change'));}});
+  }else{
+    items.forEach(cb=>{if(cb.checked){cb.checked=false;cb.dispatchEvent(new Event('change'));}});
+  }
+}
+
+// Get pixels from data
+function getPixels(){
+  const px=new Set();
+  D.forEach(s=>{if(s.px)s.px.forEach(p=>px.add(p));});
+  return Array.from(px).sort();
+}
+
+// Decorative green slider HTML
+function sliderHTML(){
+  return '<div class="fb-slider"><div class="fb-slider-fill"></div><div class="fb-slider-dot left"></div><div class="fb-slider-dot right"></div></div>';
+}
+
+// Inline range HTML helper (side-by-side Min/Max + slider)
+function inlineRangeHTML(idPrefix,minVal,maxVal,minPh,maxPh){
+  const mv=minVal||'';
+  const xv=(maxVal&&maxVal<Infinity)?maxVal:'';
+  return '<div class="fb-range-inline"><div class="fb-range-col"><label>Min</label><input type="number" id="rf-'+idPrefix+'Min" min="0" placeholder="'+minPh+'" value="'+mv+'"></div><div class="fb-range-col"><label>Max</label><input type="number" id="rf-'+idPrefix+'Max" min="0" placeholder="'+maxPh+'" value="'+xv+'"></div></div>'+sliderHTML();
+}
+
 // Create dropdown based on filter type
 function createDropdown(filterName,btn){
   const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
@@ -801,140 +925,292 @@ function createDropdown(filterName,btn){
   let html='';
   const esc=(s)=>s.replace(/'/g,"\\'");
 
+  // ── Niche (Category) ── search + checkbox list with counts + chevron + tout sélectionner
   if(filterName==='Category'){
-    getCategories().forEach(cat=>{
+    dd.classList.add('wide-dd');
+    const cats=getCategories();
+    const catCounts={};cats.forEach(c=>{catCounts[c]=D.filter(x=>x.ni===c).length;});
+    const allChecked=cats.length>0&&cats.every(c=>filters.Category.includes(c));
+    html=`<input class="fb-search" type="text" placeholder="Rechercher une propriété" oninput="filterDropdownItems(this,'cat-items')">`;
+    html+=`<div class="fb-items-container" id="cat-items">`;
+    cats.forEach(cat=>{
       const checked=filters.Category.includes(cat)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Category','${esc(cat)}')"><label>${cat}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Category','${esc(cat)}')"><label style="flex:1">${cat}</label><span class="fb-cat-count">(${catCounts[cat]||0})</span><span class="fb-cat-chevron">&#8250;</span></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" ${allChecked?'checked':''} onchange="toggleSelectAll('Category',this,'cat-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Produits ── two range sections: Produit + Prix des meilleurs ventes
   else if(filterName==='Products'){
-    getProductRanges().forEach(r=>{
-      const checked=filters.Products.includes(r.label)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Products','${esc(r.label)}')"><label>${r.label}</label></div>`;
-    });
+    dd.classList.add('wide-dd');
+    html=`<div class="fb-range" style="min-width:280px">
+      <div class="fb-range-label">Produit</div>
+      ${inlineRangeHTML('products',_rangeFilters.productsMin,_rangeFilters.productsMax,'0','100,000')}
+      <div class="fb-range-label" style="margin-top:14px">Prix des meilleurs ventes</div>
+      ${inlineRangeHTML('price',_rangeFilters.priceMin,_rangeFilters.priceMax,'$0','$10,000')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('products')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('products')">Effacer</div>
+    </div>`;
   }
+
+  // ── Apps ── search + Inclure/Exclure table
   else if(filterName==='Apps'){
-    getApps().forEach(app=>{
-      const checked=filters.Apps.includes(app)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Apps','${esc(app)}')"><label>${app}</label></div>`;
+    dd.classList.add('table-dd');
+    const apps=getApps();
+    const allChecked=apps.length>0&&apps.every(a=>filters.Apps.includes(a));
+    html=`<input class="fb-search" type="text" placeholder="Rechercher une application" oninput="filterDropdownItems(this,'apps-items')">`;
+    html+=`<div class="fb-table-header"><span class="col-name">Nom de l'app</span><span class="col-check">Inclure</span><span class="col-check">Exclure</span></div>`;
+    html+=`<div class="fb-items-container" id="apps-items">`;
+    apps.forEach(app=>{
+      const incl=filters.Apps.includes(app)?'checked':'';
+      const excl=(filters._appsExclude||[]).includes(app)?'checked':'';
+      html+=`<div class="fb-table-row"><span class="col-name">${app}</span><span class="col-check"><input type="checkbox" ${incl} onchange="toggleFilter('Apps','${esc(app)}')"></span><span class="col-check"><input type="checkbox" ${excl} onchange="toggleExcludeFilter('Apps','${esc(app)}')"></span></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" ${allChecked?'checked':''} onchange="toggleSelectAll('Apps',this,'apps-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Thème Shopify ── search + checkbox list with counts + tout sélectionner
   else if(filterName==='Theme'){
-    getThemes().forEach(theme=>{
+    dd.classList.add('wide-dd');
+    const themes=getThemes();
+    const themeCounts={};themes.forEach(t=>{themeCounts[t]=D.filter(x=>x.th===t).length;});
+    const allChecked=themes.length>0&&themes.every(t=>filters.Theme.includes(t));
+    html=`<input class="fb-search" type="text" placeholder="Rechercher un thème" oninput="filterDropdownItems(this,'theme-items')">`;
+    html+=`<div class="fb-items-container" id="theme-items">`;
+    themes.forEach(theme=>{
       const checked=filters.Theme.includes(theme)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Theme','${esc(theme)}')"><label>${theme}</label></div>`;
+      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Theme','${esc(theme)}')"><label style="flex:1">${theme}</label><span class="fb-cat-count">${themeCounts[theme]||0}</span></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" ${allChecked?'checked':''} onchange="toggleSelectAll('Theme',this,'theme-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Langue ── search + checkbox list + tout sélectionner
   else if(filterName==='Language'){
-    getLanguages().forEach(lang=>{
+    const langs=getLanguages();
+    const allChecked=langs.length>0&&langs.every(l=>filters.Language.includes(l));
+    html=`<input class="fb-search" type="text" placeholder="Rechercher une langue" oninput="filterDropdownItems(this,'lang-items')">`;
+    html+=`<div class="fb-items-container" id="lang-items">`;
+    langs.forEach(lang=>{
       const checked=filters.Language.includes(lang)?'checked':'';
       html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Language','${esc(lang)}')"><label>${lang}</label></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" ${allChecked?'checked':''} onchange="toggleSelectAll('Language',this,'lang-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Devise ── search + checkbox list + tout sélectionner
   else if(filterName==='Currency'){
-    getCurrencies().forEach(cur=>{
+    const curs=getCurrencies();
+    const allChecked=curs.length>0&&curs.every(c=>filters.Currency.includes(c));
+    html=`<input class="fb-search" type="text" placeholder="Rechercher une devise" oninput="filterDropdownItems(this,'cur-items')">`;
+    html+=`<div class="fb-items-container" id="cur-items">`;
+    curs.forEach(cur=>{
       const checked=filters.Currency.includes(cur)?'checked':'';
       html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Currency','${esc(cur)}')"><label>${cur}</label></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" ${allChecked?'checked':''} onchange="toggleSelectAll('Currency',this,'cur-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Date de création ── DO NOT MODIFY (validated calendar grids)
   else if(filterName==='Creation Date'){
-    const cd=filters['Creation Date'];
-    const modeVal=cd.mode||'after';
-    const dateVal=cd.date||'';
-    html=`<div class="date-picker-wrap">
-      <label>Condition</label>
-      <select id="cd-mode">
-        <option value="after" ${modeVal==='after'?'selected':''}>Created after</option>
-        <option value="before" ${modeVal==='before'?'selected':''}>Created before</option>
-        <option value="between" ${modeVal==='between'?'selected':''}>Between dates</option>
-        <option value="last7" ${modeVal==='last7'?'selected':''}>Last 7 days</option>
-        <option value="last30" ${modeVal==='last30'?'selected':''}>Last 30 days</option>
-        <option value="last60" ${modeVal==='last60'?'selected':''}>Last 60 days</option>
-        <option value="last90" ${modeVal==='last90'?'selected':''}>Last 90 days</option>
-      </select>
-      <div id="cd-dates">
-        <label>Date</label>
-        <input type="date" id="cd-date1" value="${cd.date||''}"/>
-        <div id="cd-date2-wrap" style="display:none"><label>End date</label><input type="date" id="cd-date2" value="${cd.date2||''}"/></div>
+    const cd=filters['Creation Date']||{};
+    const activePreset=cd.mode||'';
+    const presets=[
+      {id:'last30',label:'Dernier mois'},
+      {id:'last90',label:'3 derniers mois'},
+      {id:'last180',label:'6 derniers mois'},
+      {id:'last365',label:'Dernière année'},
+      {id:'thisWeek',label:'Semaine en cours'},
+      {id:'thisMonth',label:'Mois en cours'},
+      {id:'thisQuarter',label:'Trimestre en cours'},
+      {id:'thisYear',label:'Année en cours'},
+      {id:'custom',label:'Personnalisé'},
+    ];
+    const now=new Date();
+    const startMonth=new Date(now.getFullYear(),now.getMonth()-1,1);
+    const endMonth=new Date(now.getFullYear(),now.getMonth(),1);
+    if(!window._dpStartMonth)window._dpStartMonth=new Date(startMonth);
+    if(!window._dpEndMonth)window._dpEndMonth=new Date(endMonth);
+    const d1=cd.date||'';
+    const d2=cd.date2||'';
+    const d1Display=d1?_fmtCalDate(d1):'Sélectionner une date';
+    const d2Display=d2?_fmtCalDate(d2):'Sélectionner une date';
+    html=`<div class="date-picker-tt">
+      <div class="dp-presets">${presets.map(p=>`<div class="dp-preset ${activePreset===p.id?'active':''}" onclick="setDatePreset('${p.id}')">${p.label}</div>`).join('')}</div>
+      <div class="dp-calendars">
+        <div class="dp-cal-block">
+          <label class="dp-cal-label">Date de début</label>
+          <div class="dp-date-display ${d1?'has-value':''}" id="cd-display1">${d1Display}</div>
+          <div id="cd-cal1">${_renderCalGrid(window._dpStartMonth,'start',d1,d2)}</div>
+        </div>
+        <div class="dp-cal-block">
+          <label class="dp-cal-label">Date de fin</label>
+          <div class="dp-date-display ${d2?'has-value':''}" id="cd-display2">${d2Display}</div>
+          <div id="cd-cal2">${_renderCalGrid(window._dpEndMonth,'end',d1,d2)}</div>
+        </div>
       </div>
-      <button class="date-picker-apply" onclick="applyDateFilter()">Apply</button>
+      <div class="dp-footer"><button class="dp-clear" onclick="clearFilter('Creation Date')">Effacer</button><button class="dp-apply" onclick="applyDateCustom()">Appliquer</button></div>
     </div>`;
     dd.innerHTML=html;
     btn.parentNode.style.position='relative';
     btn.parentNode.insertBefore(dd,btn.nextSibling);
     activeDropdown=dd;
-    // Toggle date fields based on mode
-    const modeEl=document.getElementById('cd-mode');
-    function updateDateFields(){
-      const m=modeEl.value;
-      const datesWrap=document.getElementById('cd-dates');
-      const d2=document.getElementById('cd-date2-wrap');
-      if(m.startsWith('last')){datesWrap.style.display='none';}
-      else{datesWrap.style.display='block';d2.style.display=m==='between'?'block':'none';}
-    }
-    modeEl.addEventListener('change',updateDateFields);
-    updateDateFields();
     return;
   }
+
+  // ── Origine shop ── search + table with Inclure/Exclure columns
   else if(filterName==='Shop Origin'){
-    getCountries().forEach(country=>{
-      const checked=filters['Shop Origin'].includes(country)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Shop Origin','${country}')"><label>${country.toUpperCase()}</label></div>`;
+    dd.classList.add('table-dd');
+    const countries=getCountries();
+    html=`<input class="fb-search" type="text" placeholder="Rechercher un pays" oninput="filterDropdownItems(this,'so-items')">`;
+    html+=`<div class="fb-table-header"><span class="col-name">Pays</span><span class="col-check">Inclure</span><span class="col-check">Exclure</span></div>`;
+    html+=`<div class="fb-items-container" id="so-items">`;
+    countries.forEach(country=>{
+      const incl=filters['Shop Origin'].includes(country)?'checked':'';
+      const excl=(filters._shopOriginExclude||[]).includes(country)?'checked':'';
+      html+=`<div class="fb-table-row"><span class="col-name">${cflag(country)} ${cname(country)}</span><span class="col-check"><input type="checkbox" ${incl} onchange="toggleFilter('Shop Origin','${country}')"></span><span class="col-check"><input type="checkbox" ${excl} onchange="toggleExcludeFilter('Shop Origin','${country}')"></span></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" onchange="toggleSelectAllTable('Shop Origin',this,'so-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Pays visiteurs ── search + table with Principal/Parmi/Exclure columns
   else if(filterName==='Visitor Country'){
-    getVisitorCountries().forEach(country=>{
-      const checked=filters['Visitor Country'].includes(country)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Visitor Country','${country}')"><label>${country.toUpperCase()}</label></div>`;
+    dd.classList.add('table-dd');
+    const countries=getVisitorCountries();
+    html=`<input class="fb-search" type="text" placeholder="Rechercher un pays" oninput="filterDropdownItems(this,'vc-items')">`;
+    html+=`<div class="fb-table-header"><span class="col-name">Pays</span><span class="col-check" title="Pays principal du trafic">Principal</span><span class="col-check" title="Parmi les pays visiteurs">Parmi</span><span class="col-check" title="Exclure ce pays">Exclure</span></div>`;
+    html+=`<div class="fb-items-container" id="vc-items">`;
+    countries.forEach(country=>{
+      const incl=filters['Visitor Country'].includes(country)?'checked':'';
+      const parmi=(filters._vcParmi||[]).includes(country)?'checked':'';
+      const excl=(filters._vcExclude||[]).includes(country)?'checked':'';
+      html+=`<div class="fb-table-row"><span class="col-name">${cflag(country)} ${cname(country)}</span><span class="col-check"><input type="checkbox" ${incl} onchange="toggleFilter('Visitor Country','${country}')"></span><span class="col-check"><input type="checkbox" ${parmi} onchange="toggleParmiFilter('Visitor Country','${country}')"></span><span class="col-check"><input type="checkbox" ${excl} onchange="toggleExcludeFilter('Visitor Country','${country}')"></span></div>`;
     });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" onchange="toggleSelectAllTable('Visitor Country',this,'vc-items')"> Tout sélectionner</div>`;
   }
+
+  // ── Plan Shopify ── DO NOT MODIFY (already matches)
   else if(filterName==='Shopify Plan'){
-    getShopifyPlans().forEach(plan=>{
-      const checked=filters['Shopify Plan'].includes(plan)?'checked':'';
-      html+=`<div class="fb-dropdown-item"><input type="checkbox" ${checked} onchange="toggleFilter('Shopify Plan','${esc(plan)}')"><label>${plan}</label></div>`;
-    });
+    const current=filters.shopifyPlanMode||'all';
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="spmode" ${current==='all'?'checked':''} onchange="setShopifyPlanMode('all')"><label>Tous les plans</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="spmode" ${current==='plus'?'checked':''} onchange="setShopifyPlanMode('plus')"><label>Seulement Shopify Plus</label></div>`;
+    html+=`<div class="fb-dropdown-item"><input type="radio" name="spmode" ${current==='nonplus'?'checked':''} onchange="setShopifyPlanMode('nonplus')"><label>Non Plus</label></div>`;
   }
+
+  // ── Trafic ── side-by-side Min/Max + green slider, auto-apply
   else if(filterName==='Traffic'){
-    html=`<div class="fb-range"><div class="fb-range-label">Visiteurs par mois</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-trafficMin" min="0" placeholder="0" value="${_rangeFilters.trafficMin||''}"></div>
-      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-trafficMax" min="0" placeholder="10,000,000" value="${_rangeFilters.trafficMax<Infinity?_rangeFilters.trafficMax:''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('traffic')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('traffic')">Clear</div></div>`;
+    html=`<div class="fb-range" style="min-width:260px">
+      <div class="fb-range-label">Visiteurs</div>
+      ${inlineRangeHTML('traffic',_rangeFilters.trafficMin,_rangeFilters.trafficMax,'0','10,000,000')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('traffic')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('traffic')">Effacer</div>
+    </div>`;
   }
-  else if(filterName==='Products'){
-    html=`<div class="fb-range"><div class="fb-range-label">Nombre de produits</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-productsMin" min="0" placeholder="0" value="${_rangeFilters.productsMin||''}"></div>
-      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-productsMax" min="0" placeholder="100,000" value="${_rangeFilters.productsMax<Infinity?_rangeFilters.productsMax:''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('products')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('products')">Clear</div></div>`;
-  }
+
+  // ── Live Ads ── side-by-side Min/Max + green slider + period pills
   else if(filterName==='Live Ads'){
-    html=`<div class="fb-range"><div class="fb-range-label">Ads Actives</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-adsMin" min="0" placeholder="0" value="${_rangeFilters.adsMin||''}"></div>
-      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-adsMax" min="0" placeholder="10,000" value="${_rangeFilters.adsMax<Infinity?_rangeFilters.adsMax:''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('ads')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('ads')">Clear</div></div>`;
+    html=`<div class="fb-range" style="min-width:280px">
+      <div class="fb-range-label">Ads actives</div>
+      ${inlineRangeHTML('ads',_rangeFilters.adsMin,_rangeFilters.adsMax,'0','10,000')}
+      <div class="fb-range-period"><label class="fb-range-sublabel">Période de temps</label><div class="fb-period-pills">
+        <div class="fb-period-pill ${(_rangeFilters.adsPeriod||'24h')==='24h'?'active':''}" onclick="setAdsPeriod('24h')">Dernier 24h</div>
+        <div class="fb-period-pill ${_rangeFilters.adsPeriod==='7d'?'active':''}" onclick="setAdsPeriod('7d')">Moy 7j</div>
+        <div class="fb-period-pill ${_rangeFilters.adsPeriod==='14d'?'active':''}" onclick="setAdsPeriod('14d')">Moy 14j</div>
+        <div class="fb-period-pill ${_rangeFilters.adsPeriod==='30d'?'active':''}" onclick="setAdsPeriod('30d')">Moy 30j</div>
+      </div></div>
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('ads')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('ads')">Effacer</div>
+    </div>`;
   }
+
+  // ── Trustpilot ── Note + Avis sections with green sliders
+  else if(filterName==='Trustpilot'){
+    html=`<div class="fb-range" style="min-width:280px">
+      <div class="fb-range-label">Note Trustpilot</div>
+      ${inlineRangeHTML('tpNote',_rangeFilters.tpNoteMin,_rangeFilters.tpNoteMax,'1','5')}
+      <div class="fb-range-label" style="margin-top:14px">Avis Trustpilot</div>
+      ${inlineRangeHTML('tpReviews',_rangeFilters.tpReviewsMin,_rangeFilters.tpReviewsMax,'0','∞')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('trustpilot')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('trustpilot')">Effacer</div>
+    </div>`;
+  }
+
+  // ── Traffic Growth / Ads Growth ── already matches TrendTrack
+  else if(filterName==='Traffic Growth'||filterName==='Ads Growth'){
+    const isAds=filterName==='Ads Growth';
+    const rule=(isAds?filters.adsGrowthRule:filters.trafficGrowthRule)||{dir:'up',min:'',period:isAds?'1w':'1m'};
+    const periods=isAds?[['1w','1sem'],['1m','1m'],['3m','3m']]:[['1m','1m'],['3m','3m'],['6m','6m']];
+    html=`<div class="fb-range" style="min-width:320px">
+      <div class="fb-range-label">${isAds?'Croiss. des Ads':'Croissance du trafic'}</div>
+      <div class="fb-rule-block"><div class="fb-rule-title">Règle 1</div>
+        <label class="fb-range-sublabel">Direction</label>
+        <div class="fb-dir-row">
+          <div class="fb-dir-btn ${rule.dir==='up'?'active':''}" onclick="setGrowthDir('${isAds?'ads':'traffic'}','up')">↗ En hausse</div>
+          <div class="fb-dir-btn ${rule.dir==='down'?'active':''}" onclick="setGrowthDir('${isAds?'ads':'traffic'}','down')">↘ En baisse</div>
+        </div>
+        <label class="fb-range-sublabel" style="margin-top:10px">Changement Minimum</label>
+        <div class="fb-range-row"><label>Au moins</label><input type="number" id="rf-growthMin-${isAds?'ads':'traffic'}" min="0" placeholder="" value="${rule.min||''}"><span style="margin-left:4px;color:rgba(26,10,15,0.4);">%</span></div>
+        <label class="fb-range-sublabel" style="margin-top:10px">Période</label>
+        <div class="fb-period-pills">${periods.map(([id,lbl])=>`<div class="fb-period-pill ${rule.period===id?'active':''}" onclick="setGrowthPeriod('${isAds?'ads':'traffic'}','${id}')">${lbl}</div>`).join('')}</div>
+      </div>
+      <div class="fb-range-apply"><button onclick="applyGrowthRule('${isAds?'ads':'traffic'}')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearGrowthRule('${isAds?'ads':'traffic'}')">Effacer</div>
+    </div>`;
+  }
+
+  // ── Pixels ── search + Inclure/Exclure table
+  else if(filterName==='Pixels'){
+    dd.classList.add('table-dd');
+    if(!filters.Pixels)filters.Pixels=[];
+    const pxList=getPixels();
+    html=`<input class="fb-search" type="text" placeholder="Rechercher des pixels..." oninput="filterDropdownItems(this,'px-items')">`;
+    html+=`<div class="fb-table-header"><span class="col-name">Nom du pixel</span><span class="col-check">Inclure</span><span class="col-check">Exclure</span></div>`;
+    html+=`<div class="fb-items-container" id="px-items">`;
+    pxList.forEach(px=>{
+      const incl=filters.Pixels.includes(px)?'checked':'';
+      const excl=(filters._pixelsExclude||[]).includes(px)?'checked':'';
+      html+=`<div class="fb-table-row"><span class="col-name">${px}</span><span class="col-check"><input type="checkbox" ${incl} onchange="toggleFilter('Pixels','${esc(px)}')"></span><span class="col-check"><input type="checkbox" ${excl} onchange="toggleExcludeFilter('Pixels','${esc(px)}')"></span></div>`;
+    });
+    html+=`</div>`;
+    html+=`<div class="fb-select-all"><input type="checkbox" onchange="toggleSelectAllTable('Pixels',this,'px-items')"> Tout sélectionner</div>`;
+  }
+
+  // ── Revenue ── side-by-side Min/Max + green slider
   else if(filterName==='Revenue'){
-    html=`<div class="fb-range"><div class="fb-range-label">Revenu estimé</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-revenueMin" min="0" placeholder="0" value="${_rangeFilters.revenueMin||''}"></div>
-      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-revenueMax" min="0" placeholder="10,000,000" value="${_rangeFilters.revenueMax<Infinity?_rangeFilters.revenueMax:''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('revenue')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('revenue')">Clear</div></div>`;
+    html=`<div class="fb-range" style="min-width:260px">
+      <div class="fb-range-label">Revenu estimé</div>
+      ${inlineRangeHTML('revenue',_rangeFilters.revenueMin,_rangeFilters.revenueMax,'0','10,000,000')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('revenue')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('revenue')">Effacer</div>
+    </div>`;
   }
+
+  // ── Score ── side-by-side Min/Max + green slider
   else if(filterName==='Score'){
-    html=`<div class="fb-range"><div class="fb-range-label">Peekr Score</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-scoreMin" min="0" max="100" placeholder="0" value="${_rangeFilters.scoreMin||''}"></div>
-      <div class="fb-range-row"><label>Max</label><input type="number" id="rf-scoreMax" min="0" max="100" placeholder="100" value="${_rangeFilters.scoreMax<Infinity?_rangeFilters.scoreMax:''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('score')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('score')">Clear</div></div>`;
+    html=`<div class="fb-range" style="min-width:260px">
+      <div class="fb-range-label">Peekr Score</div>
+      ${inlineRangeHTML('score',_rangeFilters.scoreMin,_rangeFilters.scoreMax,'0','100')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('score')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('score')">Effacer</div>
+    </div>`;
   }
+
+  // ── Est. Sales ── side-by-side Min/Max + green slider
   else if(filterName==='Est. Sales'){
-    html=`<div class="fb-range"><div class="fb-range-label">Ventes estimées</div>
-      <div class="fb-range-row"><label>Min</label><input type="number" id="rf-salesMin" min="0" placeholder="0" value="${_rangeFilters.salesMin||''}"></div>
-      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('sales')">Apply</button></div>
-      <div class="fb-dropdown-clear" onclick="clearRangeFilter('sales')">Clear</div></div>`;
+    html=`<div class="fb-range" style="min-width:260px">
+      <div class="fb-range-label">Ventes estimées</div>
+      ${inlineRangeHTML('sales',_rangeFilters.salesMin,0,'0','∞')}
+      <div class="fb-range-apply"><button onclick="applyRangeFromDropdown('sales')">Appliquer</button></div>
+      <div class="fb-dropdown-clear" onclick="clearRangeFilter('sales')">Effacer</div>
+    </div>`;
   }
+
   else if(filterName==='AOV'){
     html+=`<div class="fb-dropdown-item"><input type="radio" name="aov" ${filters['AOV']==='desc'?'checked':''} onchange="toggleSort('AOV','desc')"><label>Highest AOV</label></div>`;
     html+=`<div class="fb-dropdown-item"><input type="radio" name="aov" ${filters['AOV']==='asc'?'checked':''} onchange="toggleSort('AOV','asc')"><label>Lowest AOV</label></div>`;
@@ -977,16 +1253,176 @@ function toggleFilter(filterName,value){
   re();
 }
 
+// Toggle exclude filter (for Inclure/Exclure tables)
+function toggleExcludeFilter(filterName,value){
+  const key='_'+filterName.replace(/\s+/g,'').charAt(0).toLowerCase()+filterName.replace(/\s+/g,'').slice(1)+'Exclude';
+  if(!filters[key])filters[key]=[];
+  const idx=filters[key].indexOf(value);
+  if(idx>-1)filters[key].splice(idx,1);
+  else filters[key].push(value);
+  re();
+}
+
+// Toggle "Parmi" filter (Visitor Country)
+function toggleParmiFilter(filterName,value){
+  const key='_vcParmi';
+  if(!filters[key])filters[key]=[];
+  const idx=filters[key].indexOf(value);
+  if(idx>-1)filters[key].splice(idx,1);
+  else filters[key].push(value);
+  re();
+}
+
+// Select all for Inclure/Exclure tables (toggles only the Inclure column)
+function toggleSelectAllTable(filterName,checkbox,containerId){
+  const container=document.getElementById(containerId);
+  if(!container)return;
+  const rows=container.querySelectorAll('.fb-table-row');
+  rows.forEach(row=>{
+    const cbs=row.querySelectorAll('input[type=checkbox]');
+    if(cbs.length>0){
+      const inclCb=cbs[0];
+      if(checkbox.checked&&!inclCb.checked){inclCb.checked=true;inclCb.dispatchEvent(new Event('change'));}
+      else if(!checkbox.checked&&inclCb.checked){inclCb.checked=false;inclCb.dispatchEvent(new Event('change'));}
+    }
+  });
+}
+
 // Apply date filter — server-side for "lastX" modes since only top 10K shops are loaded locally
+// TrendTrack-style preset handler: fetches server-side for "lastX" / "thisX" modes
+/* ── Calendar grid helpers ── */
+const _MONTHS_FR=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const _DAYS_FR=['Lu','Ma','Me','Je','Ve','Sa','Di'];
+function _fmtCalDate(iso){if(!iso)return'';const p=iso.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function _isoDate(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
+function _renderCalGrid(monthDate,which,selStart,selEnd){
+  const y=monthDate.getFullYear(),m=monthDate.getMonth();
+  const firstDay=(new Date(y,m,1).getDay()+6)%7;
+  const daysInMonth=new Date(y,m+1,0).getDate();
+  const today=new Date();const todayIso=_isoDate(today.getFullYear(),today.getMonth(),today.getDate());
+  let h=`<div class="dp-cal-nav"><button class="dp-cal-nav-btn" onclick="_calNav('${which}',-1)">&#8249;</button><span class="dp-cal-month-label">${_MONTHS_FR[m]} ${y}</span><button class="dp-cal-nav-btn" onclick="_calNav('${which}',1)">&#8250;</button></div>`;
+  h+=`<div class="dp-cal-grid">`;
+  _DAYS_FR.forEach(d=>{h+=`<span class="dp-cal-dow">${d}</span>`;});
+  for(let i=0;i<firstDay;i++)h+=`<span class="dp-cal-day empty"></span>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const iso=_isoDate(y,m,d);
+    let cls='dp-cal-day';
+    if(iso===todayIso)cls+=' today';
+    if(iso===selStart||iso===selEnd)cls+=' selected';
+    else if(selStart&&selEnd&&iso>selStart&&iso<selEnd)cls+=' in-range';
+    h+=`<span class="${cls}" onclick="_calPick('${which}','${iso}')">${d}</span>`;
+  }
+  h+=`</div>`;
+  return h;
+}
+function _calNav(which,dir){
+  if(which==='start'){
+    window._dpStartMonth=new Date(window._dpStartMonth.getFullYear(),window._dpStartMonth.getMonth()+dir,1);
+    const el=document.getElementById('cd-cal1');
+    if(el){const cd=filters['Creation Date']||{};el.innerHTML=_renderCalGrid(window._dpStartMonth,'start',cd.date||'',cd.date2||'');}
+  }else{
+    window._dpEndMonth=new Date(window._dpEndMonth.getFullYear(),window._dpEndMonth.getMonth()+dir,1);
+    const el=document.getElementById('cd-cal2');
+    if(el){const cd=filters['Creation Date']||{};el.innerHTML=_renderCalGrid(window._dpEndMonth,'end',cd.date||'',cd.date2||'');}
+  }
+}
+function _calPick(which,iso){
+  const cd=filters['Creation Date']||{};
+  if(which==='start'){cd.date=iso;cd.mode='custom';}
+  else{cd.date2=iso;cd.mode='custom';}
+  filters['Creation Date']=cd;
+  // Update displays
+  const d1El=document.getElementById('cd-display1');
+  const d2El=document.getElementById('cd-display2');
+  if(d1El){d1El.textContent=cd.date?_fmtCalDate(cd.date):'Sélectionner une date';d1El.classList.toggle('has-value',!!cd.date);}
+  if(d2El){d2El.textContent=cd.date2?_fmtCalDate(cd.date2):'Sélectionner une date';d2El.classList.toggle('has-value',!!cd.date2);}
+  // Re-render both grids to show selection/range
+  const c1=document.getElementById('cd-cal1');
+  const c2=document.getElementById('cd-cal2');
+  if(c1)c1.innerHTML=_renderCalGrid(window._dpStartMonth,'start',cd.date||'',cd.date2||'');
+  if(c2)c2.innerHTML=_renderCalGrid(window._dpEndMonth,'end',cd.date||'',cd.date2||'');
+  // Highlight custom preset
+  document.querySelectorAll('.dp-preset').forEach(p=>p.classList.remove('active'));
+  const customBtn=document.querySelector('.dp-preset:last-child');
+  if(customBtn)customBtn.classList.add('active');
+}
+
+async function setDatePreset(presetId){
+  filters['Creation Date']={mode:presetId,date:null,date2:null};
+  await _runDateFilter(presetId);
+}
+
+async function applyDateCustom(){
+  const cd=filters['Creation Date']||{};
+  const d1=cd.date||'';
+  const d2=cd.date2||'';
+  if(!d1 && !d2){ return; }
+  filters['Creation Date']={mode:'custom',date:d1,date2:d2};
+  await _runDateFilter('custom');
+}
+
+async function _runDateFilter(mode){
+  // All "lastX" / "thisX" presets → server fetch by cutoff
+  let cutoff=null;
+  if(mode==='last30'){cutoff=new Date(Date.now()-30*864e5);}
+  else if(mode==='last90'){cutoff=new Date(Date.now()-90*864e5);}
+  else if(mode==='last180'){cutoff=new Date(Date.now()-180*864e5);}
+  else if(mode==='last365'){cutoff=new Date(Date.now()-365*864e5);}
+  else if(mode==='thisWeek'){const n=new Date();const d=n.getDay()||7;n.setDate(n.getDate()-d+1);n.setHours(0,0,0,0);cutoff=n;}
+  else if(mode==='thisMonth'){cutoff=new Date(new Date().getFullYear(),new Date().getMonth(),1);}
+  else if(mode==='thisQuarter'){const n=new Date();const q=Math.floor(n.getMonth()/3)*3;cutoff=new Date(n.getFullYear(),q,1);}
+  else if(mode==='thisYear'){cutoff=new Date(new Date().getFullYear(),0,1);}
+
+  if(cutoff){
+    const cutoffStr=cutoff.toISOString().split('T')[0];
+    try{
+      let allResults=[],offset=0;const pageSize=1000;
+      while(true){
+        const url=_SB+'/rest/v1/shops?select='+_COLS+'&created_date=gte.'+cutoffStr+'&order=monthly_visits.desc.nullslast&limit='+pageSize+'&offset='+offset;
+        const res=await sbFetch(url);
+        if(!res.data||res.data.length===0)break;
+        allResults=allResults.concat(res.data);
+        if(res.data.length<pageSize)break;
+        offset+=pageSize; if(offset>=10000)break;
+      }
+      window._dateFilteredShops=allResults;
+    }catch(e){window._dateFilteredShops=[];}
+  }else if(mode==='custom'){
+    const cd=filters['Creation Date']||{};
+    const d1=cd.date||'';const d2=cd.date2||'';
+    if(d1||d2){
+      try{
+        let allResults=[],off=0;const pageSize=1000;
+        let dateFilter='';
+        if(d1)dateFilter+='&created_date=gte.'+d1;
+        if(d2)dateFilter+='&created_date=lte.'+d2;
+        while(true){
+          const url=_SB+'/rest/v1/shops?select='+_COLS+dateFilter+'&order=monthly_visits.desc.nullslast&limit='+pageSize+'&offset='+off;
+          const res=await sbFetch(url);
+          if(!res.data||res.data.length===0)break;
+          allResults=allResults.concat(res.data);
+          if(res.data.length<pageSize)break;
+          off+=pageSize;if(off>=10000)break;
+        }
+        window._dateFilteredShops=allResults;
+      }catch(e){window._dateFilteredShops=[];}
+    }else{window._dateFilteredShops=null;}
+  }
+  re();
+  const dd=document.getElementById('fb-dd-Creation-Date');
+  if(dd)dd.classList.remove('open');
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+}
+
 async function applyDateFilter(){
-  const mode=document.getElementById('cd-mode').value;
+  const mode=document.getElementById('cd-mode')?document.getElementById('cd-mode').value:'';
   const d1=document.getElementById('cd-date1')?document.getElementById('cd-date1').value:'';
   const d2=document.getElementById('cd-date2')?document.getElementById('cd-date2').value:'';
   filters['Creation Date']={mode:mode,date:d1,date2:d2};
 
   // For "lastX" modes, fetch matching shops server-side from Supabase (paginated to bypass 1000 row limit)
   if(mode.startsWith('last')){
-    const daysMap={last7:7,last30:30,last60:60,last90:90};
+    const daysMap={last7:7,last30:30,last60:60,last90:90,last180:180,last365:365};
     const days=daysMap[mode]||30;
     const cutoff=new Date(Date.now()-days*864e5).toISOString().split('T')[0];
     try{
@@ -1021,9 +1457,9 @@ async function applyDateFilter(){
 }
 
 function resetAllFilters(){
-  filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null,date2:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
+  filters={Category:[],Products:[],Apps:[],Theme:[],Language:[],Currency:[],'Creation Date':{mode:null,date:null,date2:null},'Shop Origin':[],'Visitor Country':[],'Shopify Plan':[],Pixels:[],Traffic:null,'Ads Count':null,'Ads Growth':null,'Est. Sales':null,'AOV':null,'Units Sold':null};
   window._dateFilteredShops=null;
-  _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0};
+  _rangeFilters={scoreMin:0,scoreMax:Infinity,trafficMin:0,trafficMax:Infinity,revenueMin:0,revenueMax:Infinity,productsMin:0,productsMax:Infinity,adsMin:0,adsMax:Infinity,salesMin:0,priceMin:0,priceMax:Infinity};
   sortCol=null;sortDir='asc';
   document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
   document.querySelectorAll('.fb').forEach(b=>{b.classList.remove('active');b.classList.remove('has-value');});
@@ -1036,7 +1472,8 @@ function hasActiveFilters(){
   if(filters['Creation Date']&&filters['Creation Date'].mode)return true;
   if(filters.Category.length||filters.Products.length||filters.Apps.length||filters.Theme.length||filters.Language.length||filters.Currency.length)return true;
   if(filters['Shop Origin'].length||filters['Visitor Country'].length||filters['Shopify Plan'].length)return true;
-  if(_rangeFilters&&(_rangeFilters.scoreMin>0||_rangeFilters.scoreMax<Infinity||_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity||_rangeFilters.revenueMin>0||_rangeFilters.revenueMax<Infinity||_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity||_rangeFilters.adsMin>0||_rangeFilters.adsMax<Infinity||_rangeFilters.salesMin>0))return true;
+  if(filters.Pixels&&filters.Pixels.length)return true;
+  if(_rangeFilters&&(_rangeFilters.scoreMin>0||_rangeFilters.scoreMax<Infinity||_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity||_rangeFilters.revenueMin>0||_rangeFilters.revenueMax<Infinity||_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity||_rangeFilters.adsMin>0||_rangeFilters.adsMax<Infinity||_rangeFilters.salesMin>0||_rangeFilters.priceMin>0||_rangeFilters.priceMax<Infinity))return true;
   return false;
 }
 
@@ -1052,7 +1489,7 @@ function clearFilter(filterName){
   else if(filterName==='Ads Count')filters['Ads Count']=null;
   else if(filterName==='Ads Growth %')filters['Ads Growth']=null;
   else if(filterName==='Est. Sales')filters['Est. Sales']=null;
-  else if(filterName==='Creation Date'){filters['Creation Date']={mode:null,date:null,date2:null};window._dateFilteredShops=null;}
+  else if(filterName==='Creation Date'){filters['Creation Date']={mode:null,date:null,date2:null};window._dateFilteredShops=null;window._dpStartMonth=null;window._dpEndMonth=null;}
   else if(filters[filterName]!==undefined)filters[filterName]=[];
   re();
   const ddId='fb-dd-'+filterName.replace(/\s+/g,'-');
@@ -1086,6 +1523,10 @@ function applyRangeFromDropdown(type){
     const mx=document.getElementById('rf-productsMax');
     _rangeFilters.productsMin=mn&&mn.value?Number(mn.value):0;
     _rangeFilters.productsMax=mx&&mx.value?Number(mx.value):Infinity;
+    const pmn=document.getElementById('rf-priceMin');
+    const pmx=document.getElementById('rf-priceMax');
+    _rangeFilters.priceMin=pmn&&pmn.value?Number(pmn.value):0;
+    _rangeFilters.priceMax=pmx&&pmx.value?Number(pmx.value):Infinity;
   }else if(type==='ads'){
     const mn=document.getElementById('rf-adsMin');
     const mx=document.getElementById('rf-adsMax');
@@ -1104,6 +1545,12 @@ function applyRangeFromDropdown(type){
   }else if(type==='sales'){
     const mn=document.getElementById('rf-salesMin');
     _rangeFilters.salesMin=mn&&mn.value?Number(mn.value):0;
+  }else if(type==='trustpilot'){
+    const a=document.getElementById('rf-tpNoteMin'),b=document.getElementById('rf-tpNoteMax'),c=document.getElementById('rf-tpReviewsMin'),d=document.getElementById('rf-tpReviewsMax');
+    _rangeFilters.tpNoteMin=a&&a.value?Number(a.value):0;
+    _rangeFilters.tpNoteMax=b&&b.value?Number(b.value):Infinity;
+    _rangeFilters.tpReviewsMin=c&&c.value?Number(c.value):0;
+    _rangeFilters.tpReviewsMax=d&&d.value?Number(d.value):Infinity;
   }
   // Close dropdown and mark pill
   document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
@@ -1112,14 +1559,58 @@ function applyRangeFromDropdown(type){
   currentPage=0;re();
 }
 
+// Helpers Growth rule (Traffic Growth & Ads Growth)
+function setGrowthDir(kind,dir){
+  const key=kind==='ads'?'adsGrowthRule':'trafficGrowthRule';
+  filters[key]=filters[key]||{dir:'up',min:'',period:kind==='ads'?'1w':'1m'};
+  filters[key].dir=dir;
+  document.querySelectorAll('.fb-dir-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function setGrowthPeriod(kind,period){
+  const key=kind==='ads'?'adsGrowthRule':'trafficGrowthRule';
+  filters[key]=filters[key]||{dir:'up',min:'',period};
+  filters[key].period=period;
+  document.querySelectorAll('.fb-period-pill').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function applyGrowthRule(kind){
+  const key=kind==='ads'?'adsGrowthRule':'trafficGrowthRule';
+  const mnEl=document.getElementById('rf-growthMin-'+kind);
+  filters[key]=filters[key]||{dir:'up',min:'',period:kind==='ads'?'1w':'1m'};
+  filters[key].min=mnEl&&mnEl.value?Number(mnEl.value):0;
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  updateFilterPillStates();currentPage=0;re();
+}
+function clearGrowthRule(kind){
+  const key=kind==='ads'?'adsGrowthRule':'trafficGrowthRule';
+  delete filters[key];
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  updateFilterPillStates();re();
+}
+function setAdsPeriod(period){
+  _rangeFilters.adsPeriod=period;
+  document.querySelectorAll('.fb-period-pill').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+function setShopifyPlanMode(mode){
+  filters.shopifyPlanMode=mode;
+  document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  updateFilterPillStates();currentPage=0;re();
+}
+
 // Clear a range filter
 function clearRangeFilter(type){
   if(type==='traffic'){_rangeFilters.trafficMin=0;_rangeFilters.trafficMax=Infinity;}
-  else if(type==='products'){_rangeFilters.productsMin=0;_rangeFilters.productsMax=Infinity;}
-  else if(type==='ads'){_rangeFilters.adsMin=0;_rangeFilters.adsMax=Infinity;}
+  else if(type==='products'){_rangeFilters.productsMin=0;_rangeFilters.productsMax=Infinity;_rangeFilters.priceMin=0;_rangeFilters.priceMax=Infinity;}
+  else if(type==='ads'){_rangeFilters.adsMin=0;_rangeFilters.adsMax=Infinity;delete _rangeFilters.adsPeriod;}
   else if(type==='revenue'){_rangeFilters.revenueMin=0;_rangeFilters.revenueMax=Infinity;}
   else if(type==='score'){_rangeFilters.scoreMin=0;_rangeFilters.scoreMax=Infinity;}
   else if(type==='sales'){_rangeFilters.salesMin=0;}
+  else if(type==='trustpilot'){_rangeFilters.tpNoteMin=0;_rangeFilters.tpNoteMax=Infinity;_rangeFilters.tpReviewsMin=0;_rangeFilters.tpReviewsMax=Infinity;}
   document.querySelectorAll('.fb-dropdown').forEach(dd=>dd.remove());
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
   updateFilterPillStates();
@@ -1142,7 +1633,7 @@ function updateFilterPillStates(){
     const name=btn.textContent.trim().replace(/[▾×]/g,'').trim();
     let hasVal=false;
     if(name==='Traffic')hasVal=_rangeFilters.trafficMin>0||_rangeFilters.trafficMax<Infinity;
-    else if(name==='Products')hasVal=_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity;
+    else if(name==='Products')hasVal=_rangeFilters.productsMin>0||_rangeFilters.productsMax<Infinity||_rangeFilters.priceMin>0||_rangeFilters.priceMax<Infinity;
     else if(name==='Live Ads')hasVal=_rangeFilters.adsMin>0||_rangeFilters.adsMax<Infinity;
     else if(name==='Revenue')hasVal=_rangeFilters.revenueMin>0||_rangeFilters.revenueMax<Infinity;
     else if(name==='Score')hasVal=_rangeFilters.scoreMin>0||_rangeFilters.scoreMax<Infinity;
@@ -1237,7 +1728,10 @@ function gd(){
   // Shopify Plan filter
   if(filters['Shopify Plan'].length>0)s=s.filter(x=>filters['Shopify Plan'].includes(x.sp));
 
-  // Range filters (Score, Traffic, Revenue, Products)
+  // Pixels filter
+  if(filters.Pixels&&filters.Pixels.length>0)s=s.filter(x=>x.px&&filters.Pixels.some(p=>x.px.includes(p)));
+
+  // Range filters (Score, Traffic, Revenue, Products, Price)
   if(_rangeFilters){
     if(_rangeFilters.scoreMin>0)s=s.filter(x=>x.sc>=_rangeFilters.scoreMin);
     if(_rangeFilters.scoreMax<Infinity)s=s.filter(x=>x.sc<=_rangeFilters.scoreMax);
@@ -1250,6 +1744,8 @@ function gd(){
     if(_rangeFilters.adsMin>0)s=s.filter(x=>x.ad>=_rangeFilters.adsMin);
     if(_rangeFilters.adsMax<Infinity)s=s.filter(x=>x.ad<=_rangeFilters.adsMax);
     if(_rangeFilters.salesMin>0)s=s.filter(x=>x.es>=_rangeFilters.salesMin);
+    if(_rangeFilters.priceMin>0)s=s.filter(x=>x.aov>=_rangeFilters.priceMin);
+    if(_rangeFilters.priceMax<Infinity)s=s.filter(x=>x.aov<=_rangeFilters.priceMax);
   }
 
   // US shops priority — boost US shops to the top, then biggest traffic (TrendTrack-style)
