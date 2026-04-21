@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Peekr — Free e-commerce tools: LTV calculator, profit margins, breakeven ROAS, ad copy generator and more."/>
 <meta name="theme-color" content="#0a0a0f"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
 <title>Peekr — Free E-commerce Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  font-family:'Figtree',sans-serif;
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   background:#0a0a0f;
   color:#e8e0f0;
   display:flex;
@@ -92,6 +91,7 @@ body{
   padding:48px 56px;
   background:var(--dark1);
   min-width:0;
+  margin-left:220px;
 }
 
 .top-badge{
@@ -105,7 +105,7 @@ body{
 }
 
 .page-title{
-  font-family:'Clash Display',sans-serif;
+  font-family:'Inter',sans-serif;
   font-size:42px;font-weight:700;
   color:#fff;margin-bottom:10px;letter-spacing:-.02em;
 }
@@ -118,7 +118,7 @@ body{
 .tools-section{margin-bottom:56px;}
 .section-header{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
 .section-icon{font-size:28px;}
-.section-title{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+.section-title{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-.01em;}
 .section-subtitle{font-size:13px;color:var(--text3);margin-bottom:24px;}
 
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
@@ -133,7 +133,7 @@ body{
 .card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
 .card-badge{font-size:9px;font-weight:800;padding:3px 10px;border-radius:20px;background:var(--neon);color:#fff;letter-spacing:.04em;box-shadow:0 0 12px var(--neon-glow);}
 .card-badge.soon{background:rgba(255,255,255,0.08);color:var(--text3);box-shadow:none;}
-.card-title{font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:6px;}
+.card-title{font-family:'Inter',sans-serif;font-size:16px;font-weight:700;color:#fff;margin-bottom:6px;}
 .card-desc{font-size:13px;color:var(--text2);margin-bottom:14px;flex-grow:1;line-height:1.5;}
 .card-features{list-style:none;margin-bottom:18px;font-size:12px;}
 .card-features li{padding:5px 0;color:var(--text2);padding-left:22px;position:relative;}
@@ -142,7 +142,7 @@ body{
 .card-btn{
   display:inline-flex;align-items:center;gap:6px;
   padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;
-  font-family:'Figtree',sans-serif;cursor:pointer;transition:all .15s;border:none;
+  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;cursor:pointer;transition:all .15s;border:none;
   background:linear-gradient(135deg,var(--neon),#cc1a5e);color:#fff;
   box-shadow:0 2px 16px var(--neon-glow),0 0 40px rgba(255,45,120,0.1);
   align-self:flex-start;
@@ -154,17 +154,17 @@ body{
 .modal.active{display:flex;align-items:center;justify-content:center;}
 .modal-content{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 80px rgba(255,45,120,0.08);}
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
-.modal-title{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;color:#fff;}
+.modal-title{font-family:'Inter',sans-serif;font-size:22px;font-weight:700;color:#fff;}
 .modal-close{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);width:32px;height:32px;border-radius:8px;font-size:16px;color:var(--text3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
 .modal-close:hover{background:rgba(255,45,120,0.1);color:var(--neon-soft);border-color:rgba(255,45,120,0.2);}
 
 .form-group{margin-bottom:16px;}
 .form-label{display:block;font-weight:700;margin-bottom:6px;color:var(--text2);font-size:13px;}
-.form-input,.form-select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Figtree',sans-serif;background:var(--dark4);color:var(--text1);transition:border-color .2s;}
+.form-input,.form-select{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;background:var(--dark4);color:var(--text1);transition:border-color .2s;}
 .form-input:focus,.form-select:focus{outline:none;border-color:var(--neon-soft);box-shadow:0 0 0 3px rgba(255,45,120,0.1);}
 .form-input::placeholder{color:var(--text3);}
 .form-select option{background:var(--dark4);color:var(--text1);}
-.form-submit{width:100%;margin-top:16px;padding:12px;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Figtree',sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--neon),#cc1a5e);color:#fff;box-shadow:0 2px 16px var(--neon-glow);transition:all .15s;}
+.form-submit{width:100%;margin-top:16px;padding:12px;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;cursor:pointer;background:linear-gradient(135deg,var(--neon),#cc1a5e);color:#fff;box-shadow:0 2px 16px var(--neon-glow);transition:all .15s;}
 .form-submit:hover{box-shadow:0 4px 24px var(--neon-glow);transform:translateY(-1px);}
 
 .result-box{background:rgba(255,45,120,0.06);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:20px;display:none;}
@@ -172,10 +172,10 @@ body{
 .result-item{margin-bottom:14px;}
 .result-item:last-child{margin-bottom:0;}
 .result-label{font-size:11px;color:var(--text3);text-transform:uppercase;font-weight:700;margin-bottom:3px;letter-spacing:.05em;}
-.result-value{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:var(--neon);}
+.result-value{font-family:'Inter',sans-serif;font-size:24px;font-weight:700;color:var(--neon);}
 
-@media(max-width:1024px){.sb{width:180px;}.main{padding:32px;}.page-title{font-size:32px;}}
-@media(max-width:768px){.sb{display:none;}.main{padding:24px;}.page-title{font-size:26px;}.cards-grid{grid-template-columns:1fr;}}
+@media(max-width:1024px){.sb{width:180px;}.main{padding:32px;margin-left:180px;}.page-title{font-size:32px;}}
+@media(max-width:768px){.sb{display:none;}.main{padding:24px;margin-left:0;}.page-title{font-size:26px;}.cards-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -226,7 +226,7 @@ body{
   <p class="page-subtitle">Essential tools for Shopify stores, dropshipping, and DTC brands. Calculate profitability, optimize ads, and analyze competitors.</p>
 
   <div class="tools-section">
-    <div class="section-header"><span class="section-icon">&#128202;</span><h2 class="section-title">Business Calculators</h2></div>
+    <div class="section-header"><span class="section-icon"></span><h2 class="section-title">Business Calculators</h2></div>
     <p class="section-subtitle">Calculate profitability, LTV, and unit economics</p>
     <div class="cards-grid">
       <div class="card"><div class="card-header"><h3 class="card-title">LTV Calculator</h3><span class="card-badge">POPULAR</span></div><p class="card-desc">Calculate customer lifetime value to determine your max acquisition cost and optimize retention strategy.</p><ul class="card-features"><li>Calculate lifetime value</li><li>Optimize CAC</li><li>Plan retention strategy</li></ul><button class="card-btn" onclick="openModal('ltv-modal')">Use Tool &#8594;</button></div>
@@ -238,7 +238,7 @@ body{
   </div>
 
   <div class="tools-section">
-    <div class="section-header"><span class="section-icon">&#127912;</span><h2 class="section-title">Creative Tools</h2></div>
+    <div class="section-header"><span class="section-icon"></span><h2 class="section-title">Creative Tools</h2></div>
     <p class="section-subtitle">Generate and preview your marketing assets</p>
     <div class="cards-grid">
       <div class="card"><h3 class="card-title">Ad Copy Generator</h3><p class="card-desc">Generate high-converting ad copy for Facebook, Instagram, and TikTok campaigns.</p><ul class="card-features"><li>Multiple platforms</li><li>A/B test variations</li><li>Conversion-optimized</li></ul><button class="card-btn" onclick="openModal('adcopy-modal')">Use Tool &#8594;</button></div>
@@ -247,7 +247,7 @@ body{
   </div>
 
   <div class="tools-section">
-    <div class="section-header"><span class="section-icon">&#128270;</span><h2 class="section-title">Analysis Tools</h2></div>
+    <div class="section-header"><span class="section-icon"></span><h2 class="section-title">Analysis Tools</h2></div>
     <p class="section-subtitle">Spy on competitors and find winning strategies</p>
     <div class="cards-grid">
       <div class="card"><h3 class="card-title">Store Analyzer</h3><p class="card-desc">Deep-dive into any Shopify store's strategy, apps, theme, and estimated revenue.</p><ul class="card-features"><li>Check 856K+ Shopify stores</li><li>Revenue & traffic estimates</li><li>Growth trends & insights</li></ul><button class="card-btn" onclick="openModal('store-analyzer-modal')">Use Tool &#8594;</button></div>
@@ -269,7 +269,7 @@ body{
 
 <div id="adcopy-modal" class="modal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Ad Copy Generator</h2><button class="modal-close" onclick="closeModal('adcopy-modal')">&times;</button></div><form onsubmit="generateAdCopy(event)"><div class="form-group"><label class="form-label">Product Name</label><input type="text" class="form-input" id="adcopy-product" placeholder="e.g., Premium Yoga Mat" required></div><div class="form-group"><label class="form-label">Key Benefit</label><input type="text" class="form-input" id="adcopy-benefit" placeholder="e.g., Non-slip, eco-friendly" required></div><div class="form-group"><label class="form-label">Target Audience</label><input type="text" class="form-input" id="adcopy-audience" placeholder="e.g., Fitness enthusiasts" required></div><div class="form-group"><label class="form-label">Platform</label><select class="form-select" id="adcopy-platform" required><option value="">Select a platform</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="tiktok">TikTok</option></select></div><button type="submit" class="form-submit">Generate Ad Copy</button></form><div id="adcopy-results" class="result-box"><div id="adcopy-variations"></div></div></div></div>
 
-<div id="fbcomments-modal" class="modal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Facebook Comments Simulator</h2><button class="modal-close" onclick="closeModal('fbcomments-modal')">&times;</button></div><p style="color:var(--text2);margin-bottom:20px;font-size:13px;">This tool is coming soon! We're building a realistic Facebook ad comments simulator to help you preview social proof before launching your campaigns.</p><div style="background:rgba(255,45,120,0.06);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;"><p style="color:var(--text3);font-size:13px;">&#128679; Check back soon for this feature</p></div></div></div>
+<div id="fbcomments-modal" class="modal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Facebook Comments Simulator</h2><button class="modal-close" onclick="closeModal('fbcomments-modal')">&times;</button></div><p style="color:var(--text2);margin-bottom:20px;font-size:13px;">This tool is coming soon! We're building a realistic Facebook ad comments simulator to help you preview social proof before launching your campaigns.</p><div style="background:rgba(255,45,120,0.06);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;"><p style="color:var(--text3);font-size:13px;"> Check back soon for this feature</p></div></div></div>
 
 <div id="store-analyzer-modal" class="modal"><div class="modal-content"><div class="modal-header"><h2 class="modal-title">Store Analyzer</h2><button class="modal-close" onclick="closeModal('store-analyzer-modal')">&times;</button></div><form onsubmit="analyzeStore(event)"><div class="form-group"><label class="form-label">Shopify Store Domain</label><input type="text" class="form-input" id="store-domain" placeholder="e.g., example.myshopify.com" required></div><button type="submit" class="form-submit">Analyze Store</button></form></div></div>
 
@@ -291,7 +291,7 @@ function calculateCashflow(e){e.preventDefault();const b=parseFloat(document.get
 
 function generateAdCopy(e){e.preventDefault();const p=document.getElementById('adcopy-product').value,b=document.getElementById('adcopy-benefit').value,a=document.getElementById('adcopy-audience').value,pl=document.getElementById('adcopy-platform').value;const t={facebook:[{h:'\uD83C\uDFAF Your Life Just Got Better',b:`${p} with ${b}. Perfect for ${a}. Limited time offer! \uD83D\uDD25`},{h:'See What Everyone is Talking About',b:`Join thousands of happy ${a}. Get your ${p} today.`},{h:`${b} You've Been Waiting For`,b:`Premium ${p} designed for ${a}. Get 20% off today!`}],instagram:[{h:`\u2728 ${p} Game Changer`,b:`${b} that actually works. For ${a}. Tap the link! \uD83D\uDC8B`},{h:'Glow Up Your Routine',b:`${p} \u2022 ${b} \u2022 ${a} approved \uD83D\uDE0D Link in bio!`},{h:`We Made it For ${a}`,b:`${p}. ${b}. You deserve it. \uD83C\uDF1F Shop now`}],tiktok:[{h:`POV: You found the perfect ${p}`,b:`${b}? Check \u2705 Perfect for ${a}? Double check \u2705 Link in bio \uD83D\uDD17`},{h:'Not me obsessing over this',b:`${p} with ${b} hits different. ${a} approved! \uD83D\uDCAF`},{h:`If you're ${a}, you NEED this`,b:`${p} with ${b} >>> everything else \uD83C\uDFAF`}]};const v=t[pl]||t.facebook;let html='';v.forEach((x,i)=>{html+=`<div style="margin-bottom:16px;padding:14px;background:var(--dark4);border-radius:10px;border-left:3px solid var(--neon);"><div style="font-weight:800;color:var(--neon-soft);font-size:11px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em;">Variation ${i+1}</div><div style="color:#fff;font-weight:700;margin-bottom:4px;font-size:14px;">${x.h}</div><div style="color:var(--text2);font-size:12px;line-height:1.5;">${x.b}</div></div>`;});document.getElementById('adcopy-variations').innerHTML=html;document.getElementById('adcopy-results').classList.add('active');}
 
-function analyzeStore(e){e.preventDefault();window.location.href='peekr-brand-tracker.html?domain='+encodeURIComponent(document.getElementById('store-domain').value);}
+function analyzeStore(e){e.preventDefault();window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent(document.getElementById('store-domain').value);}
 
 function calculateAmazonRevenue(e){e.preventDefault();const s=parseFloat(document.getElementById('amazon-sales').value),p=parseFloat(document.getElementById('amazon-price').value);const m=s*p,a=m*12;document.getElementById('amazon-revenue').textContent='$'+m.toFixed(2);document.getElementById('amazon-annual').textContent='$'+a.toFixed(2);document.getElementById('amazon-results').classList.add('active');}
 </script>

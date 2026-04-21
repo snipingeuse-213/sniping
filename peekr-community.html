@@ -9,14 +9,13 @@
 <title>Peekr — Community</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{
-  font-family:'Figtree',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   background:#0a0a0f;
   color:#e8e0f0;
   display:flex;
@@ -88,7 +87,7 @@ body{
 
 
 /* ── MAIN LAYOUT ── */
-.main{flex:1;display:flex;overflow:hidden;min-width:0;position:relative;z-index:5;}
+.main{margin-left:220px;flex:1;display:flex;overflow:hidden;min-width:0;position:relative;z-index:5;}
 
 /* ── CHANNEL SIDEBAR (Discord-style dark) ── */
 .channels{
@@ -103,7 +102,7 @@ body{
   display:flex;align-items:center;gap:10px;
 }
 .channels-head h2{
-  font-family:'Clash Display',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   font-size:15px;font-weight:700;color:#fff;
   letter-spacing:-.02em;
 }
@@ -170,14 +169,14 @@ body{
   background:var(--dark2);
 }
 .feed-top .ch-icon{font-size:18px;}
-.feed-top .ch-title{font-family:'Clash Display',sans-serif;font-size:16px;font-weight:700;color:#fff;}
+.feed-top .ch-title{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:16px;font-weight:700;color:#fff;}
 .feed-top .ch-subtitle{font-size:12px;color:var(--text3);margin-left:4px;}
 .feed-top .feed-actions{margin-left:auto;display:flex;gap:8px;}
 .feed-btn{
   display:flex;align-items:center;gap:6px;
   padding:7px 14px;border-radius:8px;
   font-size:12px;font-weight:700;
-  font-family:'Figtree',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   cursor:pointer;transition:all .15s;
   border:1px solid var(--border);
   background:rgba(255,45,120,0.06);
@@ -193,7 +192,7 @@ body{
 .sort-select{
   padding:7px 12px;border-radius:8px;
   border:1px solid var(--border);
-  background:var(--dark3);font-family:'Figtree',sans-serif;
+  background:var(--dark3);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   font-size:12px;font-weight:600;color:var(--text2);
   outline:none;cursor:pointer;
 }
@@ -311,7 +310,7 @@ body{
   padding:6px 10px;border-radius:7px;
   font-size:12px;font-weight:700;color:var(--text3);
   cursor:pointer;transition:all .12s;
-  background:none;border:none;font-family:'Figtree',sans-serif;
+  background:none;border:none;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
 .thread-back:hover{background:rgba(255,45,120,0.08);color:var(--neon-soft);}
 .thread-scroll{flex:1;overflow-y:auto;padding:16px 20px 0;}
@@ -365,7 +364,7 @@ body{
   padding:10px 14px;
   border:1px solid var(--border);
   border-radius:12px;
-  font-family:'Figtree',sans-serif;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
   font-size:13px;
   color:var(--text1);
   resize:none;
@@ -417,7 +416,7 @@ body{
   padding:18px 22px;
   border-bottom:1px solid var(--border2);
 }
-.modal-head h3{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;color:var(--text1);}
+.modal-head h3{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:17px;font-weight:700;color:var(--text1);}
 .modal-close{
   width:32px;height:32px;border-radius:8px;
   background:rgba(255,255,255,0.04);border:none;
@@ -431,7 +430,7 @@ body{
 .modal-body input,.modal-body textarea,.modal-body select{
   width:100%;padding:10px 14px;
   border:1px solid var(--border);border-radius:10px;
-  font-family:'Figtree',sans-serif;font-size:13px;color:var(--text1);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;color:var(--text1);
   outline:none;transition:all .15s;background:var(--dark4);
 }
 .modal-body textarea{min-height:120px;resize:vertical;line-height:1.6;}
@@ -492,7 +491,7 @@ body{
   text-align:center;padding:40px;
 }
 .empty-state .emoji{font-size:48px;margin-bottom:16px;}
-.empty-state h3{font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:var(--text1);margin-bottom:8px;}
+.empty-state h3{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:20px;font-weight:700;color:var(--text1);margin-bottom:8px;}
 .empty-state p{font-size:13px;color:var(--text3);max-width:300px;line-height:1.5;}
 
 /* ── LOADING ── */
@@ -579,9 +578,12 @@ body{
     <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
   </div>
   <div class="sb-bot">
-    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+    <div class="uc"><div class="ua" id="user-avatar">LR</div><div><div class="un" id="user-name">Lyli Rose</div><div class="up" id="user-plan">Pro Plan</div></div></div>
   </div>
 </aside>
+
+<!-- ── MAIN CONTENT (offset for fixed sidebar) ── -->
+<div class="main">
 
 <!-- ── CHANNEL SIDEBAR ── -->
 <div class="channels">
@@ -636,6 +638,8 @@ body{
   </div>
   <div class="members-list" id="members-list"></div>
 </div>
+
+</div><!-- /.main -->
 
 <!-- ── NEW POST MODAL ── -->
 <div class="modal-overlay" id="new-post-modal">
@@ -923,7 +927,7 @@ async function submitPost() {
   btn.disabled = true; btn.textContent = 'Publishing...';
   const { error } = await sb.from('community_posts').insert({ channel_id: channelId, user_id: currentUser.id, username: currentUser.name, user_plan: currentUser.plan, title, body });
   btn.disabled = false; btn.textContent = 'Publish Post';
-  if (error) { showToast('Error: ' + error.message); return; }
+  if (error) { showToast('Error: ' + esc(error.message)); return; }
   closeNewPost();
   if (channelId === currentChannel.id) loadPosts();
   showToast('Post published! ');
@@ -940,7 +944,7 @@ async function submitComment() {
   btn.disabled = true;
   const { error } = await sb.from('community_comments').insert({ post_id: currentThread, user_id: currentUser.id, username: currentUser.name, user_plan: currentUser.plan, body });
   btn.disabled = false;
-  if (error) { showToast('Error: ' + error.message); return; }
+  if (error) { showToast('Error: ' + esc(error.message)); return; }
   input.value = '';
   await sb.rpc('increment_comments_count', { p_id: currentThread });
 }
@@ -992,7 +996,7 @@ function subscribeRealtime() {
       const empty = feed.querySelector('.empty-state');
       if (empty) feed.innerHTML = '';
       feed.insertAdjacentHTML('afterbegin', renderSinglePost(newPost, true));
-      showToast(`New post from ${newPost.username || 'someone'} &#10024;`);
+      showToast(`New post from ${esc(newPost.username || 'someone')} &#10024;`);
     }).subscribe();
 }
 
@@ -1088,7 +1092,7 @@ function badgeClass(plan) {
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.innerHTML = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }

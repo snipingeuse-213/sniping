@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peekr Pricing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <style>
         * {
             margin: 0;
@@ -11,8 +12,8 @@
             box-sizing: border-box;
         }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f8f9fa;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
             color: #1a1a1a;
         }
         .pricing-container {
@@ -54,7 +55,7 @@
             transition: all 0.3s;
         }
         .toggle-option.active {
-            background: #2563eb;
+            background: #e8799a;
             color: white;
         }
         .savings-badge {
@@ -83,12 +84,12 @@
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
         }
         .pricing-card.featured {
-            border: 2px solid #2563eb;
+            border: 2px solid #e8799a;
             transform: scale(1.05);
         }
         .pricing-card.featured .most-popular {
             display: block;
-            background: #2563eb;
+            background: #e8799a;
             color: white;
             padding: 8px 16px;
             border-radius: 4px;
@@ -127,9 +128,9 @@
         .plan-button {
             width: 100%;
             padding: 12px 20px;
-            border: 1px solid #2563eb;
+            border: 1px solid #e8799a;
             background: white;
-            color: #2563eb;
+            color: #e8799a;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
@@ -137,15 +138,15 @@
             margin-bottom: 20px;
         }
         .plan-button:hover {
-            background: #2563eb;
+            background: #e8799a;
             color: white;
         }
         .pricing-card.featured .plan-button {
-            background: #2563eb;
+            background: #e8799a;
             color: white;
         }
         .pricing-card.featured .plan-button:hover {
-            background: #1d4ed8;
+            background: #d4607a;
         }
         .plan-features {
             list-style: none;
@@ -193,7 +194,7 @@
             align-items: center;
         }
         .faq-question:hover {
-            color: #2563eb;
+            color: #e8799a;
         }
         .faq-answer {
             color: #666;
@@ -208,6 +209,7 @@
     </style>
 </head>
 <body>
+    <div style="padding:16px 24px;"><a href="peekr-dashboard.html" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#e8799a;text-decoration:none;font-family:'Inter',sans-serif;">← Back to Dashboard</a></div>
     <div class="pricing-container">
         <div class="pricing-header">
             <h1>Simple, Transparent Pricing</h1>
@@ -305,12 +307,35 @@
     </div>
 
     <script>
+        // FAQ toggle
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', function() {
                 const answer = this.nextElementSibling;
                 answer.classList.toggle('active');
                 this.querySelector('span').textContent = answer.classList.contains('active') ? '−' : '+';
             });
+        });
+
+        // Monthly/Yearly pricing toggle
+        const monthlyPrices = { free: '$0', starter: '$29', pro: '$79', agency: '$199' };
+        const yearlyPrices  = { free: '$0', starter: '$290', pro: '$790', agency: '$1,990' };
+        const toggleOptions = document.querySelectorAll('.toggle-option');
+        const priceEls = document.querySelectorAll('.plan-price');
+        const periodEls = document.querySelectorAll('.plan-period');
+        const planKeys = ['free','starter','pro','agency'];
+
+        function setPricing(mode) {
+            const prices = mode === 'yearly' ? yearlyPrices : monthlyPrices;
+            toggleOptions.forEach(o => o.classList.remove('active'));
+            toggleOptions[mode === 'yearly' ? 1 : 0].classList.add('active');
+            priceEls.forEach((el, i) => {
+                const key = planKeys[i];
+                el.innerHTML = prices[key] + '<span>/' + (mode === 'yearly' ? 'year' : 'month') + '</span>';
+            });
+        }
+
+        toggleOptions.forEach((opt, idx) => {
+            opt.addEventListener('click', () => setPricing(idx === 1 ? 'yearly' : 'monthly'));
         });
     </script>
 </body>

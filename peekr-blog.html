@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog & Tips - Peekr</title>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <style>
         :root{
           --neon:#ff2d78;
@@ -25,7 +24,7 @@
         }
 
         html, body {
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
             background-color: #ffffff;
             color: #333;
             height: 100%;
@@ -74,15 +73,18 @@
 
         .topbar {
             background-color: #ffffff;
-            border-bottom: 1px solid #e8ddd3;
-            padding: 20px 32px;
+            border-bottom: 1px solid rgba(200,160,170,0.18);
+            padding: 0 24px;
+            height: 56px;
+            display: flex;
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
         .topbar-title {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 24px;
             font-weight: 700;
             color: #1a0a0f;
@@ -98,7 +100,7 @@
 
         /* HERO SECTION */
         .hero {
-            background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
             border-radius: 12px;
             padding: 60px 40px;
             margin-bottom: 48px;
@@ -107,7 +109,7 @@
         }
 
         .hero-title {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 48px;
             font-weight: 700;
             color: #1a0a0f;
@@ -166,7 +168,7 @@
             padding: 12px 16px;
             border: 1px solid #ddd;
             border-radius: 9px;
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
             font-size: 14px;
             transition: all 0.2s ease;
         }
@@ -229,7 +231,7 @@
         }
 
         .article-title {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 18px;
             font-weight: 700;
             color: #1a0a0f;
@@ -252,7 +254,7 @@
             font-size: 12px;
             color: #999;
             padding-top: 16px;
-            border-top: 1px solid #ffffff;
+            border-top: 1px solid rgba(200,160,170,0.18);
         }
 
         .article-cta {
@@ -314,7 +316,7 @@
         }
 
         .article-modal-title {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 32px;
             font-weight: 700;
             color: #1a0a0f;
@@ -326,7 +328,7 @@
             gap: 16px;
             margin-bottom: 32px;
             padding-bottom: 24px;
-            border-bottom: 1px solid #ffffff;
+            border-bottom: 1px solid rgba(200,160,170,0.18);
             font-size: 14px;
             color: #999;
         }
@@ -338,7 +340,7 @@
         }
 
         .article-modal-content h3 {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 20px;
             font-weight: 700;
             color: #1a0a0f;
@@ -373,7 +375,7 @@
         }
 
         .newsletter-title {
-            font-family: 'Clash Display', sans-serif;
+            font-family: 'Inter',sans-serif;
             font-size: 28px;
             font-weight: 700;
             margin-bottom: 12px;
@@ -400,7 +402,7 @@
             padding: 12px 16px;
             border: none;
             border-radius: 9px;
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
             font-size: 14px;
         }
 
@@ -414,7 +416,7 @@
             color: #fff;
             border: none;
             border-radius: 9px;
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
@@ -606,7 +608,7 @@
 
             <div class="articles-grid" id="articlesGrid"></div>
             <div id="noResults" class="no-results" style="display: none;">
-                <div class="no-results-icon">&#128269;</div>
+                <div class="no-results-icon"></div>
                 <div class="no-results-text">No articles match your search</div>
             </div>
 
@@ -717,8 +719,8 @@
 
         function handleNewsletterSubmit(e) {
             e.preventDefault();
-            alert('Thank you! You\'ve subscribed to the Peekr newsletter!');
-            e.target.reset();
+            const form = e.target;
+            form.innerHTML = '<p style="color:#e8799a;font-weight:600;font-size:16px;">Thanks! You\'re subscribed to the Peekr newsletter.</p>';
         }
 
         document.getElementById('searchInput').addEventListener('input', (e) => {

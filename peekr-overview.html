@@ -5,13 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Peekr Dashboard — Your ecom intelligence command center. Track stores, ads, and competitors in real time.">
     <title>Peekr — Dashboard Overview</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128065;&#65039;</text></svg>"/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
     <style>
+        :root{
+            --pink:#e8799a;
+            --pink-dark:#d4607a;
+            --neon:#ff2d78;
+            --neon-soft:#ff5c9a;
+            --text-primary:#1a0a0f;
+            --text-secondary:rgba(26,10,15,0.6);
+            --text-tertiary:rgba(26,10,15,0.35);
+            --border:rgba(200,160,170,0.18);
+            --card-bg:#ffffff;
+            --card-radius:14px;
+            --bg:#ffffff;
+            --sidebar-bg:#0a0a0f;
+            --sidebar-width:220px;
+            --topbar-height:56px;
+        }
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Figtree',sans-serif;background:#ffffff;color:#1a0a0f;min-height:100vh}
+        body{font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh}
         body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.6}
         ::-webkit-scrollbar{width:4px}
         ::-webkit-scrollbar-thumb{background:rgba(200,150,170,0.3);border-radius:4px}
@@ -44,21 +59,21 @@
 .up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
 
         /* Main */
-        .main{flex:1;display:flex;flex-direction:column;overflow-y:auto}
+        .main{flex:1;display:flex;flex-direction:column;overflow-y:auto;margin-left:var(--sidebar-width)}
         .topbar{
-            background:rgba(255,252,248,0.5);
-            backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-            border-bottom:1.5px solid rgba(255,255,255,0.7);
-            padding:20px 32px;display:flex;justify-content:space-between;align-items:center;
+            height:var(--topbar-height);display:flex;align-items:center;
+            padding:0 24px;background:#fff;
+            border-bottom:1px solid var(--border);
+            justify-content:space-between;
         }
-        .topbar-left h1{font-family:'Clash Display',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.02em}
-        .topbar-left p{font-size:13px;color:rgba(26,10,15,0.4);margin-top:2px;font-weight:500}
+        .topbar-left h1{font-family:'Inter',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em}
+        .topbar-left p{font-size:13px;color:var(--text-secondary);margin-top:1px;font-weight:500}
         .topbar-right{display:flex;align-items:center;gap:14px}
         .topbar-btn{
             background:#1a0a0f;color:white;padding:9px 20px;border-radius:100px;
             font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;
         }
-        .topbar-btn:hover{background:#e8799a}
+        .topbar-btn:hover{background:var(--pink)}
         .avatar{
             width:34px;height:34px;border-radius:50%;
             background:linear-gradient(135deg,#f4a7b9,#e8799a);
@@ -76,58 +91,63 @@
             position:relative;overflow:hidden;margin-bottom:24px;
         }
         .welcome::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Ccircle cx='170' cy='40' r='100' fill='none' stroke='rgba(255,255,255,0.15)' stroke-width='1'/%3E%3Ccircle cx='170' cy='40' r='60' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3C/svg%3E") right top no-repeat;pointer-events:none}
-        .welcome h2{font-family:'Clash Display',sans-serif;font-size:28px;font-weight:700;margin-bottom:8px}
+        .welcome h2{font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-bottom:8px}
         .welcome p{font-size:14px;opacity:.8;line-height:1.6;max-width:480px}
 
         /* KPI grid */
         .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
         .kpi{
-            background:rgba(255,252,248,0.6);
-            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-            border-radius:20px;border:1.5px solid rgba(255,255,255,0.85);
+            background:var(--card-bg);
+            border-radius:var(--card-radius);border:1px solid var(--border);
             padding:24px;
-            box-shadow:0 4px 16px rgba(160,100,120,0.06),inset 0 1.5px 0 rgba(255,255,255,0.95);
+            box-shadow:0 4px 16px rgba(160,100,120,0.06);
             transition:transform .2s;
         }
         .kpi:hover{transform:translateY(-2px)}
-        .kpi-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.35);margin-bottom:10px}
-        .kpi-val{font-family:'Clash Display',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f}
-        .kpi-val span{font-size:13px;font-weight:600;color:#e8799a;margin-left:6px}
-        .kpi-sub{font-size:12px;color:rgba(26,10,15,0.4);margin-top:4px;font-weight:500}
+        .kpi-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:10px}
+        .kpi-val{font-family:'Inter',sans-serif;font-size:32px;font-weight:700;letter-spacing:-.02em;color:var(--text-primary)}
+        .kpi-val span{font-size:13px;font-weight:600;color:var(--pink);margin-left:6px}
+        .kpi-sub{font-size:12px;color:var(--text-secondary);margin-top:4px;font-weight:500}
+
+        /* Three-column grid */
+        .tri-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px}
 
         /* Two-column bottom */
         .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
         .card{
-            background:rgba(255,252,248,0.6);
-            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-            border-radius:20px;border:1.5px solid rgba(255,255,255,0.85);
+            background:var(--card-bg);
+            border-radius:var(--card-radius);border:1px solid var(--border);
             padding:28px;
-            box-shadow:0 4px 16px rgba(160,100,120,0.06),inset 0 1.5px 0 rgba(255,255,255,0.95);
+            box-shadow:0 4px 16px rgba(160,100,120,0.06);
         }
-        .card-title{font-family:'Clash Display',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em}
-        .card-title span{color:#e8799a}
+        .card-title{font-family:'Inter',sans-serif;font-size:18px;font-weight:700;margin-bottom:20px;letter-spacing:-.01em}
+        .card-title span{color:var(--pink)}
 
         /* Table */
         table{width:100%;border-collapse:collapse}
-        th{text-align:left;padding:10px 12px;border-bottom:1.5px solid rgba(200,180,170,0.15);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:rgba(26,10,15,0.35)}
-        td{padding:10px 12px;border-bottom:1px solid rgba(200,180,170,0.08);font-size:13px;font-weight:500}
+        th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text-tertiary)}
+        td{padding:10px 12px;border-bottom:1px solid rgba(200,160,170,0.1);font-size:13px;font-weight:500}
         tr:hover td{background:rgba(232,121,154,0.03)}
         .score-badge{display:inline-flex;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
-        .score-high{background:rgba(232,121,154,0.12);color:#d4607a}
+        .score-high{background:rgba(232,121,154,0.12);color:var(--pink-dark)}
         .score-med{background:rgba(200,180,160,0.15);color:rgba(26,10,15,0.5)}
 
         /* Activity feed */
         .activity{display:flex;flex-direction:column;gap:14px}
         .activity-item{display:flex;gap:12px;align-items:flex-start}
-        .activity-dot{width:8px;height:8px;border-radius:50%;background:#e8799a;margin-top:5px;flex-shrink:0}
+        .activity-dot{width:8px;height:8px;border-radius:50%;background:var(--pink);margin-top:5px;flex-shrink:0}
         .activity-dot.gray{background:rgba(26,10,15,0.15)}
-        .activity-text{font-size:13px;color:rgba(26,10,15,0.65);line-height:1.5;font-weight:500}
-        .activity-text strong{color:#1a0a0f;font-weight:700}
-        .activity-time{font-size:11px;color:rgba(26,10,15,0.3);margin-top:2px;font-weight:500}
+        .activity-text{font-size:13px;color:var(--text-secondary);line-height:1.5;font-weight:500}
+        .activity-text strong{color:var(--text-primary);font-weight:700}
+        .activity-time{font-size:11px;color:var(--text-tertiary);margin-top:2px;font-weight:500}
 
-        @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
-        @media(max-width:1100px){.bottom-grid{grid-template-columns:1fr}}
-        @media(max-width:768px){.sb{display:none}.kpi-grid{grid-template-columns:1fr}}
+        /* Spinner */
+        .spinner{width:32px;height:32px;border:3px solid rgba(232,121,154,0.15);border-top-color:var(--pink);border-radius:50%;animation:spin .6s linear infinite;margin:20px auto}
+        @keyframes spin{to{transform:rotate(360deg)}}
+
+        @media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.tri-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:1100px){.bottom-grid{grid-template-columns:1fr}.tri-grid{grid-template-columns:1fr}}
+        @media(max-width:768px){.sb{display:none}.main{margin-left:0}.kpi-grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -196,17 +216,17 @@
                 <!-- KPI cards row 1 -->
                 <div class="kpi-grid">
                     <div class="kpi">
-                        <div class="kpi-label">&#127978; Stores Tracked</div>
+                        <div class="kpi-label"> Stores Tracked</div>
                         <div class="kpi-val" id="kpi-stores">...</div>
                         <div class="kpi-sub" id="kpi-stores-sub">Loading...</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">&#127758; Countries Covered</div>
+                        <div class="kpi-label"> Countries Covered</div>
                         <div class="kpi-val" id="kpi-countries">...</div>
                         <div class="kpi-sub" id="kpi-countries-sub">Loading...</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">&#128200; Avg Store Score</div>
+                        <div class="kpi-label"> Avg Store Score</div>
                         <div class="kpi-val" id="kpi-score">...</div>
                         <div class="kpi-sub">Based on 15+ quality signals</div>
                     </div>
@@ -214,24 +234,24 @@
                 <!-- KPI cards row 2 -->
                 <div class="kpi-grid">
                     <div class="kpi">
-                        <div class="kpi-label">&#128227; Live Ads Tracked</div>
+                        <div class="kpi-label"> Live Ads Tracked</div>
                         <div class="kpi-val" id="kpi-ads">...</div>
                         <div class="kpi-sub" id="kpi-ads-sub">From Meta Ad Library</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">&#128293; Top Trending Niche</div>
+                        <div class="kpi-label"> Top Trending Niche</div>
                         <div class="kpi-val" style="font-size:22px" id="kpi-niche">...</div>
                         <div class="kpi-sub" id="kpi-niche-sub">Loading...</div>
                     </div>
                     <div class="kpi">
-                        <div class="kpi-label">&#128176; Est. Revenue Pool</div>
+                        <div class="kpi-label"> Est. Revenue Pool</div>
                         <div class="kpi-val" id="kpi-revenue">...</div>
                         <div class="kpi-sub" id="kpi-revenue-sub">Across all tracked stores</div>
                     </div>
                 </div>
 
                 <!-- Three-column bottom -->
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px">
+                <div class="tri-grid">
                     <!-- Top Stores -->
                     <div class="card">
                         <div class="card-title">Top Performing <span>Stores</span></div>
@@ -394,19 +414,19 @@
                     const pctAds=sampleData.length?Math.round(activeAdShops/sampleData.length*100):0;
                     insEl.innerHTML=`
                         <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(232,121,154,0.06);border-radius:14px;border:1px solid rgba(232,121,154,0.12)">
-                            <div style="font-size:24px">&#128640;</div>
+                            <div style="font-size:24px"></div>
                             <div><div style="font-size:13px;font-weight:700">High-Score Stores</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">${highScoreCount} stores with score 80+</div></div>
-                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#e8799a">${Math.round(highScoreCount/sampleData.length*100)}%</div>
+                            <div style="margin-left:auto;font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#e8799a">${Math.round(highScoreCount/sampleData.length*100)}%</div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(145,113,200,0.06);border-radius:14px;border:1px solid rgba(145,113,200,0.12)">
-                            <div style="font-size:24px">&#128202;</div>
+                            <div style="font-size:24px"></div>
                             <div><div style="font-size:13px;font-weight:700">Avg Monthly Traffic</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">Across sampled stores</div></div>
-                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#9171c8">${fmt(avgTraffic)}</div>
+                            <div style="margin-left:auto;font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#9171c8">${fmt(avgTraffic)}</div>
                         </div>
                         <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:rgba(230,184,58,0.06);border-radius:14px;border:1px solid rgba(230,184,58,0.12)">
-                            <div style="font-size:24px">&#128161;</div>
+                            <div style="font-size:24px"></div>
                             <div><div style="font-size:13px;font-weight:700">Running Meta Ads</div><div style="font-size:12px;color:rgba(26,10,15,0.5)">${activeAdShops} shops actively advertising</div></div>
-                            <div style="margin-left:auto;font-family:'Clash Display',sans-serif;font-size:20px;font-weight:700;color:#d4a017">${pctAds}%</div>
+                            <div style="margin-left:auto;font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#d4a017">${pctAds}%</div>
                         </div>
                     `;
 

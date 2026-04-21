@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saved Items - Peekr</title>
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root{
           --neon:#ff2d78;
@@ -21,7 +21,7 @@
         }
 
         body {
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: #ffffff;
             color: #1a0a0f;
             overflow: hidden;
@@ -163,7 +163,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             border: none;
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .cta-btn-primary {
@@ -270,6 +270,212 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        .main{margin-left:220px;flex:1;display:flex;flex-direction:column;overflow-y:auto;height:100vh;background:#fff;}
+        .hidden{display:none !important;}
+
+        /* Main Header (topbar) */
+        .main-header {
+            height: 56px;
+            min-height: 56px;
+            padding: 0 24px;
+            background: #ffffff;
+            border-bottom: 1px solid rgba(200,160,170,0.18);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .main-header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a0a0f;
+            white-space: nowrap;
+        }
+
+        .main-header p {
+            font-size: 13px;
+            color: rgba(26,10,15,0.35);
+            white-space: nowrap;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 24px;
+            border-bottom: 1px solid rgba(200,160,170,0.18);
+            background: #ffffff;
+            position: sticky;
+            top: 56px;
+            z-index: 9;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(26,10,15,0.35);
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: rgba(26,10,15,0.6);
+        }
+
+        .tab.active {
+            color: #e8799a;
+            border-bottom-color: #e8799a;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        /* Ad Cards */
+        .ad-card {
+            background: #ffffff;
+            border: 1px solid rgba(200,160,170,0.18);
+            border-radius: 12px;
+            padding: 0;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .ad-card:hover {
+            box-shadow: 0 4px 16px rgba(200,160,170,0.12);
+        }
+
+        .ad-header {
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid rgba(200,160,170,0.10);
+        }
+
+        .ad-shop-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .ad-domain {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a0a0f;
+        }
+
+        .ad-page-name {
+            font-size: 12px;
+            color: rgba(26,10,15,0.35);
+        }
+
+        .ad-body {
+            padding: 16px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(26,10,15,0.6);
+        }
+
+        .ad-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-top: 1px solid rgba(200,160,170,0.10);
+            background: rgba(232,121,154,0.03);
+        }
+
+        .ad-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ad-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #e8799a;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .ad-link:hover {
+            color: #d4607a;
+            text-decoration: underline;
+        }
+
+        /* Unsave Button */
+        .unsave-btn {
+            padding: 6px 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(26,10,15,0.35);
+            background: none;
+            border: 1px solid rgba(200,160,170,0.18);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unsave-btn:hover {
+            color: #d4607a;
+            border-color: #d4607a;
+            background: rgba(232,121,154,0.06);
+        }
+
+        /* Shop Card (for potential card-based layout) */
+        .shop-card {
+            background: #ffffff;
+            border: 1px solid rgba(200,160,170,0.18);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: box-shadow 0.2s;
+        }
+
+        .shop-card:hover {
+            box-shadow: 0 4px 16px rgba(200,160,170,0.12);
+        }
+
+        .shop-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shop-domain {
+            font-size: 12px;
+            color: rgba(26,10,15,0.35);
+        }
+
+        .shop-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: rgba(26,10,15,0.6);
+        }
+
+        .shop-stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 12px;
         }
     </style>
 </head>
@@ -502,7 +708,7 @@
             if (savedShops.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">&#65039;</div>
+                        <div class="empty-icon"></div>
                         <div class="empty-title">No Saved Shops Yet</div>
                         <div class="empty-text">Start saving your favorite shops to track their performance.<br>Explore trending shops to find ones worth following.</div>
                         <div class="empty-cta">

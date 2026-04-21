@@ -4,31 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Blog & Tips - Peekr</title>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://api.fontshare.com/css?f[]=clash-display@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Figtree',sans-serif;bg:#ffffff;color:#333}
-.ctn{display:flex;min-h:100vh}.sb{w:220px;bg:#1a0a0f;pos:fixed;h:100vh;ofy:auto;p:20px 0}.sb-logo{color:#fff;font:700 24px 'Clash Display';p:0 20px 30px;display:block}
-.nav{list-style:0}.nav li a{d:block;p:12px 20px;c:#999;txt-dec:none;font:500 14px 'Figtree';trans:all .2s}
-.nav li a:hover{c:#e8799a}.nav li.active a{c:#e8799a;bg:rgba(232,121,154,.1)}
-.main{ml:220px;flex:1}.topbar{bg:#ffffff;p:20px 40px;b:1px solid #e8e4dd}
-.top-ttl{f:700 20px 'Clash Display'}
-.hero{p:40px;txt-align:c}.hero-h{f:700 36px 'Clash Display';mb:12px;c:#1a0a0f}
-.hero-s{f:400 16px;c:#666;mb:30px}
-.fltr{d:flex;gap:8px;jc:c;flw:wrap;mb:30px;p:0 20px}
-.chip{p:8px 16px;b:1px solid #ddd;bg:#fff;br:20px;c:#666;f:500 13px;cur:pointer;trans:all .2s}
-.chip:hover,.chip.active{bg:#e8799a;c:#fff;b-c:#e8799a}
-.src{d:flex;jc:c;mb:30px}.src inp{w:300px;p:10px 15px;b:1px solid #ddd;br:6px;f:14px}
-.grd{d:grid;grc:3;gap:20px;p:0 40px 40px;mb:40px}
-@media(max-w:1024px){.grd{grc:2}}@media(max-w:640px){.grd{grc:1}.sb{w:100%;h:auto;pos:rel}.main{ml:0}}
-.card{bg:#fff;br:8px;ov:hidden;trans:all .2s;cur:pointer}.card:hover{shd:0 4px 12px rgba(0,0,0,.1);trf:translateY(-2px)}
-.card-bar{h:4px;bg:linear-gradient(90deg,#e8799a,#d85a7b)}.card-bd{p:20px}.badge{d:inline-block;p:4px 12px;bg:#e8799a;c:#fff;f:500 11px;br:4px;mb:12px}
-.card-h{f:700 16px 'Clash Display';mb:10px;lh:1.3}.card-ex{f:400 13px #888;lh:1.4;mb:15px;d:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;ov:hidden}
-.card-meta{d:flex;jc:space-between;ai:center;f:500 12px;c:#999}.cta{c:#e8799a;txt-dec:none;cur:pointer}
-.nws{bg:#1a0a0f;c:#fff;p:40px;txt-align:c;mt:40px}.nws-h{f:700 20px 'Clash Display';mb:15px}
-.nws-inp{d:flex;jc:c;gap:10px;flw:wrap}.nws-inp inp{p:10px 15px;w:280px;b:none;br:4px;f:14px}
-.nws-btn{p:10px 24px;bg:#e8799a;c:#fff;b:none;br:4px;f:500 14px;cur:pointer;trans:all .2s}
-.nws-btn:hover{bg:#d85a7b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#ffffff;color:#333}
+.ctn{display:flex;min-height:100vh}
+.sb{width:220px;background:#1a0a0f;position:fixed;height:100vh;overflow-y:auto;padding:20px 0}
+.sb-logo{color:#fff;font-weight:700;font-size:24px;font-family:'Inter',sans-serif;padding:0 20px 30px;display:block}
+.nav{list-style:none}
+.nav li a{display:block;padding:12px 20px;color:#999;text-decoration:none;font-weight:500;font-size:14px;font-family:'Inter',sans-serif;transition:all .2s}
+.nav li a:hover{color:#e8799a}
+.nav li.active a{color:#e8799a;background:rgba(232,121,154,.1)}
+.main{margin-left:220px;flex:1}
+.topbar{background:#ffffff;padding:0 24px;height:56px;display:flex;align-items:center;border-bottom:1px solid rgba(200,160,170,0.18)}
+.top-ttl{font-weight:700;font-size:20px;font-family:'Inter',sans-serif}
+.hero{padding:40px;text-align:center}
+.hero-h{font-weight:700;font-size:36px;font-family:'Inter',sans-serif;margin-bottom:12px;color:#1a0a0f}
+.hero-s{font-weight:400;font-size:16px;color:#666;margin-bottom:30px}
+.fltr{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;padding:0 20px}
+.chip{padding:8px 16px;border:1px solid #ddd;background:#fff;border-radius:20px;color:#666;font-weight:500;font-size:13px;cursor:pointer;transition:all .2s}
+.chip:hover,.chip.active{background:#e8799a;color:#fff;border-color:#e8799a}
+.src{display:flex;justify-content:center;margin-bottom:30px}
+.src input{width:300px;padding:10px 15px;border:1px solid #ddd;border-radius:6px;font-size:14px}
+.grd{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 40px 40px;margin-bottom:40px}
+@media(max-width:1024px){.grd{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grd{grid-template-columns:1fr}.sb{width:100%;height:auto;position:relative}.main{margin-left:0}}
+.card{background:#fff;border-radius:8px;overflow:hidden;transition:all .2s;cursor:pointer}
+.card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-2px)}
+.card-bar{height:4px;background:linear-gradient(90deg,#e8799a,#d85a7b)}
+.card-bd{padding:20px}
+.badge{display:inline-block;padding:4px 12px;background:#e8799a;color:#fff;font-weight:500;font-size:11px;border-radius:4px;margin-bottom:12px}
+.card-h{font-weight:700;font-size:16px;font-family:'Inter',sans-serif;margin-bottom:10px;line-height:1.3}
+.card-ex{font-weight:400;font-size:13px;color:#888;line-height:1.4;margin-bottom:15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:12px;color:#999}
+.cta{color:#e8799a;text-decoration:none;cursor:pointer}
+.nws{background:#1a0a0f;color:#fff;padding:40px;text-align:center;margin-top:40px}
+.nws-h{font-weight:700;font-size:20px;font-family:'Inter',sans-serif;margin-bottom:15px}
+.nws-inp{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.nws-inp input{padding:10px 15px;width:280px;border:none;border-radius:4px;font-size:14px}
+.nws-btn{padding:10px 24px;background:#e8799a;color:#fff;border:none;border-radius:4px;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s}
+.nws-btn:hover{background:#d85a7b}
 </style>
 </head>
 <body>
@@ -40,11 +55,11 @@
 <li><a href="peekr-trending-ads.html">Trending Ads</a></li>
 <li><a href="peekr-best-trends.html">Best Trends</a></li>
 <li class="active"><a href="peekr-blog.html">Blog & Tips</a></li>
-<li><a href="#saved-ads">Saved Ads</a></li>
-<li><a href="#saved-shops">Saved Shops</a></li>
-<li><a href="#export">Export</a></li>
-<li><a href="#upgrade">Upgrade</a></li>
-<li><a href="#affiliate">Affiliate</a></li>
+<li><a href="peekr-saved.html">Saved Ads</a></li>
+<li><a href="peekr-saved.html">Saved Shops</a></li>
+<li><a href="peekr-export.html">Export</a></li>
+<li><a href="peekr-pricing.html">Upgrade</a></li>
+<li><a href="peekr-affiliate.html">Affiliate</a></li>
 </ul>
 </aside>
 
@@ -135,7 +150,7 @@
 
 <section class="nws">
 <h2 class="nws-h">Subscribe to Our Newsletter</h2>
-<p style="f:400 14px;mb:20px">Get weekly insights on trending products, winning ads, and scaling strategies delivered to your inbox.</p>
+<p style="font-weight:400;font-size:14px;margin-bottom:20px">Get weekly insights on trending products, winning ads, and scaling strategies delivered to your inbox.</p>
 <div class="nws-inp">
 <input type="email" placeholder="your@email.com" id="email">
 <button class="nws-btn" onclick="subscribe()">Subscribe</button>
@@ -149,7 +164,7 @@ function flt(){const act=document.querySelector('.chip.active').dataset.cat,q=sr
 cds.forEach(c=>{const cat=c.dataset.cat,txt=c.textContent.toLowerCase(),show=(cat===act||act==='all')&&txt.includes(q);c.style.display=show?'block':'none'})}
 chps.forEach(c=>c.addEventListener('click',e=>{document.querySelector('.chip.active').classList.remove('active');e.target.classList.add('active');flt()}));
 srch.addEventListener('input',flt);
-function subscribe(){const em=document.getElementById('email').value;if(em){alert('Thanks for subscribing: '+em);document.getElementById('email').value=''}}
+function subscribe(){const em=document.getElementById('email').value;if(em){const nws=document.querySelector('.nws');nws.innerHTML='<p style="color:#e8799a;font-weight:600;font-size:16px;padding:40px;">Thanks for subscribing! You\'ll receive our next newsletter.</p>'}}
 </script>
 </body>
 </html>
