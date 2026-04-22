@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What's Going Wrong? - Peekr</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#ffffff;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--red:#ef4444;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
+
+/* Sidebar */
+.sb{width:220px;background:#0a0a0f;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;position:fixed;left:0;top:0;height:100vh;z-index:20;border-right:1px solid rgba(255,45,120,0.08);}
+.sb::-webkit-scrollbar{width:3px;}.sb::-webkit-scrollbar-thumb{background:rgba(255,45,120,0.2);border-radius:3px;}
+.sb-logo{padding:16px 18px 14px;border-bottom:1px solid rgba(255,45,120,0.1);position:relative;}
+.sb-logo::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,45,120,0.35),transparent);}
+.sb-sec{padding:10px 0 2px;}.sb-lbl{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.25);padding:0 16px 5px;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);cursor:pointer;transition:all .15s;position:relative;white-space:nowrap;text-decoration:none;}
+.ni:hover{color:#ffffff;background:rgba(255,255,255,0.06);}
+.ni.active{color:var(--neon-soft,#ff5c9a);background:rgba(255,45,120,0.12);font-weight:700;}
+.ni.active::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:var(--neon,#ff2d78);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(255,45,120,0.35);}
+.ni-ico{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;transition:all .15s;}
+.ni.active .ni-ico{background:rgba(255,45,120,0.15);border-color:rgba(255,45,120,0.3);box-shadow:0 0 8px rgba(255,45,120,0.15);}
+.nb{margin-left:auto;background:var(--neon,#ff2d78);color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:20px;box-shadow:0 0 10px rgba(255,45,120,0.35);}
+.nb.s{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);box-shadow:none;}
+.sb-bot{margin-top:auto;border-top:1px solid rgba(255,45,120,0.08);padding:12px;}
+.uc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,45,120,0.1);border-radius:12px;cursor:pointer;transition:all .15s;}
+.ua{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--neon),var(--neon-soft));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;}
+.un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}.up{font-size:10px;color:var(--neon-soft);font-weight:700;}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow-y:auto;min-width:0;background:#fff;margin-left:220px;}
+.content{max-width:900px;margin:0 auto;padding:32px 40px 60px;width:100%;}
+
+/* Header */
+.page-header{margin-bottom:32px;}
+.page-title{font-size:28px;font-weight:900;color:var(--dark);margin-bottom:6px;display:flex;align-items:center;gap:12px;}
+.page-subtitle{font-size:14px;color:var(--text2);line-height:1.5;}
+
+/* Form */
+.form-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:28px;}
+.form-section-title{font-size:15px;font-weight:800;margin-bottom:18px;display:flex;align-items:center;gap:8px;color:var(--dark);}
+.form-section-title svg{color:var(--neon);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.03em;}
+.form-input{border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:14px;font-weight:600;font-family:inherit;background:#fff;color:var(--text1);transition:all .2s;outline:none;}
+.form-input:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(255,45,120,0.1);}
+.form-input::placeholder{color:var(--text3);font-weight:500;}
+.form-hint{font-size:10px;color:var(--text3);font-weight:500;}
+.form-unit{position:relative;}
+.form-unit::after{content:attr(data-unit);position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:var(--text3);pointer-events:none;}
+.form-unit .form-input{padding-right:36px;}
+
+/* CTA Button */
+.btn-diagnose{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 24px;border:none;border-radius:12px;background:var(--dark);color:var(--neon);font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;transition:all .2s;letter-spacing:0.01em;}
+.btn-diagnose:hover{background:#2a1a1f;box-shadow:0 4px 20px rgba(255,45,120,0.2);}
+.btn-diagnose svg{flex-shrink:0;}
+
+/* Results */
+.results{display:none;margin-top:8px;}
+.results.show{display:block;}
+
+/* Score Card */
+.score-card{background:var(--dark);border-radius:20px;padding:32px;margin-bottom:28px;display:flex;align-items:center;gap:40px;color:#fff;}
+.score-circle{width:140px;height:140px;flex-shrink:0;position:relative;}
+.score-circle canvas{width:100%;height:100%;}
+.score-value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.score-number{font-size:42px;font-weight:900;color:var(--neon);}
+.score-label{font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;}
+.score-details{flex:1;}
+.score-headline{font-size:20px;font-weight:800;margin-bottom:6px;}
+.score-desc{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:16px;}
+.score-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.score-badge{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:5px;}
+.score-badge.good{background:rgba(34,197,94,0.15);color:#22c55e;}
+.score-badge.warn{background:rgba(246,160,90,0.15);color:#f6a05a;}
+.score-badge.bad{background:rgba(239,68,68,0.15);color:#ef4444;}
+
+/* Radar */
+.radar-section{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:28px;text-align:center;}
+.radar-title{font-size:15px;font-weight:800;margin-bottom:20px;}
+.radar-canvas{max-width:360px;margin:0 auto;}
+
+/* Diagnostic Cards */
+.diag-section{margin-bottom:28px;}
+.diag-section-title{font-size:16px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.diag-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start;transition:all .15s;}
+.diag-card:hover{border-color:var(--pink);box-shadow:0 2px 12px rgba(232,121,154,0.08);}
+.diag-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
+.diag-icon.good{background:rgba(34,197,94,0.1);color:var(--green);}
+.diag-icon.warn{background:rgba(246,160,90,0.1);color:var(--orange);}
+.diag-icon.bad{background:rgba(239,68,68,0.1);color:var(--red);}
+.diag-content{flex:1;min-width:0;}
+.diag-title{font-size:14px;font-weight:700;margin-bottom:4px;}
+.diag-kpi{font-size:12px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.diag-kpi strong{color:var(--text1);font-weight:800;}
+.diag-action{font-size:13px;color:var(--text1);line-height:1.5;background:rgba(255,45,120,0.04);border-left:3px solid var(--neon);padding:10px 14px;border-radius:0 8px 8px 0;}
+.diag-status{font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;white-space:nowrap;align-self:center;}
+.diag-status.good{background:rgba(34,197,94,0.1);color:var(--green);}
+.diag-status.warn{background:rgba(246,160,90,0.1);color:var(--orange);}
+.diag-status.bad{background:rgba(239,68,68,0.1);color:var(--red);}
+</style>
+</head>
+<body>
+
+<aside class="sb">
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Overview</div>
+    <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Analyse</div>
+    <a class="ni" href="peekr-dashboard.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg></span>Trending Shops</a>
+    <a class="ni" href="peekr-trending-ads.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></span>Trending Ads</a>
+    <a class="ni" href="peekr-best-trends.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>Best Trends<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Favorites</div>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></span>Saved Ads</a>
+    <a class="ni" href="peekr-saved.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>Saved Shops</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Community</div>
+    <a class="ni" href="peekr-community.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Community<span class="nb">New</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Resources</div>
+    <a class="ni" href="peekr-blog.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>Blog & Tips</a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Tools</div>
+    <a class="ni active" href="peekr-diagnostic.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span>Diagnostic</a>
+    <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
+  </div>
+  <div class="sb-sec">
+    <div class="sb-lbl">Account</div>
+    <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
+    <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+  </div>
+  <div class="sb-bot">
+    <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
+  </div>
+</aside>
+
+<div class="main">
+<div class="content">
+
+<div class="page-header">
+  <div class="page-title">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--neon)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+    What's Going Wrong?
+  </div>
+  <div class="page-subtitle">Entre tes KPIs et on te dit exactement ce qui bloque dans ton funnel. Plus besoin de deviner.</div>
+</div>
+
+<!-- Form: Meta Ads KPIs -->
+<div class="form-section">
+  <div class="form-section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    Meta Ads
+  </div>
+  <div class="form-grid">
+    <div class="form-group">
+      <label class="form-label">CTR (Click-Through Rate)</label>
+      <div class="form-unit" data-unit="%"><input type="number" step="0.1" class="form-input" id="kpi-ctr" placeholder="ex: 2.5"/></div>
+      <span class="form-hint">Taux de clic sur tes pubs</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">CPC (Cost Per Click)</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="0.1" class="form-input" id="kpi-cpc" placeholder="ex: 0.80"/></div>
+      <span class="form-hint">Coût par clic moyen</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">CPM (Cost Per 1000)</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="0.1" class="form-input" id="kpi-cpm" placeholder="ex: 12.50"/></div>
+      <span class="form-hint">Coût pour 1000 impressions</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Spend journalier</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="1" class="form-input" id="kpi-spend" placeholder="ex: 50"/></div>
+      <span class="form-hint">Budget pub quotidien</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">CPA (Cost Per Acquisition)</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="0.1" class="form-input" id="kpi-cpa" placeholder="ex: 25"/></div>
+      <span class="form-hint">Coût par achat</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">ROAS</label>
+      <div class="form-unit" data-unit="x"><input type="number" step="0.1" class="form-input" id="kpi-roas" placeholder="ex: 2.5"/></div>
+      <span class="form-hint">Retour sur investissement pub</span>
+    </div>
+  </div>
+</div>
+
+<!-- Form: Shop KPIs -->
+<div class="form-section">
+  <div class="form-section-title">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><line x1="2" x2="22" y1="7" y2="7"/><path d="M2 7v5a10 10 0 0 0 20 0V7"/></svg>
+    Shop / Conversion
+  </div>
+  <div class="form-grid">
+    <div class="form-group">
+      <label class="form-label">Taux d'ajout au panier</label>
+      <div class="form-unit" data-unit="%"><input type="number" step="0.1" class="form-input" id="kpi-atc" placeholder="ex: 8"/></div>
+      <span class="form-hint">% visiteurs qui ajoutent au panier</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Taux de conversion</label>
+      <div class="form-unit" data-unit="%"><input type="number" step="0.1" class="form-input" id="kpi-cvr" placeholder="ex: 3.5"/></div>
+      <span class="form-hint">% visiteurs qui achètent</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Panier moyen (AOV)</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="1" class="form-input" id="kpi-aov" placeholder="ex: 45"/></div>
+      <span class="form-hint">Valeur moyenne par commande</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Taux de rebond</label>
+      <div class="form-unit" data-unit="%"><input type="number" step="1" class="form-input" id="kpi-bounce" placeholder="ex: 55"/></div>
+      <span class="form-hint">% visiteurs qui partent sans rien faire</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">CA journalier</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="1" class="form-input" id="kpi-revenue" placeholder="ex: 120"/></div>
+      <span class="form-hint">Chiffre d'affaires par jour</span>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Prix moyen produit</label>
+      <div class="form-unit" data-unit="$"><input type="number" step="1" class="form-input" id="kpi-price" placeholder="ex: 35"/></div>
+      <span class="form-hint">Prix moyen de tes produits</span>
+    </div>
+  </div>
+</div>
+
+<button class="btn-diagnose" onclick="runDiagnostic()">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+  Lancer le diagnostic
+</button>
+
+<!-- Results -->
+<div class="results" id="results">
+  <!-- Score Card -->
+  <div class="score-card" id="score-card"></div>
+
+  <!-- Radar -->
+  <div class="radar-section">
+    <div class="radar-title">Vue d'ensemble</div>
+    <div class="radar-canvas"><canvas id="radar-chart" width="360" height="360"></canvas></div>
+  </div>
+
+  <!-- Diagnostics -->
+  <div id="diagnostics"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+function v(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
+
+function runDiagnostic(){
+  var ctr=v('kpi-ctr'),cpc=v('kpi-cpc'),cpm=v('kpi-cpm'),spend=v('kpi-spend'),cpa=v('kpi-cpa'),roas=v('kpi-roas');
+  var atc=v('kpi-atc'),cvr=v('kpi-cvr'),aov=v('kpi-aov'),bounce=v('kpi-bounce'),revenue=v('kpi-revenue'),price=v('kpi-price');
+
+  if(ctr===0&&cvr===0&&atc===0){alert('Remplis au moins le CTR, le taux de conversion et le taux d\'ajout au panier.');return;}
+
+  // === SCORING ENGINE ===
+  var scores={ads:0,shop:0,offer:0,checkout:0};
+  var issues=[];
+
+  // --- ADS SCORING ---
+  if(ctr>=3){scores.ads+=35;issues.push({cat:'ads',lvl:'good',title:'CTR excellent',kpi:'CTR = '+ctr+'%',msg:'Ta pub fait r\u00e9agir. Les gens cliquent, le hook et le cr\u00e9atif fonctionnent. Continue \u00e0 tester des variations pour trouver des angles encore plus forts.'});}
+  else if(ctr>=2){scores.ads+=22;issues.push({cat:'ads',lvl:'warn',title:'CTR moyen',kpi:'CTR = '+ctr+'%',msg:'Ta pub attire des clics mais pas assez. Teste de nouveaux hooks (premi\u00e8res 3 secondes de vid\u00e9o), change tes visuels, ou teste un angle \u00e9motionnel diff\u00e9rent. Vise > 3%.'});}
+  else if(ctr>0){scores.ads+=8;issues.push({cat:'ads',lvl:'bad',title:'CTR trop bas \u2014 ta pub ne fait pas cliquer',kpi:'CTR = '+ctr+'%',msg:'Le probl\u00e8me est clairement c\u00f4t\u00e9 pub. Le hook n\'accroche pas ou le visuel ne stop pas le scroll. Actions : change compl\u00e8tement ton cr\u00e9atif, teste UGC vs studio, change le hook dans les 3 premi\u00e8res secondes, et v\u00e9rifie que ton ciblage est bon.'});}
+
+  if(cpc>0&&cpc<=0.8){scores.ads+=15;}
+  else if(cpc>0&&cpc<=1.5){scores.ads+=10;issues.push({cat:'ads',lvl:'warn',title:'CPC un peu \u00e9lev\u00e9',kpi:'CPC = $'+cpc,msg:'Ton co\u00fbt par clic est au-dessus de la moyenne. Optimise ton ciblage, teste des audiences lookalike, ou am\u00e9liore ton Quality Score avec de meilleurs cr\u00e9atifs.'});}
+  else if(cpc>1.5){scores.ads+=3;issues.push({cat:'ads',lvl:'bad',title:'CPC trop cher',kpi:'CPC = $'+cpc,msg:'Tu paies trop par clic. Soit ton ciblage est trop concurrentiel, soit tes cr\u00e9atifs ne performent pas (faible engagement = Meta te fait payer plus). Teste des audiences plus larges et des cr\u00e9atifs plus engageants.'});}
+
+  if(cpm>0&&cpm<=15){scores.ads+=10;}
+  else if(cpm>15&&cpm<=25){scores.ads+=6;}
+  else if(cpm>25){scores.ads+=2;issues.push({cat:'ads',lvl:'warn',title:'CPM \u00e9lev\u00e9',kpi:'CPM = $'+cpm,msg:'\u00c9largis ton audience ou change de pays de ciblage. Les CPM \u00e9lev\u00e9s indiquent souvent un march\u00e9 satur\u00e9 ou une audience trop restreinte.'});}
+
+  // --- SHOP SCORING ---
+  if(bounce>0&&bounce<=40){scores.shop+=30;}
+  else if(bounce<=55){scores.shop+=20;issues.push({cat:'shop',lvl:'warn',title:'Taux de rebond moyen',kpi:'Bounce = '+bounce+'%',msg:'Plus de la moiti\u00e9 de tes visiteurs partent sans rien faire. V\u00e9rifie la vitesse de chargement (< 3s), la coh\u00e9rence entre ta pub et ta landing page, et la qualit\u00e9 de ton above-the-fold.'});}
+  else if(bounce>55){scores.shop+=5;issues.push({cat:'shop',lvl:'bad',title:'Taux de rebond critique',kpi:'Bounce = '+bounce+'%',msg:'Alerte rouge ! Les visiteurs fuient ton shop. Causes possibles : page trop lente, design pas pro, d\u00e9calage entre la pub et la page, popups agressifs. V\u00e9rifie ton PageSpeed et assure-toi que ta landing page tient sa promesse.'});}
+
+  if(atc>=10){scores.shop+=30;issues.push({cat:'shop',lvl:'good',title:'Taux d\'ajout au panier excellent',kpi:'ATC = '+atc+'%',msg:'Ton shop convertit bien les visiteurs en acheteurs potentiels. Les images, le prix et le copywriting sont convaincants.'});}
+  else if(atc>=5){scores.shop+=18;issues.push({cat:'shop',lvl:'warn',title:'Taux d\'ajout au panier moyen',kpi:'ATC = '+atc+'%',msg:'Des gens regardent mais n\'ajoutent pas assez au panier. Améliore tes photos produit (lifestyle + détouré), ajoute des avis clients, clarifie la proposition de valeur, et teste un prix légèrement différent.'});}
+  else if(atc>0){scores.shop+=5;issues.push({cat:'shop',lvl:'bad',title:'Taux d\'ajout au panier trop bas',kpi:'ATC = '+atc+'%',msg:'Les gens visitent mais n\'achètent pas. Le problème est sur ta page produit : images pas assez pro, prix trop élevé vs valeur perçue, manque de preuve sociale (avis, badges), ou description pas convaincante. Refais ta fiche produit complètement.'});}
+
+  // --- OFFER SCORING ---
+  if(roas>=3){scores.offer+=35;issues.push({cat:'offer',lvl:'good',title:'ROAS excellent',kpi:'ROAS = '+roas+'x',msg:'Ton offre est rentable. Tu peux scaler en augmentant le budget progressivement (+20% tous les 3 jours).'});}
+  else if(roas>=2){scores.offer+=22;issues.push({cat:'offer',lvl:'warn',title:'ROAS correct mais fragile',kpi:'ROAS = '+roas+'x',msg:'Tu es rentable mais sans marge de s\u00e9curit\u00e9. Augmente ton AOV (bundles, upsells, seuil de livraison gratuite) ou r\u00e9duis ton CPA pour consolider.'});}
+  else if(roas>0&&roas<2){scores.offer+=8;issues.push({cat:'offer',lvl:'bad',title:'ROAS trop bas \u2014 tu perds de l\'argent',kpi:'ROAS = '+roas+'x',msg:'Chaque euro investi ne rapporte pas assez. Soit ton offre n\'est pas assez attractive (prix, valeur per\u00e7ue, angle), soit ton funnel fuit. V\u00e9rifie le CPA vs ta marge nette.'});}
+
+  if(cpa>0&&price>0){
+    var cpaRatio=cpa/price;
+    if(cpaRatio<=0.3){scores.offer+=15;issues.push({cat:'offer',lvl:'good',title:'CPA sain',kpi:'CPA = $'+cpa+' ('+Math.round(cpaRatio*100)+'% du prix)',msg:'Ton co\u00fbt d\'acquisition est inf\u00e9rieur \u00e0 30% du prix produit \u2014 c\'est sain.'});}
+    else if(cpaRatio<=0.5){scores.offer+=8;issues.push({cat:'offer',lvl:'warn',title:'CPA \u00e9lev\u00e9 vs prix produit',kpi:'CPA = $'+cpa+' ('+Math.round(cpaRatio*100)+'% du prix)',msg:'Ton CPA mange ta marge. Soit tu augmentes le prix/AOV, soit tu optimises le funnel pour r\u00e9duire le CPA.'});}
+    else{scores.offer+=2;issues.push({cat:'offer',lvl:'bad',title:'CPA sup\u00e9rieur \u00e0 50% du prix \u2014 non viable',kpi:'CPA = $'+cpa+' ('+Math.round(cpaRatio*100)+'% du prix)',msg:'Tu ne peux pas \u00eatre rentable avec ce ratio. Options : augmenter le prix, cr\u00e9er des bundles, ajouter des upsells, ou changer de produit.'});}
+  }
+
+  if(aov>0&&price>0){
+    var aovRatio=aov/price;
+    if(aovRatio>=1.5){scores.offer+=10;issues.push({cat:'offer',lvl:'good',title:'AOV sup\u00e9rieur au prix unitaire',kpi:'AOV = $'+aov+' (prix produit $'+price+')',msg:'Tes clients ach\u00e8tent plusieurs articles ou des bundles. C\'est un bon signe pour la rentabilit\u00e9.'});}
+    else{scores.offer+=4;issues.push({cat:'offer',lvl:'warn',title:'AOV = prix unitaire',kpi:'AOV = $'+aov,msg:'Les gens ach\u00e8tent un seul article. Ajoute des bundles, du cross-sell, ou un seuil de livraison gratuite pour augmenter le panier moyen.'});}
+  }
+
+  // --- CHECKOUT SCORING ---
+  if(atc>0&&cvr>0){
+    var checkoutRate=cvr/atc*100;
+    if(checkoutRate>=50){scores.checkout+=40;issues.push({cat:'checkout',lvl:'good',title:'Conversion panier \u2192 achat solide',kpi:Math.round(checkoutRate)+'% des paniers convertissent',msg:'La majorit\u00e9 des gens qui ajoutent au panier finissent par acheter. Ton checkout est fluide.'});}
+    else if(checkoutRate>=30){scores.checkout+=22;issues.push({cat:'checkout',lvl:'warn',title:'Perte au checkout',kpi:'Seulement '+Math.round(checkoutRate)+'% des paniers convertissent',msg:'Tu perds des acheteurs entre le panier et le paiement. V\u00e9rifie : frais de livraison surprises, moyens de paiement (ajoute PayPal, Apple Pay), badges de s\u00e9curit\u00e9, politique de retour visible.'});}
+    else{scores.checkout+=8;issues.push({cat:'checkout',lvl:'bad',title:'Checkout qui fait fuir',kpi:'Seulement '+Math.round(checkoutRate)+'% des paniers convertissent',msg:'Gros probl\u00e8me au checkout ! Les gens veulent acheter mais abandonnent. Causes fr\u00e9quentes : frais de livraison trop \u00e9lev\u00e9s ou affich\u00e9s trop tard, pas assez de moyens de paiement, checkout trop long, pas de trust badges.'});}
+  }
+
+  if(cvr>=4){scores.checkout+=20;issues.push({cat:'checkout',lvl:'good',title:'Taux de conversion excellent',kpi:'CVR = '+cvr+'%',msg:'Ton tunnel convertit très bien. Tu es au-dessus des standards e-com.'});}
+  else if(cvr>=2){scores.checkout+=12;issues.push({cat:'checkout',lvl:'warn',title:'Taux de conversion moyen',kpi:'CVR = '+cvr+'%',msg:'Dans la moyenne e-com mais améliorable. Travaille la confiance (avis, badges, garantie) et l\'urgence (stock limité, timer).'});}
+  else if(cvr>0){scores.checkout+=4;issues.push({cat:'checkout',lvl:'bad',title:'Taux de conversion trop bas',kpi:'CVR = '+cvr+'%',msg:'Moins de 2% de conversion c\'est en dessous du seuil viable. Si le CTR est bon (>3%), le problème est 100% sur ton shop et ton offre, pas sur tes pubs.'});}
+
+  // === CROSS-ANALYSIS ===
+  if(ctr>=3&&cvr<2&&atc<5){
+    issues.push({cat:'shop',lvl:'bad',title:'DIAGNOSTIC CLÉ : Pub OK mais shop KO',kpi:'CTR '+ctr+'% vs CVR '+cvr+'%',msg:'Ta pub attire du monde mais ton shop ne convertit pas. Le problème est clairement sur ton site : vérifie tes images produit, ton prix, ta proposition de valeur, la vitesse de chargement, et la cohérence entre ta pub et ta landing page.'});
+  }
+  if(ctr>=3&&atc>=10&&cvr<2){
+    issues.push({cat:'checkout',lvl:'bad',title:'DIAGNOSTIC CLÉ : Fuite au checkout',kpi:'ATC '+atc+'% mais CVR '+cvr+'%',msg:'Les gens aiment tes produits (bon ATC) mais n\'achètent pas. Le problème est au checkout : frais de livraison, moyens de paiement, confiance. Ajoute PayPal, affiche les frais de port tôt, mets des badges de sécurité.'});
+  }
+  if(ctr<2&&cpc>1.5){
+    issues.push({cat:'ads',lvl:'bad',title:'DIAGNOSTIC CL\u00c9 : Pub inefficace et ch\u00e8re',kpi:'CTR '+ctr+'% + CPC $'+cpc,msg:'Double peine : ta pub ne fait pas cliquer ET elle co\u00fbte cher. Meta p\u00e9nalise les pubs avec faible engagement. STOP tes campagnes actuelles, refais tes cr\u00e9atifs de z\u00e9ro, et teste au moins 3-5 angles diff\u00e9rents avant de scaler.'});
+  }
+
+  // === NORMALIZE SCORES ===
+  var maxScores={ads:60,shop:60,offer:60,checkout:60};
+  var norm={
+    ads:Math.min(100,Math.round(scores.ads/maxScores.ads*100)),
+    shop:Math.min(100,Math.round(scores.shop/maxScores.shop*100)),
+    offer:Math.min(100,Math.round(scores.offer/maxScores.offer*100)),
+    checkout:Math.min(100,Math.round(scores.checkout/maxScores.checkout*100))
+  };
+  var totalScore=Math.round((norm.ads+norm.shop+norm.offer+norm.checkout)/4);
+
+  // === RENDER ===
+  renderScore(totalScore,norm,issues);
+  drawRadar(norm);
+  renderDiagnostics(issues);
+  document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({behavior:'smooth'});
+}
+
+function renderScore(score,norm,issues){
+  var el=document.getElementById('score-card');
+  var badCount=issues.filter(function(i){return i.lvl==='bad';}).length;
+  var goodCount=issues.filter(function(i){return i.lvl==='good';}).length;
+  var headline,desc;
+  if(score>=75){headline='Ton funnel est solide !';desc='Les bases sont l\u00e0. Concentre-toi sur l\'optimisation fine pour passer au niveau sup\u00e9rieur.';}
+  else if(score>=50){headline='Des points \u00e0 corriger';desc='Ton business tourne mais il y a des fuites dans le funnel. Corrige les points rouges ci-dessous en priorit\u00e9.';}
+  else if(score>=25){headline='Probl\u00e8mes s\u00e9rieux d\u00e9tect\u00e9s';desc='Plusieurs \u00e9l\u00e9ments de ton funnel ne fonctionnent pas. Il faut agir vite sur les alertes rouges.';}
+  else{headline='Alerte \u2014 ton funnel est cass\u00e9';desc='Presque rien ne fonctionne correctement. Commence par les fondamentaux avant de d\u00e9penser plus en pub.';}
+
+  el.innerHTML='<div class="score-circle"><canvas id="score-ring" width="140" height="140"></canvas><div class="score-value"><div class="score-number">'+score+'</div><div class="score-label">/ 100</div></div></div>'
+    +'<div class="score-details"><div class="score-headline">'+headline+'</div><div class="score-desc">'+desc+'</div>'
+    +'<div class="score-badges">'
+    +(badCount?'<div class="score-badge bad"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'+badCount+' probl\u00e8me'+(badCount>1?'s':'')+'</div>':'')
+    +(goodCount?'<div class="score-badge good"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+goodCount+' point'+(goodCount>1?'s':'')+' fort'+(goodCount>1?'s':'')+'</div>':'')
+    +'</div></div>';
+
+  // Draw ring
+  var canvas=document.getElementById('score-ring');
+  var ctx=canvas.getContext('2d');
+  var cx=70,cy=70,r=58,lw=10;
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=lw;ctx.stroke();
+  var color=score>=75?'#22c55e':score>=50?'#f6a05a':'#ef4444';
+  ctx.beginPath();ctx.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*score/100);ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
+}
+
+function drawRadar(norm){
+  var canvas=document.getElementById('radar-chart');
+  var ctx=canvas.getContext('2d');
+  var W=360,H=360,cx=W/2,cy=H/2,r=130;
+  ctx.clearRect(0,0,W,H);
+  var labels=['Publicit\u00e9','Shop','Offre','Checkout'];
+  var vals=[norm.ads,norm.shop,norm.offer,norm.checkout];
+  var n=4;
+
+  // Grid
+  for(var g=1;g<=4;g++){
+    ctx.beginPath();
+    var gr=r*g/4;
+    for(var i=0;i<n;i++){
+      var angle=-Math.PI/2+Math.PI*2*i/n;
+      var x=cx+gr*Math.cos(angle),y=cy+gr*Math.sin(angle);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();ctx.strokeStyle='rgba(26,10,15,0.08)';ctx.lineWidth=1;ctx.stroke();
+  }
+  // Axes
+  for(var i=0;i<n;i++){
+    var angle=-Math.PI/2+Math.PI*2*i/n;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));ctx.strokeStyle='rgba(26,10,15,0.06)';ctx.stroke();
+  }
+  // Data
+  ctx.beginPath();
+  for(var i=0;i<n;i++){
+    var angle=-Math.PI/2+Math.PI*2*i/n;
+    var vr=r*vals[i]/100;
+    var x=cx+vr*Math.cos(angle),y=cy+vr*Math.sin(angle);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();ctx.fillStyle='rgba(255,45,120,0.12)';ctx.fill();ctx.strokeStyle='#ff2d78';ctx.lineWidth=2.5;ctx.stroke();
+  // Points
+  for(var i=0;i<n;i++){
+    var angle=-Math.PI/2+Math.PI*2*i/n;
+    var vr=r*vals[i]/100;
+    var x=cx+vr*Math.cos(angle),y=cy+vr*Math.sin(angle);
+    ctx.beginPath();ctx.arc(x,y,5,0,Math.PI*2);ctx.fillStyle='#ff2d78';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+  }
+  // Labels
+  ctx.font='700 13px Inter,sans-serif';ctx.textAlign='center';ctx.fillStyle='#1a0a0f';
+  for(var i=0;i<n;i++){
+    var angle=-Math.PI/2+Math.PI*2*i/n;
+    var lx=cx+(r+24)*Math.cos(angle),ly=cy+(r+24)*Math.sin(angle);
+    var col=vals[i]>=60?'#22c55e':vals[i]>=35?'#f6a05a':'#ef4444';
+    ctx.fillStyle='#1a0a0f';ctx.fillText(labels[i],lx,ly-6);
+    ctx.font='800 12px Inter,sans-serif';ctx.fillStyle=col;ctx.fillText(vals[i]+'/100',lx,ly+10);
+    ctx.font='700 13px Inter,sans-serif';
+  }
+}
+
+function renderDiagnostics(issues){
+  var el=document.getElementById('diagnostics');
+  var icons={good:'\u2713',warn:'!',bad:'\u2717'};
+  var cats={ads:'Publicit\u00e9 (Meta Ads)',shop:'Shop & Page Produit',offer:'Offre & Rentabilit\u00e9',checkout:'Checkout & Conversion'};
+  var html='';
+  ['ads','shop','offer','checkout'].forEach(function(cat){
+    var catIssues=issues.filter(function(i){return i.cat===cat;});
+    if(!catIssues.length)return;
+    html+='<div class="diag-section"><div class="diag-section-title">'+cats[cat]+'</div>';
+    catIssues.forEach(function(i){
+      html+='<div class="diag-card">'
+        +'<div class="diag-icon '+i.lvl+'">'+icons[i.lvl]+'</div>'
+        +'<div class="diag-content"><div class="diag-title">'+i.title+'</div><div class="diag-kpi"><strong>'+i.kpi+'</strong></div><div class="diag-action">'+i.msg+'</div></div>'
+        +'<div class="diag-status '+i.lvl+'">'+(i.lvl==='good'?'OK':i.lvl==='warn'?'Attention':'\u00c0 corriger')+'</div>'
+        +'</div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+</script>
+</body>
+</html>
