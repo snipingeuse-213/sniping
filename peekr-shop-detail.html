@@ -124,9 +124,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .detail-item .value{font-size:13px;font-weight:700;}
 
 /* Products Carousel */
-.products-carousel{display:flex;gap:12px;overflow-x:auto;padding:8px 0;scroll-behavior:smooth;}
-.products-carousel::-webkit-scrollbar{height:4px;}
-.products-carousel::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.2);border-radius:2px;}
+.products-carousel{display:flex;gap:12px;overflow-x:auto;padding:8px 0 12px;scroll-behavior:smooth;max-width:100%;}
+.products-carousel::-webkit-scrollbar{height:5px;}
+.products-carousel::-webkit-scrollbar-track{background:rgba(0,0,0,0.03);border-radius:3px;}
+.products-carousel::-webkit-scrollbar-thumb{background:rgba(232,121,154,0.25);border-radius:3px;}
+.products-carousel::-webkit-scrollbar-thumb:hover{background:rgba(232,121,154,0.45);}
 .product-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;flex-shrink:0;width:140px;cursor:pointer;transition:all .15s;position:relative;}
 .product-card:hover{border-color:var(--pink);transform:translateY(-2px);}
 .product-image{width:100%;aspect-ratio:1/1;background:#fafafa;border-radius:8px;overflow:hidden;margin-bottom:8px;}
@@ -148,21 +150,25 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .social-link span{font-size:11px;font-weight:600;}
 
 /* Section tabs */
-.section-tabs{display:flex;gap:8px;margin-bottom:12px;border-bottom:1px solid var(--border);padding-bottom:8px;}
-.section-tab{padding:6px 12px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;}
-.section-tab:hover{color:var(--text1);}
-.section-tab.active{color:var(--pink);border-bottom-color:var(--pink);}
+.section-tabs{display:flex;gap:6px;margin-bottom:12px;}
+.section-tab{padding:6px 14px;font-size:11px;font-weight:700;color:var(--text3);cursor:pointer;border:1px solid var(--border);border-radius:20px;transition:all .2s;background:transparent;font-family:inherit;letter-spacing:0.01em;outline:none;-webkit-appearance:none;appearance:none;line-height:1.2;}
+.section-tab:hover{color:var(--text1);border-color:var(--text3);background:rgba(0,0,0,0.02);}
+.section-tab.active{color:var(--neon);background:var(--dark);border-color:var(--dark);box-shadow:0 2px 10px rgba(26,10,15,0.2);}
 
 /* Similar shop cards */
 .sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
-.sim-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;}
+.sim-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .15s;text-decoration:none;color:inherit;display:flex;flex-direction:column;}
 .sim-card:hover{border-color:var(--pink);transform:translateY(-2px);box-shadow:0 4px 12px rgba(232,121,154,0.1);}
-.sim-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sim-card-screenshot{width:100%;height:120px;overflow:hidden;background:#f8f8f8;border-bottom:1px solid var(--border);position:relative;}
+.sim-card-screenshot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:opacity .3s;}
+.sim-card-screenshot .ss-placeholder{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f9f9f9,#f0f0f0);}
+.sim-card-screenshot .ss-placeholder svg{opacity:0.15;}
+.sim-card-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding:12px 16px 0;}
 .sim-card-icon{width:36px;height:36px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#fafafa;border:1px solid var(--border);}
 .sim-card-icon img{width:100%;height:100%;object-fit:cover;}
 .sim-card-name{font-size:14px;font-weight:700;}
 .sim-card-domain{font-size:11px;color:var(--text3);}
-.sim-card-stats{display:flex;gap:12px;font-size:11px;color:var(--text2);font-weight:600;}
+.sim-card-stats{display:flex;gap:12px;font-size:11px;color:var(--text2);font-weight:600;padding:0 16px 14px;}
 .sim-card-stats span{display:flex;align-items:center;gap:3px;}
 
 /* Ad Cards */
@@ -247,6 +253,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-tools.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.77z"/></svg></span>Tools</a>
+    <a class="ni" href="peekr-diagnostic.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span>Diagnostic</a>
     <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
@@ -402,8 +410,6 @@ function renderShop(s){
     +'<div class="tabs-bar">'
     +'<div class="tab active" onclick="switchTab(\'analytics\',this)">Shop Analytics</div>'
     +'<div class="tab" onclick="switchTab(\'similar\',this)">Similar Shops</div>'
-    +'<div class="tab" onclick="switchTab(\'ads\',this)">Meta Ads <span class="count" id="ads-count">'+(ads||'?')+'</span></div>'
-    +'<div class="tab" style="opacity:0.4;cursor:default;">Emails <span class="nb s">Soon</span></div>'
     +'</div>'
 
     // Panel: Analytics
@@ -428,7 +434,7 @@ function renderShop(s){
 
     +'<div class="section chart-section">'
     +'<div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg> Ads actives dans le temps<div style="margin-left:auto;display:flex;gap:4px;" id="ads-chart-range"><button class="range-btn" data-range="3m" onclick="loadAdsChart(\''+s.domain+'\',\'3m\',this)">3M</button><button class="range-btn active" data-range="6m" onclick="loadAdsChart(\''+s.domain+'\',\'6m\',this)">6M</button><button class="range-btn" data-range="all" onclick="loadAdsChart(\''+s.domain+'\',\'all\',this)">ALL</button></div></div>'
-    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="font-size:24px;font-weight:800;color:var(--text1);" id="ads-chart-current">'+ads+'</span><span style="font-size:11px;color:var(--neon);font-weight:700;">Active now</span></div>'
+    +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><span style="font-size:24px;font-weight:800;color:var(--text1);" id="ads-chart-current">'+fmtAds(ads)+'</span><span style="font-size:11px;color:var(--neon);font-weight:700;">Active now</span></div>'
     +'<div id="ads-chart-container" style="height:180px;position:relative;"><canvas id="ads-chart-canvas" style="width:100%;height:100%;"></canvas></div>'
     +'<div id="ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div>'
     +'</div>'
@@ -482,29 +488,13 @@ function renderShop(s){
     +'<div class="sim-grid" id="similar-shops"><div class="loading" style="grid-column:1/-1;height:200px;"><div class="spinner"></div><div>Finding similar shops...</div></div></div>'
     +'</div></div>'
 
-    // Panel: Meta Ads
-    +'<div class="tab-panel" id="panel-ads">'
-    +'<div class="section">'
-    +'<div class="section-title">Meta Ads Analysis</div>'
-    +'<div style="margin-bottom:24px;"><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Ad Activity Over Time</div><div id="meta-ads-chart-container" style="height:250px;position:relative;"><canvas id="meta-ads-chart-canvas" style="width:100%;height:100%;"></canvas></div><div id="meta-ads-chart-labels" style="display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--text3);font-weight:600;"></div></div>'
-    +'<div style="margin-bottom:24px;"><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Media Mix</div><div id="media-mix-container"><div class="media-mix-row"><div class="media-mix-label">Video</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar video" style="width:45%;"></div></div><div style="font-size:11px;font-weight:700;min-width:40px;text-align:right;">45%</div></div><div class="media-mix-row"><div class="media-mix-label">Image</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar image" style="width:40%;"></div></div><div style="font-size:11px;font-weight:700;min-width:40px;text-align:right;">40%</div></div><div class="media-mix-row"><div class="media-mix-label">DCO</div><div class="media-mix-bars" style="width:100%;"><div class="media-mix-bar dco" style="width:15%;"></div></div><div style="font-size:11px;font-weight:700;min-width:40px;text-align:right;">15%</div></div></div></div>'
-    +'<div style="margin-bottom:24px;"><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Top Landing Pages</div><div id="landing-pages-container"><div style="color:var(--text3);font-size:11px;padding:12px;">Loading pages...</div></div></div>'
-    +'<div><div style="font-size:13px;font-weight:700;margin-bottom:12px;">Active Ads</div><div class="ads-grid" id="meta-ads"><div class="loading" style="grid-column:1/-1;height:200px;"><div class="spinner"></div><div>Loading ads data...</div></div></div></div>'
-    +'<div style="text-align:center;margin-top:24px;"><a class="shop-btn primary" href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q='+encodeURIComponent(s.domain)+'" target="_blank" style="display:inline-flex;">View All Ads on Meta Library &#8599;</a></div>'
-    +'</div></div>'
 
-    // Panel: Emails
-    +'<div class="tab-panel" id="panel-emails">'
-    +'<div class="section" style="text-align:center;padding:60px 20px;">'
-    +'<div style="font-size:18px;font-weight:700;margin-bottom:8px;">Email Tracking Coming Soon</div>'
-    +'<div style="color:var(--text2);font-size:14px;">We\'re building email intelligence to track newsletter campaigns, promotions, and email strategies.</div>'
-    +'</div></div>';
+    ;
 
   // Load data
   loadSimilarShops(s);
   loadInfoRow(s);
   loadLatestAds(s.domain);
-  loadMetaAds(s.domain);
   initAdsChart(s.domain);
   // Load SimilarWeb data (traffic graph, countries, sources)
   loadSimilarWebData(s.domain, traffic);
@@ -514,7 +504,6 @@ function renderShop(s){
 
 // --- Tab Switching ---
 function switchTab(panel, el){
-  if(panel==='emails') return;
   document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
@@ -744,13 +733,15 @@ function renderSimilar(container,shops){
   container.innerHTML=shops.map(function(s){
     var init=function(n){var p=(n||'').split(/[\s.-]+/);return(p[0]?p[0][0]:'')+(p[1]?p[1][0]:'');};
     var created=(s.created_date||'').replace('T00:00:00','');
+    var screenshot='https://api.microlink.io/?url=https://'+s.domain+'&screenshot=true&meta=false&embed=screenshot.url';
     return '<a class="sim-card" href="peekr-shop-detail.html?domain='+encodeURIComponent(s.domain)+'">'
+      +'<div class="sim-card-screenshot"><div class="ss-placeholder"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div><img src="'+screenshot+'" loading="lazy" onerror="this.style.display=\'none\';" onload="this.previousElementSibling.style.display=\'none\';"/></div>'
       +'<div class="sim-card-head">'
       +'<div class="sim-card-icon">'+(s.icon?'<img src="'+s.icon+'" onerror="this.parentElement.innerHTML=\'<div style=width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--pink);>'+init(s.name||s.domain)+'</div>\'"/>':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--pink);">'+init(s.name||s.domain)+'</div>')+'</div>'
       +'<div><div class="sim-card-name">'+(s.title||s.name||s.domain)+'</div><div class="sim-card-domain">'+s.domain+'</div></div>'
       +(s.country?'<img style="width:16px;height:12px;border-radius:2px;margin-left:auto;" src="https://flagcdn.com/w40/'+s.country.toLowerCase()+'.png"/>':'')
       +'</div>'
-      +'<div class="sim-card-stats"><span>'+fmtV(s.monthly_visits||0)+'</span><span>'+(s.products_count||0)+'</span><span>'+(s.live_ads||0)+' ads</span>'+(created?'<span>'+created+'</span>':'')+'</div>'
+      +'<div class="sim-card-stats"><span>'+fmtV(s.monthly_visits||0)+'</span><span>'+(s.products_count||0)+'</span><span>'+fmtAds(s.live_ads||0)+' ads</span>'+(created?'<span>'+created+'</span>':'')+'</div>'
       +'</a>';
   }).join('');
 }
@@ -794,7 +785,26 @@ function updateMediaMixFromMetaAds(ads){
 }
 
 function renderPixelCards(pixels, techs){
-  var pixelIcons={'Google Analytics':'GA','Google Tag Manager':'GTM','Meta Pixel':'META','Facebook Pixel':'FB','Google Ads':'GADS','TikTok Pixel':'TT','Snap Pixel':'SNAP','Pinterest Tag':'PIN','Microsoft Ads':'MS','Criteo':'CR'};
+  var pixelIcons={'Google Analytics':'GA','Google Tag Manager':'GTM','Meta Pixel':'META','Facebook Pixel':'FB','Google Ads':'GADS','TikTok Pixel':'TT','Snap Pixel':'SNAP','Pinterest Tag':'PIN','Microsoft Ads':'MS','Criteo':'CR','Google Adsense':'GO','PayPal Express Checkout':'PP','Hotjar':'HJ','Clarity':'CL','Klaviyo':'KL','Shopify Pay':'SP','Shop':'SH'};
+  var knownIcons={
+    'Facebook Pixel':'https://cdn.simpleicons.org/meta/1877F2',
+    'Meta Pixel':'https://cdn.simpleicons.org/meta/1877F2',
+    'Google Analytics':'https://cdn.simpleicons.org/googleanalytics/E37400',
+    'Google Tag Manager':'https://cdn.simpleicons.org/googletagmanager/246FDB',
+    'Google Ads':'https://cdn.simpleicons.org/googleads/4285F4',
+    'Google Adsense':'https://cdn.simpleicons.org/googleadsense/4285F4',
+    'TikTok Pixel':'https://cdn.simpleicons.org/tiktok/000000',
+    'Snap Pixel':'https://cdn.simpleicons.org/snapchat/FFFC00',
+    'Pinterest Tag':'https://cdn.simpleicons.org/pinterest/BD081C',
+    'Hotjar':'https://cdn.simpleicons.org/hotjar/FF3C00',
+    'Clarity':'https://cdn.simpleicons.org/microsoft/5E5E5E',
+    'Klaviyo':'https://cdn.simpleicons.org/klaviyo/000000',
+    'PayPal Express Checkout':'https://cdn.simpleicons.org/paypal/003087',
+    'Shop':'https://cdn.simpleicons.org/shopify/7AB55C',
+    'Shopify Pay':'https://cdn.simpleicons.org/shopify/7AB55C',
+    'Microsoft Ads':'https://cdn.simpleicons.org/microsoftbing/258FFA',
+    'Criteo':'https://cdn.simpleicons.org/criteo/F7811E'
+  };
   var pixelList=[];
   if(pixels.length>0){
     pixelList=pixels.map(function(p){if(typeof p==='object')return p;if(typeof p==='string'){try{return JSON.parse(p);}catch(e){return{name:p};}}return{name:String(p)};});
@@ -803,7 +813,7 @@ function renderPixelCards(pixels, techs){
   }
   if(!pixelList.length)return '<div style="color:var(--text3);font-size:13px;">No pixels detected</div>';
   return '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">'+pixelList.map(function(p){
-    var name=p.name||'Unknown';var iconUrl=p.icon_url||'';var desc=(p.description||'').substring(0,80);
+    var name=p.name||'Unknown';var iconUrl=p.icon_url||knownIcons[name]||'';var desc=(p.description||'').substring(0,80);
     var categories=Array.isArray(p.categories)?p.categories:[];var installs=p.installs||0;
     var fallbackIcon=pixelIcons[name]||name.substring(0,2).toUpperCase();
     var formattedInstalls=installs?fmtV(installs)+' installs':'';
@@ -823,6 +833,7 @@ function fmtV(n){
   if(n>=1e3)return(n/1e3).toFixed(n>=1e4?0:1)+'K';
   return n.toLocaleString();
 }
+function fmtAds(n){if(!n)return'0';if(n>=10000)return'10K+';if(n>=1000)return Math.round(n/1000)+'K';return n.toString();}
 function getAge(dateStr){
   var d=new Date(dateStr);var now=new Date();
   var months=Math.round((now-d)/(30.44*24*60*60*1000));
@@ -839,7 +850,7 @@ async function loadAdsChart(domain, range, btnEl){
   try{
     var resp=await fetch(API_BASE+'?action=ads-history&domain='+encodeURIComponent(domain)+'&range='+range);
     var data=await resp.json();
-    if(data.current_live_ads){document.getElementById('ads-chart-current').textContent=data.current_live_ads.toLocaleString();}
+    if(data.current_live_ads){document.getElementById('ads-chart-current').textContent=fmtAds(data.current_live_ads);}
     var history=data.history||[];
     if(history.length<2){
       canvas.parentElement.innerHTML='<div style="height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);"><div style="font-size:13px;font-weight:600;">Historical data building up</div><div style="font-size:11px;margin-top:4px;">Chart will appear once we have multiple daily snapshots</div></div>';

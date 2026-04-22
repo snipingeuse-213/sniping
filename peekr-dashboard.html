@@ -482,6 +482,8 @@ td{padding:11px 14px;vertical-align:middle;}
   </div>
   <div class="sb-sec">
     <div class="sb-lbl">Tools</div>
+    <a class="ni" href="peekr-tools.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.77z"/></svg></span>Tools</a>
+    <a class="ni" href="peekr-diagnostic.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg></span>Diagnostic</a>
     <a class="ni" href="peekr-export.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></span>Export<span class="nb s">Soon</span></a>
   </div>
   <div class="sb-sec">
@@ -669,6 +671,7 @@ async function fetchServerPage(page, pageSize, sortField, sortDir, filterParams)
 
 let D=[];
 function fmtV(v){if(!v)return'0';if(v>=1e9)return(v/1e9).toFixed(1)+'B';if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return Math.round(v/1e3)+'K';return v.toString();}
+function fmtAds(n){if(!n)return'0';if(n>=10000)return'10K+';if(n>=1000)return Math.round(n/1000)+'K';return n.toString();}
 function fmtR(min,max){
   const f=v=>{if(v>=1e9)return'$'+(v/1e9).toFixed(1)+'B';if(v>=1e6)return'$'+(v/1e6).toFixed(1)+'M';if(v>=1e3)return'$'+Math.round(v/1e3)+'K';return'$'+v;};
   return f(min)+' – '+f(max);
@@ -1994,7 +1997,7 @@ function re(){
       <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;gap:3px;cursor:pointer;" title="Spy ads on Meta">
         <div style="display:flex;align-items:center;gap:4px;">
           <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
-          <span style="color:${ac};font-weight:800;">${s.ad}</span>
+          <span style="color:${ac};font-weight:800;">${fmtAds(s.ad)}</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.5;flex-shrink:0;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </div>
         ${s.ad>0?'<div style="display:flex;gap:2px;"><img src="https://flagcdn.com/w20/'+s.c+'.png" style="width:16px;height:11px;border-radius:2px;opacity:0.7" onerror="this.style.display=\'none\'"/></div>':''}
