@@ -382,11 +382,12 @@ function renderShop(s){
     else if(Array.isArray(s.visitor_countries)){visitorCountries=s.visitor_countries;}
   }
 
-  // Parse top products
+  // Parse top products (from cache or will load on-demand)
   var topProducts=[];
-  if(s.top_products){
-    if(typeof s.top_products==='string'){try{topProducts=JSON.parse(s.top_products);}catch(e){}}
-    else if(Array.isArray(s.top_products)){topProducts=s.top_products;}
+  if(s.top_products_images){
+    var _tp=s.top_products_images;
+    if(typeof _tp==='string'){try{topProducts=JSON.parse(_tp);}catch(e){}}
+    else if(Array.isArray(_tp)){topProducts=_tp;}
   }
 
   // Growth %
@@ -433,15 +434,15 @@ function renderShop(s){
     +'</div>'
     +'</div>'
 
-    // Visitor Countries
-    +(visitorCountries.length>0?'<div class="section"><div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> Visitor Countries</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">'+visitorCountries.slice(0,8).map(function(c){var code=(c.code||c.country||'').toLowerCase();var name=c.name||c.country_name||(c.code||'').toUpperCase();var pct=c.percentage||c.share||0;return '<div class="country-row"><img src="https://flagcdn.com/w40/'+code+'.png" style="width:20px;height:14px;border-radius:2px;flex-shrink:0;" onerror="this.style.display=&#39;none&#39;"/><span style="font-size:12px;font-weight:600;color:var(--text1);flex:1;">'+name+'</span><div class="country-bar"><div class="country-bar-fill" style="width:'+pct+'%;"></div></div><span style="font-size:11px;font-weight:700;color:var(--pink);min-width:32px;text-align:right;">'+pct+'%</span></div>';}).join('')+'</div></div>':'')
+    // Visitor Countries (DB fallback — hidden when SimilarWeb provides data)
+    +(visitorCountries.length>0?'<div class="section" id="db-countries"><div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> Visitor Countries</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;">'+visitorCountries.slice(0,8).map(function(c){var code=(c.code||c.country||'').toLowerCase();var name=c.name||c.country_name||(c.code||'').toUpperCase();var pct=c.percentage||c.share||0;return '<div class="country-row"><img src="https://flagcdn.com/w40/'+code+'.png" style="width:20px;height:14px;border-radius:2px;flex-shrink:0;" onerror="this.style.display=&#39;none&#39;"/><span style="font-size:12px;font-weight:600;color:var(--text1);flex:1;">'+name+'</span><div class="country-bar"><div class="country-bar-fill" style="width:'+pct+'%;"></div></div><span style="font-size:11px;font-weight:700;color:var(--pink);min-width:32px;text-align:right;">'+pct+'%</span></div>';}).join('')+'</div></div>':'')
 
     // Products + Pixels side-by-side
     +'<div class="info-grid-2">'
     +'<div class="section">'
-    +'<div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> Products ('+topProducts.length+')<div style="margin-left:auto;display:flex;gap:4px;" id="products-tabs"><button class="section-tab active" onclick="switchProductsTab(\'best\',this)">Best Sellers</button><button class="section-tab" onclick="switchProductsTab(\'recent\',this)">Recent</button></div></div>'
+    +'<div class="section-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg> Products (<span id="products-count">'+(topProducts.length||products)+'</span>)<div style="margin-left:auto;display:flex;gap:4px;" id="products-tabs"><button class="section-tab active" onclick="switchProductsTab(\'best\',this)">Best Sellers</button><button class="section-tab" onclick="switchProductsTab(\'recent\',this)">Recent</button></div></div>'
     +'<div class="products-carousel" id="products-carousel">'
-    +(topProducts.length>0?topProducts.slice(0,10).map(function(p,idx){return '<div class="product-card"><div class="product-rank">#'+(idx+1)+'</div><div class="product-image">'+(p.image?'<img src="'+p.image+'" onerror="this.style.display=&#39;none&#39;"/>':'<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fafafa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>')+'</div><div class="product-title">'+(p.title||p.name||'Product')+'</div>'+(p.price?'<div class="product-price">$'+parseFloat(p.price).toFixed(2)+'</div>':'')+(p.created_date?'<div class="product-date">'+new Date(p.created_date).toLocaleDateString()+'</div>':'')+'</div>';}).join(''):'<div style="color:var(--text3);font-size:13px;padding:20px;">No products data</div>')
+    +(topProducts.length>0?renderProductCards(topProducts):'<div style="color:var(--text3);font-size:13px;padding:20px;" id="products-loading">'+(products>0?'Loading products...':'No products data')+'</div>')
     +'</div></div>'
 
     +'<div class="section">'
@@ -507,6 +508,8 @@ function renderShop(s){
   initAdsChart(s.domain);
   // Load SimilarWeb data (traffic graph, countries, sources)
   loadSimilarWebData(s.domain, traffic);
+  // Load products on-demand if not cached
+  if(!s.top_products_images||s.top_products_images.length===0)loadProducts(s.domain);
 }
 
 // --- Tab Switching ---
@@ -516,6 +519,42 @@ function switchTab(panel, el){
   document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
   el.classList.add('active');
   document.getElementById('panel-'+panel).classList.add('active');
+}
+function renderProductCards(prods){
+  return prods.slice(0,10).map(function(p,idx){
+    var img=p.image||'';
+    var title=p.title||p.name||'Product';
+    var price=p.price?'$'+parseFloat(p.price).toFixed(2):'';
+    var date=p.created_at||p.created_date||'';
+    return '<div class="product-card"><div class="product-rank">#'+(idx+1)+'</div><div class="product-image">'
+      +(img?'<img src="'+img+'" onerror="this.style.display=\'none\'"/>':'<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fafafa;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>')
+      +'</div><div class="product-title">'+title+'</div>'
+      +(price?'<div class="product-price">'+price+'</div>':'')
+      +(date?'<div class="product-date">'+new Date(date).toLocaleDateString()+'</div>':'')
+      +'</div>';
+  }).join('');
+}
+async function loadProducts(domain){
+  var carousel=document.getElementById('products-carousel');
+  var countEl=document.getElementById('products-count');
+  var loading=document.getElementById('products-loading');
+  if(!loading)return; // already has products
+  try{
+    var resp=await fetch(_SB+'/rest/v1/rpc/fetch_shopify_products',{
+      method:'POST',
+      headers:{'apikey':_AK,'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({p_domain:domain})
+    });
+    var prods=await resp.json();
+    if(prods&&prods.length>0){
+      carousel.innerHTML=renderProductCards(prods);
+      if(countEl)countEl.textContent=prods.length;
+    }else{
+      if(loading)loading.textContent='No products data';
+    }
+  }catch(e){
+    if(loading)loading.textContent='No products data';
+  }
 }
 function switchProductsTab(tab, el){
   document.querySelectorAll('#products-tabs .section-tab').forEach(function(t){t.classList.remove('active');});
@@ -884,6 +923,9 @@ async function loadSimilarWebData(domain, fallbackTraffic){
         countriesHtml+='<div class="country-row"><img src="https://flagcdn.com/w40/'+code+'.png" style="width:20px;height:14px;border-radius:2px;flex-shrink:0;" onerror="this.style.display=&#39;none&#39;"/><span style="font-size:12px;font-weight:600;color:var(--text1);flex:1;">'+code.toUpperCase()+'</span><div class="country-bar"><div class="country-bar-fill" style="width:'+Math.min(pct,100)+'%;"></div></div><span style="font-size:11px;font-weight:700;color:var(--pink);min-width:32px;text-align:right;">'+pct+'%</span></div>';
       });
       countriesHtml+='</div></div>';
+      // Remove DB-based countries section if it exists
+      var dbCountries=document.getElementById('db-countries');
+      if(dbCountries)dbCountries.remove();
       // Insert after chart grid
       var chartGrid=document.querySelector('#panel-analytics .chart-grid');
       if(chartGrid)chartGrid.insertAdjacentHTML('afterend',countriesHtml);
