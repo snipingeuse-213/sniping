@@ -687,7 +687,8 @@ function mapShop(s,i){
   ap:(s.apps||[]).map(a=>typeof a==='object'&&a!==null?(a.name||a.title||'Unknown'):typeof a==='string'?(()=>{try{const p=JSON.parse(a);return p.name||a;}catch(e){return a;}})():String(a)),px:s.ad_platforms||[],st:s.strategies||[],lang:s.language||'en',sp:s.shopify_plan||'Unknown',
   vc:s.ships_to||[s.country||'US'],es:s.estimated_sales||0,esy:s.estimated_sales_yearly||0,
   aov:s.avg_price_usd?Math.round(s.avg_price_usd/100*100)/100:0,us:(s.estimated_sales&&s.avg_price_usd&&s.avg_price_usd>0)?Math.round(s.estimated_sales/(s.avg_price_usd/100)):0,
-  ico:s.icon||''
+  ico:s.icon||'',
+  hpi:!!s.has_product_images
 };}
 // Direct fetch fallback — single sequential query (uses global _SB, _AK, _COLS)
 async function directFetchShops(){
@@ -696,6 +697,32 @@ async function directFetchShops(){
     if(r.ok){const shops=await r.json();if(shops.length>0){window._supabaseShops=shops;console.log('[Peekr] Fallback loaded '+shops.length+' shops');}}
   }catch(e){console.error('[Peekr] Fallback fetch failed:',e);}
 }
+// Enrich shops with product image flags via lightweight RPC — enables smart default sort
+async function _enrichProductImageFlags(){
+  try{
+    const domains=D.map(s=>s.d);
+    // Batch in chunks of 500 to avoid URL length limits
+    const hpiSet=new Set();
+    for(let i=0;i<domains.length;i+=500){
+      const batch=domains.slice(i,i+500);
+      const r=await fetch(_SB+'/rest/v1/rpc/get_domains_with_images',{
+        method:'POST',
+        headers:{'apikey':_AK,'Content-Type':'application/json'},
+        body:JSON.stringify({p_domains:batch})
+      });
+      if(r.ok){const data=await r.json();data.forEach(row=>hpiSet.add(row.domain));}
+    }
+    if(hpiSet.size>0){
+      let changed=0;
+      D.forEach(s=>{if(hpiSet.has(s.d)&&!s.hpi){s.hpi=true;changed++;}});
+      if(changed>0){
+        console.log('[Peekr] Enriched '+changed+' shops with product image flags, re-sorting...');
+        re();
+      }
+    }
+  }catch(e){console.warn('[Peekr] Image flag enrichment failed:',e);}
+}
+
 // Wait for IIFE to load shops, with direct fetch fallback
 let _waitAttempts=0;
 function waitForShops(){
@@ -703,6 +730,8 @@ function waitForShops(){
     D=window._supabaseShops.map(mapShop);
     console.log('[Peekr] Loaded '+D.length+' shops from Supabase');
     re();
+    // Enrich with product image flags for smart sorting
+    _enrichProductImageFlags();
   } else if(_waitAttempts++<50){
     setTimeout(waitForShops, 200);
   } else {
@@ -1759,13 +1788,21 @@ function gd(){
     if(_rangeFilters.priceMax<Infinity)s=s.filter(x=>x.aov<=_rangeFilters.priceMax);
   }
 
-  // US shops priority — boost US shops to the top, then biggest traffic (TrendTrack-style)
+  // Smart default sort: shops with product images first, then known brands (high traffic), mix in newer shops
   if(!sortCol){
     s.sort((a,b)=>{
-      const aUS=(a.c==='us')?1:0;
-      const bUS=(b.c==='us')?1:0;
-      if(aUS!==bUS) return bUS-aUS;
-      return b.v-a.v; // secondary: monthly visits desc — variety of scores at the top
+      // 1. Shops WITH product images always above those without
+      const aImg=a.hpi?1:0, bImg=b.hpi?1:0;
+      if(aImg!==bImg) return bImg-aImg;
+      // 2. Among shops with images: score by a blend of traffic + recency + ads
+      // Known brands = high traffic; newer shops get a recency boost
+      const ageA=a.cr?((Date.now()-new Date(a.cr).getTime())/(1000*60*60*24*365)):5;
+      const ageB=b.cr?((Date.now()-new Date(b.cr).getTime())/(1000*60*60*24*365)):5;
+      const recencyA=ageA<2?1.3:ageA<3?1.1:1; // boost shops < 2 years old
+      const recencyB=ageB<2?1.3:ageB<3?1.1:1;
+      const rankA=(a.v||0)*recencyA + (a.ad||0)*5000 + (a.sc||0)*1000;
+      const rankB=(b.v||0)*recencyB + (b.ad||0)*5000 + (b.sc||0)*1000;
+      return rankB-rankA;
     });
   }
 
