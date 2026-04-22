@@ -773,7 +773,18 @@ async function liveSearch(term){
     const parsed=typeof data==='string'?JSON.parse(data):data;
     const shops=parsed.results||parsed.shops||[];
     const localDomains=new Set(D.map(x=>x.d));
-    _apiResults=shops.filter(s=>!localDomains.has(s.domain)).map((s,i)=>{
+    const newShops=shops.filter(s=>!localDomains.has(s.domain));
+    // Enrich with live_ads from our DB
+    let adsMap={};
+    if(newShops.length>0){
+      try{
+        const domains=newShops.map(s=>s.domain);
+        const adsUrl=_SB+'/rest/v1/shops?select=domain,live_ads&domain=in.('+domains.map(d=>'"'+d+'"').join(',')+')';
+        const adsData=await fetch(adsUrl,{headers:{'apikey':_AK}}).then(r=>r.json());
+        if(Array.isArray(adsData)) adsData.forEach(r=>{if(r.live_ads)adsMap[r.domain]=r.live_ads;});
+      }catch(e){}
+    }
+    _apiResults=newShops.map((s,i)=>{
       const niche=(s.categories&&s.categories[0])||'General';
       return{
         id:90000+i,n:s.name||s.domain,d:s.domain,ni:niche,sc:s.platform_rank?Math.min(99,Math.round(100-Math.log10(s.platform_rank)*15)):50,t:'cold',
@@ -781,7 +792,7 @@ async function liveSearch(term){
         v:s.monthly_visits||0,vf:fmtV(s.monthly_visits),r:fmtR(s.estimated_sales?Math.round(s.estimated_sales*0.8):0,s.estimated_sales||0),
         rv:s.estimated_sales||0,
         tr:Array.from({length:6},()=>Math.round((s.monthly_visits||1000)*(0.8+Math.random()*0.4))),
-        ad:0,th:s.theme||'Unknown',cu:'USD',p:s.products_count||0,
+        ad:adsMap[s.domain]||0,th:s.theme||'Unknown',cu:'USD',p:s.products_count||0,
         ap:[],px:[],st:[],lang:'en',sp:'Unknown',vc:[s.country||'US'],_live:true
       };
     });
@@ -1849,16 +1860,22 @@ function re(){
     th.classList.remove('sorted');
     const icon=th.querySelector('.sic');
     if(icon){
-      if(th.textContent.includes('Monthly Visits')&&sortCol==='v'){
+      if(th.textContent.includes('Visites mensuelles')&&sortCol==='v'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
-      }else if(th.textContent.includes('Revenue Est.')&&sortCol==='rv'){
+      }else if(th.textContent.includes('Revenu est.')&&sortCol==='rv'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
-      }else if(th.textContent.includes('Live Ads')&&sortCol==='ad'){
+      }else if(th.textContent.includes('Meta Ads')&&sortCol==='ad'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
-      }else if(th.textContent.includes('Est. Sales')&&sortCol==='es'){
+      }else if(th.textContent.includes('Ventes est.')&&sortCol==='es'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Panier moy.')&&sortCol==='aov'){
+        th.classList.add('sorted');
+        icon.textContent=sortDir==='asc'?'↑':'↓';
+      }else if(th.textContent.includes('Unités vendues')&&sortCol==='us'){
         th.classList.add('sorted');
         icon.textContent=sortDir==='asc'?'↑':'↓';
       }else if(th.textContent.includes('Score')&&sortCol==='sc'){
@@ -1901,7 +1918,7 @@ function re(){
   } else if (pager) { pager.style.display = 'none'; }
 
   tb.innerHTML=pageShops.map(s=>{
-    const c=TC[s.t]||'#aaa',ac=s.ad>30?'#e8799a':s.ad>10?'#f6a05a':s.ad>0?'#e6b83a':'#b8a8b0';
+    const c=TC[s.t]||'#aaa',ac=s.ad>0?'#22c55e':'#b8a8b0';
     return`<tr onclick="window.location.href='peekr-shop-detail.html?domain='+encodeURIComponent('${s.d}')" style="cursor:pointer;">
       <td><div class="si2">
         <div class="sthumb">
@@ -1930,13 +1947,13 @@ function re(){
       </div></td>
       <td>
         <div class="prod-imgs" data-domain="${s.d}" style="display:flex;gap:5px;align-items:center;min-width:140px;">
-          ${[0,1,2].map(()=>`<div class="skeleton" style="width:46px;height:46px;border-radius:8px;flex-shrink:0;border:1px solid rgba(0,0,0,0.04);"></div>`).join('')}
+          ${[0,1,2].map(()=>`<div class="skeleton" style="width:46px;height:46px;border-radius:8px;flex-shrink:0;background:#f5f5f5;"></div>`).join('')}
         </div>
         <div class="pct">${s.p} total</div>
       </td>
       <td><span class="tag-niche">${s.ni}</span></td>
       <td><div class="tv">${s.vf}</div><div class="spk">${spk(s.tr,c)}</div></td>
-      <td><div class="rv">${s.rv>0?s.r:'<span style="color:rgba(26,10,15,0.2);font-style:italic;font-size:11px;">Pending</span>'}</div></td>
+      <td><div class="rv">${s.rv>0?s.r:'<span style="color:rgba(26,10,15,0.18);font-size:11px;">—</span>'}</div></td>
       <td><a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&q=${encodeURIComponent(s.d)}" target="_blank" rel="noopener" onclick="event.stopPropagation();" class="acs" style="text-decoration:none;display:flex;flex-direction:column;align-items:flex-start;gap:3px;cursor:pointer;" title="Spy ads on Meta">
         <div style="display:flex;align-items:center;gap:4px;">
           <div class="adot" style="background:${ac};${s.ad>20?`box-shadow:0 0 6px ${ac}88;`:''}"></div>
@@ -1992,7 +2009,7 @@ function _doLiveLookup(pageShops){
           const domain=decodeURIComponent(m[1]);
           if(typeof _liveCache[domain]!=='number')return;
           const count=_liveCache[domain];
-          const ac=count>30?'#e8799a':count>10?'#f6a05a':count>0?'#e6b83a':'#b8a8b0';
+          const ac=count>0?'#22c55e':'#b8a8b0';
           const dot=el.querySelector('.adot');
           const span=el.querySelector('span');
           if(dot)dot.style.background=ac;
@@ -2107,14 +2124,19 @@ async function _fetchShopProducts(domain){
     // Show placeholder for failed loads
     const el=document.querySelector('.prod-imgs[data-domain="'+domain+'"]');
     if(el){
-      el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);"></div>').join('');
+      el.innerHTML=_emptyProdPlaceholder();
     }
   }
 }
 
+function _emptyProdPlaceholder(){
+  return '<div style="display:flex;gap:5px;align-items:center;">'
+    +[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:#f5f5f5;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></div>').join('')
+    +'</div>';
+}
 function renderProdImgs(el,imgs){
   if(!imgs||imgs.length===0){
-    el.innerHTML=[0,1,2].map(()=>'<div style="width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#f0eaed,#e8e0e4);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(26,10,15,0.15);"></div>').join('');
+    el.innerHTML=_emptyProdPlaceholder();
     return;
   }
   el.innerHTML=imgs.slice(0,3).map(src=>`<img src="${src}" style="width:46px;height:46px;border-radius:8px;object-fit:cover;background:#f5f0ec;border:1px solid rgba(255,45,120,0.06);flex-shrink:0;" loading="lazy" onerror="this.style.display='none';this.nextSibling||this.parentElement.insertAdjacentHTML('beforeend','<div style=\\'width:46px;height:46px;border-radius:8px;background:#f0eaed;flex-shrink:0;\\'></div>')"/>`).join('')+
