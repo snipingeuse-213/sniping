@@ -48,7 +48,7 @@
 .un{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);}
 .up{font-size:10px;color:var(--neon-soft,#ff5c9a);font-weight:700;}
 
-        :root{--pink:#e8799a;--pink-dark:#d4607a;--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--card:rgba(255,255,255,0.85);}
+        :root{--pink:#ff2d78;--pink-dark:#ff2d78;--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--card:rgba(255,255,255,0.85);}
 
         .main-content{margin-left:220px;flex:1;display:flex;flex-direction:column;overflow-y:auto;height:100vh;background:#fff;}
 
@@ -71,7 +71,7 @@
         /* Niches Grid */
         .niches-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
         .niche-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px;transition:all .15s;cursor:pointer;}
-        .niche-card:hover{border-color:var(--pink);box-shadow:0 4px 12px rgba(232,121,154,0.08);transform:translateY(-2px);}
+        .niche-card:hover{border-color:var(--pink);box-shadow:0 4px 12px rgba(255,45,120,0.08);transform:translateY(-2px);}
         .niche-name{font-size:14px;font-weight:700;color:var(--text1);margin-bottom:6px;}
         .trend-indicator{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;display:inline-block;margin-bottom:8px;}
         .trend-indicator.up{background:rgba(34,197,94,0.1);color:#22c55e;}
@@ -95,7 +95,7 @@
             display: block;
             padding: 8px 0;
             font-size: 12px;
-            color: #e8799a;
+            color: #ff2d78;
             text-decoration: none;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -152,7 +152,7 @@
 
         .bar-wrapper {
             flex: 1;
-            background-color: rgba(232,121,154,0.08);
+            background-color: rgba(255,45,120,0.08);
             border-radius: 6px;
             height: 24px;
             overflow: hidden;
@@ -161,7 +161,7 @@
 
         .bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, #e8799a, #f4a7b9);
+            background: linear-gradient(90deg, #ff2d78, #ff5c9a);
             border-radius: 6px;
             transition: width 0.4s ease;
             display: flex;
@@ -197,12 +197,12 @@
         .country-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(232, 121, 154, 0.1);
-            border-color: #e8799a;
+            border-color: #ff2d78;
         }
 
         .country-card.active {
             background-color: #ffeef4;
-            border-color: #e8799a;
+            border-color: #ff2d78;
         }
 
         .country-flag {
@@ -226,7 +226,7 @@
         .country-avg-score {
             font-size: 11px;
             font-weight: 600;
-            color: #e8799a;
+            color: #ff2d78;
         }
 
         /* Loading & Empty States */
@@ -238,8 +238,8 @@
         }
 
         .spinner {
-            border: 3px solid rgba(232,121,154,0.15);
-            border-top: 3px solid #e8799a;
+            border: 3px solid rgba(255,45,120,0.15);
+            border-top: 3px solid #ff2d78;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -267,7 +267,7 @@
         }
 
         .content::-webkit-scrollbar-thumb {
-            background: #e8799a;
+            background: #ff2d78;
             border-radius: 4px;
         }
 
@@ -289,7 +289,7 @@
     <!-- Sidebar -->
     <!-- SIDEBAR NEON ROSE -->
 <aside class="sb">
-  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff;text-shadow:0 0 20px rgba(255,45,120,0.3);">Peek<span style="color:#ff2d78;">r</span></span></div>
   <div class="sb-sec">
     <div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
@@ -323,6 +323,7 @@
     <div class="sb-lbl">Account</div>
     <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
     <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+    <a class="ni" href="#" id="peekr-logout" onclick="(async()=>{const s=window._peekrSb||window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');await s.auth.signOut();window.location.href='login.html';})();return false;"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out</a>
   </div>
   <div class="sb-bot">
     <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
@@ -664,5 +665,16 @@
         // Initialize
         fetchShops();
     </script>
+<!-- Auth Guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+  const sb=window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  window._peekrUser=session.user;
+  window._peekrSb=sb;
+})();
+</script>
 </body>
 </html>

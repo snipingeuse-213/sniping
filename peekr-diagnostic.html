@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#ffffff;--dark:#1a0a0f;--pink:#e8799a;--pink-dark:#d4607a;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--red:#ef4444;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);}
+:root{--bg:#ffffff;--dark:#1a0a0f;--pink:#ff2d78;--pink-dark:#ff2d78;--card:rgba(255,255,255,0.85);--border:rgba(200,160,170,0.18);--text1:#1a0a0f;--text2:rgba(26,10,15,0.6);--text3:rgba(26,10,15,0.35);--green:#22c55e;--orange:#f6a05a;--red:#ef4444;--neon:#ff2d78;--neon-soft:#ff5c9a;--neon-glow:rgba(255,45,120,0.35);}
 html,body{height:100%;overflow:hidden;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text1);display:flex;height:100vh;}
 
@@ -89,7 +89,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .diag-section{margin-bottom:28px;}
 .diag-section-title{font-size:16px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
 .diag-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin-bottom:12px;display:flex;gap:16px;align-items:flex-start;transition:all .15s;}
-.diag-card:hover{border-color:var(--pink);box-shadow:0 2px 12px rgba(232,121,154,0.08);}
+.diag-card:hover{border-color:var(--pink);box-shadow:0 2px 12px rgba(255,45,120,0.08);}
 .diag-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;}
 .diag-icon.good{background:rgba(34,197,94,0.1);color:var(--green);}
 .diag-icon.warn{background:rgba(246,160,90,0.1);color:var(--orange);}
@@ -108,7 +108,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 <body>
 
 <aside class="sb">
-  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff;text-shadow:0 0 20px rgba(255,45,120,0.3);">Peek<span style="color:#ff2d78;">r</span></span></div>
   <div class="sb-sec">
     <div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
@@ -142,6 +142,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
     <div class="sb-lbl">Account</div>
     <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
     <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+    <a class="ni" href="#" id="peekr-logout" onclick="(async()=>{const s=window._peekrSb||window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');await s.auth.signOut();window.location.href='login.html';})();return false;"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out</a>
   </div>
   <div class="sb-bot">
     <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
@@ -455,6 +456,17 @@ function renderDiagnostics(issues){
   });
   el.innerHTML=html;
 }
+</script>
+<!-- Auth Guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+  const sb=window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  window._peekrUser=session.user;
+  window._peekrSb=sb;
+})();
 </script>
 </body>
 </html>

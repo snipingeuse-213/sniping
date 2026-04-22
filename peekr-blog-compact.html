@@ -13,8 +13,8 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#333}
 .sb-logo{color:#fff;font-weight:700;font-size:24px;font-family:'Inter',sans-serif;padding:0 20px 30px;display:block}
 .nav{list-style:none}
 .nav li a{display:block;padding:12px 20px;color:#999;text-decoration:none;font-weight:500;font-size:14px;font-family:'Inter',sans-serif;transition:all .2s}
-.nav li a:hover{color:#e8799a}
-.nav li.active a{color:#e8799a;background:rgba(232,121,154,.1)}
+.nav li a:hover{color:#ff2d78}
+.nav li.active a{color:#ff2d78;background:rgba(255,45,120,.1)}
 .main{margin-left:220px;flex:1}
 .topbar{background:#ffffff;padding:0 24px;height:56px;display:flex;align-items:center;border-bottom:1px solid rgba(200,160,170,0.18)}
 .top-ttl{font-weight:700;font-size:20px;font-family:'Inter',sans-serif}
@@ -23,7 +23,7 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#333}
 .hero-s{font-weight:400;font-size:16px;color:#666;margin-bottom:30px}
 .fltr{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;padding:0 20px}
 .chip{padding:8px 16px;border:1px solid #ddd;background:#fff;border-radius:20px;color:#666;font-weight:500;font-size:13px;cursor:pointer;transition:all .2s}
-.chip:hover,.chip.active{background:#e8799a;color:#fff;border-color:#e8799a}
+.chip:hover,.chip.active{background:#ff2d78;color:#fff;border-color:#ff2d78}
 .src{display:flex;justify-content:center;margin-bottom:30px}
 .src input{width:300px;padding:10px 15px;border:1px solid #ddd;border-radius:6px;font-size:14px}
 .grd{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:0 40px 40px;margin-bottom:40px}
@@ -31,24 +31,24 @@ body{font-family:'Inter',sans-serif;background:#ffffff;color:#333}
 @media(max-width:640px){.grd{grid-template-columns:1fr}.sb{width:100%;height:auto;position:relative}.main{margin-left:0}}
 .card{background:#fff;border-radius:8px;overflow:hidden;transition:all .2s;cursor:pointer}
 .card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);transform:translateY(-2px)}
-.card-bar{height:4px;background:linear-gradient(90deg,#e8799a,#d85a7b)}
+.card-bar{height:4px;background:linear-gradient(90deg,#ff2d78,#d85a7b)}
 .card-bd{padding:20px}
-.badge{display:inline-block;padding:4px 12px;background:#e8799a;color:#fff;font-weight:500;font-size:11px;border-radius:4px;margin-bottom:12px}
+.badge{display:inline-block;padding:4px 12px;background:#ff2d78;color:#fff;font-weight:500;font-size:11px;border-radius:4px;margin-bottom:12px}
 .card-h{font-weight:700;font-size:16px;font-family:'Inter',sans-serif;margin-bottom:10px;line-height:1.3}
 .card-ex{font-weight:400;font-size:13px;color:#888;line-height:1.4;margin-bottom:15px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .card-meta{display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:12px;color:#999}
-.cta{color:#e8799a;text-decoration:none;cursor:pointer}
+.cta{color:#ff2d78;text-decoration:none;cursor:pointer}
 .nws{background:#1a0a0f;color:#fff;padding:40px;text-align:center;margin-top:40px}
 .nws-h{font-weight:700;font-size:20px;font-family:'Inter',sans-serif;margin-bottom:15px}
 .nws-inp{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
 .nws-inp input{padding:10px 15px;width:280px;border:none;border-radius:4px;font-size:14px}
-.nws-btn{padding:10px 24px;background:#e8799a;color:#fff;border:none;border-radius:4px;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s}
+.nws-btn{padding:10px 24px;background:#ff2d78;color:#fff;border:none;border-radius:4px;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s}
 .nws-btn:hover{background:#d85a7b}
 </style>
 </head>
 <body>
 <aside class="sb">
-<span class="sb-logo">peekr.</span>
+<span class="sb-logo" style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff;text-shadow:0 0 20px rgba(255,45,120,0.3);">Peek<span style="color:#ff2d78;">r</span></span>
 <ul class="nav">
 <li><a href="peekr-dashboard.html">Dashboard</a></li>
 <li><a href="peekr-dashboard.html">Trending Shops</a></li>
@@ -164,7 +164,18 @@ function flt(){const act=document.querySelector('.chip.active').dataset.cat,q=sr
 cds.forEach(c=>{const cat=c.dataset.cat,txt=c.textContent.toLowerCase(),show=(cat===act||act==='all')&&txt.includes(q);c.style.display=show?'block':'none'})}
 chps.forEach(c=>c.addEventListener('click',e=>{document.querySelector('.chip.active').classList.remove('active');e.target.classList.add('active');flt()}));
 srch.addEventListener('input',flt);
-function subscribe(){const em=document.getElementById('email').value;if(em){const nws=document.querySelector('.nws');nws.innerHTML='<p style="color:#e8799a;font-weight:600;font-size:16px;padding:40px;">Thanks for subscribing! You\'ll receive our next newsletter.</p>'}}
+function subscribe(){const em=document.getElementById('email').value;if(em){const nws=document.querySelector('.nws');nws.innerHTML='<p style="color:#ff2d78;font-weight:600;font-size:16px;padding:40px;">Thanks for subscribing! You\'ll receive our next newsletter.</p>'}}
+</script>
+<!-- Auth Guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+  const sb=window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  window._peekrUser=session.user;
+  window._peekrSb=sb;
+})();
 </script>
 </body>
 </html>

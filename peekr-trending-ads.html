@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content="Peekr — Discover winning ads from top Shopify stores. Spy on Meta ads before they blow up."/>
-<meta name="theme-color" content="#F4A7B9"/>
+<meta name="theme-color" content="#ff5c9a"/>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#65039;</text></svg>"/>
 <link rel="stylesheet" href="peekr-responsive.css"/>
 <title>Peekr — Trending Ads</title>
@@ -21,8 +21,8 @@
   --neon-glow3:rgba(255,45,120,0.08);
   --cream:#ffffff;
   --black:#1a0a0f;
-  --pink:#e8799a;
-  --pink-dark:#d4607a;
+  --pink:#ff2d78;
+  --pink-dark:#ff2d78;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
@@ -47,10 +47,10 @@ body{
 .po.p2{width:55px;height:55px;top:3%;right:5%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);box-shadow:inset -7px -7px 14px rgba(0,0,0,0.15),inset 4px 4px 8px rgba(255,255,255,0.5);animation:fl2 9s ease-in-out infinite;}
 .po.p3{width:30px;height:30px;top:15%;right:2%;background:radial-gradient(circle at 35% 30%,#f0eee8,#c8c4bc 45%,#9a9690 80%);animation:fl1 6s ease-in-out infinite 1s;}
 .po.p4{width:16px;height:16px;top:25%;right:14%;background:radial-gradient(circle at 35% 30%,#eee,#bbb 50%,#888 85%);animation:fl2 5s ease-in-out infinite .5s;}
-.po.pp{width:70px;height:70px;top:50%;right:1%;background:radial-gradient(circle at 38% 32%,#fbc0d4,#e8799a 55%,#c85080 85%);box-shadow:inset -9px -9px 18px rgba(0,0,0,0.18),inset 5px 5px 10px rgba(255,200,220,0.4),0 12px 32px rgba(200,60,100,0.22);animation:fl2 8s ease-in-out infinite .3s;}
+.po.pp{width:70px;height:70px;top:50%;right:1%;background:radial-gradient(circle at 38% 32%,#fbc0d4,#ff2d78 55%,#ff2d78 85%);box-shadow:inset -9px -9px 18px rgba(0,0,0,0.18),inset 5px 5px 10px rgba(255,200,220,0.4),0 12px 32px rgba(200,60,100,0.22);animation:fl2 8s ease-in-out infinite .3s;}
 .po.pg{width:40px;height:40px;bottom:15%;left:2%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.9),rgba(220,215,210,0.4) 50%,transparent 80%);border:1px solid rgba(255,255,255,0.7);box-shadow:0 6px 20px rgba(0,0,0,0.06);animation:fl1 10s ease-in-out infinite 1.5s;}
-.po-worm1{position:absolute;width:6px;height:60px;top:62%;left:1%;background:linear-gradient(180deg,#f4a7b9,#e8799a);border-radius:3px;transform:rotate(20deg);opacity:.7;animation:fl1 9s ease-in-out infinite .4s;}
-.po-worm2{position:absolute;width:5px;height:50px;top:75%;right:4%;background:linear-gradient(180deg,#e8799a,#c85080);border-radius:3px;transform:rotate(-15deg);opacity:.65;animation:fl2 7s ease-in-out infinite .8s;}
+.po-worm1{position:absolute;width:6px;height:60px;top:62%;left:1%;background:linear-gradient(180deg,#ff5c9a,#ff2d78);border-radius:3px;transform:rotate(20deg);opacity:.7;animation:fl1 9s ease-in-out infinite .4s;}
+.po-worm2{position:absolute;width:5px;height:50px;top:75%;right:4%;background:linear-gradient(180deg,#ff2d78,#ff2d78);border-radius:3px;transform:rotate(-15deg);opacity:.65;animation:fl2 7s ease-in-out infinite .8s;}
 
 @keyframes fl1{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-14px) rotate(3deg)}}
 @keyframes fl2{0%,100%{transform:translateY(0) rotate(0deg)}40%{transform:translateY(-18px) rotate(-4deg)}70%{transform:translateY(-8px) rotate(2deg)}}
@@ -112,7 +112,7 @@ body{
 }
 .tb-title{font-family:'Clash Display',sans-serif;font-size:17px;font-weight:700;letter-spacing:-.02em;color:#1a0a0f;}
 .sbox{flex:1;max-width:260px;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.2);border-radius:10px;padding:0 12px;height:34px;transition:all .15s;}
-.sbox:focus-within{background:#fff;border-color:#e8799a;box-shadow:0 0 0 3px rgba(232,121,154,0.1);}
+.sbox:focus-within{background:#fff;border-color:#ff2d78;box-shadow:0 0 0 3px rgba(255,45,120,0.1);}
 .sbox input{background:transparent;border:none;outline:none;font-family:'Figtree',sans-serif;font-size:13px;color:#1a0a0f;width:100%;}
 .sbox input::placeholder{color:rgba(26,10,15,0.3);}
 .tb-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
@@ -125,7 +125,7 @@ body{
 .fl{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:rgba(26,10,15,0.3);width:74px;flex-shrink:0;}
 .fb{display:flex;align-items:center;gap:5px;padding:5px 10px;background:rgba(255,255,255,0.7);border:1px solid rgba(200,160,170,0.18);border-radius:7px;font-size:12px;font-weight:600;color:rgba(26,10,15,0.55);cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Figtree',sans-serif;}
 .fb:hover{border-color:rgba(200,160,170,0.35);color:#1a0a0f;background:#fff;}
-.fb.active{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.06);}
+.fb.active{border-color:#ff2d78;color:#ff2d78;background:rgba(255,45,120,0.06);}
 
 /* ── CARDS GRID ── */
 .cw{flex:1;overflow:auto;padding:20px 24px;}
@@ -140,7 +140,7 @@ body{
   box-shadow:0 2px 12px rgba(200,100,140,0.06);
 }
 .ad-card:hover{
-  border-color:rgba(232,121,154,0.3);
+  border-color:rgba(255,45,120,0.3);
   box-shadow:0 8px 28px rgba(200,100,140,0.12);
   transform:translateY(-2px);
 }
@@ -187,19 +187,19 @@ body{
 .ad-stat-lbl{font-size:10px;color:rgba(26,10,15,0.35);font-weight:600;}
 .ad-btn{
   display:block;width:100%;padding:10px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#e8799a,#d4607a);
+  background:linear-gradient(135deg,#ff2d78,#ff2d78);
   color:#fff;font-family:'Figtree',sans-serif;font-size:13px;font-weight:700;
   cursor:pointer;text-align:center;text-decoration:none;
   transition:all .2s;
 }
-.ad-btn:hover{box-shadow:0 4px 16px rgba(232,121,154,0.35);transform:translateY(-1px);}
+.ad-btn:hover{box-shadow:0 4px 16px rgba(255,45,120,0.35);transform:translateY(-1px);}
 .ad-btn-sec{
   display:block;width:100%;padding:8px;border:1px solid rgba(200,160,170,0.25);border-radius:10px;
   background:transparent;color:rgba(26,10,15,0.55);font-family:'Figtree',sans-serif;font-size:12px;font-weight:600;
   cursor:pointer;text-align:center;text-decoration:none;margin-top:8px;
   transition:all .2s;
 }
-.ad-btn-sec:hover{border-color:#e8799a;color:#d4607a;background:rgba(232,121,154,0.04);}
+.ad-btn-sec:hover{border-color:#ff2d78;color:#ff2d78;background:rgba(255,45,120,0.04);}
 
 /* ── HERO ── */
 .hero{
@@ -214,7 +214,7 @@ body{
 .hero-text p{font-size:14px;color:rgba(26,10,15,0.5);line-height:1.5;}
 .hero-stats{display:flex;gap:24px;margin-top:14px;}
 .hs{text-align:center;}
-.hs-val{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:#e8799a;}
+.hs-val{font-family:'Clash Display',sans-serif;font-size:24px;font-weight:700;color:#ff2d78;}
 .hs-lbl{font-size:11px;color:rgba(26,10,15,0.4);font-weight:600;}
 
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;color:rgba(26,10,15,0.3);}
@@ -228,7 +228,7 @@ body{
 
 <!-- SIDEBAR NEON ROSE -->
 <aside class="sb">
-  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:var(--neon-soft,#ff5c9a);text-shadow:0 0 20px rgba(255,45,120,0.3);">Peekr</span></div>
+  <div class="sb-logo"><span style="font-family:'Inter',sans-serif;font-size:20px;font-weight:700;color:#fff;text-shadow:0 0 20px rgba(255,45,120,0.3);">Peek<span style="color:#ff2d78;">r</span></span></div>
   <div class="sb-sec">
     <div class="sb-lbl">Overview</div>
     <a class="ni" href="peekr-overview.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span>Dashboard</a>
@@ -262,6 +262,7 @@ body{
     <div class="sb-lbl">Account</div>
     <a class="ni" href="peekr-pricing.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>Upgrade<span class="nb">Pro</span></a>
     <a class="ni" href="peekr-affiliate.html"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Affiliate</a>
+    <a class="ni" href="#" id="peekr-logout" onclick="(async()=>{const s=window._peekrSb||window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');await s.auth.signOut();window.location.href='login.html';})();return false;"><span class="ni-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>Log out</a>
   </div>
   <div class="sb-bot">
     <div class="uc"><div class="ua">LR</div><div><div class="un">Lyli Rose</div><div class="up">Pro Plan</div></div></div>
@@ -359,8 +360,8 @@ function daysSince(d){if(!d)return 0;return Math.max(1,Math.floor((Date.now()-ne
 function fmt(n){if(!n)return '0';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return n.toLocaleString();}
 
 function scoreColor(s){
-  if(s>=80) return {bg:'linear-gradient(135deg,#e8799a,#d4607a)'};
-  if(s>=40) return {bg:'linear-gradient(135deg,#f4a7b9,#e8799a)'};
+  if(s>=80) return {bg:'linear-gradient(135deg,#ff2d78,#ff2d78)'};
+  if(s>=40) return {bg:'linear-gradient(135deg,#ff5c9a,#ff2d78)'};
   return {bg:'linear-gradient(135deg,#ccc,#999)'};
 }
 
@@ -399,7 +400,7 @@ async function fetchAds(){
     renderCards();
   } catch(e){
     console.error(e);
-    document.getElementById('loadingState').innerHTML = '<div style="color:#d4607a">Failed to load: '+e.message+'</div>';
+    document.getElementById('loadingState').innerHTML = '<div style="color:#ff2d78">Failed to load: '+e.message+'</div>';
   }
 }
 
@@ -476,8 +477,8 @@ function renderCards(){
     const statusColor = status==='active' ? '#2a9e54' : '#a098a0';
     const statusText = status==='active' ? 'Active' : 'Inactive';
     let durColor = '#a098a0';
-    if(days>=90) durColor = '#e8799a';
-    else if(days>=60) durColor = '#f4a7b9';
+    if(days>=90) durColor = '#ff2d78';
+    else if(days>=60) durColor = '#ff5c9a';
     else if(days>=30) durColor = '#d4a0b0';
 
     const hasMedia = imageUrl || videoUrl;
@@ -495,7 +496,7 @@ function renderCards(){
       </div>
       <div class="ad-body">
         <div class="ad-name">${logoUrl ? `<img src="${logoUrl}" alt="${shopName}" style="width:18px;height:18px;border-radius:3px;margin-right:6px;vertical-align:middle;object-fit:contain;" onerror="this.style.display='none'"/>` : ''}${shopName}</div>
-        <div class="ad-domain"><span style="color:#e8799a;font-weight:700;text-transform:capitalize;">${niche}</span> · ${country}</div>
+        <div class="ad-domain"><span style="color:#ff2d78;font-weight:700;text-transform:capitalize;">${niche}</span> · ${country}</div>
         <div class="ad-meta">
           <span class="ad-tag" style="color:${statusColor};border-color:${statusColor}40;font-weight:800;text-transform:capitalize;">${statusText}</span>
           <span class="ad-tag" style="color:${durColor};border-color:${durColor}40;font-weight:800;">${days}d</span>
@@ -503,12 +504,12 @@ function renderCards(){
         </div>
         <div style="font-size:12px;color:rgba(26,10,15,0.55);line-height:1.5;margin-bottom:14px;min-height:54px;"><strong>${headline}</strong>${headline && adText ? '<br/>' : ''}${adText}${(a.ad_text||'').length>140?'...':''}</div>
         <div class="ad-stats">
-          <div><div class="ad-stat-val" style="color:#e8799a;font-weight:900;">${fmt(monthlyVisits)}</div><div class="ad-stat-lbl">Monthly Visits</div></div>
+          <div><div class="ad-stat-val" style="color:#ff2d78;font-weight:900;">${fmt(monthlyVisits)}</div><div class="ad-stat-lbl">Monthly Visits</div></div>
           <div><div class="ad-stat-val" style="font-weight:900;">${liveAds}</div><div class="ad-stat-lbl">Live Ads</div></div>
           <div><div class="ad-stat-val">${days}d</div><div class="ad-stat-lbl">Running</div></div>
         </div>
         <a href="${originalFbUrl}" target="_blank" class="ad-btn"> View on Facebook</a>
-        <button class="ad-btn-sec" style="margin-top:8px;cursor:pointer;border:1px solid rgba(232,121,154,0.3);color:#e8799a;" onclick="saveAd(event,'${(a.id||'').replace(/'/g,"\\'")}','${(a.shop_domain||'').replace(/'/g,"\\'")}','${(shopName||'').replace(/'/g,"\\'")}',this)"> Save Ad</button>
+        <button class="ad-btn-sec" style="margin-top:8px;cursor:pointer;border:1px solid rgba(255,45,120,0.3);color:#ff2d78;" onclick="saveAd(event,'${(a.id||'').replace(/'/g,"\\'")}','${(a.shop_domain||'').replace(/'/g,"\\'")}','${(shopName||'').replace(/'/g,"\\'")}',this)"> Save Ad</button>
       </div>
     </div>`;
   }).join('');
@@ -570,6 +571,17 @@ async function saveAd(evt, adId, shopDomain, shopName, btn){
 }
 
 document.addEventListener('DOMContentLoaded',fetchAds);
+</script>
+<!-- Auth Guard -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+  const sb=window.supabase.createClient('https://vsyceexjsitliwaasdhd.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo');
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){window.location.href='login.html';return;}
+  window._peekrUser=session.user;
+  window._peekrSb=sb;
+})();
 </script>
 </body>
 </html>

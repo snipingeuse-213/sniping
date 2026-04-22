@@ -3,344 +3,239 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Peekr — Spy on winning Shopify stores, trending products, and viral ads before they blow up. The #1 ecom intelligence platform."/>
-<meta name="theme-color" content="#F4A7B9"/>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>"/>
-<meta property="og:title" content="Peekr — Ecom Intelligence Platform"/>
-<meta property="og:description" content="Spy on winning Shopify stores, trending products, and viral ads."/>
-<meta property="og:type" content="website"/>
-<meta property="og:url" content="https://peekr.io"/>
-<meta name="twitter:card" content="summary"/>
-<title>Peekr — Login</title>
+<title>Peekr — Log in</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --pink: #F4A7B9;
-  --pink-dark: #E8799A;
-  --pink-light: #FAD0DC;
-  --pink-pale: #FFF0F4;
-  --black: #1A0A0F;
-  --white: #FFFFFF;
-  --gray: #7A6068;
-  --gray-light: #f5f0f2;
-}
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Figtree', sans-serif;
-  background: var(--pink-pale);
-  color: var(--black);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow-x: hidden;
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#ffffff;
+  color:#1a0a0f;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
 }
 
-/* BLOBS */
-.blob-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.22; }
-.blob-1 { width: 500px; height: 500px; background: var(--pink); top: -150px; right: -80px; animation: float1 9s ease-in-out infinite; }
-.blob-2 { width: 350px; height: 350px; background: var(--pink-dark); bottom: 80px; left: -120px; animation: float2 11s ease-in-out infinite; }
-@keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,40px)} }
-@keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,-30px)} }
+/* ── Particle canvas ── */
+#particleCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;}
 
-/* NAV */
-nav {
-  position: relative; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 60px;
-  height: 64px;
-  background: rgba(255,240,244,0.85);
-  backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(244,167,185,0.25);
+/* ── Auth card ── */
+.auth-wrap{
+  position:relative;z-index:1;
+  width:100%;max-width:420px;
+  padding:24px;
 }
-.nav-logo { text-decoration: none; display: flex; align-items: center; }
-.nav-logo-text { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.04em; }
-.nav-logo-dot { color: var(--pink-dark); }
-.nav-links { display: flex; align-items: center; gap: 28px; }
-.nav-links a { font-size: 13px; font-weight: 600; color: var(--gray); text-decoration: none; transition: color .2s; }
-.nav-links a:hover { color: var(--black); }
-.nav-cta { background: var(--black); color: var(--white); padding: 9px 22px; border-radius: 100px; font-size: 13px; font-weight: 700; text-decoration: none; transition: all .2s; }
-.nav-cta:hover { background: var(--pink-dark); }
+.auth-card{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);
+  border:1px solid rgba(255,45,120,0.1);
+  border-radius:20px;
+  padding:44px 36px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.06),0 0 0 1px rgba(255,45,120,0.05);
+}
+.auth-logo{
+  font-family:'Inter',sans-serif;
+  font-size:28px;font-weight:800;
+  text-align:center;margin-bottom:8px;
+  color:#1a0a0f;
+}
+.auth-logo span{color:#ff2d78;}
+.auth-sub{
+  text-align:center;font-size:14px;color:rgba(26,10,15,0.45);
+  margin-bottom:32px;font-weight:500;
+}
+.auth-label{
+  display:block;font-size:12px;font-weight:700;
+  letter-spacing:.04em;color:rgba(26,10,15,0.55);
+  margin-bottom:6px;text-transform:uppercase;
+}
+.auth-input{
+  width:100%;padding:12px 14px;
+  border:1.5px solid rgba(26,10,15,0.12);
+  border-radius:10px;font-size:14px;
+  font-family:'Inter',sans-serif;
+  background:#fff;color:#1a0a0f;
+  transition:all .2s;outline:none;
+  margin-bottom:18px;
+}
+.auth-input:focus{
+  border-color:#ff2d78;
+  box-shadow:0 0 0 3px rgba(255,45,120,0.1);
+}
+.auth-input::placeholder{color:rgba(26,10,15,0.3);}
 
-/* MAIN */
-main {
-  position: relative; z-index: 1;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 24px;
+.auth-btn{
+  width:100%;padding:13px;
+  background:#ff2d78;color:#fff;
+  border:none;border-radius:100px;
+  font-size:14px;font-weight:700;
+  font-family:'Inter',sans-serif;
+  cursor:pointer;transition:all .2s;
+  margin-top:6px;
+  box-shadow:0 4px 20px rgba(255,45,120,0.3);
 }
+.auth-btn:hover{background:#e6265c;transform:translateY(-1px);box-shadow:0 6px 24px rgba(255,45,120,0.4);}
+.auth-btn:active{transform:translateY(0);}
+.auth-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
-/* CARD */
-.auth-card {
-  background: white;
-  border-radius: 28px;
-  border: 1.5px solid rgba(244,167,185,0.3);
-  padding: 48px 44px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 20px 60px rgba(232,121,154,0.08);
+.auth-footer{
+  text-align:center;margin-top:24px;
+  font-size:13px;color:rgba(26,10,15,0.45);
 }
+.auth-footer a{color:#ff2d78;font-weight:600;text-decoration:none;}
+.auth-footer a:hover{text-decoration:underline;}
 
-.auth-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--pink-pale); border: 1.5px solid var(--pink-light);
-  border-radius: 100px; padding: 6px 14px;
-  font-size: 12px; font-weight: 700; color: var(--pink-dark);
-  margin-bottom: 20px;
+.auth-error{
+  display:none;
+  background:rgba(255,45,120,0.08);
+  border:1px solid rgba(255,45,120,0.2);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:13px;color:#cc2060;
+  margin-bottom:16px;
+  text-align:center;
 }
+.auth-error.show{display:block;}
 
-.auth-card h1 {
-  font-size: 28px; font-weight: 800;
-  letter-spacing: -0.03em; line-height: 1.15;
-  margin-bottom: 8px;
+.auth-divider{
+  display:flex;align-items:center;gap:12px;
+  margin:20px 0;
+  font-size:11px;color:rgba(26,10,15,0.3);
+  text-transform:uppercase;letter-spacing:.06em;font-weight:600;
 }
-.auth-card h1 span { color: var(--pink-dark); }
-
-.auth-sub {
-  font-size: 14px; color: var(--gray);
-  line-height: 1.6; margin-bottom: 32px;
-}
-
-/* FORM */
-.form-group { margin-bottom: 16px; }
-.form-group label {
-  display: block;
-  font-size: 13px; font-weight: 700;
-  color: var(--black); margin-bottom: 6px;
-}
-.form-group input {
-  width: 100%;
-  padding: 12px 16px;
-  background: var(--gray-light);
-  border: 1.5px solid transparent;
-  border-radius: 12px;
-  font-family: 'Figtree', sans-serif;
-  font-size: 14px; font-weight: 500;
-  color: var(--black);
-  outline: none;
-  transition: border-color .2s, background .2s;
-}
-.form-group input::placeholder { color: rgba(122,96,104,0.5); }
-.form-group input:focus {
-  border-color: var(--pink);
-  background: white;
+.auth-divider::before,.auth-divider::after{
+  content:'';flex:1;height:1px;background:rgba(26,10,15,0.08);
 }
 
-.forgot-link {
-  display: block; text-align: right;
-  font-size: 12px; font-weight: 600;
-  color: var(--pink-dark); text-decoration: none;
-  margin-top: -8px; margin-bottom: 20px;
-  transition: opacity .2s;
+.forgot-link{
+  display:block;text-align:right;
+  font-size:12px;color:rgba(26,10,15,0.4);
+  text-decoration:none;margin-top:-12px;margin-bottom:18px;
+  font-weight:500;
 }
-.forgot-link:hover { opacity: 0.7; }
-
-.btn-submit {
-  width: 100%;
-  padding: 14px;
-  background: var(--black);
-  color: white;
-  border: none;
-  border-radius: 100px;
-  font-family: 'Figtree', sans-serif;
-  font-size: 15px; font-weight: 700;
-  cursor: pointer;
-  transition: all .25s;
-  margin-bottom: 16px;
-}
-.btn-submit:hover { background: var(--pink-dark); transform: translateY(-1px); }
-.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-/* DIVIDER */
-.divider {
-  display: flex; align-items: center; gap: 12px;
-  margin: 4px 0 16px;
-}
-.divider::before, .divider::after {
-  content: ''; flex: 1;
-  height: 1px; background: rgba(244,167,185,0.35);
-}
-.divider span { font-size: 12px; color: var(--gray); font-weight: 600; }
-
-/* GOOGLE BTN */
-.btn-google {
-  width: 100%;
-  padding: 13px;
-  background: white;
-  color: var(--black);
-  border: 1.5px solid rgba(26,10,15,0.15);
-  border-radius: 100px;
-  font-family: 'Figtree', sans-serif;
-  font-size: 14px; font-weight: 700;
-  cursor: pointer;
-  transition: all .25s;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  margin-bottom: 24px;
-  text-decoration: none;
-}
-.btn-google:hover { border-color: var(--black); background: var(--gray-light); }
-.btn-google svg { flex-shrink: 0; }
-
-/* FOOTER LINK */
-.auth-footer {
-  text-align: center;
-  font-size: 13px; color: var(--gray);
-}
-.auth-footer a { color: var(--pink-dark); font-weight: 700; text-decoration: none; }
-.auth-footer a:hover { text-decoration: underline; }
-
-/* MESSAGE */
-.auth-msg {
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 13px; font-weight: 600;
-  margin-bottom: 16px;
-  display: none;
-}
-.auth-msg.error { background: #fff0f0; color: #c0392b; border: 1px solid #fcc; }
-.auth-msg.success { background: #f0fff4; color: #1a7a4a; border: 1px solid #b7e4c7; }
-.auth-msg.show { display: block; }
-
-@media (max-width: 480px) {
-  nav { padding: 0 20px; }
-  .auth-card { padding: 32px 24px; }
-  .nav-links { display: none; }
-}
+.forgot-link:hover{color:#ff2d78;}
 </style>
 </head>
 <body>
 
-<div class="blob-bg">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-</div>
+<canvas id="particleCanvas"></canvas>
 
-<!-- NAV -->
-<nav>
-  <a href="peekr-landing.html" class="nav-logo">
-    <span class="nav-logo-text">peekr<span class="nav-logo-dot">.</span></span>
-  </a>
-  <div class="nav-links">
-    <a href="peekr-landing.html">Home</a>
-    <a href="peekr-pricing.html">Pricing</a>
-    <a href="peekr-affiliate.html">Affiliate</a>
-  </div>
-  <a href="signup.html" class="nav-cta">Sign up →</a>
-</nav>
-
-<!-- MAIN -->
-<main>
+<div class="auth-wrap">
   <div class="auth-card">
-    <div class="auth-badge">👁️ Welcome back</div>
-    <h1>Log in to <span>Peekr</span></h1>
-    <p class="auth-sub">Your ecom intelligence dashboard is one click away.</p>
+    <div class="auth-logo">Peek<span>r</span></div>
+    <div class="auth-sub">Welcome back. Log in to your account.</div>
 
-    <div class="auth-msg" id="authMsg"></div>
+    <div class="auth-error" id="authError"></div>
 
-    <form id="loginForm" autocomplete="on">
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email"/>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password"/>
-      </div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <label class="auth-label">Email</label>
+      <input class="auth-input" type="email" id="email" placeholder="you@example.com" required autocomplete="email"/>
 
-      <a href="#" class="forgot-link" id="forgotLink">Forgot your password?</a>
+      <label class="auth-label">Password</label>
+      <input class="auth-input" type="password" id="password" placeholder="Your password" required autocomplete="current-password"/>
+      <a href="#" class="forgot-link" id="forgotLink">Forgot password?</a>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Log in →</button>
+      <button type="submit" class="auth-btn" id="submitBtn">Log in</button>
     </form>
 
-    <div class="divider"><span>or continue with</span></div>
-
-    <button class="btn-google" id="googleBtn" type="button">
-      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
-      Continue with Google
-    </button>
-
-    <p class="auth-footer">Don't have an account? <a href="signup.html">Sign up for free</a></p>
+    <div class="auth-footer">
+      Don't have an account? <a href="signup.html">Sign up free</a>
+    </div>
   </div>
-</main>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = 'https://vsyceexjsitliwaasdhd.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+const _SB='https://vsyceexjsitliwaasdhd.supabase.co';
+const _AK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZzeWNlZXhqc2l0bGl3YWFzZGhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NDgzNzYsImV4cCI6MjA5MDAyNDM3Nn0.nng6CrCZIYiW3i-b3z5hm6AXhepA8t1CUhZ1Kt4aZwo';
+const sb=window.supabase.createClient(_SB,_AK);
 
-const { createClient } = supabase;
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* Already logged in? → dashboard */
+(async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session) window.location.href='peekr-dashboard.html';
+})();
 
-const form = document.getElementById('loginForm');
-const submitBtn = document.getElementById('submitBtn');
-const googleBtn = document.getElementById('googleBtn');
-const forgotLink = document.getElementById('forgotLink');
-const msgEl = document.getElementById('authMsg');
-
-function showMsg(text, type) {
-  msgEl.textContent = text;
-  msgEl.className = `auth-msg ${type} show`;
-}
-function hideMsg() {
-  msgEl.className = 'auth-msg';
-}
-
-// Check if already logged in
-sb.auth.getSession().then(({ data: { session } }) => {
-  if (session) window.location.href = 'peekr-dashboard.html';
-});
-
-// Email/password login
-form.addEventListener('submit', async (e) => {
+async function handleLogin(e){
   e.preventDefault();
-  hideMsg();
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
+  const btn=document.getElementById('submitBtn');
+  const errEl=document.getElementById('authError');
+  errEl.classList.remove('show');
+  btn.disabled=true;btn.textContent='Logging in...';
 
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Logging in…';
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
 
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
 
-  if (error) {
-    showMsg(error.message, 'error');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Log in →';
-  } else {
-    showMsg('Login successful! Redirecting…', 'success');
-    setTimeout(() => { window.location.href = 'peekr-dashboard.html'; }, 800);
+  if(error){
+    errEl.textContent=error.message;
+    errEl.classList.add('show');
+    btn.disabled=false;btn.textContent='Log in';
+    return;
   }
-});
 
-// Google OAuth
-googleBtn.addEventListener('click', async () => {
-  const { error } = await sb.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: window.location.origin + '/peekr-dashboard.html' }
-  });
-  if (error) showMsg(error.message, 'error');
-});
+  window.location.href='peekr-dashboard.html';
+}
 
-// Forgot password
-forgotLink.addEventListener('click', async (e) => {
+/* Forgot password */
+document.getElementById('forgotLink').addEventListener('click',async(e)=>{
   e.preventDefault();
-  const email = document.getElementById('email').value.trim();
-  if (!email) { showMsg('Enter your email address first.', 'error'); return; }
-
-  const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/login.html'
-  });
-  if (error) {
-    showMsg(error.message, 'error');
-  } else {
-    showMsg('Password reset email sent! Check your inbox.', 'success');
-  }
+  const email=document.getElementById('email').value.trim();
+  if(!email){alert('Enter your email first, then click Forgot password.');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/login.html'});
+  if(error){alert(error.message);}
+  else{alert('Password reset email sent! Check your inbox.');}
 });
 </script>
 
+<!-- Particle network -->
+<script>
+(function(){
+  const c=document.getElementById('particleCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,particles=[],mouse={x:-999,y:-999};
+  const N=90,CD=200,MD=220;
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+  document.addEventListener('mouseleave',()=>{mouse.x=-999;mouse.y=-999;});
+  class P{
+    constructor(){this.reset();}
+    reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.r=Math.random()*2+.8;this.ba=Math.random()*.3+.2;this.a=this.ba;this.p=Math.random()*Math.PI*2;this.ps=Math.random()*.02+.01;}
+    update(){
+      this.p+=this.ps;this.a=this.ba+Math.sin(this.p)*.08;
+      const dx=mouse.x-this.x,dy=mouse.y-this.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<MD&&d>1){const f=.012*(1-d/MD);this.vx+=dx/d*f;this.vy+=dy/d*f;this.a=Math.min(.65,this.a+.12*(1-d/MD));}
+      this.vx*=.99;this.vy*=.99;this.x+=this.vx;this.y+=this.vy;
+      if(this.x<-20)this.x=W+20;if(this.x>W+20)this.x=-20;if(this.y<-20)this.y=H+20;if(this.y>H+20)this.y=-20;
+    }
+    draw(){
+      ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,45,120,${this.a})`;ctx.fill();
+      if(this.a>.25){ctx.beginPath();ctx.arc(this.x,this.y,this.r*3,0,Math.PI*2);ctx.fillStyle=`rgba(255,45,120,${this.a*.12})`;ctx.fill();}
+    }
+  }
+  for(let i=0;i<N;i++)particles.push(new P());
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<particles.length;i++){
+      particles[i].update();particles[i].draw();
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<CD){const r=1-d/CD;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(255,45,120,${.2*r})`;ctx.lineWidth=.5+r*.7;ctx.stroke();}
+      }
+      const mdx=mouse.x-particles[i].x,mdy=mouse.y-particles[i].y,md=Math.sqrt(mdx*mdx+mdy*mdy);
+      if(md<MD){const r=1-md/MD;ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(mouse.x,mouse.y);ctx.strokeStyle=`rgba(255,45,120,${.4*r})`;ctx.lineWidth=.7+r;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
